@@ -250,7 +250,7 @@ public class MapWindow extends Window {
 	public void updateTile(int x, int y, int z, String type, String name){
 		
 		Color newColor = new Color(0,0,0);
-		if(name.toLowerCase().contains("exit") || name.toLowerCase().contains("entrance") || name.toLowerCase().contains("hole") || name.toLowerCase().contains("stairs")){
+		if(name.toLowerCase().contains("exit") || name.toLowerCase().contains("entrance") || name.toLowerCase().contains("stairs")){
 			newColor = new Color(255,255,255);
 		}else if(name.contains("path")){
 			newColor = new Color(180,180,180);

@@ -14,7 +14,7 @@ public class DamageCalculator {
 		String damageInfo = "";
 
 		int damage = 0;
-		int hitOrMiss = RandomUtils.getInt(0, 100) - 5;
+		int hitOrMiss = RandomUtils.getInt(-5, 100);
 
 		if(TARGET.isResting()){
 			hitOrMiss = 0;
@@ -25,40 +25,38 @@ public class DamageCalculator {
 			damageInfo = "miss;0";
 		} else {
 
-			int evaded = RandomUtils.getInt(0, 100) + 2;
+			int evaded = RandomUtils.getInt(0, 105);
 
 			if(TARGET.isResting()){
 				evaded = 100;
 			}
 
-			if(evaded < TARGET.getStat("EVASION")){
+			int evasion = TARGET.getStat("EVASION");
+			if(evaded < evasion){
 				damageInfo = "evade;0";
 			}else{
 
 				damage = calculateDamage(ATTACKER, TARGET);
 				int criticalChance = RandomUtils.getInt(0, 100);
+				criticalChance += evasion/4;
 
-				
 				float diffAngle = Math.abs(ATTACKER.getRotation() - TARGET.getRotation());
 
 				// Check if the attack is from behind
-				if(diffAngle < 90.0f){
-					int critBonusChance = (int) Math.round(80.0f - (diffAngle/2.0));
-					criticalChance -= critBonusChance;
-				}
-
 				if(TARGET.isResting()){
 					criticalChance = 0;
 				}
-
+				else if(diffAngle < 10.0f){
+					criticalChance -= 80;
+				} else if (diffAngle < 60.0f) { // Angles are m*45
+					criticalChance -= 50;
+				}
+				
 				if (damage > 0 && criticalChance <= ATTACKER.getStat("CRITICAL_HIT")) {
-					damageInfo = "true;";
-					damage *= 1.5;
+					damageInfo = "true;" + (damage * 2);
 				} else {
 					damageInfo = "false;";
 				}
-
-				damageInfo += Integer.toString(damage);
 			}
 		}
 

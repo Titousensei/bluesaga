@@ -171,6 +171,10 @@ public class DataHandlers {
 			try{
 				String dataToSend = "<"+message.type+">"+message.message;
 				
+				if (ServerSettings.TRACE_MODE) {
+					System.out.println("<-| " + dataToSend);
+				}
+				
 				byte[] byteMsg = (dataToSend).getBytes();
 				if(client.out != null){
 					client.out.writeObject(byteMsg);

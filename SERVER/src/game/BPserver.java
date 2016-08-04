@@ -18,6 +18,9 @@ public class BPserver {
 			if ("-dev".equals(args[i])) {
 				ServerSettings.DEV_MODE = true;
 			}
+			else if ("-trace".equals(args[i])) {
+				ServerSettings.TRACE_MODE = true;
+			}
 			else {
 				System.err.println("Unknown parameter: " + args[i]);
 				System.exit(1);

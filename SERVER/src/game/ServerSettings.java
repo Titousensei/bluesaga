@@ -21,6 +21,8 @@ public class ServerSettings {
 	 * Set DEV_MODE = false when running it live.
 	 */
 	public static boolean DEV_MODE = false;
+	
+	public static boolean TRACE_MODE = false;
 
 	// Network settings
 	public static int PORT = 26342;

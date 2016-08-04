@@ -97,6 +97,14 @@ public class Client implements Runnable {
 								String messageType = messageInfo[0].substring(1);
 								String messageText = messageInfo[1];
 		
+								if (game.ServerSettings.TRACE_MODE) {
+									if (message.length()<100) {
+										System.out.println("|-> " + messageId + message.substring(messageIndex));
+									}
+									else {
+										System.out.println("|-> " + messageId + message.substring(messageIndex, 100) + "...");
+									}
+								}
 								
 								
 								if(inputPacketId == messageId){

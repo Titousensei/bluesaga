@@ -54,7 +54,7 @@ public class ParticleEditor extends BasicGame {
 	public void init(GameContainer container) throws SlickException {
 
 		try {
-			myGameDB = new Database("../BPClientMouse/gameDB.db");
+			myGameDB = new Database("../CLIENT/gameDB.db");
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}

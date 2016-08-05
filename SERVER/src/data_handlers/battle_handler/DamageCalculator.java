@@ -55,7 +55,7 @@ public class DamageCalculator {
 				if (damage > 0 && criticalChance <= ATTACKER.getStat("CRITICAL_HIT")) {
 					damageInfo = "true;" + (damage * 2);
 				} else {
-					damageInfo = "false;";
+					damageInfo = "false;"+ damage;
 				}
 			}
 		}

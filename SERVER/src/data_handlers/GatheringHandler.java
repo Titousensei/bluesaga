@@ -78,8 +78,10 @@ public class GatheringHandler extends Handler {
         skillLvl   = itemInfo.getInt("SkillLevel");
         skillId    = itemInfo.getInt("SkillId");
         resourceId = itemInfo.getInt("ResourceId");
+        System.out.println("INFO - Found item_gathering: " + SourceName + " " + skillLvl + " " + resourceId);
       }
       else {
+        System.out.println("WARNING - No such item_gathering: " + objectId);
         return;
       }
       itemInfo.close();
@@ -189,7 +191,15 @@ public class GatheringHandler extends Handler {
         Container newContainer = new Container("harvest");
 
         for (int i = 0; i < nrGathered; i++) {
-          newContainer.addItem(new Item(ServerGameInfo.itemDef.get(resourceId)));
+          Item rsc = ServerGameInfo.itemDef.get(resourceId);
+          if (rsc!=null) {
+            Item it = new Item(rsc);
+            newContainer.addItem(it);
+          }
+          else {
+            System.out.println("WARNING - No resourceId: "+resourceId);
+            return;
+          }
         }
 
         newContainer.setName(SourceName);

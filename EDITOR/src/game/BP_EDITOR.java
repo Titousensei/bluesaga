@@ -900,6 +900,12 @@ public class BP_EDITOR extends BasicGame {
 
                 } else {
                   // PLACE OBJECT OVER AREA
+                  int passable = 0;
+                  if (MouseObject.getName().startsWith("gathering/skarrot")
+                  || MouseObject.getName().startsWith("gathering/herb")
+                  ) {
+                    passable = 1;
+                  }
                   for (int i = screenX; i < screenX + BrushSize; i += 2) {
                     for (int j = screenY; j < screenY + BrushSize; j += 2) {
                       tileX = i + PLAYER_X - TILE_HALF_W;
@@ -908,7 +914,9 @@ public class BP_EDITOR extends BasicGame {
                       mapDB.updateDB(
                           "update area_tile set ObjectId = '"
                               + MouseObject.getName()
-                              + "', Passable = 0 where X = "
+                              + "', Passable = "
+                              + passable
+                              + " where X = "
                               + tileX
                               + " and Y = "
                               + tileY
@@ -919,7 +927,9 @@ public class BP_EDITOR extends BasicGame {
                         mapDB.updateDB(
                             "update area_tile set ObjectId = '"
                                 + MouseObject.getName()
-                                + "', Passable = 0 where X = "
+                                + "', Passable = "
+                                + passable
+                                + " where X = "
                                 + (tileX + 1)
                                 + " and Y = "
                                 + (tileY + 1)

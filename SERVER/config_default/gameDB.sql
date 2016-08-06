@@ -29,7 +29,7 @@ CREATE VIEW "offhands" AS  select Id, Name, ReqLevel, ARMOR, ClassId FROM item W
 CREATE VIEW "warrior_weapons" AS        select Id, Name, ReqLevel, SubType, MinDamage, MaxDamage, DamageType,AttackSpeed, Value,Range from item WHERE Type = 'Weapon' AND (ClassId = 1 OR ClassId = 4 OR ClassId = 7);
 CREATE VIEW "weapons" AS       select Id, Name, ReqLevel, MinDamage, MaxDamage, SubType, ClassId, DamageType, AttackType, * from item WHERE Type = 'Weapon';
 
-
+drop table if exists item_gathering;
 CREATE TABLE "item_gathering" (
   "ItemName" VARCHAR PRIMARY KEY NOT NULL,
   "SourceName" VARCHAR,
@@ -37,7 +37,41 @@ CREATE TABLE "item_gathering" (
   "SkillId" INTEGER,
   "ResourceId" INTEGER
 );
-insert into item_gathering values('gathering/oranga','Oranga Bush',1,102,178);
-insert into item_gathering values('gathering/piccoberries','Picco Berries',2,102,203);
-insert into item_gathering values('gathering/flowerluna','Luna Petal',3,102,212);
-insert into item_gathering values('gathering/soulbush','Soul Bush',-5,102,313);
+insert into item_gathering values ('gathering/oranga','Oranga Bush',1,102,178);
+insert into item_gathering values ('gathering/piccoberries','Picco Berries',2,102,203);
+insert into item_gathering values ('gathering/matchanuts','Matcha Tree',3,102,486);
+insert into item_gathering values ('gathering/soulbush','Soul Bush',4,102,313);
+insert into item_gathering values ('gathering/flowerluna','Luna Petal',-5,102,212);
+
+insert into item_gathering values ('gathering/skarrot','Skarrot Root',1,102,501);
+insert into item_gathering values ('gathering/herb499','Herb 499',1,102,499);
+insert into item_gathering values ('gathering/herb498','Herb 498',1,102,498);
+insert into item_gathering values ('gathering/herb497','Herb 497',1,102,497);
+insert into item_gathering values ('gathering/herb496','Herb 496',1,102,496);
+insert into item_gathering values ('gathering/herb495','Herb 495',1,102,495);
+insert into item_gathering values ('gathering/herb494','Herb 494',1,102,494);
+insert into item_gathering values ('gathering/herb493','Herb 493',1,102,493);
+insert into item_gathering values ('gathering/herb492','Herb 492',1,102,492);
+insert into item_gathering values ('gathering/herb491','Herb 491',1,102,491);
+insert into item_gathering values ('gathering/herb490','Herb 490',1,102,490);
+insert into item_gathering values ('gathering/herb489','Herb 489',1,102,489);
+insert into item_gathering values ('gathering/herb488','Herb 488',1,102,488);
+insert into item_gathering values ('gathering/herb487','Herb 487',1,102,487);
+
+insert into item values (501,"Skarrot",0,"Eatable","Root",0,0,0,0,0,0,"None",0,0,0,0,0,"None","",0,"None",0,0,"",10,10,0,0,0,0,0,0,0,0,0,0,100,21,0,0,5,0,0);
+insert into item values (486,"Matchnuts",0,"Eatable","Fruit",0,0,0,0,0,0,"None",0,0,0,0,0,"None","",0,"None",0,0,"",10,10,0,0,0,0,0,0,0,0,0,0,100,21,0,0,5,0,0);
+
+insert into item values (499,"Herb 499", 0,"Eatable","Herb",0,0,0,0,0,0,"None",0,0,0,0,0,"None","",0,"None",0,0,"",10,10,0,0,0,0,0,0,0,0,0,0,100,21,0,0,5,0,0);
+insert into item values (498,"Herb 498", 0,"Eatable","Herb",0,0,0,0,0,0,"None",0,0,0,0,0,"None","",0,"None",0,0,"",10,10,0,0,0,0,0,0,0,0,0,0,100,21,0,0,5,0,0);
+insert into item values (497,"Herb 497", 0,"Eatable","Herb",0,0,0,0,0,0,"None",0,0,0,0,0,"None","",0,"None",0,0,"",10,10,0,0,0,0,0,0,0,0,0,0,100,21,0,0,5,0,0);
+insert into item values (496,"Herb 496", 0,"Eatable","Herb",0,0,0,0,0,0,"None",0,0,0,0,0,"None","",0,"None",0,0,"",10,10,0,0,0,0,0,0,0,0,0,0,100,21,0,0,5,0,0);
+insert into item values (495,"Herb 495", 0,"Eatable","Herb",0,0,0,0,0,0,"None",0,0,0,0,0,"None","",0,"None",0,0,"",10,10,0,0,0,0,0,0,0,0,0,0,100,21,0,0,5,0,0);
+insert into item values (494,"Herb 494", 0,"Eatable","Herb",0,0,0,0,0,0,"None",0,0,0,0,0,"None","",0,"None",0,0,"",10,10,0,0,0,0,0,0,0,0,0,0,100,21,0,0,5,0,0);
+insert into item values (493,"Herb 493", 0,"Eatable","Herb",0,0,0,0,0,0,"None",0,0,0,0,0,"None","",0,"None",0,0,"",10,10,0,0,0,0,0,0,0,0,0,0,100,21,0,0,5,0,0);
+insert into item values (492,"Herb 492", 0,"Eatable","Herb",0,0,0,0,0,0,"None",0,0,0,0,0,"None","",0,"None",0,0,"",10,10,0,0,0,0,0,0,0,0,0,0,100,21,0,0,5,0,0);
+insert into item values (491,"Herb 491", 0,"Eatable","Herb",0,0,0,0,0,0,"None",0,0,0,0,0,"None","",0,"None",0,0,"",10,10,0,0,0,0,0,0,0,0,0,0,100,21,0,0,5,0,0);
+insert into item values (490,"Herb 490", 0,"Eatable","Herb",0,0,0,0,0,0,"None",0,0,0,0,0,"None","",0,"None",0,0,"",10,10,0,0,0,0,0,0,0,0,0,0,100,21,0,0,5,0,0);
+insert into item values (489,"Herb 489", 0,"Eatable","Herb",0,0,0,0,0,0,"None",0,0,0,0,0,"None","",0,"None",0,0,"",10,10,0,0,0,0,0,0,0,0,0,0,100,21,0,0,5,0,0);
+insert into item values (488,"Herb 488", 0,"Eatable","Herb",0,0,0,0,0,0,"None",0,0,0,0,0,"None","",0,"None",0,0,"",10,10,0,0,0,0,0,0,0,0,0,0,100,21,0,0,5,0,0);
+insert into item values (487,"Herb 487", 0,"Eatable","Herb",0,0,0,0,0,0,"None",0,0,0,0,0,"None","",0,"None",0,0,"",10,10,0,0,0,0,0,0,0,0,0,0,100,21,0,0,5,0,0);
+

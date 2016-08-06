@@ -21,6 +21,7 @@ import utils.WebHandler;
 import utils.XPTables;
 import data_handlers.ConnectHandler;
 import data_handlers.DataHandlers;
+import data_handlers.chat_handler.ChatHandler;
 import data_handlers.Handler;
 import game.Database;
 import game.ServerSettings;
@@ -303,7 +304,8 @@ public abstract class Server {
 			Client s = entry.getValue();
 			ConnectHandler.removeClient(s);
 		}
-
+		ChatHandler.chatLog.close();
+		
 		gameDB.closeDB();
 		userDB.closeDB();
 		mapDB.closeDB();
@@ -341,6 +343,7 @@ public abstract class Server {
 				s.playerCharacter.saveInfo();
 			}
 		}
+		ChatHandler.chatLog.close();
 
 		gameDB.closeDB();
 		userDB.closeDB();

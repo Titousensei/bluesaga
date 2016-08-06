@@ -1,5 +1,7 @@
 package data_handlers.chat_handler;
 
+import java.io.FileNotFoundException;
+import java.io.PrintStream;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -8,6 +10,7 @@ import java.util.Map;
 import java.util.Vector;
 
 import utils.RandomUtils;
+import utils.TimeUtils;
 import data_handlers.Handler;
 import data_handlers.MapHandler;
 import data_handlers.monster_handler.MonsterHandler;
@@ -17,7 +20,8 @@ import network.Server;
 
 public class ChatHandler extends Handler {
 
-
+	public static PrintStream chatLog;
+	
 	private static Vector<String> Emoticons = new Vector<String>();
 	public static Vector<String> BadWords = new Vector<String>();
 	private static Vector<String> CuteWords = new Vector<String>();
@@ -57,6 +61,14 @@ public class ChatHandler extends Handler {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+		
+		try {
+			chatLog = new PrintStream("chatLog-" + TimeUtils.now() + ".txt");
+		}
+		catch (FileNotFoundException ex) {
+			System.err.println("WARNING - Can't open chatLog: " + ex.getMessage());
+			chatLog = System.out;
+		}
 	}
 
 	public static void handleData(Client client, String message){
@@ -64,6 +76,7 @@ public class ChatHandler extends Handler {
 		if(client.playerCharacter != null){
 			if(message.startsWith("<newchat>")){
 				boolean specialCommand = false;
+				chatLog.println(TimeUtils.now() + ' ' + client.UserId + ' ' + message);
 				
 				String chatInfo[] = message.substring(9).split(";");
 				

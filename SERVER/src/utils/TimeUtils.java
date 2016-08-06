@@ -13,6 +13,15 @@ public class TimeUtils {
 	public static final float NS_PER_MS = 1000000.0f;
 	public static final float MS_PER_SEC = 1000.0f;
 	
+	public final static ThreadLocal<SimpleDateFormat> FORMAT_DATETIME = new ThreadLocal() {
+			@Override protected SimpleDateFormat initialValue()
+			{ return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"); }
+	};
+	
+	public final static ThreadLocal<SimpleDateFormat> FORMAT_DATE = new ThreadLocal() {
+			@Override protected SimpleDateFormat initialValue()
+			{ return new SimpleDateFormat("yyyy-MM-dd"); }
+	};
 	
 	/**
 	 * Public Methods
@@ -37,27 +46,24 @@ public class TimeUtils {
 	
 	public static String now() {
 		Calendar cal = Calendar.getInstance();
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		return sdf.format(cal.getTime());
+		return FORMAT_DATETIME.get().format(cal.getTime());
 	}
 
 	public static String getTimeAdd(int addedSeconds) {
 		Calendar calender = Calendar.getInstance();
 		calender.add(Calendar.SECOND, addedSeconds);
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		return sdf.format(calender.getTime());
+		return FORMAT_DATETIME.get().format(calender.getTime());
 	}
 	
 	public static String addTimeToDate(String startDate, int addedSeconds){
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		Calendar c = Calendar.getInstance();
 		try {
-			c.setTime(sdf.parse(startDate));
+			c.setTime(FORMAT_DATE.get().parse(startDate));
 			c.add(Calendar.SECOND, addedSeconds);
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return sdf.format(c.getTime());
+		return FORMAT_DATE.get().format(c.getTime());
 	}
 }

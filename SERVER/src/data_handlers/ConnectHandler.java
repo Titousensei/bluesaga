@@ -16,6 +16,7 @@ import creature.PlayerCharacter;
 import creature.Creature.CreatureType;
 import data_handlers.ability_handler.Ability;
 import data_handlers.battle_handler.BattleHandler;
+import data_handlers.chat_handler.ChatHandler;
 import data_handlers.party_handler.PartyHandler;
 
 public class ConnectHandler extends Handler {
@@ -205,6 +206,9 @@ public class ConnectHandler extends Handler {
 			}	
 			
 			client.playerCharacter.saveInfo();
+			ChatHandler.chatLog.println(TimeUtils.now() + ' ' + client.UserId + " --- " + client.UserMail 
+					+ " left as " + client.playerCharacter.getName());
+			client.playerCharacter = null;
 		}
 	}
 	
@@ -280,9 +284,12 @@ public class ConnectHandler extends Handler {
 						if(charInfo.getInt("AreaEffectId") > 0){
 							WalkHandler.sendAreaEffect(client, charInfo.getInt("AreaEffectId"));
 						}
+						ChatHandler.chatLog.println(TimeUtils.now() + ' ' + client.UserId + " --- " + client.UserMail 
+								+ " joined as " + client.playerCharacter.getName());
 					}
 				}else{
 					// Error: Can't find character in DB!
+					
 				}
 				charInfo.close();
 			} catch (SQLException e) {
@@ -302,7 +309,7 @@ public class ConnectHandler extends Handler {
 			
 			if(client.playerCharacter != null){
 				ServerMessage.printMessage(TimeUtils.now()+": "+ client.playerCharacter.getName()+"("+client.playerCharacter.getDBId()+") disconnects.",false);
-			
+
 				// RESPAWN AT CHECKPOINT IF DEAD
 	    		if(client.playerCharacter.isDead()){
 	    			client.playerCharacter.revive();
@@ -323,6 +330,8 @@ public class ConnectHandler extends Handler {
 						}
 					}
 				}
+			} else {
+				ServerMessage.printMessage(TimeUtils.now()+": "+ client.IP+" disconnected without joining",false);
 			}
 			
 			logoutCharacter(client);

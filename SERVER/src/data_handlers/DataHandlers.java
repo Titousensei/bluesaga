@@ -172,7 +172,13 @@ public class DataHandlers {
 				String dataToSend = "<"+message.type+">"+message.message;
 				
 				if (ServerSettings.TRACE_MODE) {
-					System.out.println("<-| " + dataToSend);
+					if (dataToSend.length()<100) {
+						System.out.println("<-| " + dataToSend);
+					}
+					else {
+						System.out.println("<-| " + dataToSend.substring(0, 100)
+								+ "...(" + dataToSend.length() + ")");
+					}
 				}
 				
 				byte[] byteMsg = (dataToSend).getBytes();

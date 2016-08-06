@@ -1,7 +1,7 @@
 Blue Saga
 =========
 
-A free indie mmo rpg created by Jonathan Stahl.
+A free indie mmo rpg created by Jonathan Stahl. This is my personal version where I do bug fixes for the classic server. I also experiment with different improvements, mostly in the server. I will soon start my own server with new original content.
 
 Github project
 ==============

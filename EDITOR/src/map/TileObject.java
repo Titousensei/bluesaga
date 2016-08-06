@@ -19,6 +19,7 @@ public class TileObject {
 	
 	private int TrapId = 0;
 
+	public static boolean transparent = false;
 	
 	public TileObject(String newName){
 		name = newName;
@@ -36,7 +37,7 @@ public class TileObject {
 	}
 	
 	public void draw(Graphics g, int x, int y){
-		int alpha = 255;
+		int alpha = transparent ? 100 : 255;
 		
 		/*
 		if(!MENU){

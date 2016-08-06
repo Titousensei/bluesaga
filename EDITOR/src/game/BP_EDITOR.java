@@ -125,7 +125,9 @@ public class BP_EDITOR extends BasicGame {
 
 	public static boolean Loading = true;
 	public static boolean PLACE_DOOR = false;
-	public static Random randomGenerator = new Random();    
+	public static Random randomGenerator = new Random();
+	
+	private int helpY;
 
 	public BP_EDITOR() { 
 		super("Blue Saga Map Editor"); 
@@ -386,6 +388,18 @@ public class BP_EDITOR extends BasicGame {
 
 		keyLogic(container);
 	} 
+	
+	
+	private void resetHelp(Graphics g) {
+		g.setFont(FONTS.size8);
+		g.setColor(new Color(255,255,255));
+		helpY = 40;
+	}
+	
+	private void renderHelp(Graphics g, String str) {
+		g.drawString(str, 20, helpY);
+		helpY += 20;
+	}
 
 	public void render(GameContainer container, Graphics g) throws SlickException { 
 
@@ -412,8 +426,6 @@ public class BP_EDITOR extends BasicGame {
 					}
 				}
 			}
-
-
 		}
 		
 		
@@ -451,21 +463,20 @@ public class BP_EDITOR extends BasicGame {
 
 
 		if(!SHOW_MINI_MAP){
-			g.setFont(FONTS.size8);
-			g.setColor(new Color(255,255,255));
-			g.drawString("T: Textures menu",30,50);
-			g.drawString("M: Monsters menu",30,70);
-			g.drawString("O: Objects menu",30,90);
-			g.drawString("P: Passable Tool",30,110);
-			g.drawString("F1: Hide/View Passable",30,130);
-			g.drawString("1/2: Brushsize -/+",30,150);
-			g.drawString("0: Place Door",30,170);
-			g.drawString("E: Place Area Effect",30,190);
-			g.drawString("R: Place Trigger",30,210);
-			g.drawString("F: Fix edges - "+FixEdges, 30, 230);
-			g.drawString("N: Both/Day/Night spawns "+DAY_NIGHT_TIME, 30, 250);
-
-			g.drawString("PgUp/PgDown: Z +/-",30,270);
+			resetHelp(g);
+			renderHelp(g, "T: Textures menu");
+			renderHelp(g, "M: Monsters menu");
+			renderHelp(g, "O: Objects menu");
+			renderHelp(g, "P: Passable Tool");
+			renderHelp(g, "F1: Hide/View Passable");
+			renderHelp(g, "F2: Transparent Objects");
+			renderHelp(g, "1/2: Brushsize -/+");
+			renderHelp(g, "0: Place Door");
+			renderHelp(g, "E: Place Area Effect");
+			renderHelp(g, "R: Place Trigger");
+			renderHelp(g, "F: Fix edges - "+FixEdges);
+			renderHelp(g, "N: Both/Day/Night spawns "+DAY_NIGHT_TIME);
+			renderHelp(g, "PgUp/PgDown: Z +/-");
 
 			if(INPUT != null){
 
@@ -642,6 +653,9 @@ public class BP_EDITOR extends BasicGame {
 				}
 			}
 
+			if(INPUT.isKeyPressed(Input.KEY_F2)){
+				TileObject.transparent = !TileObject.transparent;
+			}
 
 			if(INPUT.isKeyPressed(Input.KEY_F)){
 				if(FixEdges){

@@ -103,7 +103,7 @@ public class Client implements Runnable {
 									}
 									else {
 										System.out.println("|-> " + messageId + message.substring(messageIndex, 100)
-												+ "..." + messageIndex.length() + ")");
+												+ "...(" + message.length() + ")");
 									}
 								}
 								

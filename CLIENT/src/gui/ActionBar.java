@@ -51,6 +51,9 @@ public class ActionBar {
 				String actionInfo[] = action.split(",");
 
 				int orderNr = Integer.parseInt(actionInfo[0]);
+				if (orderNr>actionInfo.length) {
+					continue;
+				}
 				String actionType = actionInfo[1];
 				int actionId = Integer.parseInt(actionInfo[2]);
 

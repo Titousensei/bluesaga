@@ -147,7 +147,9 @@ public abstract class Server {
 		ServerMessage.printMessage("Initializing connection...",false);
 
 		connectionListener = new ConnectionListener(this, ServerSettings.PORT);
-		new Thread(connectionListener).start();
+		Thread th = new Thread(connectionListener);
+		th.setName("ConnectionListener");
+		th.start();
 		
 		ServerMessage.printMessage("Server is ready and waiting for clients!",false);
 
@@ -235,9 +237,8 @@ public abstract class Server {
 				lastSecondTime = nowTime;
 				actualTPS = ticksCount;
 				ticksCount = 0;
-				//ServerMessage.printMessage("Ticks/Second: " + actualTPS);				
+				//ServerMessage.printMessage("Ticks/Second: " + actualTPS, true);
 			}
-			
 			try {
 				Thread.currentThread().sleep(10L);
 			} catch (InterruptedException ex) {

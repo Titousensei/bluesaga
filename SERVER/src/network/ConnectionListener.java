@@ -73,7 +73,9 @@ public class ConnectionListener implements Runnable {
 				server.addClient(clientObject);
 				
 				// Start a client listener thread
-				new Thread(clientObject).start();
+				Thread th = new Thread(clientObject);
+				th.setName("Client-"+clientObject.IP);
+				th.start();
 				
 			} catch (IOException e) {
 				ServerMessage.printMessage("ServerListener failed to accept connection from client - " + e.getMessage(),false);

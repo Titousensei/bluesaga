@@ -42,11 +42,11 @@ public class TileObject {
 
     /*
     if(!MENU){
-    	int diffZ = Z-BP_EDITOR.PLAYER_Z;
-    	if(diffZ < 0){
-    		diffZ = 0;
-    	}
-    	alpha = 255 - diffZ*200;
+      int diffZ = Z-BP_EDITOR.PLAYER_Z;
+      if(diffZ < 0){
+        diffZ = 0;
+      }
+      alpha = 255 - diffZ*200;
     }
     */
     if (MENU || BP_EDITOR.PLAYER_Z == Z) {

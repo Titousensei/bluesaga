@@ -250,22 +250,22 @@ public class BP_EDITOR extends BasicGame {
   public static void loadScreen() {
     /*
     for(int i = 0; i < 22; i++){
-    	for(int j = 0; j < 14; j++){
+      for(int j = 0; j < 14; j++){
 
-    		ResultSet tileInfo = mapDB.askDB("select X, Y, Z, Type, Number from area_tile where X = "+(PLAYER_X-TILE_HALF_W+i)+" and Y = "+(PLAYER_Y-TILE_HALF_H+j)+" and Z = "+PLAYER_Z);
-    		try {
-    			if(tileInfo.next()){
-    				SCREEN_TILES[i][j].setType(tileInfo.getString("Type"), tileInfo.getInt("Number"));
-    			}else{
-    				SCREEN_TILES[i][j].setType("None", 0);
-    			}
-    			tileInfo.close();
-    		} catch (SQLException e) {
-    			// TODO Auto-generated catch block
-    			e.printStackTrace();
-    		}
+        ResultSet tileInfo = mapDB.askDB("select X, Y, Z, Type, Number from area_tile where X = "+(PLAYER_X-TILE_HALF_W+i)+" and Y = "+(PLAYER_Y-TILE_HALF_H+j)+" and Z = "+PLAYER_Z);
+        try {
+          if(tileInfo.next()){
+            SCREEN_TILES[i][j].setType(tileInfo.getString("Type"), tileInfo.getInt("Number"));
+          }else{
+            SCREEN_TILES[i][j].setType("None", 0);
+          }
+          tileInfo.close();
+        } catch (SQLException e) {
+          // TODO Auto-generated catch block
+          e.printStackTrace();
+        }
 
-    	}
+      }
     }
     */
 

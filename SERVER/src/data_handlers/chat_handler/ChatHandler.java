@@ -89,7 +89,7 @@ public class ChatHandler extends Handler {
     Client client = m.client;
     boolean specialCommand = false;
 
-    String chatInfo[] = m.message.split(";");
+    String chatInfo[] = m.message.split(";", 2);
 
     chatLog.println(TimeUtils.now() + ' ' + client.UserId + ": " + m.message);
 

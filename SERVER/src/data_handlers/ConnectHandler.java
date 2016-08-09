@@ -411,7 +411,6 @@ public class ConnectHandler extends Handler {
           }
         } else {
           // Error: Can't find character in DB!
-
         }
         charInfo.close();
       } catch (SQLException e) {

@@ -272,6 +272,7 @@ public abstract class Server {
             System.currentTimeMillis(), t_incoming, t_update, t_outgoing, t_cleanup);
         mb_timers.updateTicksPerSecond(actualTPS);
       }
+
       try {
         Thread.currentThread().sleep(10L);
       } catch (InterruptedException ex) {

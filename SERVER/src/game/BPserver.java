@@ -1,26 +1,20 @@
 package game;
 
 import network.Server;
+import utils.Config;
 import utils.CrashLogger;
 
 public class BPserver {
 
   /******************************
-   * 							*
-   *    GLOBAL SERVER METHODS	*
-   * 							*
+   *                            *
+   *    GLOBAL SERVER METHODS   *
+   *                            *
    ******************************/
   public static void main(String args[]) throws Exception {
 
-    for (int i = 0; i < args.length; i++) {
-      if ("-dev".equals(args[i])) {
-        ServerSettings.DEV_MODE = true;
-      } else if ("-trace".equals(args[i])) {
-        ServerSettings.TRACE_MODE = true;
-      } else {
-        System.err.println("Unknown parameter: " + args[i]);
-        System.exit(1);
-      }
+    if (args.length > 0) {
+      Config.configure(ServerSettings.class, args[0]);
     }
 
     Thread.setDefaultUncaughtExceptionHandler(

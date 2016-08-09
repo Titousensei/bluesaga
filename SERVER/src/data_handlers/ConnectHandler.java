@@ -285,14 +285,16 @@ public class ConnectHandler extends Handler {
       }
 
       client.playerCharacter.saveInfo();
-      ChatHandler.chatLog.println(
-          TimeUtils.now()
-              + ' '
-              + client.UserId
-              + " --- "
-              + client.UserMail
-              + " left as "
-              + client.playerCharacter.getName());
+      if (ChatHandler.chatLog!=null) {
+        ChatHandler.chatLog.println(
+            TimeUtils.now()
+                + ' '
+                + client.UserId
+                + " --- "
+                + client.UserMail
+                + " left as "
+                + client.playerCharacter.getName());
+      }
       client.playerCharacter = null;
     }
   }
@@ -373,7 +375,7 @@ public class ConnectHandler extends Handler {
             /*
             // Respawn player if in lost archipelago
             if(!Server.DEV_MODE && client.playerCharacter.getZ() <= -200){
-            	respawnAtCheckpoint = true;
+              respawnAtCheckpoint = true;
             }
             */
 
@@ -400,14 +402,16 @@ public class ConnectHandler extends Handler {
             if (charInfo.getInt("AreaEffectId") > 0) {
               WalkHandler.sendAreaEffect(client, charInfo.getInt("AreaEffectId"));
             }
-            ChatHandler.chatLog.println(
-                TimeUtils.now()
-                    + ' '
-                    + client.UserId
-                    + " --- "
-                    + client.UserMail
-                    + " joined as "
-                    + client.playerCharacter.getName());
+            if (ChatHandler.chatLog!=null) {
+              ChatHandler.chatLog.println(
+                  TimeUtils.now()
+                      + ' '
+                      + client.UserId
+                      + " --- "
+                      + client.UserMail
+                      + " joined as "
+                      + client.playerCharacter.getName());
+            }
           }
         } else {
           // Error: Can't find character in DB!

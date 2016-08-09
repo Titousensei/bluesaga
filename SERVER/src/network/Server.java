@@ -117,9 +117,9 @@ public abstract class Server {
 
     // Initialize all databases
     try {
-      gameDB = new Database("game");
-      mapDB = new Database("map");
-      userDB = new Database("users");
+      gameDB = new Database(ServerSettings.PATH + "game");
+      mapDB  = new Database(ServerSettings.PATH + "map");
+      userDB = new Database(ServerSettings.PATH + "users");
     } catch (ClassNotFoundException e) {
       e.printStackTrace();
     }
@@ -338,7 +338,9 @@ public abstract class Server {
       Client s = entry.getValue();
       ConnectHandler.removeClient(s);
     }
-    ChatHandler.chatLog.close();
+    if (ChatHandler.chatLog!=null) {
+      ChatHandler.chatLog.close();
+    }
 
     gameDB.closeDB();
     userDB.closeDB();
@@ -349,7 +351,7 @@ public abstract class Server {
 
     Runtime re = Runtime.getRuntime();
     try {
-      re.exec("java -jar BPserver.jar");
+      re.exec(ServerSettings.RESTART_COMMAND);
     } catch (IOException ioe) {
       CrashLogger.uncaughtException(ioe);
     }
@@ -379,7 +381,9 @@ public abstract class Server {
         s.playerCharacter.saveInfo();
       }
     }
-    ChatHandler.chatLog.close();
+    if (ChatHandler.chatLog!=null) {
+      ChatHandler.chatLog.close();
+    }
 
     gameDB.closeDB();
     userDB.closeDB();

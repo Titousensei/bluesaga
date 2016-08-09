@@ -1,6 +1,7 @@
 package gui.windows;
 
 import game.BlueSaga;
+import game.ClientSettings;
 import graphics.BlueSagaColors;
 import graphics.Font;
 import gui.Button;
@@ -57,12 +58,12 @@ public class MapWindow extends Window {
 
       setLoading(true);
 
-      File f = new File("local.data");
+      File f = new File(ClientSettings.PATH + "local.data");
 
       if (f.exists()) {
         FileReader fr;
         try {
-          fr = new FileReader("local.data");
+          fr = new FileReader(f);
           BufferedReader br = new BufferedReader(fr);
           String mapData = br.readLine();
 
@@ -337,7 +338,7 @@ public class MapWindow extends Window {
   // 2: back to character select
   public void saveMiniMap(int doAfterSave) {
     setSaving(true);
-    File yourFile = new File("local.data");
+    File yourFile = new File(ClientSettings.PATH + "local.data");
     if (!yourFile.exists()) {
       try {
         yourFile.createNewFile();
@@ -349,7 +350,7 @@ public class MapWindow extends Window {
 
     PrintWriter writer = null;
     try {
-      writer = new PrintWriter("local.data");
+      writer = new PrintWriter(yourFile);
     } catch (FileNotFoundException e) {
       // TODO Auto-generated catch block
       e.printStackTrace();

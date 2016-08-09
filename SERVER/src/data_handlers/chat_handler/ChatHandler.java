@@ -1,5 +1,6 @@
 package data_handlers.chat_handler;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintStream;
 import java.sql.ResultSet;
@@ -19,7 +20,7 @@ import network.Server;
 
 public class ChatHandler extends Handler {
 
-  public static PrintStream chatLog;
+  public static PrintStream chatLog = null;
 
   private static Set<String> Emoticons = new TreeSet<String>();
   private static String emoHelp = "To show emoticon type '/emo name'.";
@@ -74,11 +75,15 @@ public class ChatHandler extends Handler {
       e.printStackTrace();
     }
 
-    try {
-      chatLog = new PrintStream("chatLog-" + TimeUtils.now() + ".txt");
-    } catch (FileNotFoundException ex) {
-      System.err.println("WARNING - Can't open chatLog: " + ex.getMessage());
-      chatLog = System.out;
+    if (ServerSettings.CHATLOG_PATH != null) {
+      try {
+        new File(ServerSettings.PATH + ServerSettings.CHATLOG_PATH).mkdir();
+        chatLog = new PrintStream(ServerSettings.PATH
+            + ServerSettings.CHATLOG_PATH + "/chatLog-" + TimeUtils.now() + ".txt");
+      } catch (FileNotFoundException ex) {
+        System.err.println("WARNING - Can't open chatLog: " + ex.getMessage());
+        chatLog = System.out;
+      }
     }
 
     DataHandlers.register("newchat", m -> handleNewChat(m));
@@ -91,7 +96,9 @@ public class ChatHandler extends Handler {
 
     String chatInfo[] = m.message.split(";", 2);
 
-    chatLog.println(TimeUtils.now() + ' ' + client.UserId + ": " + m.message);
+    if (chatLog!=null) {
+      chatLog.println(TimeUtils.now() + ' ' + client.UserId + ": " + m.message);
+    }
 
     if (chatInfo.length == 2) {
       String chatChannel = chatInfo[0].toLowerCase();
@@ -371,9 +378,9 @@ public class ChatHandler extends Handler {
       // LOG ADMIN COMMANDS
       /*
       if(specialCommand){
-      	if(client.playerCharacter != null){
-      		Server.userDB.addChatText("admin",client.playerCharacter.getDBId(),0,chatText);
-      	}
+        if(client.playerCharacter != null){
+          Server.userDB.addChatText("admin",client.playerCharacter.getDBId(),0,chatText);
+        }
       }
       */
     }

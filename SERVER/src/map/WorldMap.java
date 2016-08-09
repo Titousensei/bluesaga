@@ -34,6 +34,7 @@ import data_handlers.TrapHandler;
 import data_handlers.item_handler.ContainerHandler;
 import data_handlers.item_handler.Item;
 import data_handlers.monster_handler.MonsterHandler;
+import game.ServerSettings;
 
 public class WorldMap implements TileBasedMap {
 
@@ -356,24 +357,29 @@ public class WorldMap implements TileBasedMap {
       e.printStackTrace();
     }
 
-    ServerMessage.printMessage("Generating random archipelago...", false);
+    if (ServerSettings.RANDOM_ARCHIPELAGO) {
+      ServerMessage.printMessage("Generating random archipelago...", false);
 
-    // Pirate island
-    zLevels.add(-200);
-    playersByZ.put(-200, new Vector<PlayerCharacter>());
-    monstersByZ.put(-200, new Vector<Npc>());
+      // Pirate island
+      zLevels.add(-200);
+      playersByZ.put(-200, new Vector<PlayerCharacter>());
+      monstersByZ.put(-200, new Vector<Npc>());
 
-    PirateIslandGenerator.generate(MapTiles);
+      PirateIslandGenerator.generate(MapTiles);
+    }
 
-    ServerMessage.printMessage("Generating random dungeons...", false);
 
-    // Generate instances
-    DungeonGenerator dGenerator = new DungeonGenerator();
-    dGenerator.generate(MapTiles, 10);
+    if (ServerSettings.RANDOM_DUNGEON) {
+      ServerMessage.printMessage("Generating random dungeons...", false);
 
-    dGenerator.generate(MapTiles, 20);
+      // Generate instances
+      DungeonGenerator dGenerator = new DungeonGenerator();
+      dGenerator.generate(MapTiles, 10);
 
-    dGenerator.generate(MapTiles, 30);
+      dGenerator.generate(MapTiles, 20);
+
+      dGenerator.generate(MapTiles, 30);
+    }
 
     ServerMessage.printMessage("Loading world map done.", false);
   }
@@ -607,14 +613,14 @@ public class WorldMap implements TileBasedMap {
             /*
             // Chance of spawning more monsters if not npc
             if(m.getOriginalAggroType() != 3 && !m.isBoss() && m.getCreatureId() != 1){
-            	//int nrSpawns = RandomUtils.getInt(0, 2);
-            	int nrSpawns = 0;
-            	for(int i = 0; i < nrSpawns; i++){
-            		Npc newSpawn = new Npc(ServerGameInfo.creatureDef.get(m.getCreatureId()), m.getSpawnX(),m.getSpawnY(),m.getSpawnZ());
-            		newSpawn.setExistDayOrNight(m.getExistDayOrNight());
-            		newSpawn.setAggroType(m.getOriginalAggroType());
-            		Server.WORLD_MAP.addMonsterSpawn(newSpawn, m.getSpawnX(),m.getSpawnY(),m.getSpawnZ());
-            	}
+              //int nrSpawns = RandomUtils.getInt(0, 2);
+              int nrSpawns = 0;
+              for(int i = 0; i < nrSpawns; i++){
+                Npc newSpawn = new Npc(ServerGameInfo.creatureDef.get(m.getCreatureId()), m.getSpawnX(),m.getSpawnY(),m.getSpawnZ());
+                newSpawn.setExistDayOrNight(m.getExistDayOrNight());
+                newSpawn.setAggroType(m.getOriginalAggroType());
+                Server.WORLD_MAP.addMonsterSpawn(newSpawn, m.getSpawnX(),m.getSpawnY(),m.getSpawnZ());
+              }
             }
             */
 
@@ -829,15 +835,15 @@ public class WorldMap implements TileBasedMap {
 
     /*
     if(gotoTile.getStatusEffects().size() > 0){
-    	if(c.isAggro()){
-    		for(StatusEffect se: gotoTile.getStatusEffects()){
-    			if(!c.hasStatusEffect(se.getId())){
-    				return false;
-    			}
-    		}
-    	}else{
-    		return false;
-    	}
+      if(c.isAggro()){
+        for(StatusEffect se: gotoTile.getStatusEffects()){
+          if(!c.hasStatusEffect(se.getId())){
+            return false;
+          }
+        }
+      }else{
+        return false;
+      }
     }
      */
 

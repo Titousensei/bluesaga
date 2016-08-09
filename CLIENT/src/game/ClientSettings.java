@@ -14,6 +14,8 @@ import utils.json.JSONObject;
 
 public class ClientSettings {
 
+  public static String PATH = "./";
+
   // GENERAL
   public static int VERSION_NR = 724;
   public static boolean DEV_MODE = false;
@@ -33,12 +35,12 @@ public class ClientSettings {
   public static short FULLSCREEN_HEIGHT = 768;
 
   public static boolean FULL_SCREEN = false;
-  public static final short FRAME_RATE = 60;
+  public static short FRAME_RATE = 60;
 
-  public static final short TILE_SIZE = 50;
+  public static short TILE_SIZE = 50;
 
-  public static final short TILE_HALF_W = 18;
-  public static final short TILE_HALF_H = 10;
+  public static short TILE_HALF_W = 18;
+  public static short TILE_HALF_H = 10;
 
   // AUDIO
   public static boolean MUSIC_ON = true;

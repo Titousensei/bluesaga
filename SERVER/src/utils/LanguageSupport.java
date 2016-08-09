@@ -15,15 +15,16 @@ public class LanguageSupport {
     File jarFile =
         new File(Server.class.getProtectionDomain().getCodeSource().getLocation().getPath());
 
-    String server_path = jarFile.getAbsolutePath();
+    String server_path = ServerSettings.PATH;
 
-    server_path = server_path.replace("BPserver.jar", "");
-
-    if (ServerSettings.DEV_MODE) {
-      server_path += "/../game_text.json";
-    } else {
-      server_path += "game_text.json";
+    if (server_path == null) {
+      server_path = jarFile.getAbsolutePath();
+      server_path = server_path.replace("BPserver.jar", "");
+      if (ServerSettings.DEV_MODE) {
+        server_path += "/../";
+      }
     }
+    server_path += "game_text.json";
 
     System.out.println("Read language file: " + server_path);
 
@@ -50,23 +51,23 @@ public class LanguageSupport {
 
             JSONObject questsJSON = new JSONObject();
             try {
-      	while(quest_info.next()){
-      		JSONObject questJSON = new JSONObject();
-      		questJSON.accumulate("name",quest_info.getString("Name"));
-      		questJSON.accumulate("quest_message",quest_info.getString("QuestMessage"));
-      		questJSON.accumulate("reward_message",quest_info.getString("RewardMessage"));
-      		questJSON.accumulate("description",quest_info.getString("Description"));
+        while(quest_info.next()){
+          JSONObject questJSON = new JSONObject();
+          questJSON.accumulate("name",quest_info.getString("Name"));
+          questJSON.accumulate("quest_message",quest_info.getString("QuestMessage"));
+          questJSON.accumulate("reward_message",quest_info.getString("RewardMessage"));
+          questJSON.accumulate("description",quest_info.getString("Description"));
 
-      		questsJSON.accumulate(""+quest_info.getInt("Id"), questJSON);
-      	}
-      	quest_info.close();
+          questsJSON.accumulate(""+quest_info.getInt("Id"), questJSON);
+        }
+        quest_info.close();
       } catch (JSONException e) {
-      	// TODO Auto-generated catch block
-      	e.printStackTrace();
-      	System.out.println("Error creating translation file");
+        // TODO Auto-generated catch block
+        e.printStackTrace();
+        System.out.println("Error creating translation file");
       } catch (SQLException e) {
-      	// TODO Auto-generated catch block
-      	e.printStackTrace();
+        // TODO Auto-generated catch block
+        e.printStackTrace();
       }
 
             jsonObj.accumulate("quests", questsJSON);

@@ -34,6 +34,7 @@ import abilitysystem.Ability;
 import abilitysystem.StatusEffect;
 import sound.BgMusic;
 import sound.Sfx;
+import utils.Config;
 import utils.GameInfo;
 import utils.LanguageUtils;
 import utils.json.JSONObject;
@@ -292,22 +293,8 @@ public class BlueSaga extends BasicGame {
 
   public static void main(String[] args) {
 
-    for (int i = 0; i < args.length; i++) {
-      if ("-dev".equals(args[i])) {
-        ClientSettings.DEV_MODE = true;
-      } else if (args[i].startsWith("-server")) {
-        String[] parts = args[i].split(":"); // IPv4 only
-        try {
-          ClientSettings.PORT = Integer.parseInt(parts[2]);
-          ClientSettings.SERVER_IP = parts[1];
-        } catch (NumberFormatException ex) {
-          System.err.println("Invalid -server:ip:port in " + args[i]);
-          System.exit(1);
-        }
-      } else {
-        System.err.println("Unknown parameter: " + args[i]);
-        System.exit(1);
-      }
+    if (args.length > 0) {
+      Config.configure(ClientSettings.class, args[0]);
     }
 
     if (!ClientSettings.DEV_MODE) {

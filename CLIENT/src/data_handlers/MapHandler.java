@@ -520,17 +520,17 @@ public class MapHandler extends Handler {
         if (o1.getCreature().isDead()) {
           o1y -= 3;
         }
-        else {
-          o1y--;
-        }
+      }
+      else if (o1.getObject() != null && o1.getObject().getHeight()==1) {
+        o1y--;
       }
       if (o2c) {
         if (o2.getCreature().isDead()) {
           o2y -= 3;
         }
-        else {
-          o2y--;
-        }
+      }
+      else if (o2.getObject() != null && o2.getObject().getHeight()==1) {
+        o2y--;
       }
 
       if (o1y == o2y) {

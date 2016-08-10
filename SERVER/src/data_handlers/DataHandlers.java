@@ -75,32 +75,32 @@ public class DataHandlers {
 
   public static void update(long tick) {
 
-    // Every 50 ms
-    MonsterHandler.update(tick);
-    BattleHandler.updateRangedCooldowns();
 
-    AbilityHandler.updateProjectiles();
-    AbilityHandler.updateAbilityEvents();
-    AbilityHandler.updatePlayerCasting();
+    MonsterHandler.update(tick);  //= 516
+    BattleHandler.updateRangedCooldowns(); //= 16
+
+    AbilityHandler.updateProjectiles();   //= 15
+    AbilityHandler.updateAbilityEvents(); //= 1236
+    AbilityHandler.updatePlayerCasting(); //= 14
 
     // Every 200 ms
     if (tick % 4 == 0) {
-      BattleHandler.update();
-      AbilityHandler.updateCooldowns();
+      BattleHandler.update();  //= 2854
+      AbilityHandler.updateCooldowns();  //= 1597
     }
 
-    // Every 1000 ms
+    // Every 1,000 ms
     if (tick % 20 == 0) {
-      TrapHandler.update();
-      StatusEffectHandler.updateStatusEffects();
-      StatusEffectHandler.updateTileStatusEffects();
-      PvpHandler.updatePKTimers();
-      MapHandler.updateNightTime();
+      TrapHandler.update();  //= 83
+      StatusEffectHandler.updateStatusEffects();  //= 96
+      StatusEffectHandler.updateTileStatusEffects();  //= 8160
+      PvpHandler.updatePKTimers();  //= 5
+      MapHandler.updateNightTime();  //= 1
     }
 
-    // Every 10000 ms
+    // Every 10,000 ms
     if (tick % 200 == 0) {
-      ContainerHandler.checkContainerRespawn();
+      ContainerHandler.checkContainerRespawn();  //= 3
     }
 
     // Every minute

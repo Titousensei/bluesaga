@@ -245,7 +245,7 @@ public class StatusEffectHandler extends Handler {
     for (Tile t : Server.WORLD_MAP.getMapTiles().values()) {
       String tileInfo = t.updateStatusEffect();
 
-      if (!tileInfo.equals("")) {
+      if (!tileInfo.isEmpty()) {
         for (Map.Entry<Integer, Client> entry : Server.clients.entrySet()) {
           Client s = entry.getValue();
 

@@ -23,7 +23,6 @@ public class DungeonGenerator {
   private Vector<String> level_10_mobs;
   private Vector<String> level_20_mobs;
   private Vector<String> level_30_mobs;
-  private Vector<String> level_40_mobs;
 
   private String monstersId[] = new String[0];
 
@@ -142,9 +141,6 @@ public class DungeonGenerator {
 
       int randomMonsterIndex = RandomUtils.getInt(0, level_30_mobs.size() - 1);
       monstersId = level_30_mobs.get(randomMonsterIndex).split(",");
-    } else if (level == 40) {
-      int randomMonsterIndex = RandomUtils.getInt(0, level_40_mobs.size() - 1);
-      monstersId = level_40_mobs.get(randomMonsterIndex).split(",");
     }
 
     int instanceZ = -100 - level;
@@ -219,11 +215,11 @@ public class DungeonGenerator {
 
         /*
         if(levelSizeItr == Math.round(levelSize/2)){
-        	monster_index++;
-        	System.out.println("monster index: "+monster_index);
-        	if(monster_index >= monstersId.length){
-        		monster_index = monstersId.length-1;
-        	}
+          monster_index++;
+          System.out.println("monster index: "+monster_index);
+          if(monster_index >= monstersId.length){
+            monster_index = monstersId.length-1;
+          }
         }
         */
 

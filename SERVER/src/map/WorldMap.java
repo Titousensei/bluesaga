@@ -54,8 +54,6 @@ public class WorldMap implements TileBasedMap {
   private int entranceX;
   private int entranceY;
 
-  private String MapType;
-
   private int NrPlayers;
 
   private ConcurrentHashMap<Integer, Npc> Monsters;
@@ -781,10 +779,6 @@ public class WorldMap implements TileBasedMap {
 
   public int getEntranceY() {
     return entranceY;
-  }
-
-  public String getType() {
-    return MapType;
   }
 
   public int getNrPlayers() {

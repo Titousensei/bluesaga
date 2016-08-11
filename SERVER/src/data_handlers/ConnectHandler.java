@@ -359,59 +359,56 @@ public class ConnectHandler extends Handler {
           client.playerCharacter.load(characterId, client);
           client.playerCharacter.setCreatureType(CreatureType.Player);
 
-          if (client.playerCharacter != null) {
+          boolean respawnAtCheckpoint = false;
 
-            boolean respawnAtCheckpoint = false;
+          // Respawn player if player position is null
+          if (Server.WORLD_MAP.getTile(
+                  client.playerCharacter.getX(),
+                  client.playerCharacter.getY(),
+                  client.playerCharacter.getZ())
+              == null) {
+            respawnAtCheckpoint = true;
+          }
 
-            // Respawn player if player position is null
-            if (Server.WORLD_MAP.getTile(
-                    client.playerCharacter.getX(),
-                    client.playerCharacter.getY(),
-                    client.playerCharacter.getZ())
-                == null) {
-              respawnAtCheckpoint = true;
-            }
+          /*
+          // Respawn player if in lost archipelago
+          if(!Server.DEV_MODE && client.playerCharacter.getZ() <= -200){
+            respawnAtCheckpoint = true;
+          }
+          */
 
-            /*
-            // Respawn player if in lost archipelago
-            if(!Server.DEV_MODE && client.playerCharacter.getZ() <= -200){
-              respawnAtCheckpoint = true;
-            }
-            */
+          if (respawnAtCheckpoint) {
+            BattleHandler.respawnPlayer(client.playerCharacter);
+          }
 
-            if (respawnAtCheckpoint) {
-              BattleHandler.respawnPlayer(client.playerCharacter);
-            }
+          String info = client.playerCharacter.getInfo();
 
-            String info = client.playerCharacter.getInfo();
+          addOutGoingMessage(client, "playerinfo", info);
+          addOutGoingMessage(
+              client, "update_bonusstats", client.playerCharacter.getBonusStatsAsString());
 
-            addOutGoingMessage(client, "playerinfo", info);
+          if (client.playerCharacter.getMouseItem() != null) {
             addOutGoingMessage(
-                client, "update_bonusstats", client.playerCharacter.getBonusStatsAsString());
+                client,
+                "addmouseitem",
+                ""
+                    + client.playerCharacter.getMouseItem().getId()
+                    + ";"
+                    + client.playerCharacter.getMouseItem().getType());
+          }
 
-            if (client.playerCharacter.getMouseItem() != null) {
-              addOutGoingMessage(
-                  client,
-                  "addmouseitem",
-                  ""
-                      + client.playerCharacter.getMouseItem().getId()
-                      + ";"
-                      + client.playerCharacter.getMouseItem().getType());
-            }
-
-            if (charInfo.getInt("AreaEffectId") > 0) {
-              WalkHandler.sendAreaEffect(client, charInfo.getInt("AreaEffectId"));
-            }
-            if (ChatHandler.chatLog!=null) {
-              ChatHandler.chatLog.println(
-                  TimeUtils.now()
-                      + ' '
-                      + client.UserId
-                      + " --- "
-                      + client.UserMail
-                      + " joined as "
-                      + client.playerCharacter.getName());
-            }
+          if (charInfo.getInt("AreaEffectId") > 0) {
+            WalkHandler.sendAreaEffect(client, charInfo.getInt("AreaEffectId"));
+          }
+          if (ChatHandler.chatLog!=null) {
+            ChatHandler.chatLog.println(
+                TimeUtils.now()
+                    + ' '
+                    + client.UserId
+                    + " --- "
+                    + client.UserMail
+                    + " joined as "
+                    + client.playerCharacter.getName());
           }
         } else {
           // Error: Can't find character in DB!

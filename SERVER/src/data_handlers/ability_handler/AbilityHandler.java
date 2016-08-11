@@ -1086,8 +1086,7 @@ public class AbilityHandler extends Handler {
 
                   //String abilityHitInfo = TARGET.getSmallData()+";"+TARGET.getHealthStatus()+","+ABILITY.getAbilityId()+","+ABILITY.getDamageType()+","+damage+","+ABILITY.getColor().getRed()+","+ABILITY.getColor().getGreen()+","+ABILITY.getColor().getBlue()+","+ABILITY.getGraphicsNr();
 
-                  if (CASTER != null
-                      && TARGET.getCreatureType().equals(CASTER.getCreatureType())
+                  if (TARGET.getCreatureType().equals(CASTER.getCreatureType())
                       && TARGET.getDBId() == CASTER.getDBId()
                       && !ABILITY.isBuffOrNot()) {
                     // Do not hit caster with its own spell if not a buff

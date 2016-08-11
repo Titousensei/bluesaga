@@ -866,37 +866,35 @@ public class InventoryHandler extends Handler {
         // USE ITEM AND REMOVE IT
         int userItemId = rs.getInt("Id");
 
-        if (usedItem != null) {
-          usedItem.setUserItemId(userItemId);
+        usedItem.setUserItemId(userItemId);
 
-          if (usedItem.getType().equals("Scroll")) {
-            // SCROLL
-            addOutGoingMessage(
-                client,
-                "use_scroll",
-                usedItem.getUserItemId() + "," + usedItem.getSubType() + ",Inventory");
-          } else if (usedItem.getType().equals("Readable")) {
-            // READABLE ITEM
-            addOutGoingMessage(
-                client, "readable", usedItem.getName() + ";" + usedItem.getDescription());
-          } else {
-            // USEABLE ITEM
-            if (client.playerCharacter.useItem(usedItem)) {
-              if (rs.getInt("Nr") > 1) {
-                Server.userDB.updateDB(
-                    "update character_item set Nr = Nr - 1 where Id = " + userItemId);
-              } else {
-                Server.userDB.updateDB("delete from character_item where Id = " + userItemId);
-              }
-              client.playerCharacter.loadInventory();
-              client.playerCharacter.saveInfo();
-
-              // SEND REMOVE ITEM FROM INVENTORY
-              addOutGoingMessage(client, "inventory_remove", rs.getString("InventoryPos"));
-              useItemSuccess = true;
-
-              QuestHandler.updateUseItemQuests(client, usedItem.getId());
+        if (usedItem.getType().equals("Scroll")) {
+          // SCROLL
+          addOutGoingMessage(
+              client,
+              "use_scroll",
+              usedItem.getUserItemId() + "," + usedItem.getSubType() + ",Inventory");
+        } else if (usedItem.getType().equals("Readable")) {
+          // READABLE ITEM
+          addOutGoingMessage(
+              client, "readable", usedItem.getName() + ";" + usedItem.getDescription());
+        } else {
+          // USEABLE ITEM
+          if (client.playerCharacter.useItem(usedItem)) {
+            if (rs.getInt("Nr") > 1) {
+              Server.userDB.updateDB(
+                  "update character_item set Nr = Nr - 1 where Id = " + userItemId);
+            } else {
+              Server.userDB.updateDB("delete from character_item where Id = " + userItemId);
             }
+            client.playerCharacter.loadInventory();
+            client.playerCharacter.saveInfo();
+
+            // SEND REMOVE ITEM FROM INVENTORY
+            addOutGoingMessage(client, "inventory_remove", rs.getString("InventoryPos"));
+            useItemSuccess = true;
+
+            QuestHandler.updateUseItemQuests(client, usedItem.getId());
           }
         }
       }
@@ -978,30 +976,28 @@ public class InventoryHandler extends Handler {
     // OTHERWISE PLACE ON NEW SPOT
     int inventorySize = client.playerCharacter.getInventorySize();
 
-    if (client.playerCharacter != null) {
-      client.playerCharacter.loadInventory();
+    client.playerCharacter.loadInventory();
 
-      if (newItem.getStacked() <= newItem.getStackable()) {
-        if (newItem.getStackable() > 1) {
-          for (int i = 0; i < inventorySize; i++) {
-            for (int j = 0; j < inventorySize; j++) {
-              Item invItem = client.playerCharacter.getInventoryItem(i, j);
-              if (invItem != null) {
-                if (invItem.getId() == newItem.getId()
-                    && invItem.getStacked() + newItem.getStacked() <= invItem.getStackable()) {
-                  int totalItems = invItem.getStacked() + newItem.getStacked();
-                  return "stacked;" + i + "," + j + ";" + totalItems;
-                }
+    if (newItem.getStacked() <= newItem.getStackable()) {
+      if (newItem.getStackable() > 1) {
+        for (int i = 0; i < inventorySize; i++) {
+          for (int j = 0; j < inventorySize; j++) {
+            Item invItem = client.playerCharacter.getInventoryItem(i, j);
+            if (invItem != null) {
+              if (invItem.getId() == newItem.getId()
+                  && invItem.getStacked() + newItem.getStacked() <= invItem.getStackable()) {
+                int totalItems = invItem.getStacked() + newItem.getStacked();
+                return "stacked;" + i + "," + j + ";" + totalItems;
               }
             }
           }
         }
+      }
 
-        for (int i = 0; i < inventorySize; i++) {
-          for (int j = 0; j < inventorySize; j++) {
-            if (client.playerCharacter.getInventoryItem(i, j) == null) {
-              return "newpos;" + i + "," + j + ";" + newItem.getStacked();
-            }
+      for (int i = 0; i < inventorySize; i++) {
+        for (int j = 0; j < inventorySize; j++) {
+          if (client.playerCharacter.getInventoryItem(i, j) == null) {
+            return "newpos;" + i + "," + j + ";" + newItem.getStacked();
           }
         }
       }

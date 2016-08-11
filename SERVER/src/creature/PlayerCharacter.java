@@ -1034,7 +1034,7 @@ public class PlayerCharacter extends Creature {
 
   /*
   public int getNrQuests() {
-  	return Quests.size();
+    return Quests.size();
   }
    */
 
@@ -1145,14 +1145,14 @@ public class PlayerCharacter extends Creature {
   }
 
   public String getActionBarString() {
-    String actionbarString = "";
+    StringBuilder actionbarString = new StringBuilder(50);
 
     for (int i = 0; i < 10; i++) {
-      actionbarString += ActionBar.getAction(i).getActionType() + ",";
-      actionbarString += ActionBar.getAction(i).getActionId() + ";";
+      actionbarString.append(ActionBar.getAction(i).getActionType()).append(',')
+                     .append(ActionBar.getAction(i).getActionId()).append(';');
     }
 
-    return actionbarString;
+    return actionbarString.toString();
   }
 
   public void setCharacterId(int newId) {
@@ -1348,7 +1348,7 @@ public class PlayerCharacter extends Creature {
 
   public String levelDown() {
 
-    String levelDownData = "";
+    StringBuilder levelDownData = new StringBuilder(200);
 
     for (Entry<String, Integer> entry :
         ServerGameInfo.classDef.get(baseClass.id).getLevelStats().getHashMap().entrySet()) {
@@ -1363,25 +1363,33 @@ public class PlayerCharacter extends Creature {
     Health = getStat("MAX_HEALTH");
     Mana = getStat("MAX_MANA");
 
-    levelDownData +=
-        getStat("STRENGTH") + "," + getStat("INTELLIGENCE") + "," + getStat("AGILITY") + ",";
-    levelDownData += getStat("MAX_HEALTH") + ",";
-    levelDownData += getStat("MAX_MANA") + ",";
-    levelDownData += getStat("SPEED") + ",";
-    levelDownData += getStat("ARMOR") + ",";
-
-    levelDownData += Level + ",";
-
     nextXP = XPTables.nextLevelXP.get(Level + 1);
-    levelDownData += Math.round(nextXP) + ",";
-    levelDownData += XP;
+    levelDownData.append(getStat("STRENGTH"))
+                 .append(',')
+                 .append(getStat("INTELLIGENCE"))
+                 .append(',')
+                 .append(getStat("AGILITY"))
+                 .append(',')
+                 .append(getStat("MAX_HEALTH"))
+                 .append(',')
+                 .append(getStat("MAX_MANA"))
+                 .append(',')
+                 .append(getStat("SPEED"))
+                 .append(',')
+                 .append(getStat("ARMOR"))
+                 .append(',')
+                 .append(Level)
+                 .append(',')
+                 .append(nextXP)
+                 .append(',')
+                 .append(XP);
 
-    return levelDownData;
+    return levelDownData.toString();
   }
 
   public String levelUp() {
 
-    String levelUpData = "";
+    StringBuilder levelUpData = new StringBuilder(200);
 
     for (Entry<String, Integer> entry :
         ServerGameInfo.classDef.get(baseClass.id).getLevelStats().getHashMap().entrySet()) {
@@ -1395,25 +1403,28 @@ public class PlayerCharacter extends Creature {
     Health = getRawStat("MAX_HEALTH");
     Mana = getRawStat("MAX_MANA");
 
-    levelUpData +=
-        getRawStat("STRENGTH")
-            + ","
-            + getRawStat("INTELLIGENCE")
-            + ","
-            + getRawStat("AGILITY")
-            + ",";
-    levelUpData += getRawStat("MAX_HEALTH") + ",";
-    levelUpData += getRawStat("MAX_MANA") + ",";
-    levelUpData += getRawStat("SPEED") + ",";
-    levelUpData += getRawStat("ARMOR") + ",";
-
-    levelUpData += Level + ",";
-
     nextXP = XPTables.nextLevelXP.get(Level + 1);
-    levelUpData += Math.round(nextXP) + ",";
-    levelUpData += XP;
+    levelUpData.append(getRawStat("STRENGTH"))
+                 .append(',')
+                 .append(getRawStat("INTELLIGENCE"))
+                 .append(',')
+                 .append(getRawStat("AGILITY"))
+                 .append(',')
+                 .append(getRawStat("MAX_HEALTH"))
+                 .append(',')
+                 .append(getRawStat("MAX_MANA"))
+                 .append(',')
+                 .append(getRawStat("SPEED"))
+                 .append(',')
+                 .append(getRawStat("ARMOR"))
+                 .append(',')
+                 .append(Level)
+                 .append(',')
+                 .append(nextXP)
+                 .append(',')
+                 .append(XP);
 
-    return levelUpData;
+    return levelUpData.toString();
   }
 
   /****************************************

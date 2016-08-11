@@ -33,6 +33,9 @@ public class WebHandler {
       e.printStackTrace();
     }
 
+    if (connection==null) {
+      return;
+    }
     connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
 
     // Optinally add the language and the data content

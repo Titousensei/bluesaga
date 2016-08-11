@@ -17,39 +17,37 @@ public class Stats {
   public void setValues(ResultSet rs) {
     Stats.clear();
     try {
-      if (Stats != null) {
-        // PRIMARY STATS
-        Stats.put("STRENGTH", rs.getInt("STRENGTH"));
-        Stats.put("INTELLIGENCE", rs.getInt("INTELLIGENCE"));
-        Stats.put("AGILITY", rs.getInt("AGILITY"));
-        Stats.put("SPEED", rs.getInt("SPEED"));
+      // PRIMARY STATS
+      Stats.put("STRENGTH", rs.getInt("STRENGTH"));
+      Stats.put("INTELLIGENCE", rs.getInt("INTELLIGENCE"));
+      Stats.put("AGILITY", rs.getInt("AGILITY"));
+      Stats.put("SPEED", rs.getInt("SPEED"));
 
-        // SECONDARY STATS
-        Stats.put("CRITICAL_HIT", rs.getInt("CRITICAL_HIT"));
-        Stats.put("EVASION", rs.getInt("EVASION"));
-        Stats.put("ACCURACY", rs.getInt("ACCURACY"));
-        Stats.put("ATTACKSPEED", rs.getInt("AttackSpeed"));
+      // SECONDARY STATS
+      Stats.put("CRITICAL_HIT", rs.getInt("CRITICAL_HIT"));
+      Stats.put("EVASION", rs.getInt("EVASION"));
+      Stats.put("ACCURACY", rs.getInt("ACCURACY"));
+      Stats.put("ATTACKSPEED", rs.getInt("AttackSpeed"));
 
-        // HEALTH AND MANA
-        Stats.put("MAX_HEALTH", rs.getInt("MAX_HEALTH"));
-        Stats.put("MAX_MANA", rs.getInt("MAX_MANA"));
+      // HEALTH AND MANA
+      Stats.put("MAX_HEALTH", rs.getInt("MAX_HEALTH"));
+      Stats.put("MAX_MANA", rs.getInt("MAX_MANA"));
 
-        Stats.put("HEALTH_REGAIN", 0);
-        Stats.put("MANA_REGAIN", 0);
+      Stats.put("HEALTH_REGAIN", 0);
+      Stats.put("MANA_REGAIN", 0);
 
-        // RESISTANCE STATS
-        Stats.put("FIRE_DEF", rs.getInt("FIRE_DEF"));
-        Stats.put("COLD_DEF", rs.getInt("COLD_DEF"));
-        Stats.put("SHOCK_DEF", rs.getInt("SHOCK_DEF"));
-        Stats.put("CHEMS_DEF", rs.getInt("CHEMS_DEF"));
-        Stats.put("MIND_DEF", rs.getInt("MIND_DEF"));
-        Stats.put("MAGIC_DEF", rs.getInt("MAGIC_DEF"));
+      // RESISTANCE STATS
+      Stats.put("FIRE_DEF", rs.getInt("FIRE_DEF"));
+      Stats.put("COLD_DEF", rs.getInt("COLD_DEF"));
+      Stats.put("SHOCK_DEF", rs.getInt("SHOCK_DEF"));
+      Stats.put("CHEMS_DEF", rs.getInt("CHEMS_DEF"));
+      Stats.put("MIND_DEF", rs.getInt("MIND_DEF"));
+      Stats.put("MAGIC_DEF", rs.getInt("MAGIC_DEF"));
 
-        Stats.put("ACCURACY", rs.getInt("ACCURACY"));
+      Stats.put("ACCURACY", rs.getInt("ACCURACY"));
 
-        // ATTACK STATS
-        Stats.put("ARMOR", rs.getInt("ARMOR"));
-      }
+      // ATTACK STATS
+      Stats.put("ARMOR", rs.getInt("ARMOR"));
 
     } catch (SQLException e1) {
       e1.printStackTrace();
@@ -57,9 +55,6 @@ public class Stats {
   }
 
   public void reset() {
-    if (Stats == null) {
-      Stats = new HashMap<String, Integer>();
-    }
     Stats.clear();
 
     // PRIMARY STATS

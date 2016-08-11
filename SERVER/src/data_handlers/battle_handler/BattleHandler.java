@@ -260,7 +260,7 @@ public class BattleHandler extends Handler {
           ATTACKER.restartMoveTimer();
 
           // If monster attacking monster, then check if player is nearby
-          if (TARGET != null && TARGET.getCreatureType() == CreatureType.Monster) {
+          if (TARGET.getCreatureType() == CreatureType.Monster) {
             for (Map.Entry<Integer, Client> entry : Server.clients.entrySet()) {
               Client s = entry.getValue();
 

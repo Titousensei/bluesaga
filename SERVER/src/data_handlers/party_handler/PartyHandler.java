@@ -112,7 +112,7 @@ public class PartyHandler extends Handler {
 
           for (Party p : parties) {
             for (Client c : p.getPlayers()) {
-              if (c.playerCharacter != null && player.playerCharacter != null) {
+              if (c.playerCharacter != null) {
                 if (c.playerCharacter.getDBId() == player.playerCharacter.getDBId()) {
                   inParty = true;
                   break;

@@ -458,42 +458,42 @@ public class DungeonGenerator {
   String showDungeon() {
     /*******************************************************************************/
     //used to print the map on the screen
-    String dungeonMap = "";
+    StringBuilder dungeonMap = new StringBuilder(1000);
     for (int y = 0; y < ysize; y++) {
       for (int x = 0; x < xsize; x++) {
         switch (getCell(x, y)) {
           case tileUnused:
-            dungeonMap += " ";
+            dungeonMap.append(' ');
             break;
           case tileDirtWall:
-            dungeonMap += "+";
+            dungeonMap.append('+');
             break;
           case tileDirtFloor:
-            dungeonMap += ".";
+            dungeonMap.append('.');
             break;
           case tileStoneWall:
-            dungeonMap += "O";
+            dungeonMap.append('O');
             break;
           case tileCorridor:
-            dungeonMap += "#";
+            dungeonMap.append('#');
             break;
           case tileDoor:
-            dungeonMap += "D";
+            dungeonMap.append('D');
             break;
           case tileUpStairs:
-            dungeonMap += "<";
+            dungeonMap.append('<');
             break;
           case tileDownStairs:
-            dungeonMap += ">";
+            dungeonMap.append('>');
             break;
           case tileChest:
-            dungeonMap += "*";
+            dungeonMap.append('*');
             break;
         }
       }
-      dungeonMap += "\n";
+      dungeonMap.append('\n');
     }
-    return dungeonMap;
+    return dungeonMap.toString();
   }
 
   public static void draw(Graphics g) {

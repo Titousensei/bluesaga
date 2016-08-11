@@ -983,45 +983,45 @@ public class PlayerCharacter extends Creature {
   public String getAbilitiesAsString() {
 
     // nrAbilities; Id,Name,ClassId,ManaCost,Cooldown,CooldownLeft,Range,Price,TargetSelf,Instant,EquipReq
-    String AbilityInfo = "" + abilities.size();
+    StringBuilder AbilityInfo = new StringBuilder(200);
+    AbilityInfo.append(abilities.size());
 
     for (Ability A : abilities) {
-      AbilityInfo +=
-          "/"
-              + A.getAbilityId()
-              + "="
-              + A.getName()
-              + "="
-              + A.getClassId()
-              + "="
-              + A.getColor().getRed()
-              + "="
-              + A.getColor().getGreen()
-              + "="
-              + A.getColor().getBlue()
-              + "="
-              + A.getManaCost()
-              + "="
-              + A.getCooldown()
-              + "="
-              + A.getCooldownLeft()
-              + "="
-              + A.getRange()
-              + "="
-              + A.getPrice()
-              + "="
-              + A.isTargetSelf()
-              + "="
-              + A.isInstant()
-              + "="
-              + A.getEquipReq()
-              + "="
-              + A.getGraphicsNr()
-              + "="
-              + A.getAoE();
+      AbilityInfo.append('/')
+                 .append(A.getAbilityId())
+                 .append('=')
+                 .append(A.getName())
+                 .append('=')
+                 .append(A.getClassId())
+                 .append('=')
+                 .append(A.getColor().getRed())
+                 .append('=')
+                 .append(A.getColor().getGreen())
+                 .append('=')
+                 .append(A.getColor().getBlue())
+                 .append('=')
+                 .append(A.getManaCost())
+                 .append('=')
+                 .append(A.getCooldown())
+                 .append('=')
+                 .append(A.getCooldownLeft())
+                 .append('=')
+                 .append(A.getRange())
+                 .append('=')
+                 .append(A.getPrice())
+                 .append('=')
+                 .append(A.isTargetSelf())
+                 .append('=')
+                 .append(A.isInstant())
+                 .append('=')
+                 .append(A.getEquipReq())
+                 .append('=')
+                 .append(A.getGraphicsNr())
+                 .append('=')
+                 .append(A.getAoE());
     }
 
-    return AbilityInfo;
+    return AbilityInfo.toString();
   }
 
   public void setCheckpointId(int newCheckpointId) {

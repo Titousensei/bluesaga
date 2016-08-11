@@ -211,14 +211,14 @@ public class CardHandler extends Handler {
   }
 
   public static void sendCardBookContent(Client client) {
-    String cardsInfo = "";
+    StringBuilder cardsInfo = new StringBuilder(1000);
     for (Card card : client.playerCharacter.getCardBook()) {
-      cardsInfo += card.id + "," + card.itemId + ";";
+      cardsInfo.append(card.id).append(',').append(card.itemId).append(';');
     }
     if (cardsInfo.length() > 0) {
-      cardsInfo = cardsInfo.substring(0, cardsInfo.length() - 1);
+      cardsInfo.setLength(cardsInfo.length() - 1);
     }
-    addOutGoingMessage(client, "card_book", cardsInfo);
+    addOutGoingMessage(client, "card_book", cardsInfo.toString());
   }
 
   public static Item monsterDropCard(int monsterId) {

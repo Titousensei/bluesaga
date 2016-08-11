@@ -46,7 +46,7 @@ public class Melee extends BaseAI {
         angleNeeded = 360 + angleNeeded;
       }
 
-      if (me.getGotoRotation() != angleNeeded) {
+      if (Math.abs(me.getGotoRotation() - angleNeeded) < .01  ) {
         me.setGotoRotation(angleNeeded);
         monsterMoved.add(me);
       }

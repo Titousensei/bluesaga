@@ -19,23 +19,18 @@ public class WebHandler {
 
     URL url;
     try {
-      try {
-        url = new URL(targetURL);
-        connection = (HttpURLConnection) url.openConnection();
-      } catch (MalformedURLException e) {
-        // TODO Auto-generated catch block
-        e.printStackTrace();
-      }
+      url = new URL(targetURL);
+      connection = (HttpURLConnection) url.openConnection();
       // Use post and add the type of post data as URLENCODED
       connection.setRequestMethod("POST");
-    } catch (ProtocolException e) {
-      // TODO Auto-generated catch block
+    } catch (MalformedURLException e) {
       e.printStackTrace();
-    }
-
-    if (connection==null) {
+      return;
+    } catch (ProtocolException e) {
+      e.printStackTrace();
       return;
     }
+
     connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
 
     // Optinally add the language and the data content

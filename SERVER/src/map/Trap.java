@@ -178,7 +178,7 @@ public class Trap {
   }
 
   public String getNameOn() {
-    return NameOff;
+    return NameOn;
   }
 
   public String getNameOff() {

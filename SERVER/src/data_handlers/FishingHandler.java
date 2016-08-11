@@ -94,12 +94,4 @@ public class FishingHandler extends Handler {
       }
     }
   }
-
-  public Vector<Item> getFishes() {
-    return Fishes;
-  }
-
-  public void setFishes(Vector<Item> fishes) {
-    Fishes = fishes;
-  }
 }

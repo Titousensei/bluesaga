@@ -16,7 +16,7 @@ public class CaveGenerator {
   private static final int TILE_FLOOR = 0;
   private static final int TILE_WALL = 1;
 
-  private class GenerationParams {
+  private static class GenerationParams {
     int r1_cutoff, r2_cutoff;
     int reps;
   }

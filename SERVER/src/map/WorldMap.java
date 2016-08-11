@@ -641,7 +641,7 @@ public class WorldMap implements TileBasedMap {
   }
 
   public String getAggroInfo() {
-    String aggroInfo = "";
+    StringBuilder aggroInfo = new StringBuilder(1000);
 
     for (Iterator<Npc> iter = getMonsters().values().iterator(); iter.hasNext(); ) {
       Npc m = iter.next();
@@ -652,16 +652,20 @@ public class WorldMap implements TileBasedMap {
         aggroStatus = 1;
       }
 
-      aggroInfo += aggroStatus + "," + m.getDBId();
+      aggroInfo.append(aggroStatus).append(',').append(m.getDBId());
 
       if (aggroStatus == 1) {
-        aggroInfo += "," + m.getStat("MAX_HEALTH") + "," + m.getHealth() + ";";
+        aggroInfo.append(',')
+                 .append(m.getStat("MAX_HEALTH"))
+                 .append(',')
+                 .append(m.getHealth())
+                 .append(';');
       } else {
-        aggroInfo += ";";
+        aggroInfo.append(';');
       }
     }
 
-    return aggroInfo;
+    return aggroInfo.toString();
   }
 
   /*
@@ -790,15 +794,22 @@ public class WorldMap implements TileBasedMap {
   }
 
   public String getMonstersPosAsString() {
-    String mobinfo = "";
+    StringBuilder mobinfo = new StringBuilder(1000);
 
     for (Iterator<Npc> iter = getMonsters().values().iterator(); iter.hasNext(); ) {
       Npc m = iter.next();
 
       // SEND dbId, newX, newY
-      mobinfo += m.getDBId() + "," + m.getX() + "," + m.getY() + "," + m.getStat("SPEED") + ";";
+      mobinfo.append(m.getDBId())
+             .append(',')
+             .append(m.getX())
+             .append(',')
+             .append(m.getY())
+             .append(',')
+             .append(m.getStat("SPEED"))
+             .append(';');
     }
-    return mobinfo;
+    return mobinfo.toString();
   }
 
   public HashMap<String, Tile> getMapTiles() {

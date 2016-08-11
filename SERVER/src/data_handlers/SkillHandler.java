@@ -171,28 +171,26 @@ public class SkillHandler extends Handler {
         }
       }
       if (sp > 0) {
-        if (skill != null) {
-          if (skill.addSP(sp)) {
-            // skillName, skillLevel, SP, SPnext
-            int nextSP = XPTables.nextLevelSP.get(skill.getLevel() + 1);
-            addOutGoingMessage(
-                client,
-                "sp_levelup",
-                skill.getName() + ',' + skill.getLevel() + ',' + skill.getSP() + ',' + nextSP);
-          } else {
-            addOutGoingMessage(client, "set_sp", skill.getId() + "," + skill.getSP());
-          }
-
-          Server.userDB.updateDB(
-              "update character_skill set SP = "
-                  + skill.getSP()
-                  + ", Level = "
-                  + skill.getLevel()
-                  + " where CharacterId = "
-                  + client.playerCharacter.getDBId()
-                  + " and SkillId = "
-                  + skillId);
+        if (skill.addSP(sp)) {
+          // skillName, skillLevel, SP, SPnext
+          int nextSP = XPTables.nextLevelSP.get(skill.getLevel() + 1);
+          addOutGoingMessage(
+              client,
+              "sp_levelup",
+              skill.getName() + ',' + skill.getLevel() + ',' + skill.getSP() + ',' + nextSP);
+        } else {
+          addOutGoingMessage(client, "set_sp", skill.getId() + "," + skill.getSP());
         }
+
+        Server.userDB.updateDB(
+            "update character_skill set SP = "
+                + skill.getSP()
+                + ", Level = "
+                + skill.getLevel()
+                + " where CharacterId = "
+                + client.playerCharacter.getDBId()
+                + " and SkillId = "
+                + skillId);
       }
     }
   }

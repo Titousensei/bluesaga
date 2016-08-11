@@ -309,7 +309,7 @@ public class XML {
     try {
       char initial = string.charAt(0);
       if (initial == '-' || (initial >= '0' && initial <= '9')) {
-        Long value = new Long(string);
+        Long value = Long.valueOf(string);
         if (value.toString().equals(string)) {
           return value;
         }
@@ -469,7 +469,7 @@ public class XML {
         }
         return sb.toString();
       } else {
-        string = (object == null) ? "null" : escape(object.toString());
+        string = escape(object.toString());
         return (tagName == null)
             ? "\"" + string + "\""
             : (string.length() == 0)

@@ -65,7 +65,7 @@ public class MapHandler extends Handler {
 
   public static void sendCreatureInfo(Client client, CreatureType cType, int cDbId) {
     String cData = "";
-    String cSE = "";
+    StringBuilder cSE = null;
 
     if (cType == CreatureType.Player) {
       for (Map.Entry<Integer, Client> entry : Server.clients.entrySet()) {
@@ -77,13 +77,18 @@ public class MapHandler extends Handler {
             // get creature status effects
             int nrStatusEffects = s.playerCharacter.getStatusEffects().size();
             if (nrStatusEffects > 0) {
-              cSE = s.playerCharacter.getSmallData() + "/";
+              cSE = new StringBuilder(1000);
+              cSE.append(s.playerCharacter.getSmallData())
+                 .append('/');
               for (Iterator<StatusEffect> iter =
                       s.playerCharacter.getStatusEffects().values().iterator();
                   iter.hasNext();
                   ) {
                 StatusEffect se = iter.next();
-                cSE += se.getId() + "," + se.getGraphicsNr() + ";";
+                cSE.append(se.getId())
+                   .append(',')
+                   .append(se.getGraphicsNr())
+                   .append(';');
               }
             }
 
@@ -99,12 +104,17 @@ public class MapHandler extends Handler {
         // get creature status effects
         int nrStatusEffects = monster.getStatusEffects().size();
         if (nrStatusEffects > 0) {
-          cSE = monster.getSmallData() + "/";
+          cSE = new StringBuilder(1000);
+          cSE.append(monster.getSmallData())
+             .append('/');
           for (Iterator<StatusEffect> iter = monster.getStatusEffects().values().iterator();
               iter.hasNext();
               ) {
             StatusEffect se = iter.next();
-            cSE += se.getId() + "," + se.getGraphicsNr() + ";";
+            cSE.append(se.getId())
+               .append(',')
+               .append(se.getGraphicsNr())
+               .append(';');
           }
         }
       }
@@ -113,8 +123,8 @@ public class MapHandler extends Handler {
     if (!cData.equals("")) {
       addOutGoingMessage(client, "cinfo", cData);
 
-      if (!cSE.equals("")) {
-        addOutGoingMessage(client, "creature_seffects", cSE);
+      if (cSE != null) {
+        addOutGoingMessage(client, "creature_seffects", cSE.toString());
       }
     }
   }
@@ -210,7 +220,7 @@ public class MapHandler extends Handler {
     int passable = 0;
     int lootInfo = 0;
     String objectInfo = "0";
-    String statusEffects = "0";
+    StringBuilder statusEffects = new StringBuilder(1000);
     String occupantInfo = "0";
 
     // Check if tile exists
@@ -264,11 +274,13 @@ public class MapHandler extends Handler {
 
       // Status effects info
       if (TILE.getStatusEffects().size() > 0) {
-        statusEffects = "";
         for (StatusEffect se : TILE.getStatusEffects()) {
-          statusEffects += se.getId() + "/" + se.getGraphicsNr() + "-";
+          statusEffects.append(se.getId())
+                       .append('/')
+                       .append(se.getGraphicsNr())
+                       .append('-');
         }
-        statusEffects = statusEffects.substring(0, statusEffects.length() - 1);
+        statusEffects.setLength(statusEffects.length() - 1);
       }
 
       // Check for soul

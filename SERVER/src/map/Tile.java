@@ -228,9 +228,9 @@ public class Tile {
 
     /*
     healTimer.schedule( new TimerTask(){
-    	public void run() {
-    		healed = true;
-    	}
+        public void run() {
+          healed = true;
+        }
     }, 30*1000);
      */
   }

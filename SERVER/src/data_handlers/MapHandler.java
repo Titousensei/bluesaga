@@ -220,7 +220,7 @@ public class MapHandler extends Handler {
     int passable = 0;
     int lootInfo = 0;
     String objectInfo = "0";
-    StringBuilder statusEffects = new StringBuilder(1000);
+    StringBuilder statusEffects = new StringBuilder(1000).append("0");
     String occupantInfo = "0";
 
     // Check if tile exists
@@ -274,6 +274,7 @@ public class MapHandler extends Handler {
 
       // Status effects info
       if (TILE.getStatusEffects().size() > 0) {
+        statusEffects.setLength(0);
         for (StatusEffect se : TILE.getStatusEffects()) {
           statusEffects.append(se.getId())
                        .append('/')

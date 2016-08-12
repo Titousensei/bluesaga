@@ -3,12 +3,15 @@ package data_handlers.monster_handler.ai_types;
 import creature.Creature;
 import creature.Npc;
 
-public class Shy extends BaseAI {
+public class RangedMaintained extends BaseAI {
 
-  public Shy(Npc monster) {
+  public RangedMaintained(Npc monster) {
     super(monster);
   }
 
+  /**
+   * Maintain distance with target
+   */
   @Override
   public void doAggroBehaviour() {
     Creature target = me.getAggroTarget();
@@ -18,8 +21,10 @@ public class Shy extends BaseAI {
     double distToTarget = Math.sqrt(Math.pow(dX, 2) + Math.pow(dY, 2));
 
     // CHECK IF TARGET IS TOO CLOSE, THEN STEP BACK
-    if (Math.floor(distToTarget) < me.getAggroRange() + 5) {
+    if (Math.floor(distToTarget) < me.getAttackRange()) {
       moveAway(target);
+    } else {
+      chaseTarget(target, me.getAggroRange() * 2);
     }
   }
 }

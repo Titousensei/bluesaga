@@ -33,9 +33,7 @@ import data_handlers.item_handler.CoinConverter;
 import data_handlers.item_handler.ContainerHandler;
 import data_handlers.item_handler.Item;
 import data_handlers.item_handler.ItemHandler;
-import data_handlers.monster_handler.ai_types.Melee;
-import data_handlers.monster_handler.ai_types.Ranged;
-import data_handlers.monster_handler.ai_types.Shy;
+import data_handlers.monster_handler.ai_types.BaseAI;
 
 public class MonsterHandler extends Handler {
 
@@ -271,9 +269,16 @@ public class MonsterHandler extends Handler {
 
         // IF MONSTER ISN'T DEAD AND IS AGGRO
         if (aggroMonster.isReadyToMove()) {
-
           if (aggroMonster.getZ() == aggroMonster.getAggroTarget().getZ()) {
-            aggroMonster.doAggroBehaviour(monsterMoved);
+            BaseAI ai = aggroMonster.getAI();
+            ai.doAggroBehaviour();
+            if (ai.takeHasMoved()) {
+              monsterMoved.add(aggroMonster);
+              checkMonsterMoveConsequences(aggroMonster);
+            }
+            if (ai.takeLoseAggro()) {
+              monsterLostAggro.add(aggroMonster);
+            }
           } else {
             monsterLostAggro.add(aggroMonster);
           }
@@ -448,7 +453,7 @@ public class MonsterHandler extends Handler {
     MapHandler.checkIfDoorOpens(TARGET.getDBId());
   }
 
-  public static void checkMonsterMoveConsequences(Npc aggroMonster) {
+  private static void checkMonsterMoveConsequences(Npc aggroMonster) {
     Tile goalTile =
         Server.WORLD_MAP.getTile(aggroMonster.getX(), aggroMonster.getY(), aggroMonster.getZ());
 

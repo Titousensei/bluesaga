@@ -184,37 +184,37 @@ public class Npc extends Creature {
     /*
     ResultSet lootInfo = Server.gameDB.askDB("select LootItems from creature where Id = "+getCreatureId());
     try {
-    	if(lootInfo.next()){
-    		if(!lootInfo.getString("LootItems").equals("None")){
-    			String loot_info[] = lootInfo.getString("LootItems").split(";");
+      if(lootInfo.next()){
+        if(!lootInfo.getString("LootItems").equals("None")){
+          String loot_info[] = lootInfo.getString("LootItems").split(";");
 
 
-    			for(String itemInfo: loot_info){
-    				String item_info[] = itemInfo.split(",");
-    				int itemId = Integer.parseInt(item_info[0]);
+          for(String itemInfo: loot_info){
+            String item_info[] = itemInfo.split(",");
+            int itemId = Integer.parseInt(item_info[0]);
 
 
-    				Item newLoot = new Item(itemId);
+            Item newLoot = new Item(itemId);
 
-    				int chanceToEquip = Server.ThreadLocalRandom.current().nextInt(100);
+            int chanceToEquip = Server.ThreadLocalRandom.current().nextInt(100);
 
-    				if(canEquip(newLoot)){
-    					equipItem(newLoot);
-    				}
-    			}
-    		}
-    	}
-    	lootInfo.close();
+            if(canEquip(newLoot)){
+              equipItem(newLoot);
+            }
+          }
+        }
+      }
+      lootInfo.close();
     } catch (NumberFormatException e) {
-    	e.printStackTrace();
+      e.printStackTrace();
     } catch (SQLException e) {
-    	e.printStackTrace();
+      e.printStackTrace();
     }
      */
   }
 
-  public void doAggroBehaviour(Vector<Npc> monsterMoved) {
-    ai.doAggroBehaviour(monsterMoved);
+  public BaseAI getAI() {
+    return ai;
   }
 
   public String getFullData() {
@@ -645,7 +645,7 @@ public class Npc extends Creature {
       // Only archipelago monsters can become titans
       /*
       if(getZ() <= -100){
-      	//turnTitan(titan);
+        //turnTitan(titan);
       }
       */
     } else {
@@ -831,6 +831,11 @@ public class Npc extends Creature {
     } else {
       MonsterHandler.aggroMonsters.remove(this);
     }
+  }
+
+  public boolean hitByAttack(int damage) {
+    ai.hitByAttack(damage);
+    return super.hitByAttack(damage);
   }
 
   public List<Item> getStashItems() {

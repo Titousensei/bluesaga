@@ -115,12 +115,12 @@ public class HitHandler extends Handler {
       /*
       // Casters are immune to their own spells
       if(ATTACKER != null && TARGET != null){
-      	if(ATTACKER.getCreatureType().equals(TARGET.getCreatureType())
-      		&& ATTACKER.getDBId() == TARGET.getDBId()){
-      		immune = true;
-      		damageType = "None";
-      		damage = 0;
-      	}
+        if(ATTACKER.getCreatureType().equals(TARGET.getCreatureType())
+          && ATTACKER.getDBId() == TARGET.getDBId()){
+          immune = true;
+          damageType = "None";
+          damage = 0;
+        }
       }
       */
 

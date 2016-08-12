@@ -4,7 +4,6 @@ import java.util.Vector;
 
 import creature.Creature.CreatureType;
 import creature.Npc;
-import data_handlers.monster_handler.MonsterHandler;
 import map.Tile;
 import network.Server;
 

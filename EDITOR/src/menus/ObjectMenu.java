@@ -10,6 +10,7 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 
 import game.BP_EDITOR;
+import game.EditorSettings;
 import game.Database;
 import gui.ObjectButton;
 
@@ -36,19 +37,19 @@ public class ObjectMenu {
     Buttons.clear();
     /*
 
-    		int x = 0;
-    		int y = 0;
+        int x = 0;
+        int y = 0;
 
-    		Buttons.add(new ObjectButton(X+x,Y+y,"delete"));
-    		x+=50;
-    		Buttons.add(new ObjectButton(X+x,Y+y,"barrel"));
-    		x+=50;
-    		Buttons.add(new ObjectButton(X+x,Y+y,"chest"));
+        Buttons.add(new ObjectButton(X+x,Y+y,"delete"));
+        x+=50;
+        Buttons.add(new ObjectButton(X+x,Y+y,"barrel"));
+        x+=50;
+        Buttons.add(new ObjectButton(X+x,Y+y,"chest"));
     */
 
     Buttons.clear();
 
-    File[] files = new File("../CLIENT/src/images/" + ActivePath).listFiles();
+    File[] files = new File(EditorSettings.clientImagePath + ActivePath).listFiles();
 
     int i = 0;
 

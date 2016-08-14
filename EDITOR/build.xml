@@ -4,6 +4,7 @@
     </description>
 
   <property name="src-editor" location="src"/>
+  <property name="src-common" location="../COMMON/src"/>
   <property name="build"      location="build"/>
   <property name="include"    location="../JARS"/>
 
@@ -15,7 +16,7 @@
 
   <target name="compile">
     <mkdir dir="${build}"/>
-    <javac srcdir="${src-editor}" destdir="${build}" debug="on" includeantruntime='false'>
+    <javac srcdir="${src-editor}:${src-common}" destdir="${build}" debug="on" includeantruntime='false'>
       <classpath>
         <fileset dir="${include}">
           <include name="**/*.jar"/>

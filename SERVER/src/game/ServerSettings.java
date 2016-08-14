@@ -41,6 +41,11 @@ public class ServerSettings {
   public static boolean RANDOM_ARCHIPELAGO = true;
   public static boolean RANDOM_DUNGEON = true;
 
+  public static int startX = 5005;
+  public static int startY = 9984;
+  public static int startZ = 2;
+  public static int initialQuestId = 30;
+
   // Server restart time in milliseconds
   public static int restartTime = (4 * 60 * 60) * 1000; // 4 hours (+15 min for warning)
 

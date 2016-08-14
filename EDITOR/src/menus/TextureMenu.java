@@ -9,6 +9,7 @@ import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 
 import game.BP_EDITOR;
+import game.EditorSettings;
 import game.Database;
 import gui.TextureButton;
 
@@ -18,7 +19,7 @@ public class TextureMenu {
   private int X;
   private int Y;
   private boolean Active = true;
-  private String ActivePath = "../CLIENT/src/images/textures/";
+  private String ActivePath = EditorSettings.clientImagePath + "textures/";
 
   private Vector<String> PathHistory;
 
@@ -66,11 +67,11 @@ public class TextureMenu {
         String ext = file.getName().substring(mid + 1, file.getName().length());
 
         /*
-        	if(!file.getName().contains("DL") && !file.getName().contains("DR")
-        	&& !file.getName().contains("UL") && !file.getName().contains("UR") && !file.getName().contains("U")
-        	&& !file.getName().contains("L") && !file.getName().contains("R")
-        	&& !file.getName().contains("IUL") && !file.getName().contains("IUR")
-        	&& !file.getName().contains("IDL") && !file.getName().contains("IDR")){
+          if(!file.getName().contains("DL") && !file.getName().contains("DR")
+          && !file.getName().contains("UL") && !file.getName().contains("UR") && !file.getName().contains("U")
+          && !file.getName().contains("L") && !file.getName().contains("R")
+          && !file.getName().contains("IUL") && !file.getName().contains("IUR")
+          && !file.getName().contains("IDL") && !file.getName().contains("IDR")){
         */
         if (ext.equals("png")) {
           if (!name.contains("_1") && !name.contains("_2")) {

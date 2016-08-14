@@ -18,11 +18,7 @@ public class Database {
     Class.forName("org.sqlite.JDBC");
 
     try {
-      if (name.equals("mapDB")) {
-        conn = DriverManager.getConnection("jdbc:sqlite:" + name + ".db");
-      } else {
-        conn = DriverManager.getConnection("jdbc:sqlite:../SERVER/" + name + ".db");
-      }
+      conn = DriverManager.getConnection("jdbc:sqlite:" + EditorSettings.PATH + name + ".db");
     } catch (SQLException e) {
       e.printStackTrace();
     }

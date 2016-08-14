@@ -173,9 +173,9 @@ public class ConnectHandler extends Handler {
         showNoobQuestWarning = false;
       }
 
-      if (client.playerCharacter.getX() != 5005
-          || client.playerCharacter.getY() != 9984
-          || client.playerCharacter.getZ() != 2) {
+      if (client.playerCharacter.getX() != ServerSettings.startX
+          || client.playerCharacter.getY() != ServerSettings.startY
+          || client.playerCharacter.getZ() != ServerSettings.startZ) {
         firstTime = false;
       }
 

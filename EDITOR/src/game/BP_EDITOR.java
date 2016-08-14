@@ -3,16 +3,11 @@ package game;
 import gui.Font;
 import gui.Gui;
 import gui.MouseCursor;
+import utils.Config;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Random;
-import java.util.Timer;
-import java.util.TimerTask;
-import java.util.Vector;
+import java.util.*;
 
 import map.Tile;
 import map.TileObject;
@@ -138,8 +133,8 @@ public class BP_EDITOR extends BasicGame {
 
     // CONNECT TO DB
     try {
-      mapDB = new Database("../SERVER/mapDB");
-      gameDB = new Database("../SERVER/gameDB");
+      mapDB = new Database("mapDB");
+      gameDB = new Database("gameDB");
     } catch (ClassNotFoundException e) {
       e.printStackTrace();
     }
@@ -187,7 +182,7 @@ public class BP_EDITOR extends BasicGame {
     GUI = new Gui();
     GUI.init();
 
-    container.setMouseCursor("../CLIENT/src/images/gui/cursors/cursor_hidden.png", 5, 5);
+    container.setMouseCursor(EditorSettings.clientImagePath + "gui/cursors/cursor_hidden.png", 5, 5);
 
     MouseTile = null;
 
@@ -498,8 +493,8 @@ public class BP_EDITOR extends BasicGame {
       while (it.hasNext()) {
         Map.Entry pairs = (Map.Entry) it.next();
         String[] coord = pairs.getKey().toString().split(",");
-        int x = (Integer.parseInt(coord[0]) - 5000) / 2 + 100;
-        int y = (Integer.parseInt(coord[1]) - 9700) / 2 + 200;
+        int x = (Integer.parseInt(coord[0]) - EditorSettings.startX) / 2 + 100;
+        int y = (Integer.parseInt(coord[1]) - EditorSettings.startY) / 2 + 200;
         Integer.parseInt(coord[2]);
 
         g.setColor((Color) pairs.getValue());
@@ -507,8 +502,8 @@ public class BP_EDITOR extends BasicGame {
         //   ServerMessage.printMessage(pairs.getKey() + " = " + pairs.getValue());
       }
 
-      int playerx = (PLAYER_X - 5000) / 2 + 100 - 6;
-      int playery = (PLAYER_Y - 9700) / 2 + 200 - 6;
+      int playerx = (PLAYER_X - EditorSettings.startX) / 2 + 100 - 6;
+      int playery = (PLAYER_Y - EditorSettings.startY) / 2 + 200 - 6;
 
       g.setColor(new Color(255, 0, 0));
       g.drawRect(playerx, playery, 10, 6);
@@ -595,20 +590,24 @@ public class BP_EDITOR extends BasicGame {
     }
   }
 
-  public static void main(String[] args) {
-    try {
-
-      AppGameContainer app = new AppGameContainer(new BP_EDITOR());
-      app.setDisplayMode(SCREEN_WIDTH, SCREEN_HEIGHT, FULL_SCREEN);
-      app.setTargetFrameRate(FRAME_RATE);
-      app.setShowFPS(true);
-      app.setAlwaysRender(true);
-      app.setVSync(true);
-
-      app.start();
-    } catch (SlickException e) {
-      e.printStackTrace();
+  public static void main(String[] args) throws Exception {
+    if (args.length > 0) {
+      Config.configure(EditorSettings.class, args[0]);
+      PLAYER_X = EditorSettings.startX;
+      PLAYER_Y = EditorSettings.startY;
+    } else {
+      System.err.println("ERROR - Please specify config directory");
+      System.exit(1);
     }
+
+    AppGameContainer app = new AppGameContainer(new BP_EDITOR());
+    app.setDisplayMode(SCREEN_WIDTH, SCREEN_HEIGHT, FULL_SCREEN);
+    app.setTargetFrameRate(FRAME_RATE);
+    app.setShowFPS(true);
+    app.setAlwaysRender(true);
+    app.setVSync(true);
+
+    app.start();
   }
 
   /*
@@ -778,8 +777,8 @@ public class BP_EDITOR extends BasicGame {
 
         if (SHOW_MINI_MAP) {
 
-          PLAYER_X = 5000 - 200 + mouseX * 2 - 10;
-          PLAYER_Y = 9700 - 200 + mouseY * 2 - 6 - 200;
+          PLAYER_X = EditorSettings.startX - 200 + mouseX * 2 - 10;
+          PLAYER_Y = EditorSettings.startY - 200 + mouseY * 2 - 6 - 200;
           loadScreen();
 
         } else if (TEXTURE_MENU.isActive()) {

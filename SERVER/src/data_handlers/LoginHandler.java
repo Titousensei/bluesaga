@@ -308,7 +308,10 @@ public class LoginHandler extends Handler {
       health = ServerGameInfo.classDef.get(classId).getStartStats().getValue("MAX_HEALTH");
       mana = ServerGameInfo.classDef.get(classId).getStartStats().getValue("MAX_MANA");
 
-      sqlStatement.append(health).append(',').append(mana).append(",5005,9984,2,"); // X, Y, Z
+      sqlStatement.append(health).append(',').append(mana).append(',')
+          .append(ServerSettings.startX).append(',')
+          .append(ServerSettings.startY).append(',')
+          .append(ServerSettings.startZ).append(',');
 
       // FIX NAME SO THAT ALL LETTERS ARE LOWER CASE EXCEPT FIRST LETTER
       String firstLetter = name.substring(0, 1).toUpperCase();
@@ -400,10 +403,11 @@ public class LoginHandler extends Handler {
                   + ",0)");
         }
 
-        Server.userDB.updateDB(
-            "insert into character_quest (QuestId, CharacterId, Status) values (30,"
-                + charId
-                + ",1)");
+        if (ServerSettings.initialQuestId>0) {
+          Server.userDB.updateDB(
+              "insert into character_quest (QuestId, CharacterId, Status) values ("
+                  + ServerSettings.initialQuestId + ',' + charId + ",1)");
+        }
       } catch (SQLException e) {
         e.printStackTrace();
       }

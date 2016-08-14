@@ -139,8 +139,6 @@ public class ImageResource {
     //String project_path = BP_EDITOR.class.getResource("../").getPath();
     //client_path = project_path.substring(0,project_path.length()-15) + "CLIENT/src/images/";
 
-    System.out.println("CLIENT PATH: " + EditorSettings.clientImagePath);
-
     // FOR WINDOWS
     String startingPath = EditorSettings.clientImagePath;
     String client_path = EditorSettings.clientImagePath;

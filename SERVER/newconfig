@@ -6,7 +6,7 @@ then
   mkdir $1
   mkdir $1/chatLogs
   echo "... copying text files"
-  cp config_default/config.txt $1
+  cp config_default/*.cfg $1
   cp config_default/game_text.json $1
 
   echo "... creating gameDB"

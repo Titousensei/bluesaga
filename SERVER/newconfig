@@ -1,0 +1,22 @@
+#! /bin/bash
+
+if [[ ! -e $1 ]] 
+then
+  echo "CREATING $1"
+  mkdir $1
+  mkdir $1/chatLogs
+  echo "... copying text files"
+  cp config_default/config.txt $1
+  cp config_default/game_text.json $1
+
+  echo "... creating gameDB"
+  sqlite3 $1/gameDB.db  < config_default/gameDB.sql
+  echo "... creating mapDB"
+  sqlite3 $1/mapDB.db   < config_default/mapDB.sql
+  echo "... creating usersDB"
+  sqlite3 $1/usersDB.db < config_default/usersDB.sql
+  echo "DONE"
+else
+  echo "ERROR - Already exists: $1"
+  exit 1
+fi

@@ -151,6 +151,10 @@ public class BlueSaga extends BasicGame {
     }
 
     BG_MUSIC.changeSong("title", "title");
+    if (ClientSettings.auto_login && ClientSettings.DEV_MODE) {
+      System.out.println("Attempting auto login");
+      chooseServer(null);
+    }
     ScreenHandler.setActiveScreen(ScreenType.LOGIN);
   }
 
@@ -200,7 +204,9 @@ public class BlueSaga extends BasicGame {
     if (ServerCheck) {
       serverData = reciever.getInfo();
 
-      DataHandlers.handleData(serverData);
+      if (!"".equals(serverData)) {
+        DataHandlers.handleData(serverData);
+      }
     }
   }
 

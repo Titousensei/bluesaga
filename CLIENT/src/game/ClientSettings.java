@@ -21,6 +21,7 @@ public class ClientSettings {
   public static boolean DEV_MODE = false;
   public static String SERVER_IP = "localhost";
   public static int PORT = 26342;
+  public static boolean auto_login = false;
 
   public static String clientFileName = "gameData.jar";
 

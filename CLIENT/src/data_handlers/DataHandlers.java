@@ -8,6 +8,7 @@ public class DataHandlers {
   }
 
   public static void handleData(String serverData) {
+
     LoginHandler.handleData(serverData);
 
     BattleHandler.handleData(serverData);

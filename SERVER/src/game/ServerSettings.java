@@ -14,6 +14,8 @@ public class ServerSettings {
    * Copy the server id given on the site and paste it instead of the default value next to SERVER_ID
    */
   public static int SERVER_ID = 1;
+  // IP1:userId1;IP2:userId2:...
+  public static String auto_login = null;
 
   /**
    * If you made updates to the client, change the client version number,

@@ -31,11 +31,28 @@ public class LoginHandler extends Handler {
   public static void handleLogin(Message m) {
     Client client = m.client;
     String[] loginInfo = m.message.split(";");
-
     int newUserId = 0;
 
     if (ServerSettings.DEV_MODE) {
-      if (Server.clients.size() == 1) {
+      if (ServerSettings.auto_login!=null) {
+        try {
+        String attempt = client.IP + ':';
+        for (String trusted : ServerSettings.auto_login.split(";")) {
+          if (trusted.startsWith(attempt)) {
+            try {
+              newUserId = Integer.parseInt(trusted.substring(attempt.length()));
+              System.out.println("Auto login matched " + trusted);
+            } catch (NumberFormatException ex) {
+              ex.printStackTrace();
+              return;
+            }
+          }
+        }
+        } catch (Exception ex) {
+          ex.printStackTrace();
+        }
+      }
+      else if (Server.clients.size() == 1) {
         newUserId = 2;
       } else if (Server.clients.size() == 2) {
         newUserId = 1;
@@ -116,7 +133,7 @@ public class LoginHandler extends Handler {
       }
 
       ServerMessage.printMessage(
-          TimeUtils.now() + ": " + client.UserMail + " logged in successfully!", false);
+          TimeUtils.now() + ": " + client.UserMail + " logged in successfully from " + client.IP, false);
 
       // SKICKA NAMN, RAS, EQUIP, LEVEL
       // FOR ALLA KARAKTARER TILL SPELAREN

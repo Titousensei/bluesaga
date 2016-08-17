@@ -79,7 +79,7 @@ public class BP_EDITOR extends BasicGame {
   private static boolean DeleteObject = false;
   private static boolean DeleteTexture = false;
 
-  public static boolean FixEdges = false;
+  public static boolean FixEdges = true;
 
   private static AreaEffectMenu AREA_EFFECT_MENU;
   private static TriggerMenu TRIGGER_MENU;
@@ -521,7 +521,7 @@ public class BP_EDITOR extends BasicGame {
       renderHelp(g, "0: Place Door");
       renderHelp(g, "E: Place Area Effect");
       renderHelp(g, "R: Place Trigger");
-      renderHelp(g, "F: Fix edges - " + FixEdges);
+      renderHelp(g, "F: Fix edges = " + FixEdges);
       renderHelp(g, "N: Both/Day/Night spawns " + DAY_NIGHT_TIME);
       renderHelp(g, "PgUp/PgDown: Z +/-");
 
@@ -1167,6 +1167,8 @@ public class BP_EDITOR extends BasicGame {
 
       boolean passable = false;
 
+      mapDB.updateDB("BEGIN TRANSACTION");
+
       for (int i = screenX; i < screenX + BrushSize; i++) {
         for (int j = screenY; j < screenY + BrushSize; j++) {
           if (i > 0 && i < 21 && j > 0 && j < 13) {
@@ -1286,12 +1288,14 @@ public class BP_EDITOR extends BasicGame {
           }
         }
       }
+      mapDB.updateDB("END TRANSACTION");
 
     } else {
       String tileName = MouseTile.getName();
       String tileType = MouseTile.getType();
       String saveName = MouseTile.getName();
 
+      mapDB.updateDB("BEGIN TRANSACTION");
       for (int i = screenX; i < screenX + BrushSize; i++) {
         for (int j = screenY; j < screenY + BrushSize; j++) {
           Tile checkTile = new Tile(0, 0, PLAYER_Z);
@@ -1361,6 +1365,7 @@ public class BP_EDITOR extends BasicGame {
           }
         }
       }
+      mapDB.updateDB("END TRANSACTION");
     }
     /*
 

@@ -1,64 +1,94 @@
 package utils;
 
-import java.util.HashMap;
+import game.ServerSettings;
 
 public class XPTables {
   // LEVEL AND SKILL INFO
-  public static HashMap<Integer, Integer> nextLevelXP = new HashMap<Integer, Integer>();
-  public static HashMap<Integer, Integer> totalLevelXP = new HashMap<Integer, Integer>();
+  private static int[] nextLevelXP;
+  private static int[] totalLevelXP;
 
-  public static HashMap<Integer, Integer> nextLevelSP = new HashMap<Integer, Integer>();
-  public static HashMap<Integer, Integer> totalLevelSP = new HashMap<Integer, Integer>();
+  private static int[] nextLevelSP;
+  private static int[] totalLevelSP;
 
   public static void init() {
     // LEVEL UP XP INFO
-    nextLevelXP.clear();
-    totalLevelXP.clear();
-
-    nextLevelSP.clear();
-    totalLevelSP.clear();
+    nextLevelXP = new int[ServerSettings.LEVEL_CAP + 1];
+    totalLevelXP = new int[ServerSettings.LEVEL_CAP + 1];
 
     int oldxp = 0;
     int totalxp = 0;
 
-    int maxlevel = 400; // last level to display
+    totalLevelXP[1] = totalxp;
 
-    totalLevelXP.put(1, totalxp);
-
-    for (int lvl = 1; lvl < maxlevel; lvl++) {
+    for (int lvl = 1; lvl < ServerSettings.LEVEL_CAP; lvl++) {
       if (lvl == 2) {
         totalxp += 150;
-        nextLevelXP.put(lvl + 1, 150);
+        nextLevelXP[lvl + 1] = 150;
       } else {
         totalxp += (int) (50 * Math.pow(lvl, 2) - 150 * lvl + 200);
-        nextLevelXP.put(lvl + 1, totalxp - oldxp);
+        nextLevelXP[lvl + 1] = totalxp - oldxp;
       }
-      totalLevelXP.put(lvl + 1, totalxp);
+      totalLevelXP[lvl + 1] = totalxp;
       oldxp = totalxp;
     }
 
-    int oldsp = 0;
-    int totalsp = 0;
+    nextLevelSP = new int[ServerSettings.JOB_LEVEL_CAP + 1];
+    totalLevelSP = new int[ServerSettings.JOB_LEVEL_CAP + 1];
 
-    totalLevelSP.put(1, totalsp);
+    //600 fibonacci
+    nextLevelSP[0] =    0;
+    nextLevelSP[1] =    0;
+    nextLevelSP[2] =  400;
+    nextLevelSP[3] =  600;
+    nextLevelSP[4] = 1000;
+    nextLevelSP[5] = 1600;
+    nextLevelSP[6] = 2600;
+    nextLevelSP[7] = 4200;
+    nextLevelSP[8] = 6800;
 
-    for (int lvl = 1; lvl < maxlevel; lvl++) {
-      if (lvl == 2) {
-        totalsp += 150 * 4;
-        nextLevelSP.put(lvl + 1, 150 * 4);
-      } else {
-        totalsp += (int) (50 * Math.pow(lvl, 2) - 150 * lvl + 200) * 4;
-        nextLevelSP.put(lvl + 1, totalsp - oldsp);
-      }
-      totalLevelSP.put(lvl + 1, totalsp);
-
-      oldsp = totalsp;
+    int total = 0;
+    for (int i = 1 ; i <= ServerSettings.JOB_LEVEL_CAP ; i++) {
+      total += nextLevelSP[i];
+      totalLevelSP[i] = total;
     }
+
+    //System.out.println("*** nextLevelXP "  + java.util.Arrays.toString(nextLevelXP));
+    //System.out.println("*** totalLevelXP " + java.util.Arrays.toString(totalLevelXP));
+    //System.out.println("*** nextLevelSP "  + java.util.Arrays.toString(nextLevelSP));
+    //System.out.println("*** totalLevelSP " + java.util.Arrays.toString(totalLevelSP));
+  }
+
+  public static int getTotalLevelXP(int lvl) {
+    if (lvl > 1 && lvl <= ServerSettings.LEVEL_CAP) {
+      return totalLevelXP[lvl];
+    }
+    return Integer.MAX_VALUE;
+  }
+
+  public static int getNextLevelXP(int lvl) {
+    if (lvl > 1 && lvl <= ServerSettings.LEVEL_CAP) {
+      return nextLevelSP[lvl];
+    }
+    return Integer.MAX_VALUE;
+  }
+
+  public static int getTotalLevelSP(int lvl) {
+    if (lvl > 1 && lvl <= ServerSettings.JOB_LEVEL_CAP) {
+      return totalLevelSP[lvl];
+    }
+    return Integer.MAX_VALUE;
+  }
+
+  public static int getNextLevelSP(int lvl) {
+    if (lvl > 1 && lvl <= ServerSettings.JOB_LEVEL_CAP) {
+      return nextLevelSP[lvl];
+    }
+    return Integer.MAX_VALUE;
   }
 
   public static int getLevelBySP(int SP) {
     for (int lvl = 2; lvl < 100; lvl++) {
-      if (totalLevelSP.get(lvl) > SP) {
+      if (totalLevelSP[lvl] > SP) {
         return lvl - 1;
       }
     }
@@ -67,7 +97,7 @@ public class XPTables {
 
   public static int getLevelByXP(int XP) {
     for (int lvl = 2; lvl < 100; lvl++) {
-      if (totalLevelXP.get(lvl) > XP) {
+      if (totalLevelXP[lvl] > XP) {
         return lvl - 1;
       }
     }

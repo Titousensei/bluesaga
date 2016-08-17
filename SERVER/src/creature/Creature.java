@@ -156,7 +156,7 @@ public class Creature implements Mover {
 
     Level = 1;
     XP = 0;
-    nextXP = XPTables.nextLevelXP.get(Level + 1);
+    nextXP = XPTables.getNextLevelXP(Level + 1);
 
     AggroTarget = null;
 
@@ -286,7 +286,7 @@ public class Creature implements Mover {
 
     Level = 1;
     XP = 0;
-    nextXP = XPTables.nextLevelXP.get(Level + 1);
+    nextXP = XPTables.getNextLevelXP(Level + 1);
 
     AggroTarget = null;
 

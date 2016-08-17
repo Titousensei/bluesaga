@@ -135,7 +135,7 @@ public class SkillHandler extends Handler {
           JobSkill skillDef = ServerGameInfo.skillDef.get(skillInfo.getInt("SkillId"));
 
           if (skillDef != null) {
-            nextSP = XPTables.nextLevelSP.get(skillInfo.getInt("Level") + 1);
+            nextSP = XPTables.getNextLevelSP(skillInfo.getInt("Level") + 1);
             skillData
                 .append(skillInfo.getInt("SkillId"))
                 .append(',')
@@ -173,7 +173,7 @@ public class SkillHandler extends Handler {
       if (sp > 0) {
         if (skill.addSP(sp)) {
           // skillName, skillLevel, SP, SPnext
-          int nextSP = XPTables.nextLevelSP.get(skill.getLevel() + 1);
+          int nextSP = XPTables.getNextLevelSP(skill.getLevel() + 1);
           addOutGoingMessage(
               client,
               "sp_levelup",
@@ -201,7 +201,7 @@ public class SkillHandler extends Handler {
     if (skill != null) {
       if (skill.addSP(sp)) {
         // skillName, skillLevel, SP, SPnext
-        int nextSP = XPTables.nextLevelXP.get(skill.getLevel() + 1);
+        int nextSP = XPTables.getNextLevelSP(skill.getLevel() + 1);
         addOutGoingMessage(
             client,
             "sp_levelup",

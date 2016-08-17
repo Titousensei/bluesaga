@@ -103,7 +103,7 @@ public class ClassHandler extends Handler {
                   + ","
                   + playerSkill.getSP()
                   + ","
-                  + XPTables.nextLevelSP.get(playerSkill.getLevel() + 1));
+                  + XPTables.getNextLevelSP(playerSkill.getLevel() + 1));
         } else {
           addOutGoingMessage(client, "set_sp", playerSkill.getId() + "," + playerSkill.getSP());
         }

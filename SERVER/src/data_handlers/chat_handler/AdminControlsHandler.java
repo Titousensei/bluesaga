@@ -7,6 +7,7 @@ import java.util.Iterator;
 import java.util.Map;
 
 import map.Tile;
+import game.ServerSettings;
 import network.Client;
 import network.Server;
 import player_classes.BaseClass;
@@ -65,7 +66,7 @@ public class AdminControlsHandler extends Handler {
 
     /*
     if(specialCommand && !chatText.toLowerCase().equals("/server stop")){
-    	Server.userDB.addChatText("admin",client.playerCharacter.getDBId(),0,chatText.toLowerCase());
+      Server.userDB.addChatText("admin",client.playerCharacter.getDBId(),0,chatText.toLowerCase());
     }
     */
 
@@ -254,7 +255,7 @@ public class AdminControlsHandler extends Handler {
       try {
         int level = Integer.parseInt(chatText.substring(7));
 
-        if (XPTables.nextLevelXP.containsKey(level)) {
+        if (level<=ServerSettings.LEVEL_CAP) {
           client.playerCharacter.setLevel(level);
           client.playerCharacter.setXP(0);
 
@@ -357,7 +358,7 @@ public class AdminControlsHandler extends Handler {
           Client player = findPlayerClient(charName);
 
           if (player != null) {
-            if (XPTables.nextLevelXP.containsKey(level)) {
+            if (level<=ServerSettings.LEVEL_CAP) {
               player.playerCharacter.setLevel(level);
               player.playerCharacter.setXP(0);
 

@@ -578,10 +578,7 @@ public class BattleHandler extends Handler {
       // If not a pvp kill
       if (!pkAttack) {
         // LOSE XP IN PERCENT AND MAYBE LEVEL
-        int totalXP = 0;
-        if (TARGET.getLevel() > 1) {
-          totalXP = XPTables.totalLevelXP.get(TARGET.getLevel());
-        }
+        int totalXP = XPTables.getTotalLevelXP(TARGET.getLevel());
 
         totalXP += TARGET.getXP();
 

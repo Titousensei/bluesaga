@@ -1,5 +1,7 @@
 package data_handlers;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Map;
 
 import utils.ServerGameInfo;
@@ -36,38 +38,10 @@ public class GatheringHandler extends Handler {
         if (!SourceTile.getObjectId().contains("_open")) {
           // CHECK IF PLAYER IS NEXT TO IT
           if (client.playerCharacter.getZ() == tileZ) {
-            int dist =
-                (int)
-                    Math.floor(
-                        Math.sqrt(
-                            Math.pow(tileX - client.playerCharacter.getX(), 2)
-                                + Math.pow(tileY - client.playerCharacter.getY(), 2)));
-            if (dist < 2) {
-
-              // GET RESOURCE NAME
-              String resourceName = SourceTile.getObjectId().substring(10);
-
-              // ORANGA BUSH
-              if (resourceName.equals("oranga")) {
-                generateHarvest(
-                    client, "Oranga Bush", SourceTile.getObjectId(), tileX, tileY, tileZ, 102, 178);
-              } else if (resourceName.equals("piccoberries")) {
-                generateHarvest(
-                    client,
-                    "Picco Berries",
-                    SourceTile.getObjectId(),
-                    tileX,
-                    tileY,
-                    tileZ,
-                    102,
-                    203);
-              } else if (resourceName.equals("flowerluna")) {
-                generateHarvest(
-                    client, "Luna Petal", SourceTile.getObjectId(), tileX, tileY, tileZ, 102, 212);
-              } else if (resourceName.equals("soulbush")) {
-                generateHarvest(
-                    client, "Soul Bush", SourceTile.getObjectId(), tileX, tileY, tileZ, 102, 313);
-              }
+            int dx = tileX - client.playerCharacter.getX();
+            int dy = tileY - client.playerCharacter.getY();
+            if (dx * dx + dy * dy < 4) { // dist < 2
+              generateHarvest(client, SourceTile.getObjectId(), tileX, tileY, tileZ);
             }
           }
         } else {
@@ -84,54 +58,133 @@ public class GatheringHandler extends Handler {
 
   public static void generateHarvest(
       Client client,
-      String SourceName,
       String objectId,
       int tileX,
       int tileY,
-      int tileZ,
-      int skillId,
-      int resourceId) {
-    int skillLevel = client.playerCharacter.getSkill(skillId).getLevel();
+      int tileZ) {
 
-    boolean canHarvest = true;
-    int nrGathered = RandomUtils.getInt(0, (int) Math.ceil(skillLevel / 1.5f));
+    String SourceName = null;
+    int skillLvl = 0;
+    int skillId = 0;
+    int resourceId = 0;
 
-    if (nrGathered == 0) {
-      // 80% chance to get something anyway
-      int chance = RandomUtils.getInt(1, 100);
-      if (chance <= 85) {
+    ResultSet itemInfo =
+        Server.gameDB.askDB(
+            "select SourceName, SkillLevel, SkillId, ResourceId from item_gathering where ItemName = '"
+                + objectId + "'");
+    try {
+      if (itemInfo.next()) {
+        SourceName = itemInfo.getString("SourceName");
+        skillLvl   = itemInfo.getInt("SkillLevel");
+        skillId    = itemInfo.getInt("SkillId");
+        resourceId = itemInfo.getInt("ResourceId");
+      }
+      else {
+        return;
+      }
+      itemInfo.close();
+    } catch (SQLException e) {
+      e.printStackTrace();
+      return;
+    }
+
+    int charLvl = client.playerCharacter.getSkill(skillId).getLevel();
+
+    boolean canGather = true;
+    int nrGathered = 0;
+    if (skillLvl>0) {
+      //                1        2        3           4              5              6              7              8
+      // 1 oranga       1:50/10  1:80/20  1:30/60/10  1:10/20/60/10  2:10/20/60/10  3:10/20/60/10  4:10/20/60/10  5:10/20/60/10
+      // 2 piccoberries 1:20     1:50/10  1:80/20     1:30/60/10     1:10/20/60/10  2:10/20/60/10  3:10/20/60/10  4:10/20/60/10
+      // 3 matchanuts            1:20     1:50/10     1:80/20        1:30/60/10     1:10/20/60/10  2:10/20/60/10  3:10/20/60/10
+      // 4 soulbush                       1:20        1:50/10        1:80/20        1:30/60/10     1:10/20/60/10  2:10/20/60/10
+      // 5 ?                                          1:20           1:50/10        1:80/20        1:30/60/10     1:10/20/60/10
+      // 6 ?                                                         1:20           1:50/10        1:80/20        1:30/60/10
+      // 7 ?                                                                        1:20           1:50/10        1:80/20
+      // 8 ?                                                                                       1:20           1:50/10
+      int chance = RandomUtils.getInt(0, 99);
+      int eqLvl = charLvl - skillLvl;
+
+      if (eqLvl >= 3) { // 1:10/20/60/10
+        if (chance < 10) {
+          nrGathered = 1;
+        } else if (chance < 30) {
+          nrGathered = 2;
+        } else if (chance < 90) {
+          nrGathered = 3;
+        } else {
+          nrGathered = 4;
+        }
+        nrGathered += eqLvl - 3;
+      } else if (eqLvl == 2) { // 1:30/60/10
+        if (chance < 30) {
+          nrGathered = 1;
+        } else if (chance < 90) {
+          nrGathered = 2;
+        } else {
+          nrGathered = 3;
+        }
+      } else if (eqLvl == 1) { // 1:80/20
+        if (chance < 80) {
+          nrGathered = 1;
+        } else {
+          nrGathered = 2;
+        }
+      } else if (eqLvl == 0) { // 1:50/10
+        if (chance < 50) {
+          nrGathered = 1;
+        } else if (chance < 70) {
+          nrGathered = 2;
+        }
+      } else if (eqLvl == -1) { // 1:20
+        if (chance < 20) {
+          nrGathered = 1;
+        }
+      } else {
+        canGather = false;
+      }
+    } else if (skillLvl<0) {
+      //                1     2     3      4      5      6      7      8
+      // -1 ?           1:50  1:80  1:100  1:100  1:100  1:100  1:100  1:100
+      // -2 *herbs?     1:20  1:50  1:80   1:100  1:100  1:100  1:100  1:100
+      // -3 ?                 1:20  1:50   1:80   1:100  1:100  1:100  1:100
+      // -4 ?                       1:20   1:50   1:80   1:100  1:100  1:100
+      // -5 flowerluna                     1:20   1:50   1:80   1:100  1:100
+      // -6 ?                                     1:20   1:50   1:80   1:100
+      // -7 ?                                            1:20   1:50   1:80
+      // -8 ?                                                   1:20   1:50
+      int eqLvl = charLvl + skillLvl;
+      int chance = RandomUtils.getInt(0, 99);
+      if (eqLvl>=2) { // 100%
         nrGathered = 1;
+      } else if (eqLvl==1) { // 80%
+        if (chance < 80) {
+          nrGathered = 1;
+        }
+      } else if (eqLvl==0) { // 50%
+        if (chance < 50) {
+          nrGathered = 1;
+        }
+      } else if (eqLvl==-1) { // 20%
+        if (chance < 20) {
+          nrGathered = 1;
+        }
+      } else {
+        canGather = false;
       }
     }
 
-    if (nrGathered > 5) {
-      nrGathered = 5;
-    }
-
-    canHarvest = false;
-    if (SourceName.equals("Soul Bush")) {
-      if (skillLevel > 1) {
-        canHarvest = true;
-      }
-    } else if (SourceName.equals("Luna Petal")) {
-      if (skillLevel > 4) {
-        nrGathered = 1;
-        canHarvest = true;
-      }
-    } else {
-      canHarvest = true;
-    }
-
-    if (canHarvest) {
+    if (canGather) {
       Tile TILE = Server.WORLD_MAP.getTile(tileX, tileY, tileZ);
 
       TILE.setObjectId(objectId + "_open");
 
       // CHECK IF CONTAINER ALREADY IN MEMORY
-      if (ContainerHandler.CONTAINERS.get(TILE.getX() + "," + TILE.getY() + "," + TILE.getZ())
+      String tileCoord = TILE.getX() + "," + TILE.getY() + "," + TILE.getZ();
+      if (ContainerHandler.CONTAINERS.get(tileCoord)
           == null) {
         // IF NOT GENERATE HARVEST
-        SkillHandler.gainSP(client, skillId, false);
+        SkillHandler.gainSP(client, skillId, (nrGathered==0));
 
         Container newContainer = new Container("harvest");
 
@@ -141,8 +194,7 @@ public class GatheringHandler extends Handler {
 
         newContainer.setName(SourceName);
 
-        ContainerHandler.CONTAINERS.put(
-            TILE.getX() + "," + TILE.getY() + "," + TILE.getZ(), newContainer);
+        ContainerHandler.CONTAINERS.put(tileCoord, newContainer);
       }
 
       for (Map.Entry<Integer, Client> entry : Server.clients.entrySet()) {
@@ -157,11 +209,7 @@ public class GatheringHandler extends Handler {
                     + ";"
                     + objectId
                     + ","
-                    + TILE.getX()
-                    + ","
-                    + TILE.getY()
-                    + ","
-                    + TILE.getZ()
+                    + tileCoord
                     + ","
                     + client.playerCharacter.getAttackSpeed());
           }

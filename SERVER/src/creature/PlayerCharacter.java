@@ -1109,10 +1109,7 @@ public class PlayerCharacter extends Creature {
       e.printStackTrace();
     }
 
-    if (XPTables.nextLevelXP.containsKey(Level + 1)) {
-      // Get xp info
-      nextXP = XPTables.nextLevelXP.get(Level + 1);
-    }
+    nextXP = XPTables.getNextLevelXP(Level + 1);
 
     if (XP >= nextXP) {
       XP -= nextXP;
@@ -1226,7 +1223,7 @@ public class PlayerCharacter extends Creature {
     boolean loseLevel = false;
 
     int totalXP = 0;
-    totalXP = XPTables.totalLevelXP.get(Level);
+    totalXP = XPTables.getTotalLevelXP(Level);
 
     totalXP += XP;
 
@@ -1237,7 +1234,7 @@ public class PlayerCharacter extends Creature {
     int levelXP = 0;
 
     if (newLevel > 1) {
-      levelXP = XPTables.totalLevelXP.get(newLevel);
+      levelXP = XPTables.getTotalLevelXP(newLevel);
     }
 
     int newXP = totalXP - levelXP;
@@ -1270,7 +1267,7 @@ public class PlayerCharacter extends Creature {
       int levelSP = 0;
 
       if (mySkill.getLevel() > 1) {
-        levelSP = XPTables.totalLevelSP.get(mySkill.getLevel());
+        levelSP = XPTables.getTotalLevelSP(mySkill.getLevel());
       }
 
       int totalSkillSP = levelSP + mySkill.getSP();
@@ -1283,7 +1280,7 @@ public class PlayerCharacter extends Creature {
 
       int newLevelSP = 0;
       if (newLevel > 1) {
-        newLevelSP = XPTables.totalLevelSP.get(newLevel);
+        newLevelSP = XPTables.getTotalLevelSP(newLevel);
       }
 
       int newSP = totalSkillSP - newLevelSP;
@@ -1334,7 +1331,7 @@ public class PlayerCharacter extends Creature {
           XP = XP - nextXP;
           levelUp = true;
           Level++;
-          nextXP = XPTables.nextLevelXP.get(Level + 1);
+          nextXP = XPTables.getNextLevelXP(Level + 1);
         }
       }
     }
@@ -1363,7 +1360,7 @@ public class PlayerCharacter extends Creature {
     Health = getStat("MAX_HEALTH");
     Mana = getStat("MAX_MANA");
 
-    nextXP = XPTables.nextLevelXP.get(Level + 1);
+    nextXP = XPTables.getNextLevelXP(Level + 1);
     levelDownData.append(getStat("STRENGTH"))
                  .append(',')
                  .append(getStat("INTELLIGENCE"))
@@ -1403,7 +1400,7 @@ public class PlayerCharacter extends Creature {
     Health = getRawStat("MAX_HEALTH");
     Mana = getRawStat("MAX_MANA");
 
-    nextXP = XPTables.nextLevelXP.get(Level + 1);
+    nextXP = XPTables.getNextLevelXP(Level + 1);
     levelUpData.append(getRawStat("STRENGTH"))
                  .append(',')
                  .append(getRawStat("INTELLIGENCE"))

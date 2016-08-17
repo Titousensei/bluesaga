@@ -43,8 +43,8 @@ public class JobSkill {
     SP += addedSP;
     boolean levelUp = false;
 
-    while (SP >= XPTables.nextLevelSP.get(Level + 1)) {
-      SP = SP - XPTables.nextLevelSP.get(Level + 1);
+    while (SP >= XPTables.getNextLevelSP(Level + 1)) {
+      SP = SP - XPTables.getNextLevelSP(Level + 1);
       Level++;
       levelUp = true;
     }

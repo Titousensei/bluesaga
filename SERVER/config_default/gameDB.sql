@@ -28,3 +28,16 @@ CREATE VIEW "monster_level" AS        SELECT Id, Name, Level, MAX_HEALTH, STRENG
 CREATE VIEW "offhands" AS  select Id, Name, ReqLevel, ARMOR, ClassId FROM item WHERE Type = 'OffHand';
 CREATE VIEW "warrior_weapons" AS        select Id, Name, ReqLevel, SubType, MinDamage, MaxDamage, DamageType,AttackSpeed, Value,Range from item WHERE Type = 'Weapon' AND (ClassId = 1 OR ClassId = 4 OR ClassId = 7);
 CREATE VIEW "weapons" AS       select Id, Name, ReqLevel, MinDamage, MaxDamage, SubType, ClassId, DamageType, AttackType, * from item WHERE Type = 'Weapon';
+
+
+CREATE TABLE "item_gathering" (
+  "ItemName" VARCHAR PRIMARY KEY NOT NULL,
+  "SourceName" VARCHAR,
+  "SkillLevel" INTEGER,
+  "SkillId" INTEGER,
+  "ResourceId" INTEGER
+);
+insert into item_gathering values('gathering/oranga','Oranga Bush',1,102,178);
+insert into item_gathering values('gathering/piccoberries','Picco Berries',2,102,203);
+insert into item_gathering values('gathering/flowerluna','Luna Petal',3,102,212);
+insert into item_gathering values('gathering/soulbush','Soul Bush',-5,102,313);

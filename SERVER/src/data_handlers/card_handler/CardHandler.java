@@ -18,6 +18,7 @@ import data_handlers.MapHandler;
 import data_handlers.Message;
 import data_handlers.item_handler.ContainerHandler;
 import data_handlers.item_handler.Item;
+import game.ServerSettings;
 import utils.RandomUtils;
 import utils.ServerGameInfo;
 import utils.ServerMessage;
@@ -302,7 +303,7 @@ public class CardHandler extends Handler {
       for (Map.Entry<Integer, Client> entry : Server.clients.entrySet()) {
         Client c = entry.getValue();
 
-        if (c.Ready) {
+        if (c.Ready && ServerSettings.enableCutScenes) {
           addOutGoingMessage(c, "cutscene", "3;" + cardPicker.playerCharacter.getSmallData());
           MapHandler.sendCreatureInfo(c, CreatureType.Player, cardPicker.playerCharacter.getDBId());
         }

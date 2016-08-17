@@ -16,6 +16,7 @@ import data_handlers.item_handler.CoinConverter;
 import data_handlers.item_handler.EquipHandler;
 import data_handlers.item_handler.InventoryHandler;
 import data_handlers.item_handler.Item;
+import game.ServerSettings;
 import map.Tile;
 import network.Client;
 import network.Server;
@@ -290,12 +291,12 @@ public class QuestHandler extends Handler {
 
           int bountyId = 0;
           /*
-          					rs = Server.gameDB.askDB("select Id from bountyhut where NpcId = "+NPC.getDBId());
+                    rs = Server.gameDB.askDB("select Id from bountyhut where NpcId = "+NPC.getDBId());
 
-          					if(rs.next()){
-          						bountyId = rs.getInt("Id");
-          					}
-          					rs.close();
+                    if(rs.next()){
+                      bountyId = rs.getInt("Id");
+                    }
+                    rs.close();
           */
           npcInfo.append('/').append(bountyId);
 
@@ -439,30 +440,30 @@ public class QuestHandler extends Handler {
         questStatusInfo.close();
 
         /*
-        				// IF GET ITEM X QUEST, REMOVE ITEM AND COMPLETE QUEST
-        				if(questStatus == 1 && questInfo.getString("Type").equals("Get X item X")){
-        					int itemId = questInfo.getInt("TargetId");
-        					int targetNr = questInfo.getInt("TargetNr");
+                // IF GET ITEM X QUEST, REMOVE ITEM AND COMPLETE QUEST
+                if(questStatus == 1 && questInfo.getString("Type").equals("Get X item X")){
+                  int itemId = questInfo.getInt("TargetId");
+                  int targetNr = questInfo.getInt("TargetNr");
 
-        					//CHECK IF HAS CORRECT NR OF ITEMS
-        					ResultSet itemInfo = Server.userDB.askDB("select Id from character_item where CharacterId = "+client.playerCharacter.getDBId()+" and ItemId = "+itemId+" and InventoryPos <> 'None' and InventoryPos <> 'Mouse'  and InventoryPos <> 'Actionbar'");
+                  //CHECK IF HAS CORRECT NR OF ITEMS
+                  ResultSet itemInfo = Server.userDB.askDB("select Id from character_item where CharacterId = "+client.playerCharacter.getDBId()+" and ItemId = "+itemId+" and InventoryPos <> 'None' and InventoryPos <> 'Mouse'  and InventoryPos <> 'Actionbar'");
 
-        					int nrRows = 0;
-        					while(itemInfo.next()){
-        						nrRows++;
-        					}
-        					itemInfo.close();
+                  int nrRows = 0;
+                  while(itemInfo.next()){
+                    nrRows++;
+                  }
+                  itemInfo.close();
 
-        					if(targetNr <= nrRows){
-        						itemInfo = Server.userDB.askDB("select Id from character_item where CharacterId = "+client.playerCharacter.getDBId()+" and ItemId = "+itemId+" and InventoryPos <> 'None' and InventoryPos <> 'Mouse'  and InventoryPos <> 'Actionbar'");
-        						while(targetNr > 0 && itemInfo.next()){
-        							Server.userDB.updateDB("delete from character_item where Id = "+itemInfo.getInt("Id"));
-        							targetNr--;
-        						}
-        						itemInfo.close();
-        						questStatus = 2;
-        					}
-        				}
+                  if(targetNr <= nrRows){
+                    itemInfo = Server.userDB.askDB("select Id from character_item where CharacterId = "+client.playerCharacter.getDBId()+" and ItemId = "+itemId+" and InventoryPos <> 'None' and InventoryPos <> 'Mouse'  and InventoryPos <> 'Actionbar'");
+                    while(targetNr > 0 && itemInfo.next()){
+                      Server.userDB.updateDB("delete from character_item where Id = "+itemInfo.getInt("Id"));
+                      targetNr--;
+                    }
+                    itemInfo.close();
+                    questStatus = 2;
+                  }
+                }
         */
 
         // COMPLETE QUESTS OF "STORY" TYPE DIRECTLY
@@ -933,7 +934,7 @@ public class QuestHandler extends Handler {
     ResultSet questInfo = Server.mapDB.askDB("select EventId from quest where Id = " + questId);
     try {
       if (questInfo.next()) {
-        if (questInfo.getInt("EventId") > 0) {
+        if (questInfo.getInt("EventId") > 0 && ServerSettings.enableCutScenes) {
           addOutGoingMessage(client, "cutscene", "" + questInfo.getInt("EventId"));
         }
       }

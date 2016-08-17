@@ -158,7 +158,7 @@ public class ConnectHandler extends Handler {
       // IF NO ACTIVE QUESTS AND HAVN'T COMPLETE THE UNDEAD THREAT,
       // THEN NOTIFY PLAYER TO TALK TO INN-KEEPER
       boolean firstTime = true;
-      boolean showNoobQuestWarning = true;
+      boolean showNoobQuestWarning = ServerSettings.startWithTutorial;
 
       for (Quest q : client.playerCharacter.getQuests()) {
         if (q.getId() == 36) {
@@ -189,7 +189,7 @@ public class ConnectHandler extends Handler {
       client.playerCharacter.addChatChannel("#world");
 
       // IF NEW PLAYER SEND INTRO CUTSCENE
-      if (firstTime) {
+      if (firstTime && ServerSettings.enableCutScenes) {
         addOutGoingMessage(client, "cutscene", "1");
 
         // If first time playing, show tutorials

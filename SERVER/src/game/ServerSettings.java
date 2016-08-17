@@ -47,6 +47,8 @@ public class ServerSettings {
   public static int startY = 9984;
   public static int startZ = 2;
   public static int initialQuestId = 30;
+  public static boolean startWithTutorial = true;
+  public static boolean enableCutScenes = true;
 
   // Server restart time in milliseconds
   public static int restartTime = (4 * 60 * 60) * 1000; // 4 hours (+15 min for warning)

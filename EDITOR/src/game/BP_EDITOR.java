@@ -517,12 +517,13 @@ public class BP_EDITOR extends BasicGame {
       renderHelp(g, "P: Passable Tool");
       renderHelp(g, "F1: Hide/View Passable");
       renderHelp(g, "F2: Transparent Objects");
-      renderHelp(g, "1/2: Brushsize -/+");
+      renderHelp(g, "1/2: Brushsize -/+ = " + BrushSize);
       renderHelp(g, "0: Place Door");
       renderHelp(g, "E: Place Area Effect");
       renderHelp(g, "R: Place Trigger");
       renderHelp(g, "F: Fix edges = " + FixEdges);
-      renderHelp(g, "N: Both/Day/Night spawns " + DAY_NIGHT_TIME);
+      renderHelp(g, "N: Spawns = "
+          + ((DAY_NIGHT_TIME==0) ? "night+day" : (DAY_NIGHT_TIME==1) ? "night" : "day"));
       renderHelp(g, "PgUp/PgDown: Z +/-");
 
       if (INPUT != null) {
@@ -699,10 +700,10 @@ public class BP_EDITOR extends BasicGame {
         }
       }
 
-      if (INPUT.isKeyPressed(Input.KEY_1)) {
+      if (INPUT.isKeyPressed(Input.KEY_1) && BrushSize>1) {
         BrushSize--;
       }
-      if (INPUT.isKeyPressed(Input.KEY_2)) {
+      if (INPUT.isKeyPressed(Input.KEY_2) && BrushSize<8) {
         BrushSize++;
       }
 
@@ -1141,22 +1142,26 @@ public class BP_EDITOR extends BasicGame {
     return false;
   }
 
+  public static boolean canFixEdges(String tileName) {
+    return (tileName.contains("D")
+        && !tileName.contains("Stairs")
+        && !tileName.contains("Entrance")
+        && !tileName.contains("Exit")
+        && !tileName.contains("wall"));
+  }
+
+
+
   public static void addTiles(int screenX, int screenY) {
-    if (MouseTile.getName().contains("D")
-        && FixEdges
-        && !MouseTile.getName().contains("Stairs")
-        && !MouseTile.getName().contains("Entrance")
-        && !MouseTile.getName().contains("Exit")
-        && !MouseTile.getName().contains("wall")) {
+    String tileName = MouseTile.getName();
+    if (FixEdges && BrushSize>1 && canFixEdges(tileName)) {
 
-      String tileName = MouseTile.getName();
       String tileType = MouseTile.getType();
-      String otherType =
-          MouseTile.getName()
-              .substring(
-                  0,
-                  MouseTile.getName().length() - 1); //SCREEN_TILES[screenX][screenY][1].getType();
-
+      int lastChar = MouseTile.getName().length() - 1;
+      while (lastChar>0 &&  Character.isUpperCase(tileName.charAt(lastChar))) {
+        -- lastChar;
+      }
+      String otherType = tileName.substring(0, lastChar);
       //String saveTileType = MouseTile.getType();
 
       for (int i = screenX; i < screenX + BrushSize; i++) {
@@ -1291,9 +1296,8 @@ public class BP_EDITOR extends BasicGame {
       mapDB.updateDB("END TRANSACTION");
 
     } else {
-      String tileName = MouseTile.getName();
       String tileType = MouseTile.getType();
-      String saveName = MouseTile.getName();
+      String saveName = tileName;
 
       mapDB.updateDB("BEGIN TRANSACTION");
       for (int i = screenX; i < screenX + BrushSize; i++) {

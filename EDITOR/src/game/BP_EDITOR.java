@@ -1400,6 +1400,10 @@ public class BP_EDITOR extends BasicGame {
       Passable = true;
     }
 
+    if (checkTile.getName().contains("bridge")) {
+      Passable = true;
+    }
+
     if (checkTile.getType().equals("shallow")) {
       Passable = true;
     }

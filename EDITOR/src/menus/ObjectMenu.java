@@ -1,6 +1,7 @@
 package menus;
 
 import java.io.File;
+import java.util.Arrays;
 import java.util.Vector;
 
 import map.TileObject;
@@ -50,6 +51,7 @@ public class ObjectMenu {
     Buttons.clear();
 
     File[] files = new File(EditorSettings.clientImagePath + ActivePath).listFiles();
+    Arrays.sort(files);
 
     int i = 0;
 

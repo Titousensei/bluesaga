@@ -7,10 +7,10 @@ import map.Tile;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 
-public class TextureButton {
+import static game.BP_EDITOR.BLACK;
+import static game.BP_EDITOR.WHITE;
 
-  public final static Color BLACK = new Color(0, 0, 0, 255);
-  public final static Color WHITE = new Color(255, 255, 255, 255);
+public class TextureButton {
 
   private Sprite ButtonImage;
   private int X = 0;

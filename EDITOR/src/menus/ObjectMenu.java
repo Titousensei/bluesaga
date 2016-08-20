@@ -81,7 +81,8 @@ public class ObjectMenu {
               && !name.contains("_6")
               && !name.contains("_7")
               && !name.contains("_8")
-              && !name.contains("_on")) {
+              && !name.contains("_on")
+              && !name.contains("_open")) {
             if (name.contains("_0")) {
               name = name.substring(0, name.length() - 2);
             }

@@ -37,41 +37,138 @@ CREATE TABLE "item_gathering" (
   "SkillId" INTEGER,
   "ResourceId" INTEGER
 );
-insert into item_gathering values ('gathering/oranga','Oranga Bush',1,102,178);
+insert into item_gathering values ('gathering/oranga',      'Oranga Bush',  1,102,178);
 insert into item_gathering values ('gathering/piccoberries','Picco Berries',2,102,203);
-insert into item_gathering values ('gathering/matchanuts','Matcha Tree',3,102,486);
-insert into item_gathering values ('gathering/soulbush','Soul Bush',4,102,313);
+insert into item_gathering values ('gathering/matchanuts',  'Matcha Tree',  3,102,486);
+insert into item_gathering values ('gathering/soulbush',    'Soul Bush',    4,102,313);
+
+insert into item_gathering values ('gathering/skarrot',   'Skarrot Root',1,102,501);
+insert into item_gathering values ('gathering/gronion',   'Gronion Root',2,102,502);
+insert into item_gathering values ('gathering/topato',    'Topato Root', 3,102,503);
+insert into item_gathering values ('gathering/Tripfle',   'Tripfle Root',4,102,505);
+
 insert into item_gathering values ('gathering/flowerluna','Luna Petal',-5,102,212);
+insert into item_gathering values ('gathering/Spongeroot','Spongeroot', 5,102,504);
 
-insert into item_gathering values ('gathering/skarrot','Skarrot Root',1,102,501);
-insert into item_gathering values ('gathering/herb499','Herb 499',1,102,499);
-insert into item_gathering values ('gathering/herb498','Herb 498',1,102,498);
-insert into item_gathering values ('gathering/herb497','Herb 497',1,102,497);
-insert into item_gathering values ('gathering/herb496','Herb 496',1,102,496);
-insert into item_gathering values ('gathering/herb495','Herb 495',1,102,495);
-insert into item_gathering values ('gathering/herb494','Herb 494',1,102,494);
-insert into item_gathering values ('gathering/herb493','Herb 493',1,102,493);
-insert into item_gathering values ('gathering/herb492','Herb 492',1,102,492);
-insert into item_gathering values ('gathering/herb491','Herb 491',1,102,491);
-insert into item_gathering values ('gathering/herb490','Herb 490',1,102,490);
-insert into item_gathering values ('gathering/herb489','Herb 489',1,102,489);
-insert into item_gathering values ('gathering/herb488','Herb 488',1,102,488);
-insert into item_gathering values ('gathering/herb487','Herb 487',1,102,487);
+insert into item_gathering values ('gathering/herb499','Nimt',    -2,102,499);
+insert into item_gathering values ('gathering/herb498','Nasil',   -2,102,498);
+insert into item_gathering values ('gathering/herb497','Ging',    -2,102,497);
+insert into item_gathering values ('gathering/herb496','Noxu',    -2,102,496);
+insert into item_gathering values ('gathering/herb495','Bronea',  -2,102,495);
+insert into item_gathering values ('gathering/herb494','Shorogyt',-2,102,494);
+insert into item_gathering values ('gathering/herb493','Hexteria',-2,102,493);
+insert into item_gathering values ('gathering/herb492','Hawkloon',-2,102,492);
+insert into item_gathering values ('gathering/herb491','Yammoe',  -2,102,491);
+insert into item_gathering values ('gathering/herb490','Ociramma',-2,102,490);
+insert into item_gathering values ('gathering/herb489','Dognip',  -2,102,489);
+insert into item_gathering values ('gathering/herb488','Nalpure', -2,102,488);
+insert into item_gathering values ('gathering/herb487','Kopako',  -2,102,487);
 
-insert into item values (501,"Skarrot",0,"Eatable","Root",0,0,0,0,0,0,"None",0,0,0,0,0,"None","",0,"None",0,0,"",10,10,0,0,0,0,0,0,0,0,0,0,100,21,0,0,5,0,0);
-insert into item values (486,"Matchnuts",0,"Eatable","Fruit",0,0,0,0,0,0,"None",0,0,0,0,0,"None","",0,"None",0,0,"",10,10,0,0,0,0,0,0,0,0,0,0,100,21,0,0,5,0,0);
+insert into item_gathering values ('gathering/herb487','Zestpond',-2,102,486);
+insert into item_gathering values ('gathering/herb487','Sweet Lunabutton',-2,102,485);
 
-insert into item values (499,"Herb 499", 0,"Eatable","Herb",0,0,0,0,0,0,"None",0,0,0,0,0,"None","",0,"None",0,0,"",10,10,0,0,0,0,0,0,0,0,0,0,100,21,0,0,5,0,0);
-insert into item values (498,"Herb 498", 0,"Eatable","Herb",0,0,0,0,0,0,"None",0,0,0,0,0,"None","",0,"None",0,0,"",10,10,0,0,0,0,0,0,0,0,0,0,100,21,0,0,5,0,0);
-insert into item values (497,"Herb 497", 0,"Eatable","Herb",0,0,0,0,0,0,"None",0,0,0,0,0,"None","",0,"None",0,0,"",10,10,0,0,0,0,0,0,0,0,0,0,100,21,0,0,5,0,0);
-insert into item values (496,"Herb 496", 0,"Eatable","Herb",0,0,0,0,0,0,"None",0,0,0,0,0,"None","",0,"None",0,0,"",10,10,0,0,0,0,0,0,0,0,0,0,100,21,0,0,5,0,0);
-insert into item values (495,"Herb 495", 0,"Eatable","Herb",0,0,0,0,0,0,"None",0,0,0,0,0,"None","",0,"None",0,0,"",10,10,0,0,0,0,0,0,0,0,0,0,100,21,0,0,5,0,0);
-insert into item values (494,"Herb 494", 0,"Eatable","Herb",0,0,0,0,0,0,"None",0,0,0,0,0,"None","",0,"None",0,0,"",10,10,0,0,0,0,0,0,0,0,0,0,100,21,0,0,5,0,0);
-insert into item values (493,"Herb 493", 0,"Eatable","Herb",0,0,0,0,0,0,"None",0,0,0,0,0,"None","",0,"None",0,0,"",10,10,0,0,0,0,0,0,0,0,0,0,100,21,0,0,5,0,0);
-insert into item values (492,"Herb 492", 0,"Eatable","Herb",0,0,0,0,0,0,"None",0,0,0,0,0,"None","",0,"None",0,0,"",10,10,0,0,0,0,0,0,0,0,0,0,100,21,0,0,5,0,0);
-insert into item values (491,"Herb 491", 0,"Eatable","Herb",0,0,0,0,0,0,"None",0,0,0,0,0,"None","",0,"None",0,0,"",10,10,0,0,0,0,0,0,0,0,0,0,100,21,0,0,5,0,0);
-insert into item values (490,"Herb 490", 0,"Eatable","Herb",0,0,0,0,0,0,"None",0,0,0,0,0,"None","",0,"None",0,0,"",10,10,0,0,0,0,0,0,0,0,0,0,100,21,0,0,5,0,0);
-insert into item values (489,"Herb 489", 0,"Eatable","Herb",0,0,0,0,0,0,"None",0,0,0,0,0,"None","",0,"None",0,0,"",10,10,0,0,0,0,0,0,0,0,0,0,100,21,0,0,5,0,0);
-insert into item values (488,"Herb 488", 0,"Eatable","Herb",0,0,0,0,0,0,"None",0,0,0,0,0,"None","",0,"None",0,0,"",10,10,0,0,0,0,0,0,0,0,0,0,100,21,0,0,5,0,0);
-insert into item values (487,"Herb 487", 0,"Eatable","Herb",0,0,0,0,0,0,"None",0,0,0,0,0,"None","",0,"None",0,0,"",10,10,0,0,0,0,0,0,0,0,0,0,100,21,0,0,5,0,0);
+insert or replace into item values (178,"Oranga",        0,"Eatable","Fruit",0,0,0,0,0,0,"None",0,0,0,0,0,"None","",0,"None",0,0,"", 30, 10,0,0,0,0,0,0,0,0,0,0,100,'None',0,0, 1,0,0);
+insert or replace into item values (203,"Picco Berries", 0,"Eatable","Fruit",0,0,0,0,0,0,"None",0,0,0,0,0,"None","",0,"None",0,0,"", 60, 20,0,0,0,0,0,0,0,0,0,0,100,'None',0,0, 2,0,0);
+insert or replace into item values (486,"Matchnuts",     0,"Eatable","Fruit",0,0,0,0,0,0,"None",0,0,0,0,0,"None","",0,"None",0,0,"",100, 40,0,0,0,0,0,0,0,0,0,0,100,'None',0,0, 4,0,0);
+insert or replace into item values (313,"Soul Fruit",    0,"Eatable","Fruit",0,0,0,0,0,0,"None",0,0,0,0,0,"None","",0,"None",0,0,"",150, 80,0,0,0,0,0,0,0,0,0,0,100,'None',0,0,10,0,0);
 
+insert or replace into item values (501,"Skarrot",       0,"Eatable","Root", 0,0,0,0,0,0,"None",0,0,0,0,0,"None","",0,"None",0,0,"", 10, 20,0,0,0,0,0,0,0,0,0,0,100,'None',0,0, 2,0,0);
+insert or replace into item values (502,"Gronion",       0,"Eatable","Root", 0,0,0,0,0,0,"None",0,0,0,0,0,"None","",0,"None",0,0,"", 30, 40,0,0,0,0,0,0,0,0,0,0,100,'None',0,0, 4,0,0);
+insert or replace into item values (503,"Topato",        0,"Eatable","Root", 0,0,0,0,0,0,"None",0,0,0,0,0,"None","",0,"None",0,0,"", 50, 70,0,0,0,0,0,0,0,0,0,0,100,'None',0,0, 8,0,0);
+insert or replace into item values (505,"Tripfle",       0,"Eatable","Root", 0,0,0,0,0,0,"None",0,0,0,0,0,"None","",0,"None",0,0,"", 70,100,0,0,0,0,0,0,0,0,0,0,100,'None',0,0,12,0,0);
+
+insert or replace into item values (504,"Spongeroot",    0,"Material","Root", 0,0,0,0,0,0,"None",0,0,0,0,0,"None","",0,"None",0,0,"", 0,0,0,0,0,0,0,0,0,0,0,0,100,'None',0,0,5,0,0);
+
+--                                   Id|Name               |ReqLevel
+--                                                           |Type    |SubType|MinDamage
+--                                                                              |MaxDamage
+--                                                                                |ACCURACY
+--                                                                                  |AGILITY
+--                                                                                    |ARMOR
+--                                                                                      |AttackAbility
+--                                                                                        |AttackType
+--                                                                                               |CHEMS_DEF
+--                                                                                                 |ClassId
+--                                                                                                   |COLD_DEF
+--                                                                                                     |ContainerSize
+--                                                                                                       |CRITICAL_HIT
+--                                                                                                         |DamageType
+--                                                                                                                |Description
+--                                                                                                                   |EVASION
+--                                                                                                                     |Family
+--                                                                                                                            |FIRE_DEF
+--                                                                                                                              |INTELLIGENCE
+--                                                                                                                                |Material
+--                                                                                                                                   |MAX_HEALTH
+--                                                                                                                                         |MAX_MANA
+--                                                                                                                                             |MIND_DEF
+--                                                                                                                                               |ProjectileId
+--                                                                                                                                                 |Range
+--                                                                                                                                                   |ReqAgility
+--                                                                                                                                                     |ReqIntelligence
+--                                                                                                                                                       |ReqStrength
+--                                                                                                                                                         |ScrollUseId
+--                                                                                                                                                           |Sellable
+--                                                                                                                                                             |SHOCK_DEF
+--                                                                                                                                                               |SPEED
+--                                                                                                                                                                 |Stackable
+--                                                                                                                                                                     |StatusEffects
+--                                                                                                                                                                       |STRENGTH
+--                                                                                                                                                                         |TwoHands
+--                                                                                                                                                                           |Value
+--                                                                                                                                                                              |AttackSpeed
+--                                                                                                                                                                                |MAGIC_DEF
+insert or replace into item values (499,"Nimt Leaf",        0,"Eatable","Herb",0,0,0,0,0,0,"None",0,0,0,0,0,"None","",0,"None",0,0,"",    0,  0,0,0,0,0,0,0,0,0,0,0,100,0,0,0,25,0,0);
+insert or replace into item values (498,"Nasil Leaf",       0,"Eatable","Herb",0,0,0,0,0,0,"None",0,0,0,0,0,"None","",0,"None",0,0,"",    0,  0,0,0,0,0,0,0,0,0,0,0,100,0,0,0,25,0,0);
+insert or replace into item values (497,"Ging Leaf",        0,"Eatable","Herb",0,0,0,0,0,0,"None",0,0,0,0,0,"None","",0,"None",0,0,"",    0,  0,0,0,0,0,0,0,0,0,0,0,100,0,0,0,25,0,0);
+insert or replace into item values (496,"Noxu Leaf",        0,"Eatable","Herb",0,0,0,0,0,0,"None",0,0,0,0,0,"None","",0,"None",0,0,"",    0,  0,0,0,0,0,0,0,0,0,0,0,100,0,0,0,25,0,0);
+insert or replace into item values (495,"Bronea Leaf",      0,"Eatable","Herb",0,0,0,0,0,0,"None",0,0,0,0,0,"None","",0,"None",0,0,"",    0,  0,0,0,0,0,0,0,0,0,0,0,100,0,0,0,25,0,0);
+insert or replace into item values (494,"Shorogyt Leaf",    0,"Eatable","Herb",0,0,0,0,0,0,"None",0,0,0,0,0,"None","",0,"None",0,0,"",    0,  0,0,0,0,0,0,0,0,0,0,0,100,0,0,0,25,0,0);
+insert or replace into item values (493,"Hexteria Leaf",    0,"Eatable","Herb",0,0,0,0,0,0,"None",0,0,0,0,0,"None","",0,"None",0,0,"",    0,  0,0,0,0,0,0,0,0,0,0,0,100,0,0,0,25,0,0);
+insert or replace into item values (492,"Hawkloon Leaf",    0,"Eatable","Herb",0,0,0,0,0,0,"None",0,0,0,0,0,"None","",0,"None",0,0,"",    0,  0,0,0,0,0,0,0,0,0,0,0,100,0,0,0,25,0,0);
+insert or replace into item values (491,"Yammoe Leaf",      0,"Eatable","Herb",0,0,0,0,0,0,"None",0,0,0,0,0,"None","",0,"None",0,0,"",    0,  0,0,0,0,0,0,0,0,0,0,0,100,0,0,0,25,0,0);
+insert or replace into item values (490,"Ociramma Leaf",    0,"Eatable","Herb",0,0,0,0,0,0,"None",0,0,0,0,0,"None","",0,"None",0,0,"",    0,  0,0,0,0,0,0,0,0,0,0,0,100,0,0,0,25,0,0);
+insert or replace into item values (489,"Dognip Leaf",      0,"Eatable","Herb",0,0,0,0,0,0,"None",0,0,0,0,0,"None","",0,"None",0,0,"",    0,  0,0,0,0,0,0,0,0,0,0,0,100,0,0,0,25,0,0);
+insert or replace into item values (488,"Nalpure Leaf",     0,"Eatable","Herb",0,0,0,0,0,0,"None",0,0,0,0,0,"None","",0,"None",0,0,"",    0,  0,0,0,0,0,0,0,0,0,0,0,100,0,0,0,25,0,0);
+insert or replace into item values (487,"Kopako Leaf",      0,"Eatable","Herb",0,0,0,0,0,0,"None",0,0,0,0,0,"None","",0,"None",0,0,"",    0,  0,0,0,0,0,0,0,0,0,0,0,100,0,0,0,25,0,0);
+--                                    3|Small Health Potion|0|Potion   |HEALTH|0|0| |0|0|0|      |0|0|0|0| |None  |  | |      |0|0|None| 60|  0|0|0|0|0|0|0|0|1|0|0| 10| |0|0|10|0|0
+--                                    4|Medium Health Potio|0|Potion   |HEALTH|0|0| |0|0|0|      |0|0|0|0| |None  |  | |      |0|0|None|120|  0|0|0|0|0|0|0|0|1|0|0| 10| |0|0|30|0|0
+--                                    5|Small Mana Potion  |0|Potion   |MANA  |0|0| |0|0|0|      |0|0|0|0| |None  |  | |      |0|0|None|  0|100|0|0|0|0|0|0|0|1|0|0| 10| |0|0|10|0|0
+--                                   6|Medium Mana Potion |0|Potion   |MANA  |0|0| |0|0|0|      |0|0|0|0| |None  |  | |      |0|0|None|  0|240|0|0|0|0|0|0|0|1|0|0| 10| |0|0|50|0|0
+--                                  143|Large Health Potion|0|Potion   |HEALTH|0|0| |0|0|0|      |0|0|0|0| |None  |  | |      |0|0|None|360|  0|0|0|0|0|0|0|0|1|0|0| 10| |0|0|100|0|0
+
+--99|STRENGTH,2;MAX_HEALTH-20|  Nimt Leaf
+--98|INTELLIGENCE,2    M-10  Nasil Leaf
+--97|AGILITY,2       H-20  Ging Leaf
+--96|CHEMS_DEF,10    H-20  Noxu Leaf
+--95|COLD_DEF,10    H-20  Bronea Leaf
+--94|FIRE_DEF,10    H-20  Shorogyt Leaf
+--93|MIND_DEF,10    M-10  Hexteria Leaf
+--92|SHOCK_DEF,10    H-20  Hawkloon Leaf
+--91|MAGIC_DEF,10    M-10  Yammoe Leaf
+--90|CRITICAL,5   M-10  Ociramma Leaf
+--89|EVASION,5    M-10  Dognip Leaf
+--88|ACCURACY,5   M-10  Nalpure Leaf
+--87|ARMOR,5      H-20  Kopako Leaf
+--86|SPEED,5      H-20  Zestpond Leaf
+--85|ATTACKSPEED,5    H-20  Sweet lunabutton
+
+
+--CREATE TABLE "item_magic" (
+--  "Id" INTEGER PRIMARY KEY  AUTOINCREMENT  NOT NULL  UNIQUE,
+--  "Name" VARCHAR,
+--  "ExtraBonus" VARCHAR DEFAULT None,
+--  "StatusEffectId" INTEGER DEFAULT 0,
+--  "Color" VARCHAR
+--);
+
+--1|Burning|FIRE_DEF,2   |0|230,82,62
+--2|Frozen |COLD_DEF,2   |0|0,150,255
+--3|Shock  |SHOCK_DEF,2  |0|233,255,43
+--4|Mighty |STRENGTH,2   |0|255,138,0
+--5|Toxic  |CHEMS_DEF,2  |0|247,36,250
+--6|Haste  |ATTACKSPEED,2|0|186,255,96
+
+
+insert or replace into item values (486,"Zestpond Leaf",    0,"Eatable","Herb",0,0,0,0,0,0,"None",0,0,0,0,0,"None","",0,"None",0,0,"",0,0,0,0,0,0,0,0,0,0,0,0,100,0,0,0,5,0,0);
+insert or replace into item values (485,"Sweet lunabutton", 0,"Eatable","Herb",0,0,0,0,0,0,"None",0,0,0,0,0,"None","",0,"None",0,0,"",0,0,0,0,0,0,0,0,0,0,0,0,100,0,0,0,5,0,0);

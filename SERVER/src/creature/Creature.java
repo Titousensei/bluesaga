@@ -97,6 +97,7 @@ public class Creature implements Mover {
 
   protected String AttackType;
   private String WeaponAttackType = "";
+  private String attackWithMagic = null;
 
   private int mostHitDamage;
 
@@ -170,6 +171,7 @@ public class Creature implements Mover {
 
         Name = rs.getString("Name");
         WeaponAttackType = "";
+        attackWithMagic = null;
         Family = ServerGameInfo.familyDef.get(rs.getInt("FamilyId")).getName();
         FamilyId = rs.getInt("FamilyId");
 
@@ -294,6 +296,7 @@ public class Creature implements Mover {
 
     Name = copy.getName();
     WeaponAttackType = "";
+    attackWithMagic = null;
     Family = ServerGameInfo.familyDef.get(copy.getFamilyId()).getName();
     FamilyId = copy.getFamilyId();
 
@@ -719,6 +722,7 @@ public class Creature implements Mover {
       if (newItem.getType().equals("Weapon") || newItem.getSubType().equals("Weapon")) {
         WeaponItem = newItem;
         WeaponAttackType = newItem.getAttackType();
+        attackWithMagic = newItem.getMagicType();
         equipOk = true;
       } else if (newItem.getType().equals("Head") || newItem.getSubType().equals("Head")) {
         HeadItem = newItem;
@@ -744,6 +748,7 @@ public class Creature implements Mover {
     if (equipType.equals("Weapon")) {
       WeaponItem = null;
       WeaponAttackType = "";
+      attackWithMagic = null;
     } else if (equipType.equals("Head")) {
       HeadItem = null;
     } else if (equipType.equals("Weapon")) {
@@ -1201,15 +1206,15 @@ public class Creature implements Mover {
     return 0;
   }
 
-  public void setWeaponAttackType(String newWeaponAttack) {
-    WeaponAttackType = newWeaponAttack;
-  }
-
   public String getAttackType() {
     if (WeaponAttackType.equals("")) {
       return AttackType;
     }
     return WeaponAttackType;
+  }
+
+  public String getAttackWithMagic() {
+    return attackWithMagic;
   }
 
   public int getId() {

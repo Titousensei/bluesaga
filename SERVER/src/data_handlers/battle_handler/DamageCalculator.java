@@ -13,50 +13,35 @@ public class DamageCalculator {
 
     String damageInfo = "";
 
-    int damage = 0;
-    int hitOrMiss = RandomUtils.getInt(-5, 100);
+    // 10 -> .13   [50 -> .50]    100 -> .75   150 -> 0.875  200 -> 0.9375
+    double accuracy = 1.0 - Math.exp(ATTACKER.getStat("ACCURACY") / -72.0);
+    if (TARGET.isResting() || accuracy >= RandomUtils.getPercent()) {
+      // 10 -> 0.10   50 -> 0.43   [100 -> .67]  150 -> .81   200 -> 0.89
+      double evasion = 1.0 - Math.exp(TARGET.getStat("EVASION") / -91.0);
+      if (TARGET.isResting() || evasion < RandomUtils.getPercent()) {
 
-    if (TARGET.isResting()) {
-      hitOrMiss = 0;
-    }
-
-    if (hitOrMiss > ATTACKER.getStat("ACCURACY")) {
-      damage = 0;
-      damageInfo = "miss;0";
-    } else {
-
-      int evaded = RandomUtils.getInt(0, 105);
-
-      if (TARGET.isResting()) {
-        evaded = 100;
-      }
-
-      int evasion = TARGET.getStat("EVASION");
-      if (evaded < evasion) {
-        damageInfo = "evade;0";
-      } else {
-
-        damage = calculateDamage(ATTACKER, TARGET);
-        int criticalChance = RandomUtils.getInt(0, 100);
-        criticalChance += evasion / 4;
-
-        float diffAngle = Math.abs(ATTACKER.getRotation() - TARGET.getRotation());
+        int damage = calculateDamage(ATTACKER, TARGET);
+        // 10 -> 0.10   50 -> 0.43   [100 -> .67]  150 -> .81   200 -> 0.89
+        double critical = 1.0 - Math.exp(ATTACKER.getStat("CRITICAL_HIT") / -91.0);
 
         // Check if the attack is from behind
-        if (TARGET.isResting()) {
-          criticalChance = 0;
-        } else if (diffAngle < 10.0f) {
-          criticalChance -= 80;
-        } else if (diffAngle < 60.0f) { // Angles are m*45
-          criticalChance -= 50;
+        double diffAngle = Math.abs(ATTACKER.getRotation() - TARGET.getRotation());
+        if (diffAngle < 10.0) {
+          critical += 80.0;
+        } else if (diffAngle < 60.0) { // Angles are m*45
+          critical += 50.0;
         }
 
-        if (damage > 0 && criticalChance <= ATTACKER.getStat("CRITICAL_HIT")) {
+        if (damage > 0 && (TARGET.isResting() || critical >= RandomUtils.getPercent())) {
           damageInfo = "true;" + (damage * 2);
         } else {
           damageInfo = "false;" + damage;
         }
+      } else {
+        damageInfo = "evade;0";
       }
+    } else {
+      damageInfo = "miss;0";
     }
 
     return damageInfo;
@@ -64,7 +49,6 @@ public class DamageCalculator {
 
   // CALCULATE DAMAGE
   public static int calculateDamage(Creature ATTACKER, Creature TARGET) {
-    int damage = 0;
 
     // GET ATTACK STAT
     String attackStat = "STRENGTH";
@@ -83,26 +67,23 @@ public class DamageCalculator {
       weaponMaxBaseDmg = weapon.getStatValue("MaxDamage");
     }
 
-    String damageType = ATTACKER.getAttackType();
-
     int damageMin = 0;
     int damageMax = 0;
 
-    float attackMinF = 0.0f;
-    float attackMaxF = 0.0f;
+    double attackMinF = 0.0;
+    double attackMaxF = 0.0;
 
     // Armor or resistance modifier
-    float armorF = 1.0f;
-    armorF = getDamageArmor(damageType, ATTACKER, TARGET);
+    double armorF = getDamageArmor(ATTACKER, TARGET);
 
     if (ATTACKER.getCreatureType() == CreatureType.Monster) {
 
       // MONSTER DAMAGE FORMULA
-      attackMinF = (ATTACKER.getStat(attackStat) + weaponMinBaseDmg / 3.0f) * 0.7f;
-      attackMaxF = ATTACKER.getStat(attackStat) + weaponMaxBaseDmg / 3.0f;
+      attackMinF = (ATTACKER.getStat(attackStat) + weaponMinBaseDmg / 3.0) * 0.7;
+      attackMaxF = ATTACKER.getStat(attackStat) + weaponMaxBaseDmg / 3.0;
 
-      damageMin = (int) Math.floor(attackMinF * armorF * 0.7f);
-      damageMax = (int) Math.floor(attackMaxF * armorF * 0.7f + 1.0f);
+      damageMin = (int) Math.floor(attackMinF * armorF * 0.7);
+      damageMax = (int) Math.floor(attackMaxF * armorF * 0.7 + 1.0);
 
     } else if (ATTACKER.getCreatureType() == CreatureType.Player) {
       PlayerCharacter playerAttacker = (PlayerCharacter) ATTACKER;
@@ -111,20 +92,19 @@ public class DamageCalculator {
 
       // (ATK+12)/12 * (SkillLevel+16)/16 * WeaponMin/10 * (60/(60+Armor))
 
-      float ATKmin = (ATTACKER.getStat(attackStat) + 12.0f) / 12.0f;
-      float ATKmax = (ATTACKER.getStat(attackStat) + 10.0f) / 10.0f;
+      double ATKmin = (ATTACKER.getStat(attackStat) + 12.0) / 12.0;
+      double ATKmax = (ATTACKER.getStat(attackStat) + 10.0) / 10.0;
 
-      float classFac = 1.0f;
-
+      double classFac = 1.0;
       if (classId > 0) {
         if (playerAttacker.getClassById(classId) != null) {
           classId = playerAttacker.getClassById(classId).baseClassId;
-          classFac = (playerAttacker.getClassById(classId).level + 12.0f) / 13.0f;
+          classFac = (playerAttacker.getClassById(classId).level + 12.0) / 13.0;
         }
       }
 
-      float WeaponMin = weaponMinBaseDmg / 10.0f;
-      float WeaponMax = weaponMaxBaseDmg / 10.0f;
+      double WeaponMin = weaponMinBaseDmg / 10.0;
+      double WeaponMax = weaponMaxBaseDmg / 10.0;
 
       attackMinF = ATKmin * classFac * WeaponMin;
       attackMaxF = ATKmax * classFac * WeaponMax;
@@ -137,8 +117,8 @@ public class DamageCalculator {
     if (ATTACKER.getCreatureType() == CreatureType.Player
         && TARGET.getCreatureType() == CreatureType.Player
         && TARGET.getZ() > -200) {
-      damageMin = (int) Math.floor(damageMin / 2.0f);
-      damageMax = (int) Math.floor(damageMax / 2.0f);
+      damageMin = (int) Math.floor(damageMin / 2.0);
+      damageMax = (int) Math.floor(damageMax / 2.0);
     }
 
     if (damageMin < 0) {
@@ -147,37 +127,42 @@ public class DamageCalculator {
     if (damageMax < 0) {
       damageMax = 0;
     }
-    damage = RandomUtils.getInt(damageMin, damageMax);
 
-    return damage;
+    return RandomUtils.getInt(damageMin, damageMax);
   }
 
-  public static float getDamageArmor(String damageType, Creature ATTACKER, Creature TARGET) {
-    float armorF = 1.0f;
+  public static double getDamageArmor(Creature ATTACKER, Creature TARGET) {
+    double ret = 0.0;
 
-    float targetArmorF = TARGET.getStat("ARMOR");
+    String damageType = ATTACKER.getAttackType();
+    boolean physicalDmd = ("STRIKE".equals(damageType)
+                        || "SLASH".equals(damageType)
+                        || "PIERCE".equals(damageType)
+                        );
+    String magicType = ATTACKER.getAttackWithMagic();
 
-    // ARMOR OR RESISTANCE
-    if (damageType.equals("STRIKE") || damageType.equals("SLASH") || damageType.equals("PIERCE")) {
+    if (physicalDmd) {
       // PHYSICAL DAMAGE, USE ARMOR
-
-      // IF PIERCE, PIERCING THROUGH ARMOR
       float pierceFac = 1.0f;
-      if (damageType.equals("PIERCE")) {
-        pierceFac *= 0.8f; // -20% of ARMOR if PIERCE
+      if ("PIERCE".equals(damageType)) {
+        pierceFac *= 0.8f;
+      }
+      else if ("STRIKE".equals(damageType)) {
+        pierceFac *= 1.25f;
       }
       if (ATTACKER.hasStatusEffect(32)) {
         // ARMOR PIERCING STATUS EFFECT
-        pierceFac *= 0.5f; // -50% of ARMOR or - 55%
+        pierceFac *= 0.5f;
       }
-      armorF = (60.0f / (60.0f + targetArmorF * pierceFac));
-
-    } else {
-      // MAGICAL DAMAGE, USE RESISTANCE
-      float res = (100.0f - TARGET.getStat(damageType + "_DEF")) / 100.0f;
-
-      armorF = res;
+      // 10 -> .90    50 -> .57   [100 -> .33]  150 -> .19   200 -> .11   419 -> .01
+      ret = Math.exp(TARGET.getStat("ARMOR") * pierceFac / -91.);
     }
-    return armorF;
+    if (magicType!=null) {
+      // 10% MAGICAL DEFENSE APPLIES
+      ret = 0.9 * ret  + 0.1 * Math.exp(TARGET.getStat(magicType + "_DEF") / -91.);
+    }
+    else {
+      ret = Math.exp(TARGET.getStat(damageType + "_DEF") / -91.);
+    }
   }
 }

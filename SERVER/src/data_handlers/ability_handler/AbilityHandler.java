@@ -1311,7 +1311,7 @@ public class AbilityHandler extends Handler {
       }
     }
 
-    float aDmg = 0;
+    double aDmg = 0;
 
     if (ABILITY.getDamage() > 0) {
       if (CASTER != null) {
@@ -1331,7 +1331,7 @@ public class AbilityHandler extends Handler {
       }
 
       // Armor or resistance modifier
-      float armorF = DamageCalculator.getDamageArmor(ABILITY.getDamageType(), CASTER, TARGET);
+      double armorF = DamageCalculator.getDamageArmor(ABILITY.getDamageType(), CASTER, TARGET);
 
       aDmg = aDmg * armorF;
     }
@@ -1343,7 +1343,7 @@ public class AbilityHandler extends Handler {
       ability_dmg_min = Math.round(0.75f * ability_dmg_min);
     }
 
-    float ability_damage = 0;
+    double ability_damage = 0;
 
     if (ability_dmg_max > 0) {
       ability_damage = RandomUtils.getInt(ability_dmg_min, ability_dmg_max);

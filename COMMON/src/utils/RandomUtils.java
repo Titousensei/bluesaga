@@ -12,6 +12,10 @@ public class RandomUtils {
     return ThreadLocalRandom.current().nextFloat() * (maxf - minf) + minf;
   }
 
+  public static double getPercent() {
+    return ThreadLocalRandom.current().nextDouble();
+  }
+
   public static double getGaussian() {
     return ThreadLocalRandom.current().nextGaussian();
   }

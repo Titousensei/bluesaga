@@ -860,11 +860,11 @@ public class Creature {
       Sfx.playRandomPitch("battle/critical_atk");
     } else {
       if (criticalOrMiss.equals("miss")) {
-        addDamageLabel("MISS", BlueSagaColors.RED, 0);
+        addDamageLabel("MISS", hitColor, 0);
         MissedHit = true;
         Sfx.playRandomPitch("battle/miss_atk");
       } else if (criticalOrMiss.equals("evade")) {
-        addDamageLabel("EVADED", BlueSagaColors.RED, 0);
+        addDamageLabel("EVADED", hitColor, 0);
         EvadedHit = true;
         Sfx.playRandomPitch("battle/evade_atk");
       }

@@ -36,6 +36,7 @@ public class Item {
   private int ClassId = 0;
 
   private String attackType;
+  private String magicType;
   private String DamageStat;
 
   private int Range;
@@ -82,6 +83,7 @@ public class Item {
     setMaterial(copy.getMaterial());
 
     setAttackType(copy.getAttackType());
+    setMagicType(copy.getMagicType());
 
     for (Iterator<String> iter = copy.getStats().getHashMap().keySet().iterator();
         iter.hasNext();
@@ -314,6 +316,10 @@ public class Item {
     return attackType;
   }
 
+  public String getMagicType() {
+    return magicType;
+  }
+
   public boolean isEquipable() {
     return equipable;
   }
@@ -497,6 +503,7 @@ public class Item {
           } else {
             Stats.setValue("FIRE_DEF", Stats.getValue("FIRE_DEF") + statBonusInt);
           }
+          magicType = "FIRE";
         } else if (magicId == 2) {
           if (getType().equals("Weapon")) {
             StatusEffect seEffect = new StatusEffect(6);
@@ -505,6 +512,7 @@ public class Item {
           } else {
             Stats.setValue("COLD_DEF", Stats.getValue("COLD_DEF") + statBonusInt);
           }
+          magicType = "COLD";
         } else if (magicId == 3) {
           if (getType().equals("Weapon")) {
             StatusEffect seEffect = new StatusEffect(7);
@@ -513,6 +521,7 @@ public class Item {
           } else {
             Stats.setValue("SHOCK_DEF", Stats.getValue("SHOCK_DEF") + statBonusInt);
           }
+          magicType = "SHOCK";
         } else if (magicId == 4) {
           Stats.setValue("STRENGTH", Stats.getValue("STRENGTH") + statBonusInt);
         } else if (magicId == 5) {
@@ -521,6 +530,7 @@ public class Item {
           } else {
             Stats.setValue("CHEMS_DEF", Stats.getValue("CHEMS_DEF") + statBonusInt);
           }
+          magicType = "CHEMS";
         } else if (magicId == 6) {
           Stats.setValue("SPEED", Stats.getValue("SPEED") + statBonusInt);
           Stats.setValue("ATTACKSPEED", Stats.getValue("ATTACKSPEED") + statBonusInt);
@@ -589,6 +599,10 @@ public class Item {
 
   public void setAttackType(String attackType) {
     this.attackType = attackType;
+  }
+
+  public void setMagicType(String magicType) {
+    this.magicType = magicType;
   }
 
   public void setDamageStat(String damageStat) {

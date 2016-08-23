@@ -37,7 +37,6 @@ public class ObjectMenu {
   public void load() {
     Buttons.clear();
     /*
-
         int x = 0;
         int y = 0;
 
@@ -81,8 +80,8 @@ public class ObjectMenu {
               && !name.contains("_6")
               && !name.contains("_7")
               && !name.contains("_8")
-              && !name.contains("_on")
-              && !name.contains("_open")) {
+              && !name.contains("_open")
+              && !name.contains("_on")) {
             if (name.contains("_0")) {
               name = name.substring(0, name.length() - 2);
             }

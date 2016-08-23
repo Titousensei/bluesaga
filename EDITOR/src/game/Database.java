@@ -147,7 +147,6 @@ public class Database {
   public void updateDB(String sqlStatement) {
     try {
       Statement stat = conn.createStatement();
-
       stat.execute(sqlStatement);
 
     } catch (SQLException e) {

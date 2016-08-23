@@ -601,8 +601,6 @@ public class BP_EDITOR extends BasicGame {
     app.setVSync(true);
 
     app.start();
-
-    System.out.println("Exiting");
   }
 
   /*
@@ -902,60 +900,61 @@ public class BP_EDITOR extends BasicGame {
                   }
 
                   mapDB.updateDB("BEGIN TRANSACTION");
-                  for (int i = screenX; i < screenX + BrushSize; i += 2) {
-                    for (int j = screenY; j < screenY + BrushSize; j += 2) {
-                      tileX = i + PLAYER_X - TILE_HALF_W;
-                      tileY = j + PLAYER_Y - TILE_HALF_H;
+                  try {
+                    for (int i = screenX; i < screenX + BrushSize; i += 2) {
+                      for (int j = screenY; j < screenY + BrushSize; j += 2) {
+                        tileX = i + PLAYER_X - TILE_HALF_W;
+                        tileY = j + PLAYER_Y - TILE_HALF_H;
 
-                      mapDB.updateDB(
-                          "update area_tile set ObjectId = '"
-                              + MouseObject.getName()
-                              + "', Passable = "
-                              + passable
-                              + " where X = "
-                              + tileX
-                              + " and Y = "
-                              + tileY
-                              + " and Z = "
-                              + PLAYER_Z);
-
-                      if (BrushSize > 1) {
                         mapDB.updateDB(
                             "update area_tile set ObjectId = '"
                                 + MouseObject.getName()
-                                + "', Passable = "
-                                + passable
-                                + " where X = "
-                                + (tileX + 1)
+                                + "', Passable = 0 where X = "
+                                + tileX
                                 + " and Y = "
-                                + (tileY + 1)
+                                + tileY
                                 + " and Z = "
                                 + PLAYER_Z);
-                      }
-                      //TileObject newObject = new TileObject(MouseObject.getName());
-                      //newObject.setZ(PLAYER_Z);
-                      //SCREEN_OBJECTS[screenX][screenY][1] = newObject;
-                      //SCREEN_TILES[screenX][screenY][1].setPassable(false);
 
-                      if (MouseObject.getName().contains("trap")) {
-                        MouseObject.getName().split("_");
-                        mapDB.updateDB(
-                            "update area_tile set Passable = 1 where X = "
-                                + tileX
-                                + " and Y = "
-                                + tileY
-                                + " and Z = "
-                                + PLAYER_Z);
-                        mapDB.updateDB(
-                            "insert into area_trap (TrapId,X,Y,Z) values (1,"
-                                + tileX
-                                + ","
-                                + tileY
-                                + ","
-                                + PLAYER_Z
-                                + ")");
+                        if (BrushSize > 1) {
+                          mapDB.updateDB(
+                              "update area_tile set ObjectId = '"
+                                  + MouseObject.getName()
+                                  + "', Passable = 0 where X = "
+                                  + (tileX + 1)
+                                  + " and Y = "
+                                  + (tileY + 1)
+                                  + " and Z = "
+                                  + PLAYER_Z);
+                        }
+                        //TileObject newObject = new TileObject(MouseObject.getName());
+                        //newObject.setZ(PLAYER_Z);
+                        //SCREEN_OBJECTS[screenX][screenY][1] = newObject;
+                        //SCREEN_TILES[screenX][screenY][1].setPassable(false);
+
+                        if (MouseObject.getName().contains("trap")) {
+                          MouseObject.getName().split("_");
+                          mapDB.updateDB(
+                              "update area_tile set Passable = 1 where X = "
+                                  + tileX
+                                  + " and Y = "
+                                  + tileY
+                                  + " and Z = "
+                                  + PLAYER_Z);
+                          mapDB.updateDB(
+                              "insert into area_trap (TrapId,X,Y,Z) values (1,"
+                                  + tileX
+                                  + ","
+                                  + tileY
+                                  + ","
+                                  + PLAYER_Z
+                                  + ")");
+                        }
                       }
                     }
+                    mapDB.updateDB("END TRANSACTION");
+                  } catch (Exception ex) {
+                    mapDB.updateDB("ROLLBACK TRANSACTION");
                   }
                   mapDB.updateDB("END TRANSACTION");
 
@@ -1021,78 +1020,93 @@ public class BP_EDITOR extends BasicGame {
               loadScreen();
             } else if (DeleteObject) {
               mapDB.updateDB("BEGIN TRANSACTION");
-              for (int i = screenX; i < screenX + BrushSize; i++) {
-                for (int j = screenY; j < screenY + BrushSize; j++) {
-                  tileX = i + PLAYER_X - TILE_HALF_W;
-                  tileY = j + PLAYER_Y - TILE_HALF_H;
+              try {
+                for (int i = screenX; i < screenX + BrushSize; i++) {
+                  for (int j = screenY; j < screenY + BrushSize; j++) {
+                    tileX = i + PLAYER_X - TILE_HALF_W;
+                    tileY = j + PLAYER_Y - TILE_HALF_H;
 
-                  mapDB.updateDB(
-                      "update area_tile set ObjectId = 'None', Passable = 1 where X = "
-                          + tileX
-                          + " and Y = "
-                          + tileY
-                          + " and Z = "
-                          + PLAYER_Z);
-                  mapDB.updateDB(
-                      "delete from area_container where X = "
-                          + tileX
-                          + " and Y = "
-                          + tileY
-                          + " and Z = "
-                          + PLAYER_Z);
-                  mapDB.updateDB(
-                      "delete from area_trap where X = "
-                          + tileX
-                          + " and Y = "
-                          + tileY
-                          + " and Z = "
-                          + PLAYER_Z);
+                    mapDB.updateDB(
+                        "update area_tile set ObjectId = 'None', Passable = 1 where X = "
+                            + tileX
+                            + " and Y = "
+                            + tileY
+                            + " and Z = "
+                            + PLAYER_Z);
+                    mapDB.updateDB(
+                        "delete from area_container where X = "
+                            + tileX
+                            + " and Y = "
+                            + tileY
+                            + " and Z = "
+                            + PLAYER_Z);
+                    mapDB.updateDB(
+                        "delete from area_trap where X = "
+                            + tileX
+                            + " and Y = "
+                            + tileY
+                            + " and Z = "
+                            + PLAYER_Z);
+                  }
                 }
+                mapDB.updateDB("END TRANSACTION");
+              } catch (Exception ex) {
+                mapDB.updateDB("ROLLBACK TRANSACTION");
               }
               mapDB.updateDB("END TRANSACTION");
 
               loadScreen();
             } else if (DeleteTexture) {
               mapDB.updateDB("BEGIN TRANSACTION");
-              for (int i = screenX; i < screenX + BrushSize; i++) {
-                for (int j = screenY; j < screenY + BrushSize; j++) {
-                  tileX = i + PLAYER_X - TILE_HALF_W;
-                  tileY = j + PLAYER_Y - TILE_HALF_H;
+              try {
+                for (int i = screenX; i < screenX + BrushSize; i++) {
+                  for (int j = screenY; j < screenY + BrushSize; j++) {
+                    tileX = i + PLAYER_X - TILE_HALF_W;
+                    tileY = j + PLAYER_Y - TILE_HALF_H;
 
-                  if (SCREEN_TILES[i][j][0].getDoorId() > 0) {
+                    if (SCREEN_TILES[i][j][0].getDoorId() > 0) {
+                      mapDB.updateDB(
+                          "delete from door where Id = " + SCREEN_TILES[i][j][0].getDoorId());
+                    }
+
                     mapDB.updateDB(
-                        "delete from door where Id = " + SCREEN_TILES[i][j][0].getDoorId());
+                        "delete from area_tile where X = "
+                            + tileX
+                            + " and Y = "
+                            + tileY
+                            + " and Z = "
+                            + PLAYER_Z);
                   }
-
-                  mapDB.updateDB(
-                      "delete from area_tile where X = "
-                          + tileX
-                          + " and Y = "
-                          + tileY
-                          + " and Z = "
-                          + PLAYER_Z);
                 }
+                mapDB.updateDB("END TRANSACTION");
+              } catch (Exception ex) {
+                mapDB.updateDB("ROLLBACK TRANSACTION");
               }
               mapDB.updateDB("END TRANSACTION");
               loadScreen();
             } else if (TOGGLE_PASSABLE > 0) {
               mapDB.updateDB("BEGIN TRANSACTION");
-              for (int i = screenX; i < screenX + BrushSize; i++) {
-                for (int j = screenY; j < screenY + BrushSize; j++) {
+              try {
+                for (int i = screenX; i < screenX + BrushSize; i++) {
+                  for (int j = screenY; j < screenY + BrushSize; j++) {
 
-                  tileX = i + PLAYER_X - TILE_HALF_W;
-                  tileY = j + PLAYER_Y - TILE_HALF_H;
+                    tileX = i + PLAYER_X - TILE_HALF_W;
+                    tileY = j + PLAYER_Y - TILE_HALF_H;
 
-                  mapDB.updateDB(
-                      "update area_tile set Passable = "
-                          + (TOGGLE_PASSABLE - 1)
-                          + " where X = "
-                          + tileX
-                          + " and Y = "
-                          + tileY
-                          + " and Z = "
-                          + PLAYER_Z);
+                    mapDB.updateDB(
+                        "update area_tile set Passable = "
+                            + (TOGGLE_PASSABLE - 1)
+                            + " where X = "
+                            + tileX
+                            + " and Y = "
+                            + tileY
+                            + " and Z = "
+                            + PLAYER_Z);
+                  }
                 }
+                mapDB.updateDB("END TRANSACTION");
+              } catch (Exception ex) {
+                mapDB.updateDB("ROLLBACK TRANSACTION");
               }
               mapDB.updateDB("END TRANSACTION");
               loadScreen();
@@ -1164,11 +1178,13 @@ public class BP_EDITOR extends BasicGame {
   }
 
   public static void addTiles(int screenX, int screenY) {
+
     String tileName = MouseTile.getName();
     if (FixEdges && BrushSize>1 && canFixEdges(tileName)) {
 
       String tileType = MouseTile.getType();
       int lastChar = MouseTile.getName().length() - 1;
+
       while (lastChar>0 &&  Character.isUpperCase(tileName.charAt(lastChar-1))) {
         -- lastChar;
       }
@@ -1261,7 +1277,7 @@ public class BP_EDITOR extends BasicGame {
 
                 try {
                   mapDB.update(
-                      "insert or replace into area_tile (Type, Name, X, Y, Z, Passable) values ('"
+                      "insert into area_tile (Type, Name, X, Y, Z, Passable) values ('"
                           + tileType
                           + "', '"
                           + tileName
@@ -1294,8 +1310,7 @@ public class BP_EDITOR extends BasicGame {
           }
         }
         mapDB.updateDB("END TRANSACTION");
-      }
-      catch (Exception ex) {
+      } catch (Exception ex) {
         mapDB.updateDB("ROLLBACK TRANSACTION");
       }
     } else {
@@ -1331,7 +1346,7 @@ public class BP_EDITOR extends BasicGame {
 
               try {
                 mapDB.update(
-                    "insert or replace into area_tile (Type, Name, X, Y, Z, Passable) values ('"
+                    "insert into area_tile (Type, Name, X, Y, Z, Passable) values ('"
                         + tileType
                         + "', '"
                         + tileName
@@ -1363,8 +1378,7 @@ public class BP_EDITOR extends BasicGame {
           }
         }
         mapDB.updateDB("END TRANSACTION");
-      }
-      catch (Exception ex) {
+      } catch (Exception ex) {
         mapDB.updateDB("ROLLBACK TRANSACTION");
       }
     }

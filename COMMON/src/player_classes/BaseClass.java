@@ -57,11 +57,11 @@ public class BaseClass {
 
   public void resetStartStats() {
     startStats.reset();
-    startStats.addValue("SPEED", 100);
-    startStats.addValue("ATTACKSPEED", 100);
-    startStats.addValue("ACCURACY", 90);
-    startStats.addValue("EVASION", 10);
-    startStats.addValue("CRITICAL_HIT", 1);
+    startStats.addValue("SPEED", 80);
+    startStats.addValue("ATTACKSPEED", 75);
+    startStats.addValue("ACCURACY", 50);
+    startStats.addValue("EVASION", 5);
+    startStats.addValue("CRITICAL_HIT", 0);
   }
 
   public boolean addXP(int addedXP) {

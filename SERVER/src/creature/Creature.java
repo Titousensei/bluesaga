@@ -431,6 +431,26 @@ public class Creature implements Mover {
       StatusEffect s = iter.next();
       BonusStats.addStats(s.getStatsModif());
     }
+
+    // Adjust Secondary stats from primary stats
+    // "ACCURACY"       50 + INT/4
+    BonusStats.addValue("ACCURACY", getNewStat("INTELLIGENCE", 4.0f));
+    // "EVASION"         5 + AGI/3
+    BonusStats.addValue("EVASION", getNewStat("AGILITY", 3.0f));
+    // "CRITICAL_HIT"    0 + INT/10
+    BonusStats.addValue("CRITICAL_HIT", getNewStat("INTELLIGENCE", 10.0f));
+    // "ARMOR"           0 + STR/3
+    BonusStats.addValue("ARMOR", getNewStat("STRENGTH", 3.0f));
+    // "AttackSpeed"    75 + AGI
+    BonusStats.addValue("ATTACKSPEED", getNewStat("AGILITY", 1.0f));
+    // "SPEED"          80 + STR/2
+    BonusStats.addValue("SPEED", getNewStat("STRENGTH", 2.0f));
+  }
+
+  private int getNewStat(String name, float div) {
+    int st = Stats.getValue(name);
+    int bst = Stats.getValue(name);
+    return Math.round((st + bst)/div);
   }
 
   public String getBonusStatsAsString() {

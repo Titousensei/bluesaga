@@ -25,9 +25,9 @@ public class WorldMap {
   public WorldMap() {
     /*
     try {
-    	TILE_MAP = new TiledMap("maps/forest.tmx");
+      TILE_MAP = new TiledMap("maps/forest.tmx");
     } catch (SlickException e) {
-    	e.printStackTrace();
+      e.printStackTrace();
     }
     */
 
@@ -54,14 +54,11 @@ public class WorldMap {
    *                                       *
    ****************************************/
   public String getClickedTile(int mouseX, int mouseY, int PlayerX, int PlayerY) {
-    String mouseInfo = "0";
 
     int tileX = PlayerX + (int) Math.floor(mouseX / 50) - 10;
     int tileY = PlayerY - (int) Math.floor(mouseY / 50) + 6;
 
-    mouseInfo = tileX + ";" + tileY;
-
-    return mouseInfo;
+    return tileX + ";" + tileY;
   }
 
   public String getName() {

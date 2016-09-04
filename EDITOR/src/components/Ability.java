@@ -59,9 +59,9 @@ public class Ability {
     Id = newId;
     Ready = true;
 
-    try {
-      ResultSet rs = gameDB.askDB("select * from ability where Id = " + newId);
-
+    try (ResultSet rs = gameDB.askDB(
+      "select * from ability where Id = " + newId)
+    ) {
       while (rs.next()) {
 
         Name = rs.getString("Name");
@@ -97,8 +97,7 @@ public class Ability {
         Active = false;
       }
 
-      rs.close();
-
+      rs.getStatement().close();
     } catch (SQLException e1) {
       e1.printStackTrace();
     }

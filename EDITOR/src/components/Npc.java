@@ -35,12 +35,10 @@ public class Npc {
   public Npc(int newId, Database gameDB) {
 
     Id = newId;
-    try {
-      ResultSet rs =
-          gameDB.askDB(
+    try (ResultSet rs = gameDB.askDB(
               "select npc.GfxName as nGfxName, creature.Size as cSize, npc.Name as nName, npc.X as nX, npc.Y as nY, npc.RecruitQuestId as nRequestQuestid from creature, npc where npc.Id = "
-                  + newId);
-
+                  + newId)
+    ) {
       while (rs.next()) {
         Name = rs.getString("nName");
         GfxName = rs.getString("nGfxName");
@@ -49,8 +47,7 @@ public class Npc {
         RequestQuestId = rs.getInt("nRequestQuestid");
         Size = rs.getInt("cSize");
       }
-
-      rs.close();
+      rs.getStatement().close();
     } catch (SQLException e1) {
       e1.printStackTrace();
     }

@@ -221,11 +221,9 @@ public class Creature {
 
     Aggro = false;
 
-    try {
-      ResultSet rs;
-
-      rs = BP_EDITOR.gameDB.askDB("select * from creature where Id = " + CreatureId);
-
+    try (ResultSet rs = BP_EDITOR.gameDB.askDB(
+        "select * from creature where Id = " + CreatureId)
+    ) {
       while (rs.next()) {
 
         Name = rs.getString("Name");
@@ -245,8 +243,7 @@ public class Creature {
         AggroRange = rs.getInt("AggroRange");
       }
 
-      rs.close();
-
+      rs.getStatement().close();
     } catch (SQLException e1) {
       e1.printStackTrace();
     }
@@ -321,55 +318,6 @@ public class Creature {
   public void draw(Graphics g, int x, int y) {
     if (!hidden) {
 
-      /*
-      if(!Dead && ATTACKED){
-      	targetIcon.draw(x,y+15);
-      }
-
-
-      if(!SpecialType.equals("no") && !Dead){
-      	Color specialColor = new Color(255,255,255,255);
-
-      	if(SpecialType.equals("Furious")){
-      		specialColor = new Color(255,66,52,120);
-      	}else if(SpecialType.equals("Cursed")){
-      		specialColor = new Color(188,0,255,120);
-      	}else if(SpecialType.equals("Rampaging")){
-      		specialColor = new Color(95,255,60,120);
-      	}
-      	special_glow.draw(x-13 - (SizeWidth-1)*20, y-12 - (SizeHeight-1)*25, SizeWidth*75, SizeHeight*75, specialColor);
-      }
-
-
-      if(Dead){
-      	AnimationDeathY += 0.5;
-      	if(AnimationDeathY > 120){
-      		hidden = true;
-      	}
-      }
-
-      for(int i = 0; i < StatusEffects.size(); i++){
-      	if(StatusEffects.get(i).isActive()){
-      		StatusEffects.get(i).getAnimation().draw(x-50,y-SizeHeight*50);
-      	}else{
-      		StatusEffects.remove(i);
-      	}
-      }
-
-      if(ShowLevelUp){
-      	if(animationUseAbility == null){
-      		ServerMessage.printMessage("ANIMATION LEVEL UP IS NULL!");
-      	}else{
-      		animationUseAbility.draw(x, y-40,new Color(255,255,135,200));
-      	}
-      }else if(useAbilityAnimate){
-      	animationUseAbility.draw(x, y-40, abilityColor);
-      }
-
-      if(ShowLevelUp){
-      	levelUpLabel.draw(x-20,y-(SizeHeight-1)*50 - 60);
-      }
-      */
       if (!Dead) {
         Shadow.draw(
             x - (SizeWidth - 1) * 25, y + 5, SizeWidth * 50, 50, new Color(255, 255, 255, 255));
@@ -432,47 +380,6 @@ public class Creature {
           HeadImage.draw(x + 75 + HeadX, y - 50 - HeadY + dY, -50, 50, animationColor);
         }
       }
-      /*
-      if(animationDamage){
-      	if(IsCriticalHit){
-      		CriticalHitAnimation.draw(x-30,y-20);
-      	}
-      	try {
-      		damageFont.loadGlyphs();
-      	} catch (SlickException e) {
-      		e.printStackTrace();
-      	}
-      	g.setFont(damageFont);
-
-      	if(!MissedHit){
-      		g.setColor(new Color(255,255,255));
-      		g.drawString(Integer.toString(lastHitDamage), x+20, y-AnimationDamageItr);
-      	}else {
-      		g.setColor(new Color(210,75,75));
-      		g.drawString("MISS", x, y-AnimationDamageItr);
-      	}
-
-      	if(hitType != "" && lastHitDamage > 0 && AnimationDamageItr < 40){
-      		hitImage.draw(x-15,y-10);
-      	}
-
-      	AnimationDamageItr++;
-      	if(AnimationDamageItr > 100){
-      		animationDamage = false;
-      		IsCriticalHit = false;
-      	}
-
-      }
-
-
-      if(Aggro){
-      	//aggroBubble.draw(x,y-(Size-1)*50 - 20);
-      	g.setColor(new Color(255, 85, 85, 255));
-      	g.fillRect(x, y, getHealthBarWidth(50), 5);
-      	g.setColor(new Color(255, 255, 255, 255));
-      	g.drawRect(x, y, 50, 5);
-      }
-      */
     }
   }
 

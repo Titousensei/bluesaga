@@ -5,18 +5,19 @@ import java.sql.SQLException;
 import java.util.Vector;
 
 import org.newdawn.slick.Color;
+import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import components.Monster;
 import game.BP_EDITOR;
+import game.EditColors;
 import gui.MonsterButton;
 
-public class MonsterMenu {
+public class MonsterMenu extends BaseMenu {
 
   private Vector<MonsterButton> Buttons;
   private int X;
   private int Y;
-  private boolean Active = false;
   private Vector<Monster> MONSTERS;
 
   private Image deleteIcon;
@@ -26,11 +27,11 @@ public class MonsterMenu {
     Y = y;
 
     Buttons = new Vector<MonsterButton>();
-
     MONSTERS = new Vector<Monster>();
+    load();
   }
 
-  public void load() {
+  private void load() {
 
     deleteIcon = BP_EDITOR.GFX.getSprite("gui/editor/deleteButton").getImage();
 
@@ -39,43 +40,52 @@ public class MonsterMenu {
     int x = 0;
     int y = 0;
 
-    ResultSet rs = BP_EDITOR.gameDB.askDB("select Id from creature order by Id asc");
-
     Buttons.add(new MonsterButton(X + x, Y + y, null));
-    x += 50;
+    x += 15;
 
-    try {
+    try (ResultSet rs = BP_EDITOR.gameDB.askDB(
+        "select Id from creature order by Id asc")
+    ) {
       while (rs.next()) {
         Monster newMonster = new Monster(rs.getInt("Id"), 0, 0, "no");
-        MonsterButton newButton = new MonsterButton(X + x, Y + 20 + y, newMonster);
+        MonsterButton newButton = new MonsterButton(X + x, Y + 55 + y, newMonster);
 
         Buttons.add(newButton);
 
-        y += 15;
-        if (y > 440) {
-          x += 140;
+        y += 32;
+        if (y > 425) {
+          x += 40;
           y = 0;
         }
       }
+      rs.getStatement().close();
     } catch (SQLException e) {
       e.printStackTrace();
     }
   }
 
-  public void draw(Graphics g, int mouseX, int mouseY) {
-    if (Active) {
-      g.setColor(new Color(238, 82, 65, 255));
-      g.fillRect(X, Y, 500, 500);
+  @Override
+  public void draw(Graphics g, GameContainer app, int mouseX, int mouseY) {
+    g.setColor(EditColors.MENU);
+    g.fillRect(X, Y, 500, 515);
 
-      g.setColor(new Color(255, 255, 255, 255));
+    g.setColor(EditColors.WHITE);
 
-      g.setFont(BP_EDITOR.FONTS.size12);
-      for (MonsterButton button : Buttons) {
-        if (button.getMonster() == null) {
-          deleteIcon.draw(X, Y);
-        }
-        button.draw(g, mouseX, mouseY);
+    g.setFont(BP_EDITOR.FONTS.size12);
+    MonsterButton hover = null;
+    for (MonsterButton button : Buttons) {
+      if (button.getMonster() == null) {
+        deleteIcon.draw(X, Y);
       }
+      button.draw(g, mouseX, mouseY);
+      if (button.clicked(mouseX, mouseY)) {
+        hover = button;
+      }
+    }
+
+    if (hover!=null && hover.getMonster()!=null) {
+      g.setColor(EditColors.WHITE);
+      g.drawString(hover.getMonster().getName(), X+70, Y+10);
     }
   }
 
@@ -91,18 +101,6 @@ public class MonsterMenu {
       buttonIndex++;
     }
     return 1000;
-  }
-
-  public void toggle() {
-    if (Active) {
-      Active = false;
-    } else {
-      Active = true;
-    }
-  }
-
-  public boolean isActive() {
-    return Active;
   }
 
   public Monster getMonster(int tileIndex) {

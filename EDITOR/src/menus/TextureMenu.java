@@ -7,6 +7,7 @@ import java.util.Vector;
 import map.Tile;
 
 import org.newdawn.slick.Color;
+import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 
 import game.BP_EDITOR;
@@ -14,7 +15,7 @@ import game.EditorSettings;
 import game.Database;
 import gui.TextureButton;
 
-public class TextureMenu {
+public class TextureMenu extends BaseMenu {
 
   private Vector<TextureButton> Buttons;
   private int X;
@@ -30,6 +31,8 @@ public class TextureMenu {
 
     Buttons = new Vector<TextureButton>();
     PathHistory = new Vector<String>();
+
+    load();
   }
 
   public void goBack() {
@@ -45,7 +48,7 @@ public class TextureMenu {
     ActivePath += path;
   }
 
-  public void load() {
+  private void load() {
 
     Buttons.clear();
 
@@ -100,7 +103,8 @@ public class TextureMenu {
     }
   }
 
-  public void draw(Graphics g, int mouseX, int mouseY) {
+  @Override
+  public void draw(Graphics g, GameContainer app, int mouseX, int mouseY) {
     if (Active) {
       g.setColor(new Color(238, 82, 65, 255));
       g.fillRect(X, Y, 400, 500);
@@ -138,18 +142,6 @@ public class TextureMenu {
       buttonIndex++;
     }
     return 1000;
-  }
-
-  public void toggle() {
-    if (Active) {
-      Active = false;
-    } else {
-      Active = true;
-    }
-  }
-
-  public boolean isActive() {
-    return Active;
   }
 
   public Tile getTile(int tileIndex) {

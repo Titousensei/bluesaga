@@ -124,11 +124,11 @@ public class Config {
   }
 
   public static <T> void configure(Class<T> configClass, String path) {
+    if (!path.endsWith("/")) {
+      path += '/';
+    }
     String configFile = path + configClass.getSimpleName() + ".cfg";
     try {
-      if (!path.endsWith("/")) {
-        path += '/';
-      }
       Map<String, String> config = readConfig(configFile);
       config.put("PATH", path);
       assignConfig(config, configClass);

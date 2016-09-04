@@ -25,6 +25,7 @@ public class Sprite {
       int k = 0;
       for (int i = 0; i < nrFrames; i++) {
         graphics[k] = new Image(filename + "_" + i + ".png");
+        graphics[k].setFilter(Image.FILTER_NEAREST);
         k++;
       }
 
@@ -32,6 +33,7 @@ public class Sprite {
         if (nrFrames > 2) {
           for (int i = nrFrames - 2; i > 0; i--) {
             graphics[k] = new Image(filename + "_" + i + ".png");
+            graphics[k].setFilter(Image.FILTER_NEAREST);
             k++;
           }
         }
@@ -53,6 +55,7 @@ public class Sprite {
     Animated = false;
     try {
       image = new Image(filename + ".png");
+      image.setFilter(Image.FILTER_NEAREST);
     } catch (SlickException e) {
       // TODO Auto-generated catch block
       e.printStackTrace();

@@ -5,6 +5,11 @@ import java.util.HashMap;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Image;
+
+import game.EditColors;
+
 public class Monster extends Creature {
 
   private Timer respawnTimer;
@@ -22,6 +27,8 @@ public class Monster extends Creature {
 
   private Timer LevelUpTimer;
 
+  private Image thumb;
+
   public Monster(int creatureId, int newX, int newY, String specialType) {
     super(creatureId, newX, newY);
 
@@ -34,6 +41,8 @@ public class Monster extends Creature {
     //ServerMessage.printMessage("MAGIC: "+getStat("MAGIC"));
 
     respawnTimer = new Timer();
+
+    thumb = animation.getImage(0).getScaledCopy(32, 32);
 
     //ServerMessage.printMessage("monster stats - str:"+Stats.get("STRENGTH")+" dex:"+Stats.get("DEXTERITY")+" mag:"+Stats.get("MAGIC"));
   }
@@ -61,20 +70,6 @@ public class Monster extends Creature {
   }
 
   public Ability useRandomAbility() {
-    /*
-    ArrayList<AbilityOrb> ActiveAbilities = new ArrayList<AbilityOrb>();
-
-    for(int i = 0; i < nrAbilities; i++){
-    	if(!Abilities.get(i).isPassive()){
-    		ActiveAbilities.add(Abilities.get(i));
-    	}
-    }
-
-    if(ActiveAbilities.size() > 0){
-    	int random = randomGenerator.nextInt() % ActiveAbilities.size();
-    	return ActiveAbilities.get(random);
-    }
-    */
     return null;
   }
 
@@ -84,6 +79,11 @@ public class Monster extends Creature {
 
   public int getMobLevel() {
     return MobLevel;
+  }
+
+  public void drawSmall(Graphics g, int x, int y) {
+
+    thumb.draw(x, y);
   }
 
   public void respawn(int SpawnX, int SpawnY) {

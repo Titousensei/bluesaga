@@ -1,14 +1,12 @@
 package gui;
 
 import game.BP_EDITOR;
+import game.EditColors;
 import graphics.Sprite;
 import map.Tile;
 
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
-
-import static game.BP_EDITOR.BLACK;
-import static game.BP_EDITOR.WHITE;
 
 public class TextureButton {
 
@@ -60,8 +58,7 @@ public class TextureButton {
       String tileType = folderName[0];
 
       TILE = new Tile(x, y, 0);
-      boolean passable = BP_EDITOR.isTilePassable(TILE);
-      TILE.setType(tileType, name, passable);
+      TILE.setType(tileType, name);
       TILE.setMENU(true);
     }
     ButtonImage = BP_EDITOR.GFX.getSprite(imagePath);
@@ -78,28 +75,28 @@ public class TextureButton {
 
     if (type.equals("Folder")) {
       ButtonImage.draw(X, Y);
-      g.setColor(BLACK);
+      g.setColor(EditColors.BLACK);
       g.setFont(BP_EDITOR.FONTS.size8);
       g.drawString(name, X + 10, Y + 30);
     } else if (type.equals("Back")) {
       ButtonImage.draw(X, Y);
-      g.setColor(BLACK);
+      g.setColor(EditColors.BLACK);
       g.setFont(BP_EDITOR.FONTS.size8);
       g.drawString("..", X + 10, Y + 30);
     } else if (type.equals("Delete")) {
       ButtonImage.draw(X, Y);
       ButtonImage.draw(X, Y);
-      g.setColor(WHITE);
+      g.setColor(EditColors.WHITE);
       g.drawRect(X, Y, width, height);
     } else {
       ButtonImage.draw(X, Y);
-      g.setColor(WHITE);
+      g.setColor(EditColors.WHITE);
       g.drawRect(X, Y, width, height);
       if (BP_EDITOR.canFixEdges(name)) {
-        g.setColor(BLACK);
+        g.setColor(EditColors.BLACK);
         g.setFont(BP_EDITOR.FONTS.size12bold);
         g.drawString("F", X + 7, Y + 7);
-        g.setColor(WHITE);
+        g.setColor(EditColors.WHITE);
         g.setFont(BP_EDITOR.FONTS.size12bold);
         g.drawString("F", X + 5, Y + 5);
       }

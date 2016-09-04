@@ -4,13 +4,14 @@ import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import components.Monster;
+import game.EditColors;
 
 public class MonsterButton {
 
   private int X = 0;
   private int Y = 0;
-  private int width = 120;
-  private int height = 15;
+  private int width = 40;
+  private int height = 32;
 
   private Monster MONSTER;
 
@@ -35,12 +36,12 @@ public class MonsterButton {
 
   public void draw(Graphics g, int mouseX, int mouseY) {
     if (MONSTER != null) {
-      g.setColor(new Color(255, 255, 255));
-      g.drawString(MONSTER.getName(), X, Y);
+      g.setColor(EditColors.WHITE);
+      MONSTER.drawSmall(g, X, Y);
     }
 
     if (X < mouseX && X + width > mouseX && Y < mouseY && Y + height > mouseY) {
-      g.setColor(new Color(255, 255, 255, 100));
+      g.setColor(EditColors.TRANSPARENT);
       g.fillRect(X, Y, width, height);
     }
   }

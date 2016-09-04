@@ -1,6 +1,7 @@
 package map;
 
 import game.BP_EDITOR;
+import game.EditColors;
 import gui.Font;
 
 import org.newdawn.slick.Color;
@@ -9,6 +10,7 @@ import org.newdawn.slick.Graphics;
 import components.Creature;
 
 public class Tile {
+  private String id;
   private int X;
   private int Y;
   private int Z;
@@ -21,22 +23,20 @@ public class Tile {
 
   private Creature Occupant;
 
-  private int AreaEffectId = 0;
+  private String AreaEffectId = null;
+  private String doorId = null;
+  private String destId = null;
+  private String TriggerId = null;
+  private String TrapId = null;
 
-  // DOOR
-
-  private int doorId;
-  private int graphicsNr;
-  private int areaId;
-  private int entranceX;
-  private int entranceY;
+  private Coords doorCoords = null;
+  private Coords destCoords = null;
 
   private boolean MENU = false;
 
   // CONTAINER
   private boolean LootBag = false;
 
-  private int TriggerId = 0;
 
   public Tile(int x, int y, int z) {
     X = x;
@@ -44,16 +44,15 @@ public class Tile {
     setZ(z);
   }
 
-  public boolean setType(String type, String newName, boolean passable) {
+  public boolean setType(String type, String newName) {
     boolean changed = true;
 
     if (newName.contains("_")) {
       String fileName[] = newName.split("_");
       newName = fileName[0];
     }
-    TriggerId = 0;
-
-    AreaEffectId = 0;
+    TriggerId = null;
+    AreaEffectId = null;
 
     if (!type.equals("none")
         && BP_EDITOR.GFX.getSprite("textures/" + type + "/" + newName) == null) {
@@ -69,7 +68,7 @@ public class Tile {
 
         //isDoor = false;
 
-        Passable = passable;
+        Passable = isTilePassable();
 
         if (Type.equals("none")) {
           Animated = false;
@@ -100,26 +99,46 @@ public class Tile {
   }
 
   public void draw(Graphics g, int x, int y) {
-    int alpha = 255;
 
-    if (!Type.equals("none") && !MENU) {
-      alpha = 255 - Math.abs((Z - BP_EDITOR.PLAYER_Z) * 245);
-    }
-
-    if (Type.equals("none")) {
-      //BP_EDITOR.GFX.getSprite("textures/cave/cave0").draw(x, y);
-    } else {
+    if (!Type.equals("none")) {
       BP_EDITOR
           .GFX
           .getSprite("textures/" + Type + "/" + Name)
-          .draw(x, y, new Color(255, 255, 255, alpha));
-      if (doorId > 0 && Z == BP_EDITOR.PLAYER_Z) {
-        g.setColor(new Color(0, 0, 255, 100));
+          .draw(x, y, EditColors.WHITE);
+    }
+  }
+
+  public void drawOverlay(Graphics g, int x, int y) {
+
+    if (!"none".equals(Type) && Z == BP_EDITOR.PLAYER_Z) {
+      if (doorId != null) {
+        if (doorCoords != null) {
+          g.setColor(EditColors.DEST_BG);
+        } else {
+          g.setColor(EditColors.DOOR_BG);
+        }
         g.fillRect(x, y, 50, 50);
-        g.setColor(new Color(0, 0, 255));
         g.setFont(Font.size12);
-        int textWidth = Font.size12.getWidth("" + doorId);
-        g.drawString("" + doorId, x - textWidth / 2 + 25, y + 20);
+        g.setColor(EditColors.BLACK);
+        g.drawString(doorId, x + 3, y + 3);
+        g.setColor(EditColors.DOOR_TXT);
+        g.drawString(doorId, x + 2, y + 2);
+        if (destId!=null) {
+          String destStr = destId + ">";
+          g.setColor(EditColors.BLACK);
+          g.drawString(destStr, x + 3, y + 31);
+          g.setColor(EditColors.DOOR_TXT);
+          g.drawString(destStr, x + 2, y + 30);
+        }
+      } else if (destId != null) {
+        g.setColor(EditColors.DEST_BG);
+        g.fillRect(x, y, 50, 50);
+        g.setFont(Font.size12);
+        String destStr = destId + ">";
+        g.setColor(EditColors.BLACK);
+        g.drawString(destStr, x + 3, y + 31);
+        g.setColor(EditColors.DEST_TXT);
+        g.drawString(destStr, x + 2, y + 30);
       }
     }
 
@@ -128,30 +147,34 @@ public class Tile {
     }
 
     if (BP_EDITOR.SHOW_PASSABLE && !Passable && !Type.equals("none") && !MENU) {
-      g.setColor(new Color(255, 0, 0, alpha - 200));
+      g.setColor(EditColors.IMPASSABLE);
       g.fillRect(x, y, 50, 50);
     }
 
-    if (BP_EDITOR.PLAYER_Z == Z) {
-      if (getAreaEffectId() > 0) {
-        g.setColor(new Color(255, 104, 235));
-        g.drawRect(x, y, 49, 49);
-        g.setFont(Font.size12bold);
-        g.drawString("" + getAreaEffectId(), x + 20, y + 20);
-      }
-    }
-
-    if (getTriggerId() > 0) {
-      g.setColor(new Color(0, 255, 0));
+    if (BP_EDITOR.PLAYER_Z == Z && AreaEffectId != null) {
+      g.setColor(EditColors.AREA_EFFECT);
       g.drawRect(x, y, 49, 49);
       g.setFont(Font.size12bold);
-      g.drawString("" + getTriggerId(), x + 20, y + 20);
+      g.setColor(EditColors.BLACK);
+      g.drawString(AreaEffectId, x + 21, y + 3);
+      g.setColor(EditColors.AREA_EFFECT);
+      g.drawString(AreaEffectId, x + 20, y + 2);
+    }
+
+    if (TriggerId != null) {
+      g.setColor(EditColors.TRIGGER);
+      g.drawRect(x, y, 49, 49);
+      g.setFont(Font.size12bold);
+      g.setColor(EditColors.BLACK);
+      g.drawString(">" + TrapId, x + 3, y + 3);
+      g.setColor(EditColors.TRIGGER);
+      g.drawString(">" + TrapId, x + 2, y + 2);
     }
   }
 
   /****************************************
    *                                      *
-   *         CONTAINER		            *
+   *         GETTER / SETTER              *
    *                                      *
    *                                      *
    ****************************************/
@@ -163,40 +186,16 @@ public class Tile {
     return LootBag;
   }
 
-  /****************************************
-   *                                      *
-   *         DOOR DATA		            *
-   *                                      *
-   *                                      *
-   ****************************************/
-  public int getGraphicsNr() {
-    return graphicsNr;
-  }
-
-  public int getAreaId() {
-    return areaId;
-  }
-
-  public int getEntranceX() {
-    return entranceX;
-  }
-
-  public int getEntranceY() {
-    return entranceY;
-  }
-
-  /****************************************
-   *                                      *
-   *         GETTER / SETTER				*
-   *                                      *
-   *                                      *
-   ****************************************/
   public boolean isAnimated() {
     return Animated;
   }
 
   public void setOccupant(Creature m) {
     Occupant = m;
+  }
+
+  public Creature getOccupant() {
+    return Occupant;
   }
 
   public String getName() {
@@ -211,8 +210,36 @@ public class Tile {
     return Type;
   }
 
-  public int getDoorId() {
+  public String getDoorId() {
     return doorId;
+  }
+
+  public String getDestId() {
+    return destId;
+  }
+
+  public Coords getDoorCoords() {
+    return doorCoords;
+  }
+
+  public Coords getDestCoords() {
+    return destCoords;
+  }
+
+  public void setDoorCoords(Coords value) {
+    doorCoords = value;
+  }
+
+  public void setDestCoords(Coords value) {
+    destCoords = value;
+  }
+
+  public String getAreaEffectId() {
+    return AreaEffectId;
+  }
+
+  public String getTrapId() {
+    return TrapId;
   }
 
   public boolean isPassable() {
@@ -231,18 +258,22 @@ public class Tile {
     return Y;
   }
 
-  /*
-  public boolean isDoor(){
-  	return isDoor;
+  public void setDoorId(String id) {
+    if (id == null || "0".equals(id)) {
+      doorId = null;
+    }
+    else {
+      doorId = id;
+    }
   }
 
-  public void setDoor(boolean newStatus){
-  	isDoor = newStatus;
-  }
-  */
-
-  public void setDoorId(int newDoorId) {
-    doorId = newDoorId;
+  public void setDestId(String id) {
+    if (id == null || "0".equals(id)) {
+      destId = null;
+    }
+    else {
+      destId = id;
+    }
   }
 
   public int getZ() {
@@ -253,27 +284,103 @@ public class Tile {
     Z = z;
   }
 
+  public void setId(String value) {
+    id = value;
+  }
+
+  public String getId() {
+    return id;
+  }
+
   public boolean isMENU() {
     return MENU;
   }
 
-  public void setMENU(boolean mENU) {
-    MENU = mENU;
+  public void setMENU(boolean value) {
+    MENU = value;
   }
 
-  public int getAreaEffectId() {
-    return AreaEffectId;
+  public void setAreaEffectId(String id) {
+    if (id == null || "0".equals(id)) {
+      AreaEffectId = null;
+    }
+    else {
+      AreaEffectId = id;
+    }
   }
 
-  public void setAreaEffectId(int areaEffectId) {
-    AreaEffectId = areaEffectId;
+  public void setTrapId(String id) {
+    TrapId = id;
   }
 
-  public int getTriggerId() {
-    return TriggerId;
+  public void setTriggerId(String id) {
+    if (id == null || "0".equals(id)) {
+      TriggerId = null;
+    }
+    else {
+      TriggerId = id;
+    }
   }
 
-  public void setTriggerId(int triggerId) {
-    TriggerId = triggerId;
+  public void clear() {
+    setType("none", "none");
+    setPassable(false);
+    setOccupant(null);
+    clearIds();
+  }
+
+  public void clearIds() {
+    setTrapId(null);
+    setTriggerId(null);
+
+    setAreaEffectId(null);
+    setDestCoords(null);
+    setDestId(null);
+    setDoorCoords(null);
+    setDoorId(null);
+  }
+
+  public static boolean isInteger(String s) {
+    try {
+      Integer.parseInt(s);
+    } catch (NumberFormatException e) {
+      return false;
+    }
+    // only got here if we didn't return false
+    return true;
+  }
+
+  public boolean isTilePassable() {
+    boolean ret = true;
+
+    if (!isInteger(Name)) {
+      ret = false;
+    }
+
+    if (Type.equals("beach")) {
+      ret = true;
+    }
+
+    if (Type.equals("none")) {
+      ret = false;
+    }
+
+    if (Name.contains("Stairs")) {
+      ret = true;
+    }
+
+    if (Type.contains("patch")) {
+      ret = true;
+    }
+
+    if (Name.contains("bridge")) {
+      ret = true;
+    }
+
+    if (Type.equals("shallow")) {
+      ret = true;
+    }
+
+    return ret;
   }
 }

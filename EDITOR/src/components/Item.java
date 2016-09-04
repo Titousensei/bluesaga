@@ -38,9 +38,9 @@ public class Item {
 
     equipable = false;
 
-    try {
-      ResultSet rs = gameDB.askDB("select * from item where Id = " + newId);
-
+    try (ResultSet rs = gameDB.askDB(
+        "select * from item where Id = " + newId);
+    ) {
       while (rs.next()) {
         Name = rs.getString("Name");
         Type = rs.getString("Type");
@@ -99,7 +99,7 @@ public class Item {
           AbilitySlots.put(i, new AbilitySlot());
         }
       }
-      rs.close();
+      rs.getStatement().close();
     } catch (SQLException e1) {
       e1.printStackTrace();
     }

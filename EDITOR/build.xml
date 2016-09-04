@@ -29,4 +29,30 @@
     <delete dir="${build}"/>
   </target>
 
+  <target name="dist">
+    <manifestclasspath property="manifest_cp" jarfile="editor.jar">
+      <classpath>
+        <pathelement path="${include}"/>
+      </classpath>
+    </manifestclasspath>
+    <jar destfile="editor.jar" basedir=".">
+      <include name="${build}"/>
+      <manifest>
+        <attribute name="Main-Class" value="game.BP_EDITOR"/>
+        <attribute name="Class-Path" value="${manifest_cp}"/>
+      </manifest>
+    </jar>
+  </target>
+
+  <target name="makerun">
+    <javac srcdir="exec" destdir="exec" debug="on" includeantruntime='false' />
+    <jar destfile="run.jar" basedir="exec">
+      <include name="Run.class"/>
+      <manifest>
+        <attribute name="Main-Class" value="Run"/>
+      </manifest>
+    </jar>
+    <chmod file="run.jar" perm="ugo+rx"/>
+  </target>
+
 </project>

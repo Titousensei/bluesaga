@@ -1,6 +1,7 @@
 package map;
 
 import game.BP_EDITOR;
+import game.EditColors;
 import graphics.Sprite;
 import gui.Font;
 
@@ -18,7 +19,7 @@ public class TileObject {
   private int Z;
   private boolean MENU = false;
 
-  private int TrapId = 0;
+  private String TrapId = null;
 
   public static boolean transparent = false;
 
@@ -38,26 +39,20 @@ public class TileObject {
   }
 
   public void draw(Graphics g, int x, int y) {
-    int alpha = transparent ? 100 : 255;
+    Color alpha = transparent ? EditColors.TRANSPARENT : EditColors.WHITE;
 
-    /*
-    if(!MENU){
-      int diffZ = Z-BP_EDITOR.PLAYER_Z;
-      if(diffZ < 0){
-        diffZ = 0;
-      }
-      alpha = 255 - diffZ*200;
-    }
-    */
     if (MENU || BP_EDITOR.PLAYER_Z == Z) {
-      graphics.draw(x - (width - 1) * 25, y - ((height - 1) * 50), new Color(255, 255, 255, alpha));
+      graphics.draw(x - (width - 1) * 25, y - ((height - 1) * 50), alpha);
     }
 
-    if (getTrapId() > 0) {
-      g.setColor(new Color(255, 0, 0));
+    if (TrapId != null) {
+      g.setColor(EditColors.RED);
       g.drawRect(x, y, 49, 49);
       g.setFont(Font.size12bold);
-      g.drawString("" + getTrapId(), x + 20, y + 20);
+      g.setColor(EditColors.BLACK);
+      g.drawString(TrapId, x + 21, y + 21);
+      g.setColor(EditColors.RED);
+      g.drawString(TrapId, x + 20, y + 20);
     }
   }
 
@@ -93,11 +88,11 @@ public class TileObject {
     return MENU;
   }
 
-  public int getTrapId() {
+  public String getTrapId() {
     return TrapId;
   }
 
-  public void setTrapId(int trapId) {
+  public void setTrapId(String trapId) {
     TrapId = trapId;
   }
 }

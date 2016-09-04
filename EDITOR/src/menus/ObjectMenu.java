@@ -7,6 +7,7 @@ import java.util.Vector;
 import map.TileObject;
 
 import org.newdawn.slick.Color;
+import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 
@@ -15,12 +16,11 @@ import game.EditorSettings;
 import game.Database;
 import gui.ObjectButton;
 
-public class ObjectMenu {
+public class ObjectMenu extends BaseMenu {
 
   private Vector<ObjectButton> Buttons;
   private int X;
   private int Y;
-  private boolean Active = false;
   private String ActivePath = "objects/";
   private Vector<String> PathHistory;
 
@@ -32,20 +32,10 @@ public class ObjectMenu {
 
     Buttons = new Vector<ObjectButton>();
     PathHistory = new Vector<String>();
+    load();
   }
 
-  public void load() {
-    Buttons.clear();
-    /*
-        int x = 0;
-        int y = 0;
-
-        Buttons.add(new ObjectButton(X+x,Y+y,"delete"));
-        x+=50;
-        Buttons.add(new ObjectButton(X+x,Y+y,"barrel"));
-        x+=50;
-        Buttons.add(new ObjectButton(X+x,Y+y,"chest"));
-    */
+  private void load() {
 
     Buttons.clear();
 
@@ -110,19 +100,18 @@ public class ObjectMenu {
     }
   }
 
-  public void draw(Graphics g, int mouseX, int mouseY) {
-    if (Active) {
-      g.setColor(new Color(238, 82, 65, 255));
-      g.fillRect(X, Y, 300, 500);
+  @Override
+  public void draw(Graphics g, GameContainer app, int mouseX, int mouseY) {
+    g.setColor(new Color(238, 82, 65, 255));
+    g.fillRect(X, Y, 300, 500);
 
-      g.setColor(new Color(255, 255, 255, 255));
+    g.setColor(new Color(255, 255, 255, 255));
 
-      for (ObjectButton button : Buttons) {
-        button.draw(g, mouseX, mouseY);
-      }
-      g.setColor(new Color(255, 255, 255, 255));
-      g.drawRect(X, Y, 300, 500);
+    for (ObjectButton button : Buttons) {
+      button.draw(g, mouseX, mouseY);
     }
+    g.setColor(new Color(255, 255, 255, 255));
+    g.drawRect(X, Y, 300, 500);
   }
 
   public TileObject getClickedTileObject(int mouseX, int mouseY) {
@@ -170,17 +159,5 @@ public class ObjectMenu {
     PathHistory.add(ActivePath);
 
     ActivePath += path;
-  }
-
-  public void toggle() {
-    if (Active) {
-      Active = false;
-    } else {
-      Active = true;
-    }
-  }
-
-  public boolean isActive() {
-    return Active;
   }
 }

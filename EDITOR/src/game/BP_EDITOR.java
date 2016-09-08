@@ -8,10 +8,6 @@ import utils.Config;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
-import java.io.File;
-import java.io.IOException;
-import java.awt.image.BufferedImage;
-import javax.imageio.ImageIO;
 
 import map.Coords;
 import map.Tile;
@@ -119,7 +115,7 @@ public class BP_EDITOR extends BasicGame {
 
   private int helpY;
 
-  private static String loadPng = null;
+  private static MapImporter loadPng = null;
 
   public BP_EDITOR() {
     super("Blue Saga Map Editor");
@@ -181,58 +177,12 @@ public class BP_EDITOR extends BasicGame {
     }
 
     if (loadPng != null) {
-      importPng();
+      loadPng.load();
     }
 
     loadScreen();
 
     loading();
-  }
-
-  private void importPng() {
-    System.out.println("Importing PNG: " + loadPng);
-    int z = 0;
-    try (ResultSet mapInfo = mapDB.askDB("select max(Z) from area_tile")
-    ) {
-      if (mapInfo.next()) {
-        z = mapInfo.getInt("max(Z)") + 1;
-      }
-      mapInfo.getStatement().close();
-    }
-    catch (SQLException ex) {
-      throw new RuntimeException(ex);
-    }
-
-    int[] hist = new int[128];
-    Map<Integer, String> hex = new HashMap<>();
-
-    BufferedImage img;
-    try {
-      img = ImageIO.read(new File(loadPng));
-    }
-    catch (IOException ex) {
-      throw new RuntimeException(ex);
-    }
-    int max_x = img.getWidth();
-    int max_y = img.getHeight();
-    for (int y = 0 ; y<max_y ; y ++) {
-      for (int x = 0 ; x<max_x ; x ++) {
-        int rgb = img.getRGB(x, y);
-        int r = (rgb & 0x00FF0000) >> 16;
-        int g = (rgb & 0x0000FF00) >> 8;
-        int b = (rgb & 0x000000FF);
-        int c = ((r & 0b11000000) >>> 1) | ((g & 0b11100000) >>> 3) | ((b & 0b1100000000) >>> 6);
-        hist[c] ++;
-        String h = Integer.toHexString(rgb & 0x00FFFFFF);
-        hex.put(c,h);
-      }
-    }
-
-    for (int i = 0; i<128 ; i++) {
-      if (hist[i]>0) {
-        System.out.println(i + " " + hex.get(i) + ": " + hist[i]);
-      }
-    }
   }
 
   public void loadMiniMap() {
@@ -913,6 +863,9 @@ public class BP_EDITOR extends BasicGame {
           MouseTile = null;
           INPUT.clearKeyPressedRecord();
           return;
+        } else if (clickButtonIndex < 1000) {
+          INPUT.clearKeyPressedRecord();
+          return;
         }
       } else if (activeMenu == MONSTER_MENU) {
         int clickButtonIndex = MONSTER_MENU.click(mouseX, mouseY);
@@ -927,6 +880,9 @@ public class BP_EDITOR extends BasicGame {
           MouseMonster = null;
           INPUT.clearKeyPressedRecord();
           return;
+        } else if (clickButtonIndex < 1000) {
+          INPUT.clearKeyPressedRecord();
+          return;
         }
       } else if (activeMenu == OBJECT_MENU) {
         int clickButtonIndex = OBJECT_MENU.click(mouseX, mouseY, mapDB);
@@ -938,6 +894,9 @@ public class BP_EDITOR extends BasicGame {
         } else if (clickButtonIndex == 999) {
           currentMode = Mode.DELETE_OBJECT;
           MouseObject = null;
+          INPUT.clearKeyPressedRecord();
+          return;
+        } else if (clickButtonIndex < 1000) {
           INPUT.clearKeyPressedRecord();
           return;
         }
@@ -1588,7 +1547,7 @@ public class BP_EDITOR extends BasicGame {
     }
 
     if (args.length > 1) {
-      loadPng = args[1];
+      loadPng = new MapImporter(args[1]);
     }
 
     app = new AppGameContainer(new BP_EDITOR());

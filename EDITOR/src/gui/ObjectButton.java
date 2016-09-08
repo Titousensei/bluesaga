@@ -64,7 +64,7 @@ public class ObjectButton {
       g.setFont(BP_EDITOR.FONTS.size8);
       g.drawString(name, X + 10, Y + 30);
     } else if (!type.equals("Back")) {
-      ButtonImage.draw(X, Y);
+      ButtonImage.drawSmall(X, Y);
     } else {
       ButtonImage.draw(X, Y);
       g.setColor(new Color(0, 0, 0, 255));

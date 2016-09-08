@@ -29,14 +29,15 @@
     <delete dir="${build}"/>
   </target>
 
-  <target name="dist">
+  <target name="dist" depends="compile">
     <manifestclasspath property="manifest_cp" jarfile="editor.jar">
       <classpath>
-        <pathelement path="${include}"/>
+        <fileset dir="${include}">
+          <include name="**/*.jar"/>
+        </fileset>
       </classpath>
     </manifestclasspath>
-    <jar destfile="editor.jar" basedir=".">
-      <include name="${build}"/>
+    <jar destfile="editor.jar" basedir="${build}">
       <manifest>
         <attribute name="Main-Class" value="game.BP_EDITOR"/>
         <attribute name="Class-Path" value="${manifest_cp}"/>

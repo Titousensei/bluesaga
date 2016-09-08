@@ -16,6 +16,7 @@ public class Run
         "JARS/editor.jar",
         URLDecoder.decode(runningDir.getPath(), "UTF-8")
     };
+
     ProcessBuilder builder = new ProcessBuilder(cmd);
     builder.directory(runningDir.getParentFile());
     builder.redirectErrorStream(true);

@@ -9,6 +9,7 @@ public class Sprite {
 
   private Image image;
   private Animation animation;
+  private Image thumb;
   private boolean Animated;
 
   public Sprite(String filename, int nrFrames) {
@@ -49,6 +50,7 @@ public class Sprite {
       duration = 1000 / ((nrFrames * 2) - 2);
     }
     animation = new Animation(graphics, duration, true);
+    thumb = animation.getImage(0).getScaledCopy(50, 50);
   }
 
   public Sprite(String filename) {
@@ -56,6 +58,7 @@ public class Sprite {
     try {
       image = new Image(filename + ".png");
       image.setFilter(Image.FILTER_NEAREST);
+      thumb = image.getScaledCopy(50, 50);
     } catch (SlickException e) {
       // TODO Auto-generated catch block
       e.printStackTrace();
@@ -96,5 +99,9 @@ public class Sprite {
     } else {
       image.draw(x, y, width, height, color);
     }
+  }
+
+  public void drawSmall(int x, int y) {
+    thumb.draw(x, y);
   }
 }

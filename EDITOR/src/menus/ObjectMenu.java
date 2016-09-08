@@ -18,10 +18,12 @@ import gui.ObjectButton;
 
 public class ObjectMenu extends BaseMenu {
 
+  private final static String ROOT_DIR = "objects/";
+
   private Vector<ObjectButton> Buttons;
   private int X;
   private int Y;
-  private String ActivePath = "objects/";
+  private String ActivePath = ROOT_DIR;
   private Vector<String> PathHistory;
 
   private Image deleteIcon;
@@ -41,7 +43,7 @@ public class ObjectMenu extends BaseMenu {
 
     File[] files = new File(EditorSettings.clientImagePath + ActivePath).listFiles();
     Arrays.sort(files);
-
+System.out.println("FILES: " + java.util.Arrays.toString(files));
     int i = 0;
 
     Buttons.add(new ObjectButton(X + (i % 8) * 50, (int) (Y + Math.floor(i / 8) * 50), "..", true));
@@ -76,13 +78,15 @@ public class ObjectMenu extends BaseMenu {
               name = name.substring(0, name.length() - 2);
             }
 
-            String parentFolder = file.getParentFile().getName();
+            String parentFolder = file.getPath();
+            int cut = parentFolder.indexOf(ROOT_DIR) + ROOT_DIR.length();
+            String path = parentFolder.substring(cut, parentFolder.lastIndexOf("."));
 
             Buttons.add(
                 new ObjectButton(
                     X + (i % nrPerRow) * 50,
                     (int) (Y + Math.floor(i / nrPerRow) * 50),
-                    parentFolder + "/" + name,
+                    path,
                     false));
             i++;
           }

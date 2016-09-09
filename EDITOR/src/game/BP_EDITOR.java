@@ -121,6 +121,8 @@ public class BP_EDITOR extends BasicGame {
 
   private int helpY;
 
+  private static String loadPng = null;
+
   public BP_EDITOR() {
     super("Blue Saga Map Editor");
   }
@@ -137,6 +139,14 @@ public class BP_EDITOR extends BasicGame {
     }
     mapDB.bootstrapMap();
 
+    GFX = new ImageResource();
+    GFX.load();
+
+    if (loadPng != null) {
+      MapImporter imp = new MapImporter(loadPng);
+      imp.load();
+    }
+
     try (ResultSet editorOptions = mapDB.askDB("select X,Y,Z from editor_option")) {
       if (editorOptions.next()) {
         PLAYER_X = editorOptions.getInt("X");
@@ -151,9 +161,6 @@ public class BP_EDITOR extends BasicGame {
     } catch (SQLException e) {
       e.printStackTrace();
     }
-
-    GFX = new ImageResource();
-    GFX.load();
 
     Mouse = new MouseCursor();
 
@@ -1674,6 +1681,10 @@ public class BP_EDITOR extends BasicGame {
     } else {
       System.err.println("ERROR - Please specify config directory");
       System.exit(1);
+    }
+
+    if (args.length > 1) {
+      BP_EDITOR.loadPng = args[1];
     }
 
     app = new AppGameContainer(new BP_EDITOR());

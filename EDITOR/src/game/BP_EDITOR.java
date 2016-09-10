@@ -45,6 +45,8 @@ public class BP_EDITOR extends BasicGame {
   private static int SCREEN_WIDTH = 1024; // 1024
   private static int SCREEN_HEIGHT = 640; // 640
 
+  private static int MINI_MAP_SIZE = 600;
+
   private static boolean FULL_SCREEN = false;
   private static final int FRAME_RATE = 60;
   public static int TILE_SIZE = 50;
@@ -110,12 +112,14 @@ public class BP_EDITOR extends BasicGame {
 
   private static BaseMenu activeMenu = null;
 
+  private static Image miniMap = null;
+  private static int miniMapX;
+  private static int miniMapY;
+
   public static boolean Loading = true;
   public static Random randomGenerator = new Random();
 
   private int helpY;
-
-  private static MapImporter loadPng = null;
 
   public BP_EDITOR() {
     super("Blue Saga Map Editor");
@@ -176,38 +180,85 @@ public class BP_EDITOR extends BasicGame {
       }
     }
 
-    if (loadPng != null) {
-      loadPng.load();
-    }
-
     loadScreen();
 
     loading();
   }
 
-  public void loadMiniMap() {
-    MiniMap.clear();
-    try (ResultSet mapInfo = mapDB.askDB(
-            "select X, Y, Z, Type from area_tile where Z == "
-                + PLAYER_Z
-                + " AND X % 2 = 0 AND Y % 2 = 0")
-    ) {
-      while (mapInfo.next()) {
-        Coords xyz = new Coords(mapInfo.getInt("X"), mapInfo.getInt("Y"), mapInfo.getInt("Z"));
-        if (mapInfo.getString("Type").equals("water")) {
-          MiniMap.put(xyz, EditColors.WATER);
-        } else if (mapInfo.getString("Type").equals("shallow")) {
-          MiniMap.put(xyz, EditColors.SHALLOW);
-        } else if (mapInfo.getString("Type").equals("beach")) {
-          MiniMap.put(xyz, EditColors.BEACH);
-        } else if (mapInfo.getString("Type").equals("cliff")) {
-          MiniMap.put(xyz, EditColors.CLIFF);
-        } else {
-          MiniMap.put(xyz, EditColors.MAP_OTHER);
-        }
+  private String majority4(String group) {
+    String[] parts = group.split(",");
+    if (parts.length==1) {
+      return parts[0];
+    }
+    if (parts.length==2) {
+      if ("None".equals(parts[0])) {
+        return parts[1];
+      }
+      else {
+        return parts[0];
+      }
+    }
+    Arrays.sort(parts);
+    if (parts[0].equals(parts[2])) {
+        return parts[0];
+    }
+    if ("None".equals(parts[0])) {
+        return parts[2];
+    }
+    return parts[0];
+  }
 
+  public void loadMiniMap() {
+
+    miniMapX = PLAYER_X;
+    miniMapY = PLAYER_Y;
+
+    try (ResultSet mapInfo = mapDB.askDB(
+            "select MIN(X), MIN(Y), group_concat(Type), group_concat(ObjectID) from area_tile where Z == "
+                + PLAYER_Z
+                + " AND X>" + (PLAYER_X - MINI_MAP_SIZE)
+                + " AND X<" + (PLAYER_X + MINI_MAP_SIZE)
+                + " AND Y>" + (PLAYER_Y - MINI_MAP_SIZE)
+                + " AND Y<" + (PLAYER_Y + MINI_MAP_SIZE)
+                + " GROUP BY X/2,Y/2")
+    ) {
+      miniMap = new Image(MINI_MAP_SIZE, MINI_MAP_SIZE, Image.FILTER_NEAREST);
+      Graphics g = miniMap.getGraphics();
+
+      while (mapInfo.next()) {
+        String obj = majority4(mapInfo.getString("group_concat(ObjectID)"));
+        if(obj.startsWith("tree")) {
+          g.setColor(EditColors.TREES);
+        } else if(obj.contains("rock")) {
+          g.setColor(EditColors.ROCKS);
+        }
+        else {
+          String type = majority4(mapInfo.getString("group_concat(Type)"));
+          switch (type) {
+          case "water":
+            g.setColor(EditColors.WATER);
+            break;
+          case "shallow":
+            g.setColor(EditColors.SHALLOW);
+            break;
+          case "beach":
+            g.setColor(EditColors.BEACH);
+            break;
+          case "cliff":
+            g.setColor(EditColors.CLIFF);
+            break;
+          default:
+            g.setColor(EditColors.MAP_OTHER);
+          }
+        }
+        int x = (mapInfo.getInt("MIN(X)") - PLAYER_X + MINI_MAP_SIZE) / 2;
+        int y = (mapInfo.getInt("MIN(Y)") - PLAYER_Y + MINI_MAP_SIZE) / 2;
+        g.fillRect(x, y, 1, 1);
       }
       mapInfo.getStatement().close();
+      g.flush();
+    } catch (SlickException e) {
+      e.printStackTrace();
     } catch (SQLException e) {
       e.printStackTrace();
     }
@@ -496,20 +547,14 @@ public class BP_EDITOR extends BasicGame {
     }
 
     if (currentMode == Mode.MINI_MAP) {
-      for (Map.Entry<Coords, Color> pairs : MiniMap.entrySet()) {
-        Coords coord = pairs.getKey();
-        int x = (coord.x - EditorSettings.startX) / 2 + 100;
-        int y = (coord.y - EditorSettings.startY) / 2 + 200;
+      g.setColor(EditColors.WHITE);
+      miniMap.draw(20, 20);
 
-        g.setColor(pairs.getValue());
-        g.fillRect(x, y, 1, 1);
-      }
-
-      int playerx = (PLAYER_X - EditorSettings.startX) / 2 + 100 - 6;
-      int playery = (PLAYER_Y - EditorSettings.startY) / 2 + 200 - 6;
+      int playerx = (PLAYER_X - miniMapX + MINI_MAP_SIZE) / 2 - 9 + 20;
+      int playery = (PLAYER_Y - miniMapY + MINI_MAP_SIZE) / 2 - 5 + 20;
 
       g.setColor(EditColors.RED);
-      g.drawRect(playerx, playery, 10, 6);
+      g.drawRect(playerx, playery, 18, 10);
     } else {
       resetHelp(g);
       renderHelp(g, "F12: Quit");
@@ -841,9 +886,8 @@ public class BP_EDITOR extends BasicGame {
       int tileY = screenY + PLAYER_Y - TILE_HALF_H;
 
       if (currentMode == Mode.MINI_MAP) {
-
-        PLAYER_X = EditorSettings.startX - 200 + mouseX * 2 - 10;
-        PLAYER_Y = EditorSettings.startY - 200 + mouseY * 2 - 6 - 200;
+        PLAYER_X = mouseX * 2 + miniMapX - MINI_MAP_SIZE - 60 + 9;
+        PLAYER_Y = mouseY * 2 + miniMapY - MINI_MAP_SIZE - 60 + 5;
         loadScreen();
         INPUT.clearKeyPressedRecord();
         return;
@@ -1544,10 +1588,6 @@ public class BP_EDITOR extends BasicGame {
     } else {
       System.err.println("ERROR - Please specify config directory");
       System.exit(1);
-    }
-
-    if (args.length > 1) {
-      loadPng = new MapImporter(args[1]);
     }
 
     app = new AppGameContainer(new BP_EDITOR());

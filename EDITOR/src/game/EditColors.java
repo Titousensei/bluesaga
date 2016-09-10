@@ -10,6 +10,8 @@ public final class EditColors
 
   public final static Color RED   = new Color(255, 0, 0);
 
+  public final static Color TREES = new Color(64, 157, 31);
+  public final static Color ROCKS = new Color(135, 127, 106);
   public final static Color WATER = new Color(65, 114, 187);
   public final static Color SHALLOW = new Color(144, 188, 255);
   public final static Color BEACH = new Color(255, 250, 94);

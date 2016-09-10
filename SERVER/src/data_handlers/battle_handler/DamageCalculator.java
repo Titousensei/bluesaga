@@ -164,5 +164,7 @@ public class DamageCalculator {
     else {
       ret = Math.exp(TARGET.getStat(damageType + "_DEF") / -91.);
     }
+
+    return ret;
   }
 }

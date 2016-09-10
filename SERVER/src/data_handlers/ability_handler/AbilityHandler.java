@@ -1331,7 +1331,7 @@ public class AbilityHandler extends Handler {
       }
 
       // Armor or resistance modifier
-      double armorF = DamageCalculator.getDamageArmor(ABILITY.getDamageType(), CASTER, TARGET);
+      double armorF = DamageCalculator.getDamageArmor(CASTER, TARGET);
 
       aDmg = aDmg * armorF;
     }

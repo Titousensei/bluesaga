@@ -4,6 +4,7 @@ import org.newdawn.slick.Color;
 
 public final class EditColors
 {
+  public final static Color CLEAR = new Color(0, 0, 0, 0);
   public final static Color BLACK = new Color(0, 0, 0, 255);
   public final static Color WHITE = new Color(255, 255, 255);
   public final static Color TRANSPARENT = new Color(255, 255, 255, 100);

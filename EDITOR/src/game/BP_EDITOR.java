@@ -143,6 +143,10 @@ public class BP_EDITOR extends BasicGame {
         PLAYER_Y = editorOptions.getInt("Y");
         PLAYER_Z = editorOptions.getInt("Z");
       }
+      else {
+        mapDB.updateDB(
+          "insert into editor_option (X, Y, Z) values (" + PLAYER_X + "," + PLAYER_Y + "," + PLAYER_Z+")");
+      }
       editorOptions.getStatement().close();
     } catch (SQLException e) {
       e.printStackTrace();
@@ -212,9 +216,8 @@ public class BP_EDITOR extends BasicGame {
 
     miniMapX = PLAYER_X;
     miniMapY = PLAYER_Y;
-
     try (ResultSet mapInfo = mapDB.askDB(
-            "select MIN(X), MIN(Y), group_concat(Type), group_concat(ObjectID) from area_tile where Z == "
+            "select MIN(X), MIN(Y), group_concat(Type), group_concat(ObjectID) from area_tile where Z = "
                 + PLAYER_Z
                 + " AND X>" + (PLAYER_X - MINI_MAP_SIZE)
                 + " AND X<" + (PLAYER_X + MINI_MAP_SIZE)
@@ -222,8 +225,12 @@ public class BP_EDITOR extends BasicGame {
                 + " AND Y<" + (PLAYER_Y + MINI_MAP_SIZE)
                 + " GROUP BY X/2,Y/2")
     ) {
-      miniMap = new Image(MINI_MAP_SIZE, MINI_MAP_SIZE, Image.FILTER_NEAREST);
+      if (miniMap == null) {
+        miniMap = new Image(MINI_MAP_SIZE, MINI_MAP_SIZE, Image.FILTER_NEAREST);
+      }
       Graphics g = miniMap.getGraphics();
+      g.setBackground(EditColors.CLEAR);
+      g.clear();
 
       while (mapInfo.next()) {
         String obj = majority4(mapInfo.getString("group_concat(ObjectID)"));
@@ -555,6 +562,10 @@ public class BP_EDITOR extends BasicGame {
 
       g.setColor(EditColors.RED);
       g.drawRect(playerx, playery, 18, 10);
+
+      g.setFont(FONTS.size8);
+      g.setColor(EditColors.WHITE);
+      g.drawString(PLAYER_X + "," + PLAYER_Y + "," + PLAYER_Z, 105, 30);
     } else {
       resetHelp(g);
       renderHelp(g, "F12: Quit");
@@ -571,11 +582,10 @@ public class BP_EDITOR extends BasicGame {
       renderHelp(g, "Del: Clear Area");
 
       String willEdges = (FixEdges
-          && BrushSize>1
           && currentMode == Mode.BRUSH
           && MouseTile!=null
           && canFixEdges(MouseTile.getName()))
-          ? "will do" : "won't do";
+          ? "will do" : "can't do";
 
       renderHelp(g, "F: Fix edges = " + FixEdges + " (" + willEdges + ")");
       renderHelp(g, "N: Spawns = "
@@ -1364,7 +1374,7 @@ public class BP_EDITOR extends BasicGame {
   }
 
   public static boolean canFixEdges(String tileName) {
-    return (tileName.contains("D")
+    return ((tileName.contains("D") || tileName.contains("U"))
         && !tileName.contains("Stairs")
         && !tileName.contains("Entrance")
         && !tileName.contains("Exit")
@@ -1374,7 +1384,9 @@ public class BP_EDITOR extends BasicGame {
   public static void addTiles(int screenX, int screenY) {
 
     String tileName = MouseTile.getName();
-    if (FixEdges && BrushSize>1 && canFixEdges(tileName)) {
+    if (FixEdges && BrushSize==1 && canFixEdges(tileName)) {
+    }
+    else if (FixEdges && canFixEdges(tileName)) {
 
       String tileType = MouseTile.getType();
       int lastChar = MouseTile.getName().length() - 1;

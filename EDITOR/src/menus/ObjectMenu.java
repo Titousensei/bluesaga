@@ -43,7 +43,6 @@ public class ObjectMenu extends BaseMenu {
 
     File[] files = new File(EditorSettings.clientImagePath + ActivePath).listFiles();
     Arrays.sort(files);
-System.out.println("FILES: " + java.util.Arrays.toString(files));
     int i = 0;
 
     Buttons.add(new ObjectButton(X + (i % 8) * 50, (int) (Y + Math.floor(i / 8) * 50), "..", true));
@@ -62,6 +61,7 @@ System.out.println("FILES: " + java.util.Arrays.toString(files));
         int mid = file.getName().lastIndexOf(".");
         String name = file.getName().substring(0, mid);
         String ext = file.getName().substring(mid + 1, file.getName().length());
+        int offset = 0;
 
         if (ext.equals("png")) {
           if (!name.contains("_1")
@@ -75,12 +75,12 @@ System.out.println("FILES: " + java.util.Arrays.toString(files));
               && !name.contains("_open")
               && !name.contains("_on")) {
             if (name.contains("_0")) {
-              name = name.substring(0, name.length() - 2);
+              offset =  - 2;
             }
 
             String parentFolder = file.getPath();
             int cut = parentFolder.indexOf(ROOT_DIR) + ROOT_DIR.length();
-            String path = parentFolder.substring(cut, parentFolder.lastIndexOf("."));
+            String path = parentFolder.substring(cut, parentFolder.lastIndexOf(".") + offset);
 
             Buttons.add(
                 new ObjectButton(

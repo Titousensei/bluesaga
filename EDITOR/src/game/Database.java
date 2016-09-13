@@ -38,10 +38,8 @@ public class Database {
     updateDB("CREATE TABLE IF NOT EXISTS trigger (Id INTEGER PRIMARY KEY  NOT NULL  UNIQUE , X INTEGER DEFAULT 0, Y INTEGER DEFAULT 0, Z INTEGER DEFAULT 0, TrapId INTEGER DEFAULT 0, DoorId INTEGER DEFAULT 0, ActiveTime INTEGER DEFAULT 0);");
     updateDB("CREATE TABLE IF NOT EXISTS quest (Id INTEGER PRIMARY KEY, Name VARCHAR, RewardMessage VARCHAR, QuestMessage VARCHAR, Level INTEGER, Type VARCHAR, TargetNumber INTEGER, TargetType VARCHAR, TargetId INTEGER, NpcId INTEGER, OrderNr INTEGER, RewardXp INTEGER, RewardItemId INTEGER, RewardCopper INTEGER, ParentQuestId INTEGER, Description TEXT, EventId INTEGER, NextQuestId INTEGER, ReturnForReward INTEGER, QuestItems VARCHAR, RewardAbilityId INTEGER DEFAULT 0, LearnClassId INTEGER DEFAULT 0, QuestAbilityId INTEGER DEFAULT 0, CategoryId INTEGER DEFAULT 0);");
     updateDB("CREATE TABLE IF NOT EXISTS quest_category (Id INTEGER PRIMARY KEY  AUTOINCREMENT  NOT NULL  UNIQUE , Name VARCHAR);");
-    updateDB("CREATE INDEX IF NOT EXISTS pos on area_tile (x,y,z);");
     updateDB("CREATE INDEX IF NOT EXISTS area_door on area_tile (DoorId);");
-    updateDB("CREATE INDEX IF NOT EXISTS pos ON area_tile (x,y,z);");
-    updateDB("CREATE INDEX IF NOT EXISTS area_door ON area_tile (DoorId);");
+    updateDB("CREATE INDEX IF NOT EXISTS pos ON area_tile (z,x,y);");
 
     boolean isEmpty = true;
     try (ResultSet rs = askDB("SELECT count(*) FROM area_effect")) {

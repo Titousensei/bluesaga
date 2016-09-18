@@ -233,14 +233,16 @@ public class BP_EDITOR extends BasicGame {
       g.clear();
 
       while (mapInfo.next()) {
-        String obj = majority4(mapInfo.getString("group_concat(ObjectID)"));
+        String groupObjectId = mapInfo.getString("group_concat(ObjectID)");
+        String obj = majority4(groupObjectId);
         if(obj.startsWith("tree")) {
           g.setColor(EditColors.TREES);
         } else if(obj.contains("rock")) {
           g.setColor(EditColors.ROCKS);
         }
         else {
-          String type = majority4(mapInfo.getString("group_concat(Type)"));
+          String groupType = mapInfo.getString("group_concat(Type)");
+           String type = majority4(groupType);
           switch (type) {
           case "water":
             g.setColor(EditColors.WATER);
@@ -1374,7 +1376,7 @@ public class BP_EDITOR extends BasicGame {
   }
 
   public static boolean canFixEdges(String tileName) {
-    return ((tileName.contains("D") || tileName.contains("U"))
+    return ((tileName.contains("D") || tileName.contains("U") || tileName.contains("L") || tileName.contains("R"))
         && !tileName.contains("Stairs")
         && !tileName.contains("Entrance")
         && !tileName.contains("Exit")
@@ -1384,12 +1386,84 @@ public class BP_EDITOR extends BasicGame {
   public static void addTiles(int screenX, int screenY) {
 
     String tileName = MouseTile.getName();
-    if (FixEdges && BrushSize==1 && canFixEdges(tileName)) {
+
+    if (FixEdges && BrushSize==1 && canFixEdges(tileName)
+    && screenX>0 && screenY>0 && screenX<(TILE_HALF_W * 2) && screenY<(TILE_HALF_H * 2)
+    ) {
+      int lastChar = EdgeHelper.suffixPosition(tileName);
+      String otherType = tileName.substring(0, lastChar);
+      String suffix = tileName.substring(lastChar);
+      Tile thisTile = SCREEN_TILES[screenX][screenY][0];
+      if (thisTile != null) {
+        String thisName = thisTile.getName();
+        lastChar = EdgeHelper.suffixPosition(thisName);
+        suffix = thisName.substring(lastChar);
+      }
+
+      String tileType = MouseTile.getType();
+
+      String possible = EdgeHelper.complete(
+          SCREEN_TILES[screenX-1][screenY][0],  // onLeft
+          SCREEN_TILES[screenX+1][screenY][0],  // onRight
+          SCREEN_TILES[screenX][screenY-1][0],  // onUp
+          SCREEN_TILES[screenX][screenY+1][0]); // onDown
+      String goodSuffix = EdgeHelper.nextPossible(possible, suffix);
+
+      tileName = otherType + goodSuffix;
+      MouseTile.setName(tileName);
+      try {
+        Tile checkTile = new Tile(0, 0, PLAYER_Z);
+        if (checkTile.setType(tileType, tileName)) {
+          boolean passable = checkTile.isTilePassable();
+          SCREEN_TILES[screenX][screenY][0].setType(tileType, tileName);
+          SCREEN_TILES[screenX][screenY][0].setPassable(passable);
+          int passableInt = 0;
+          if (passable) {
+            passableInt = 1;
+          }
+
+          int tileX = screenX + PLAYER_X - TILE_HALF_W;
+          int tileY = screenY + PLAYER_Y - TILE_HALF_H;
+          try {
+            mapDB.update(
+                "insert into area_tile (Type, Name, X, Y, Z, Passable) values ('"
+                    + tileType
+                    + "', '"
+                    + tileName
+                    + "',"
+                    + tileX
+                    + ","
+                    + tileY
+                    + ","
+                    + PLAYER_Z
+                    + ","
+                    + passableInt
+                    + ")");
+          } catch (SQLException ex) {
+            mapDB.update(
+                "update area_tile set Type = '"
+                    + tileType
+                    + "', Name = '"
+                    + tileName
+                    + "', Passable = "
+                    + passableInt
+                    + " where X = "
+                      + tileX
+                      + " and Y = "
+                      + tileY
+                      + " and Z = "
+                      + PLAYER_Z);
+          }
+        }
+      } catch (Exception ex) {
+        ex.printStackTrace();
+        mapDB.updateDB("ROLLBACK TRANSACTION");
+      }
     }
     else if (FixEdges && canFixEdges(tileName)) {
 
       String tileType = MouseTile.getType();
-      int lastChar = MouseTile.getName().length() - 1;
+      int lastChar = tileName.length() - 1;
 
       while (lastChar>0 &&  Character.isUpperCase(tileName.charAt(lastChar-1))) {
         -- lastChar;

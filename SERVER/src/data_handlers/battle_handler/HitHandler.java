@@ -61,7 +61,7 @@ public class HitHandler extends Handler {
         if (damage > 0 && !arena) {
           if (playerTarget.getPkMarker() < 2) {
             addOutGoingMessage(
-                playerTarget.client, "restart_logout", "" + BattleHandler.playerHitTime);
+                playerTarget.client, "restart_logout", String.valueOf(BattleHandler.playerHitTime));
           }
         }
       }
@@ -279,7 +279,7 @@ public class HitHandler extends Handler {
         // Send updated health to target player
         if (TARGET.getCreatureType() == CreatureType.Player
             && s.playerCharacter.getDBId() == TARGET.getDBId()) {
-          addOutGoingMessage(s, "update_health", "" + TARGET.getHealth());
+          addOutGoingMessage(s, "update_health", String.valueOf(TARGET.getHealth()));
         }
 
         if (targetDies) {

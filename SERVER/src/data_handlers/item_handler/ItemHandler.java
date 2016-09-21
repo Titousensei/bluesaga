@@ -17,6 +17,8 @@ import data_handlers.Handler;
 import data_handlers.Message;
 import data_handlers.ability_handler.Ability;
 import data_handlers.ability_handler.AbilityHandler;
+import data_handlers.ability_handler.StatusEffect;
+import data_handlers.ability_handler.StatusEffectHandler;
 import data_handlers.card_handler.CardHandler;
 import network.Client;
 import network.Server;
@@ -444,21 +446,33 @@ public class ItemHandler extends Handler {
 
       // SEND STATSCHANGE
       if (usedItem.getType().equals("Eatable")) {
-        useColor = new Color(202, 253, 161);
-        addOutGoingMessage(
-            client,
-            "stat",
-            "HEALTH_REGAIN;"
-                + client.playerCharacter.getStat("HEALTH_REGAIN")
-                + ';'
-                + client.playerCharacter.getSatisfied());
-        addOutGoingMessage(
-            client,
-            "stat",
-            "MANA_REGAIN;"
-                + client.playerCharacter.getStat("MANA_REGAIN")
-                + ';'
-                + client.playerCharacter.getSatisfied());
+        if (usedItem.getSubType().equals("Herb")) {
+          useColor = new Color(255, 255, 73);
+          boolean hadEffect = true;
+          for (StatusEffect se : usedItem.getStatusEffects()) {
+            hadEffect &= StatusEffectHandler.addStatusEffect(client.playerCharacter, se);
+          }
+          if (!hadEffect) {
+            addOutGoingMessage(client, "message", "You're too weak, herb had no effect");
+            return;
+          }
+        } else {
+          useColor = new Color(202, 253, 161);
+          addOutGoingMessage(
+              client,
+              "stat",
+              "HEALTH_REGAIN;"
+                  + client.playerCharacter.getStat("HEALTH_REGAIN")
+                  + ';'
+                  + client.playerCharacter.getSatisfied());
+          addOutGoingMessage(
+              client,
+              "stat",
+              "MANA_REGAIN;"
+                  + client.playerCharacter.getStat("MANA_REGAIN")
+                  + ';'
+                  + client.playerCharacter.getSatisfied());
+        }
       } else if (usedItem.getSubType().equals("HEALTH")) {
         useColor = new Color(255, 88, 88);
       } else if (usedItem.getSubType().equals("MANA")) {

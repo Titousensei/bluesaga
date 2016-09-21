@@ -23,9 +23,13 @@ public class StatusEffectHandler extends Handler {
    * @param target
    * @param se
    */
-  public static void addStatusEffect(Creature target, StatusEffect se) {
+  public static boolean addStatusEffect(Creature target, StatusEffect se) {
 
-    target.addStatusEffect(se);
+    int actualEffect = target.addStatusEffect(se);
+    if (actualEffect == -1) { // effect is rejected
+      return false;
+    }
+
     String statusEffectsInfo =
         se.getId()
             + ","
@@ -57,6 +61,12 @@ public class StatusEffectHandler extends Handler {
         if (targetPlayer != null) {
           if (s.playerCharacter.getDBId() == targetPlayer.getDBId()) {
             addOutGoingMessage(s, "update_bonusstats", s.playerCharacter.getBonusStatsAsString());
+            if ((actualEffect & 1) != 0) { // effect updated health
+              addOutGoingMessage(s, "update_health", String.valueOf(target.getHealth()));
+            }
+            if ((actualEffect & 2) != 0) { // effect updated mana
+              addOutGoingMessage(s, "update_mana", String.valueOf(target.getMana()));
+            }
           }
         }
         if (isVisibleForPlayer(s.playerCharacter, target.getX(), target.getY(), target.getZ())) {
@@ -65,6 +75,8 @@ public class StatusEffectHandler extends Handler {
         }
       }
     }
+
+    return true;
   }
 
   private static int calculateSEdamage(StatusEffect se, boolean playerTarget) {

@@ -117,20 +117,20 @@ insert or replace into item values (504,"Spongeroot",    0,"Material","Root", 0,
 --                                                                                                                                                                         |TwoHands
 --                                                                                                                                                                           |Value
 --                                                                                                                                                                              |AttackSpeed
---                                                                                                                                                                                |MAGIC_DEF
-insert or replace into item values (499,"Nimt Leaf",        0,"Eatable","Herb",0,0,0,0,0,0,"None",0,0,0,0,0,"None","",0,"None",0,0,"",    0,  0,0,0,0,0,0,0,0,0,0,0,100,0,0,0,25,0,0);
-insert or replace into item values (498,"Nasil Leaf",       0,"Eatable","Herb",0,0,0,0,0,0,"None",0,0,0,0,0,"None","",0,"None",0,0,"",    0,  0,0,0,0,0,0,0,0,0,0,0,100,0,0,0,25,0,0);
-insert or replace into item values (497,"Ging Leaf",        0,"Eatable","Herb",0,0,0,0,0,0,"None",0,0,0,0,0,"None","",0,"None",0,0,"",    0,  0,0,0,0,0,0,0,0,0,0,0,100,0,0,0,25,0,0);
-insert or replace into item values (496,"Noxu Leaf",        0,"Eatable","Herb",0,0,0,0,0,0,"None",0,0,0,0,0,"None","",0,"None",0,0,"",    0,  0,0,0,0,0,0,0,0,0,0,0,100,0,0,0,25,0,0);
-insert or replace into item values (495,"Bronea Leaf",      0,"Eatable","Herb",0,0,0,0,0,0,"None",0,0,0,0,0,"None","",0,"None",0,0,"",    0,  0,0,0,0,0,0,0,0,0,0,0,100,0,0,0,25,0,0);
-insert or replace into item values (494,"Shorogyt Leaf",    0,"Eatable","Herb",0,0,0,0,0,0,"None",0,0,0,0,0,"None","",0,"None",0,0,"",    0,  0,0,0,0,0,0,0,0,0,0,0,100,0,0,0,25,0,0);
-insert or replace into item values (493,"Hexteria Leaf",    0,"Eatable","Herb",0,0,0,0,0,0,"None",0,0,0,0,0,"None","",0,"None",0,0,"",    0,  0,0,0,0,0,0,0,0,0,0,0,100,0,0,0,25,0,0);
-insert or replace into item values (492,"Hawkloon Leaf",    0,"Eatable","Herb",0,0,0,0,0,0,"None",0,0,0,0,0,"None","",0,"None",0,0,"",    0,  0,0,0,0,0,0,0,0,0,0,0,100,0,0,0,25,0,0);
-insert or replace into item values (491,"Yammoe Leaf",      0,"Eatable","Herb",0,0,0,0,0,0,"None",0,0,0,0,0,"None","",0,"None",0,0,"",    0,  0,0,0,0,0,0,0,0,0,0,0,100,0,0,0,25,0,0);
-insert or replace into item values (490,"Ociramma Leaf",    0,"Eatable","Herb",0,0,0,0,0,0,"None",0,0,0,0,0,"None","",0,"None",0,0,"",    0,  0,0,0,0,0,0,0,0,0,0,0,100,0,0,0,25,0,0);
-insert or replace into item values (489,"Dognip Leaf",      0,"Eatable","Herb",0,0,0,0,0,0,"None",0,0,0,0,0,"None","",0,"None",0,0,"",    0,  0,0,0,0,0,0,0,0,0,0,0,100,0,0,0,25,0,0);
-insert or replace into item values (488,"Nalpure Leaf",     0,"Eatable","Herb",0,0,0,0,0,0,"None",0,0,0,0,0,"None","",0,"None",0,0,"",    0,  0,0,0,0,0,0,0,0,0,0,0,100,0,0,0,25,0,0);
-insert or replace into item values (487,"Kopako Leaf",      0,"Eatable","Herb",0,0,0,0,0,0,"None",0,0,0,0,0,"None","",0,"None",0,0,"",    0,  0,0,0,0,0,0,0,0,0,0,0,100,0,0,0,25,0,0);
+--                                                                                                                                                                               |MAGIC_DEF
+insert or replace into item values (499,"Nimt Leaf",        0,"Eatable","Herb",0,0,0,0,0,0,"None",0,0,0,0,0,"None","",0,"None",0,0,"",    0,  0,0,0,0,0,0,0,0,0,0,0,100,100,0,0,0,0,0);
+insert or replace into item values (498,"Nasil Leaf",       0,"Eatable","Herb",0,0,0,0,0,0,"None",0,0,0,0,0,"None","",0,"None",0,0,"",    0,  0,0,0,0,0,0,0,0,0,0,0,100,100,0,0,0,0,0);
+insert or replace into item values (497,"Ging Leaf",        0,"Eatable","Herb",0,0,0,0,0,0,"None",0,0,0,0,0,"None","",0,"None",0,0,"",    0,  0,0,0,0,0,0,0,0,0,0,0,100,100,0,0,0,0,0);
+insert or replace into item values (496,"Noxu Leaf",        0,"Eatable","Herb",0,0,0,0,0,0,"None",0,0,0,0,0,"None","",0,"None",0,0,"",    0,  0,0,0,0,0,0,0,0,0,0,0,100,100,0,0,0,0,0);
+insert or replace into item values (495,"Bronea Leaf",      0,"Eatable","Herb",0,0,0,0,0,0,"None",0,0,0,0,0,"None","",0,"None",0,0,"",    0,  0,0,0,0,0,0,0,0,0,0,0,100,100,0,0,0,0,0);
+insert or replace into item values (494,"Shorogyt Leaf",    0,"Eatable","Herb",0,0,0,0,0,0,"None",0,0,0,0,0,"None","",0,"None",0,0,"",    0,  0,0,0,0,0,0,0,0,0,0,0,100,100,0,0,0,0,0);
+insert or replace into item values (493,"Hexteria Leaf",    0,"Eatable","Herb",0,0,0,0,0,0,"None",0,0,0,0,0,"None","",0,"None",0,0,"",    0,  0,0,0,0,0,0,0,0,0,0,0,100,100,0,0,0,0,0);
+insert or replace into item values (492,"Hawkloon Leaf",    0,"Eatable","Herb",0,0,0,0,0,0,"None",0,0,0,0,0,"None","",0,"None",0,0,"",    0,  0,0,0,0,0,0,0,0,0,0,0,100,100,0,0,0,0,0);
+insert or replace into item values (491,"Yammoe Leaf",      0,"Eatable","Herb",0,0,0,0,0,0,"None",0,0,0,0,0,"None","",0,"None",0,0,"",    0,  0,0,0,0,0,0,0,0,0,0,0,100,100,0,0,0,0,0);
+insert or replace into item values (490,"Ociramma Leaf",    0,"Eatable","Herb",0,0,0,0,0,0,"None",0,0,0,0,0,"None","",0,"None",0,0,"",    0,  0,0,0,0,0,0,0,0,0,0,0,100,100,0,0,0,0,0);
+insert or replace into item values (489,"Dognip Leaf",      0,"Eatable","Herb",0,0,0,0,0,0,"None",0,0,0,0,0,"None","",0,"None",0,0,"",    0,  0,0,0,0,0,0,0,0,0,0,0,100,100,0,0,0,0,0);
+insert or replace into item values (488,"Nalpure Leaf",     0,"Eatable","Herb",0,0,0,0,0,0,"None",0,0,0,0,0,"None","",0,"None",0,0,"",    0,  0,0,0,0,0,0,0,0,0,0,0,100,100,0,0,0,0,0);
+insert or replace into item values (487,"Kopako Leaf",      0,"Eatable","Herb",0,0,0,0,0,0,"None",0,0,0,0,0,"None","",0,"None",0,0,"",    0,  0,0,0,0,0,0,0,0,0,0,0,100,100,0,0,0,0,0);
 --                                    3|Small Health Potion|0|Potion   |HEALTH|0|0| |0|0|0|      |0|0|0|0| |None  |  | |      |0|0|None| 60|  0|0|0|0|0|0|0|0|1|0|0| 10| |0|0|10|0|0
 --                                    4|Medium Health Potio|0|Potion   |HEALTH|0|0| |0|0|0|      |0|0|0|0| |None  |  | |      |0|0|None|120|  0|0|0|0|0|0|0|0|1|0|0| 10| |0|0|30|0|0
 --                                    5|Small Mana Potion  |0|Potion   |MANA  |0|0| |0|0|0|      |0|0|0|0| |None  |  | |      |0|0|None|  0|100|0|0|0|0|0|0|0|1|0|0| 10| |0|0|10|0|0

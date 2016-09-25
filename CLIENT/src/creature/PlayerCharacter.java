@@ -192,6 +192,9 @@ public class PlayerCharacter extends Creature {
         g.setColor(new Color(0, 0, 0, 150));
 
         g.drawString(Name, nameX, cornerY - 25);
+        
+        if(BlueSaga.playerCharacter.getLevel() > this.getLevel()+5)
+        	g.drawString("Weak", centerX - Font.size10.getWidth("Weak"), cornerY-12);
 
         if (getAdminLevel() > 3) {
           g.setColor(BlueSagaColors.BLUE);

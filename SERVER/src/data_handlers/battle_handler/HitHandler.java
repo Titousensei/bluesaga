@@ -411,11 +411,14 @@ public class HitHandler extends Handler {
       // IF TARGET IS PLAYER
       PlayerCharacter playerTarget = (PlayerCharacter) TARGET;
 
-      boolean pkAttack = false;
+      int pkAttack = 0;
 
       if (ATTACKER != null) {
         if (ATTACKER.getCreatureType() == CreatureType.Player) {
-          pkAttack = true;
+          pkAttack = 1;
+          if(ATTACKER.getLevel() > TARGET.getLevel()+5)
+        	  // TODO: Add status effect for killing Weak character ?
+        	  pkAttack = 2;
           PlayerCharacter playerAttacker = (PlayerCharacter) ATTACKER;
           PvpHandler.playerKillsPlayer(playerAttacker, playerTarget);
         }

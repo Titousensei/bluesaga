@@ -567,7 +567,7 @@ public class BattleHandler extends Handler {
    * Handles player death
    * @param client
    */
-  public static void playerDeath(Client client, boolean pkAttack) {
+  public static void playerDeath(Client client, int pkAttack) {
     Creature TARGET = client.playerCharacter;
 
     if (!Server.WORLD_MAP
@@ -576,7 +576,7 @@ public class BattleHandler extends Handler {
         .equals("arena")) {
 
       // If not a pvp kill
-      if (!pkAttack) {
+      if (pkAttack == 0) {
         // LOSE XP IN PERCENT AND MAYBE LEVEL
         int totalXP = XPTables.getTotalLevelXP(TARGET.getLevel());
 
@@ -654,7 +654,8 @@ public class BattleHandler extends Handler {
       }
 
       // CHECK IF PLAYER CAN WEAR EQUIP, OTHERWISE DROP IT ON GROUND
-      ItemHandler.loseLootUponDeath(client);
+      if(pkAttack != 2)
+    	  ItemHandler.loseLootUponDeath(client);
     }
 
     client.playerCharacter.saveInfo();

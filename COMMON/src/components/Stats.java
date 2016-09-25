@@ -3,14 +3,14 @@ package components;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
-import java.util.Iterator;
+import java.util.Map;
 
 public class Stats {
 
   private HashMap<String, Integer> Stats;
 
   public Stats() {
-    Stats = new HashMap<String, Integer>();
+    Stats = new HashMap<>();
     reset();
   }
 
@@ -101,10 +101,19 @@ public class Stats {
 
   public void addStats(Stats plusStats) {
 
-    for (Iterator<String> iter = Stats.keySet().iterator(); iter.hasNext(); ) {
-      String key = iter.next().toString();
-      int value = Stats.get(key);
+    for (Map.Entry<String, Integer> entry : Stats.entrySet()) {
+      String key = entry.getKey();
+      Integer value = entry.getValue();
       Stats.put(key, value + plusStats.getValue(key));
+    }
+  }
+
+  public void fraction(float ratio) {
+
+    for (Map.Entry<String, Integer> entry : Stats.entrySet()) {
+      String key = entry.getKey();
+      Integer value = entry.getValue();
+      Stats.put(key, Math.round(value * ratio));
     }
   }
 

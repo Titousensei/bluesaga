@@ -28,11 +28,9 @@ public class StatusEffect {
 
   private Creature Caster;
 
-  private boolean Active;
   private Color SEColor;
   private int classId;
 
-  private int ActiveTimeItr = 0;
   private int ActiveTimeEnd;
 
 /*
@@ -143,13 +141,11 @@ Id|Name                       |Color             |Sfx        |StatsModif
       e.printStackTrace();
     }
 
-    ActiveTimeEnd = getDuration();
-    Active = true;
+    ActiveTimeEnd = Duration;
   }
 
   public void start() {
-    ActiveTimeItr = 0;
-    setActive(true);
+    ActiveTimeEnd = Duration;
   }
 
   public String getName() {
@@ -197,16 +193,16 @@ Id|Name                       |Color             |Sfx        |StatsModif
   }
 
   public boolean isActive() {
-    ActiveTimeItr++;
-
-    if (ActiveTimeItr >= ActiveTimeEnd) {
-      Active = false;
+System.out.println("ActiveTimeEnd="+ActiveTimeEnd);
+    if (ActiveTimeEnd > 0) {
+      -- ActiveTimeEnd;
+      return true;
     }
-    return Active;
+    return false;
   }
 
-  public void setActive(boolean active) {
-    Active = active;
+  public void deactivate() {
+    ActiveTimeEnd = 0;
   }
 
   public Creature getCaster() {

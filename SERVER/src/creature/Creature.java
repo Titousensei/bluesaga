@@ -505,15 +505,9 @@ public class Creature implements Mover {
     int ret = 0;
     Stats newStats = newStatusEffect.getStatsModif();
     if (newStats != null) {
-System.out.println("*** Stats " + Stats.getHashMap());
-System.out.println("*** newStats " + newStats.getHashMap());
-System.out.println("*** Health " + Health);
-System.out.println("*** Mana " + Mana);
       if (newStats.getValue("MAX_HEALTH") < 0) {
         int newMaxHealth = Stats.getValue("MAX_HEALTH") + newStats.getValue("MAX_HEALTH");
-System.out.println("*** newMaxHealth " + newMaxHealth);
         int newHealth = Health + newStats.getValue("MAX_HEALTH");
-System.out.println("*** newHealth " + newHealth);
         if (newHealth > 0) {
           Health = newHealth;
           ret |= 1;
@@ -523,9 +517,7 @@ System.out.println("*** newHealth " + newHealth);
       }
       if (newStats.getValue("MAX_MANA") < 0) {
         int newMaxMana = Stats.getValue("MAX_MANA") + newStats.getValue("MAX_MANA");
-System.out.println("*** newMaxMana " + newMaxMana);
         int newMana = Mana + newStats.getValue("MAX_MANA");
-System.out.println("*** newMana " + newMana);
         if (newMana > 0) {
           Mana = newMana;
           ret |= 2;
@@ -541,7 +533,11 @@ System.out.println("*** newMana " + newMana);
       getStatusEffects().put(newStatusEffect.getId(), newStatusEffect);
       updateBonusStats();
     } else if ("stackable".equals(newStatusEffect.getRepeatDamageType())) {
-      //
+      Stats myStats = mySE.getStatsModif();
+      myStats.fraction(1.0f * mySE.getDuration() / newStatusEffect.getDuration());
+      myStats.addStats(newStats);
+      mySE.start();
+      ret |= 4;
     } else {
       mySE.setCaster(newStatusEffect.getCaster());
       if (mySE.getAbility() != null) {

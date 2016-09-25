@@ -691,16 +691,11 @@ public class Creature {
 
   public void addStatusEffect(StatusEffect newSE) {
     newSE.setActive(true);
-    boolean exist = false;
     for (StatusEffect checkSE : StatusEffects) {
       if (checkSE.getId() == newSE.getId()) {
-        exist = true;
+        StatusEffects.add(newSE);
         break;
       }
-    }
-
-    if (!exist) {
-      StatusEffects.add(newSE);
     }
 
     if (newSE.getAnimationId() > 0) {
@@ -708,6 +703,18 @@ public class Creature {
     }
 
     updateBonusStats();
+  }
+
+  public void changeStatusEffect(int id, int duration) {
+    for (StatusEffect checkSE : StatusEffects) {
+      if (checkSE.getId() == id) {
+        checkSE.setDuration(duration);
+        checkSE.setDurationItr(0);
+
+        updateBonusStats();
+        break;
+      }
+    }
   }
 
   public void addDashAnimation(int moveTilesX, int moveTilesY) {

@@ -70,8 +70,14 @@ public class StatusEffectHandler extends Handler {
           }
         }
         if (isVisibleForPlayer(s.playerCharacter, target.getX(), target.getY(), target.getZ())) {
-          addOutGoingMessage(
-              s, "statuseffect_add", target.getSmallData() + "/" + statusEffectsInfo);
+          if ((actualEffect & 4) != 0) { // stacked effect
+            addOutGoingMessage(s, "statuseffect_change",
+                target.getSmallData() + "/" + se.getId() + "/" + se.getDuration());
+          }
+          else {
+            addOutGoingMessage(
+                s, "statuseffect_add", target.getSmallData() + "/" + statusEffectsInfo);
+          }
         }
       }
     }

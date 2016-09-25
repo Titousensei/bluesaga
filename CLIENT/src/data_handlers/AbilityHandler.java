@@ -91,6 +91,7 @@ public class AbilityHandler extends Handler {
       }
     }
 
+    // Not used?
     if (serverData.startsWith("<statuseffect_hit>")) {
       // VictimType; VictimId; StatusEffectId; Damage
       String creatureSEinfo[] = serverData.substring(18).split(";");
@@ -240,6 +241,15 @@ public class AbilityHandler extends Handler {
       Ability ABILITY = BlueSaga.playerCharacter.getAbilityById(abilityId);
 
       ABILITY.setReady(true);
+    }
+
+    if (serverData.startsWith("<statuseffect_change>")) {
+System.out.println("serverData:"+serverData);
+      String info[] = serverData.substring(21).split("/");
+      Creature TARGET = MapHandler.addCreatureToScreen(info[0]);
+      int seId = Integer.parseInt(info[1]);
+      int seDuration = Integer.parseInt(info[2]);
+      TARGET.changeStatusEffect(seId, seDuration);
     }
 
     if (serverData.startsWith("<statuseffect_add>")) {

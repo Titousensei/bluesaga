@@ -165,7 +165,7 @@ public class HitHandler extends Handler {
         if (!immune) {
           // Remove Mana Shield if 0 in mana
           if (TARGET.hasManaShield() && TARGET.getMana() <= 0) {
-            TARGET.getStatusEffect(25).setActive(false);
+            TARGET.getStatusEffect(25).deactivate();
             removeManaShield = true;
           }
         }

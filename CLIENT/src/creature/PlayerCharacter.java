@@ -5,14 +5,6 @@
  ************************************/
 package creature;
 
-import game.BlueSaga;
-import game.Database;
-import graphics.BlueSagaColors;
-import graphics.Font;
-import graphics.ImageResource;
-import gui.Dice;
-import gui.Gui;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -25,12 +17,20 @@ import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 
 import animationsystem.CreatureAnimation;
-import player_classes.BaseClass;
-import utils.GameInfo;
+import components.Crew;
 import components.Item;
 import components.Quest;
-import components.Crew;
 import components.Ship;
+import game.BlueSaga;
+import game.ClientSettings;
+import game.Database;
+import graphics.BlueSagaColors;
+import graphics.Font;
+import graphics.ImageResource;
+import gui.Dice;
+import gui.Gui;
+import player_classes.BaseClass;
+import utils.GameInfo;
 
 public class PlayerCharacter extends Creature {
 
@@ -192,6 +192,9 @@ public class PlayerCharacter extends Creature {
         g.setColor(new Color(0, 0, 0, 150));
 
         g.drawString(Name, nameX, cornerY - 25);
+        
+        if(BlueSaga.playerCharacter.getLevel() > this.getLevel()+ClientSettings.PK_WEAK_LEVEL)
+        	g.drawString("Weak", centerX - Font.size10.getWidth("Weak")/2, cornerY-12);
 
         if (getAdminLevel() > 3) {
           g.setColor(BlueSagaColors.BLUE);

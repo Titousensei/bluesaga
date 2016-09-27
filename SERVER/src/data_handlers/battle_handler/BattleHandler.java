@@ -30,6 +30,12 @@ import data_handlers.monster_handler.MonsterHandler;
 public class BattleHandler extends Handler {
 
   public static int playerHitTime = 20;
+  
+  public enum PlayerDeathCause {
+	  CREATURE_KILL,
+	  FAIR_PK,
+	  UNFAIR_PK
+  }
 
   public static void init() {
     //updatePkTime();
@@ -567,7 +573,7 @@ public class BattleHandler extends Handler {
    * Handles player death
    * @param client
    */
-  public static void playerDeath(Client client, boolean pkAttack) {
+  public static void playerDeath(Client client, PlayerDeathCause pkAttack) {
     Creature TARGET = client.playerCharacter;
 
     if (!Server.WORLD_MAP
@@ -576,7 +582,7 @@ public class BattleHandler extends Handler {
         .equals("arena")) {
 
       // If not a pvp kill
-      if (!pkAttack) {
+      if (pkAttack == PlayerDeathCause.CREATURE_KILL) {
         // LOSE XP IN PERCENT AND MAYBE LEVEL
         int totalXP = XPTables.getTotalLevelXP(TARGET.getLevel());
 
@@ -654,7 +660,8 @@ public class BattleHandler extends Handler {
       }
 
       // CHECK IF PLAYER CAN WEAR EQUIP, OTHERWISE DROP IT ON GROUND
-      ItemHandler.loseLootUponDeath(client);
+      if(pkAttack != PlayerDeathCause.UNFAIR_PK)
+    	  ItemHandler.loseLootUponDeath(client);
     }
 
     client.playerCharacter.saveInfo();

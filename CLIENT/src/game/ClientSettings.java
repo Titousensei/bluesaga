@@ -24,6 +24,9 @@ public class ClientSettings {
   public static boolean auto_login = false;
 
   public static String clientFileName = "gameData.jar";
+  
+  // GAME
+  public static final int PK_WEAK_LEVEL = 5;
 
   // VIDEO
   public static short SCREEN_WIDTH = 1024; // 1024

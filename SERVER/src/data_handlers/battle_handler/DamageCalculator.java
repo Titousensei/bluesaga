@@ -5,8 +5,98 @@ import creature.Creature;
 import creature.PlayerCharacter;
 import creature.Creature.CreatureType;
 import data_handlers.item_handler.Item;
+import network.Server;
 
 public class DamageCalculator {
+
+  private static boolean isCover(int x, int y, int z) {
+    return Server.WORLD_MAP.getTile(x, y, z) == null
+        || !Server.WORLD_MAP.getTile(x, y, z).getPassable();
+  }
+
+  private static int calculateCover(Creature ATTACKER, Creature TARGET) {
+
+    int tx = TARGET.getX();
+    int ty = TARGET.getY();
+    int tz = TARGET.getZ();
+
+    double angle = 180.0 * Math.atan2(ty - ATTACKER.getY(), ATTACKER.getX() - tx) / Math.PI;
+    int dy = -1;
+    if (angle<0) {
+      angle = -angle;
+      dy = 1;
+    }
+
+    if (angle>=0.0) {
+      if (angle < 10.0) {
+        if (isCover(tx+1, ty, tz)) {
+          return 200;
+        }
+      }
+      else if (angle <= 35.0) {
+        int ret = 0;
+        if (isCover(tx+1, ty, tz)) {
+          ret += 100;
+        }
+        if (isCover(tx+1, ty+dy, tz)) {
+          ret += 100;
+        }
+        return ret;
+      }
+      else if (angle < 55.0) {
+        if (isCover(tx+1, ty+dy, tz)) {
+          return 200;
+        }
+      }
+      else if (angle <= 80.0) {
+        int ret = 0;
+        if (isCover(tx, ty+dy, tz)) {
+          ret += 100;
+        }
+        if (isCover(tx+1, ty+dy, tz)) {
+          ret += 100;
+        }
+        return ret;
+      }
+      else if (angle < 100.0) {
+        if (isCover(tx, ty+dy, tz)) {
+          return 200;
+        }
+      }
+      else if (angle <= 125.0) {
+        int ret = 0;
+        if (isCover(tx, ty+dy, tz)) {
+          ret += 100;
+        }
+        if (isCover(tx-1, ty+dy, tz)) {
+          ret += 100;
+        }
+        return ret;
+      }
+      else if (angle < 145.0) {
+        if (isCover(tx-1, ty+dy, tz)) {
+          return 200;
+        }
+      }
+      else if (angle <= 170.0) {
+        int ret = 0;
+        if (isCover(tx-1, ty, tz)) {
+          ret += 100;
+        }
+        if (isCover(tx-1, ty+dy, tz)) {
+          ret += 100;
+        }
+        return ret;
+      }
+      else {
+        if (isCover(tx-1, ty, tz)) {
+          return 200;
+        }
+      }
+    }
+    return 0;
+  }
+
 
   // Check if miss, evade or hit
   public static String calculateAttack(Creature ATTACKER, Creature TARGET) {
@@ -15,24 +105,36 @@ public class DamageCalculator {
 
     // 10 -> .13   [50 -> .50]    100 -> .75   150 -> 0.875  200 -> 0.9375
     double accuracy = 1.0 - Math.exp(ATTACKER.getStat("ACCURACY") / -72.0);
+
     if (TARGET.isResting() || accuracy >= RandomUtils.getPercent()) {
       // 10 -> 0.10   50 -> 0.43   [100 -> .67]  150 -> .81   200 -> 0.89
-      double evasion = 1.0 - Math.exp(TARGET.getStat("EVASION") / -91.0);
-      if (TARGET.isResting() || evasion < RandomUtils.getPercent()) {
+      //        20 -> .20     63 -> .50
+      int cover = calculateCover(ATTACKER, TARGET);
+      int actualEvasion = TARGET.isResting() ? 0 : TARGET.getStat("EVASION");
+      double evasion = 1.0 - Math.exp((actualEvasion + cover) / -91.0);
+      if (evasion < RandomUtils.getPercent()) {
 
         int damage = calculateDamage(ATTACKER, TARGET);
         // 10 -> 0.10   50 -> 0.43   [100 -> .67]  150 -> .81   200 -> 0.89
         double critical = 1.0 - Math.exp(ATTACKER.getStat("CRITICAL_HIT") / -91.0);
 
-        // Check if the attack is from behind
-        double diffAngle = Math.abs(ATTACKER.getRotation() - TARGET.getRotation());
-        if (diffAngle < 10.0) {
-          critical += 80.0;
-        } else if (diffAngle < 60.0) { // Angles are m*45
-          critical += 50.0;
+        if (cover == 0) {
+          // Check if the attack is from behind
+          double diffAngle = Math.abs(ATTACKER.getRotation() - TARGET.getRotation());
+          if (TARGET.isResting()) {
+            critical += 100.0;
+          }
+          else if (diffAngle < 10.0) {
+            critical += 80.0;
+          } else if (diffAngle < 60.0) { // Angles are m*45
+            critical += 50.0;
+          }
+        }
+        else if (TARGET.isResting()) { // resting behind cover
+          critical += 20.0;
         }
 
-        if (damage > 0 && (TARGET.isResting() || critical >= RandomUtils.getPercent())) {
+        if (damage > 0 && critical >= RandomUtils.getPercent()) {
           damageInfo = "true;" + (damage * 2);
         } else {
           damageInfo = "false;" + damage;

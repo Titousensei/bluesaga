@@ -1,22 +1,23 @@
 package data_handlers.battle_handler;
 
-import game.ServerSettings;
-import network.Client;
-import network.Server;
-
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Vector;
-import utils.RandomUtils;
-import utils.ServerGameInfo;
+
 import creature.Creature;
+import creature.Creature.CreatureType;
 import creature.Npc;
 import creature.PlayerCharacter;
-import creature.Creature.CreatureType;
 import data_handlers.Handler;
 import data_handlers.ability_handler.StatusEffect;
 import data_handlers.ability_handler.StatusEffectHandler;
+import data_handlers.battle_handler.BattleHandler.PlayerDeathCause;
 import data_handlers.monster_handler.MonsterHandler;
+import game.ServerSettings;
+import network.Client;
+import network.Server;
+import utils.RandomUtils;
+import utils.ServerGameInfo;
 
 public class HitHandler extends Handler {
 
@@ -411,14 +412,14 @@ public class HitHandler extends Handler {
       // IF TARGET IS PLAYER
       PlayerCharacter playerTarget = (PlayerCharacter) TARGET;
 
-      int pkAttack = 0;
+      PlayerDeathCause pkAttack = PlayerDeathCause.CREATURE_KILL;
 
       if (ATTACKER != null) {
         if (ATTACKER.getCreatureType() == CreatureType.Player) {
-          pkAttack = 1;
-          if(ATTACKER.getLevel() > TARGET.getLevel()+5)
+          pkAttack = PlayerDeathCause.FAIR_PK;
+          if(ATTACKER.getLevel() > TARGET.getLevel()+ServerSettings.PK_WEAK_LEVEL)
         	  // TODO: Add status effect for killing Weak character ?
-        	  pkAttack = 2;
+        	  pkAttack = PlayerDeathCause.UNFAIR_PK;
           PlayerCharacter playerAttacker = (PlayerCharacter) ATTACKER;
           PvpHandler.playerKillsPlayer(playerAttacker, playerTarget);
         }

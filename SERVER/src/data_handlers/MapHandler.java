@@ -20,8 +20,8 @@ public class MapHandler extends Handler {
   public static int dayNightTime = 2; // 2 = day, 1 = night
 
   public static int worldTimeItr = 0;
-  public static int worldDayDuration = 4 * 3600;
-  public static int worldNightTime = 3 * 3600; // hours before it becomes night time
+  public static int worldDayDuration = 5 * 3600;
+  public static int worldNightTime = 2 * 3600; // hours before it becomes night time
 
   public static void init() {
     DataHandlers.register("screen", m -> handleScreen(m));

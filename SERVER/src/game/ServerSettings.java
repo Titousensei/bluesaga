@@ -37,8 +37,8 @@ public class ServerSettings {
 
   // Game settings
   public static boolean PVP = true;
-  public static final int PK_WEAK_LEVEL = 5;
-  
+  public static int PK_WEAK_LEVEL = 5;
+
   public static int LEVEL_CAP = 50;
   public static int CLASS_LEVEL_CAP = 10;
   public static int JOB_LEVEL_CAP = 10;

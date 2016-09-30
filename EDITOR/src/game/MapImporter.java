@@ -200,10 +200,10 @@ public class MapImporter
     }
   }
 
-  public void insertRow(Tile[] row, int z)
+  public static void insertRow(Tile[] row, int z)
   throws SQLException
   {
-    for (int x = 0 ; x<row.length ; x ++) {
+    for (int x = 0 ; x<row.length && row[x]!=null ; x ++) {
       if (row[x].tileType != null) {
         BP_EDITOR.mapDB.update(row[x].toSqlInsert(z));
       }
@@ -342,7 +342,8 @@ public class MapImporter
       return "insert into area_tile (Type, Name, X, Y, Z, ObjectId, Passable) values ('"
           + tileType + "', '" + tileName + "',"
           + x + "," + y + "," + z + ", '"
-          + objType + "'," + passable + ")";
+          + ((objType!=null) ? objType : "None")
+          + "'," + passable + ")";
     }
   }
 }

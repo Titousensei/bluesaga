@@ -9,7 +9,9 @@ public final class EditColors
   public final static Color WHITE = new Color(255, 255, 255);
   public final static Color TRANSPARENT = new Color(255, 255, 255, 100);
 
-  public final static Color RED   = new Color(255, 0, 0);
+  public final static Color RED    = new Color(255, 0, 0);
+  public final static Color ORANGE = new Color(255, 128, 0);
+  public final static Color GREEN  = new Color(0, 255, 0);
 
   public final static Color TREES = new Color(64, 157, 31);
   public final static Color ROCKS = new Color(135, 127, 106);

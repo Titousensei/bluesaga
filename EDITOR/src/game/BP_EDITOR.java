@@ -10,14 +10,17 @@ import java.sql.SQLException;
 import java.util.*;
 
 import map.Coords;
+import map.RandomDungeon;
 import map.Tile;
 import map.TileObject;
 import map.WorldMap;
 import menus.AreaEffectMenu;
 import menus.BaseMenu;
+import menus.DungeonMenu;
 import menus.MonsterMenu;
 import menus.ObjectMenu;
 import menus.TextureMenu;
+import utils.RandomUtils;
 
 import org.newdawn.slick.BasicGame;
 import org.newdawn.slick.Color;
@@ -69,6 +72,9 @@ public class BP_EDITOR extends BasicGame {
   public static int PLAYER_Y = 10000;
   public static int PLAYER_Z = 0;
 
+  public static int ORIGIN_X = 0;
+  public static int ORIGIN_Y = 0;
+
   private static int MAX_Z = 1;
 
   private static int DAY_NIGHT_TIME = 0; // 0 = both, 1 = night, 2 = day
@@ -106,11 +112,13 @@ public class BP_EDITOR extends BasicGame {
 
   private static AreaEffectMenu AREA_EFFECT_MENU;
 
+  private static DungeonMenu DUNGEON_MENU;
   private static TextureMenu TEXTURE_MENU;
   private static MonsterMenu MONSTER_MENU;
   private static ObjectMenu OBJECT_MENU;
 
   private static BaseMenu activeMenu = null;
+  private static RandomDungeon rDungeon = null;
 
   private static Image miniMap = null;
   private static int miniMapX;
@@ -166,6 +174,7 @@ public class BP_EDITOR extends BasicGame {
 
     FONTS = new Font();
 
+    DUNGEON_MENU = new DungeonMenu(700, 40);
     TEXTURE_MENU = new TextureMenu(600, 40);
     MONSTER_MENU = new MonsterMenu(500, 70);
     OBJECT_MENU  = new ObjectMenu(680, 70);
@@ -291,6 +300,7 @@ public class BP_EDITOR extends BasicGame {
       }
     }
 
+    String objectId;
     try (ResultSet mapInfo = mapDB.askDB(
             "select Id, X, Y, Z, Type, Name, AreaEffectId, Passable, ObjectId, DoorId from area_tile where X >= "
                 + (PLAYER_X - TILE_HALF_W)
@@ -503,6 +513,17 @@ public class BP_EDITOR extends BasicGame {
     keyLogic(container);
   }
 
+  private static boolean overlap(Image img, int x0, int y0, int w, int h) {
+    for (int y = y0 ; y < y0 + h ; y++) {
+      for (int x = x0 ; x < x0 + w ; x++) {
+        if (!EditColors.CLEAR.equals(img.getColor(x, y))) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+
   private void resetHelp(Graphics g) {
     g.setFont(FONTS.size8);
     helpY = 40;
@@ -563,18 +584,35 @@ public class BP_EDITOR extends BasicGame {
     }
 
     if (currentMode == Mode.MINI_MAP) {
-      g.setColor(EditColors.WHITE);
+      g.setColor(EditColors.TRANSPARENT);
       miniMap.draw(20, 20);
+      g.drawRect(20, 20, miniMap.getWidth(), miniMap.getHeight());
 
-      int playerx = (PLAYER_X - miniMapX + MINI_MAP_SIZE) / 2 - 9 + 20;
-      int playery = (PLAYER_Y - miniMapY + MINI_MAP_SIZE) / 2 - 5 + 20;
+      resetHelp(g);
+      renderHelp(g, "F4: Edit Mode");
+      renderHelp(g, "F5: Random Dungeon");
+      renderHelp(g, "F12: Quit");
 
-      g.setColor(EditColors.RED);
-      g.drawRect(playerx, playery, 18, 10);
+      int playerx = (PLAYER_X - miniMapX + MINI_MAP_SIZE) / 2 - 5 + 20;
+      int playery = (PLAYER_Y - miniMapY + MINI_MAP_SIZE) / 2 - 3 + 20;
 
-      g.setFont(FONTS.size8);
-      g.setColor(EditColors.WHITE);
-      g.drawString(PLAYER_X + "," + PLAYER_Y + "," + PLAYER_Z, 105, 30);
+      if (rDungeon!=null) {
+        if (overlap(miniMap, playerx-10-20, playery-7-20, rDungeon.width/2+20, rDungeon.height/2+14)) {
+          g.setColor(EditColors.ORANGE);
+          activeMenu.setReady(false);
+          activeMenu.setTitle("Random Dungeon: Change Position");
+        } else {
+          g.setColor(EditColors.GREEN);
+          activeMenu.setReady(true);
+          activeMenu.setTitle("Random Dungeon: Select Type");
+        }
+        g.drawRect(playerx, playery, rDungeon.width/2, rDungeon.height/2);
+        g.drawRect(playerx-10, playery-7, rDungeon.width/2+20, rDungeon.height/2+14);
+      }
+      else {
+        g.setColor(EditColors.RED);
+        g.drawRect(playerx, playery, 9, 5);
+      }
     } else {
       resetHelp(g);
       renderHelp(g, "F12: Quit");
@@ -654,10 +692,6 @@ public class BP_EDITOR extends BasicGame {
         int tileX = screenX + PLAYER_X - TILE_HALF_W;
         int tileY = screenY + PLAYER_Y - TILE_HALF_H;
 
-        g.setFont(FONTS.size8);
-        g.setColor(EditColors.WHITE);
-        g.drawString(tileX + "," + tileY + "," + PLAYER_Z, 105, 30);
-
         switch (currentMode) {
         case CLEAR:
         case DELETE_MONSTER:
@@ -709,24 +743,33 @@ public class BP_EDITOR extends BasicGame {
           g.fillRect(screenX * 50, screenY * 50, 50 * BrushSize, 50 * BrushSize);
           break;
         default: // Brush
-          if (MouseTile != null) {
-            MouseTile.draw(g, screenX * 50, screenY * 50);
+          if (activeMenu == null || activeMenu.drawMouseTile()) {
+            if (MouseTile != null) {
+              MouseTile.draw(g, screenX * 50, screenY * 50);
+            }
+            if (MouseMonster != null) {
+              MouseMonster.draw(g, screenX * 50, screenY * 50);
+            }
+            if (MouseObject != null) {
+              MouseObject.draw(g, screenX * 50, screenY * 50);
+            }
+            g.setColor(EditColors.WHITE);
+            g.drawRect(screenX * 50, screenY * 50, 50 * BrushSize, 50 * BrushSize);
           }
-          if (MouseMonster != null) {
-            MouseMonster.draw(g, screenX * 50, screenY * 50);
-          }
-          if (MouseObject != null) {
-            MouseObject.draw(g, screenX * 50, screenY * 50);
-          }
-          g.setColor(EditColors.WHITE);
-          g.drawRect(screenX * 50, screenY * 50, 50 * BrushSize, 50 * BrushSize);
-        }
-
-        if (!Loading && activeMenu != null) {
-          activeMenu.draw(g, container, INPUT.getAbsoluteMouseX(), INPUT.getAbsoluteMouseY());
         }
       }
     }
+
+    if (!Loading && activeMenu != null) {
+      activeMenu.draw(g, container, INPUT.getAbsoluteMouseX(), INPUT.getAbsoluteMouseY());
+    }
+
+    g.setFont(FONTS.size8);
+    String coords = PLAYER_X + "," + PLAYER_Y + "," + PLAYER_Z;
+    g.setColor(EditColors.BLACK);
+    g.drawString(coords, 106, 31);
+    g.setColor(EditColors.WHITE);
+    g.drawString(coords, 105, 30);
 
     if (INPUT != null) {
       Mouse.draw(INPUT.getAbsoluteMouseX(), INPUT.getAbsoluteMouseY());
@@ -758,6 +801,20 @@ public class BP_EDITOR extends BasicGame {
       MouseObject = null;
       MouseTile = null;
       loadScreen();
+    }
+
+    if (INPUT.isKeyPressed(Input.KEY_HOME)) {
+      System.out.println("KEY=Home z" + PLAYER_Z);
+      try (ResultSet rs = mapDB.askDB(
+          "SELECT (MAX(x) + MIN(x))/2, (MAX(y) + MIN(y))/2 FROM area_tile WHERE z=" + PLAYER_Z)
+      ) {
+        PLAYER_X = rs.getInt(1);
+        PLAYER_Y = rs.getInt(2);
+        loadScreen();
+        rs.getStatement().close();
+      } catch (SQLException e) {
+        e.printStackTrace();
+      }
     }
 
     if (INPUT.isKeyPressed(Input.KEY_N)) {
@@ -831,11 +888,27 @@ public class BP_EDITOR extends BasicGame {
 
     if (INPUT.isKeyPressed(Input.KEY_F4)) {
       if (currentMode != Mode.MINI_MAP) {
+        ORIGIN_X = PLAYER_X;
+        ORIGIN_Y = PLAYER_Y;
         loadMiniMap();
         currentMode = Mode.MINI_MAP;
         activeMenu = null;
       } else {
         currentMode = Mode.BRUSH;
+        rDungeon = null;
+      }
+    }
+    if (INPUT.isKeyPressed(Input.KEY_F5) && PLAYER_Z<0 && currentMode == Mode.MINI_MAP) {
+      if (activeMenu != DUNGEON_MENU) {
+        rDungeon = RandomDungeon.generate(RandomUtils.getInt(256, 1024));
+        System.out.println("Positionning " + rDungeon);
+        activeMenu = DUNGEON_MENU;
+        activeMenu.clear();
+      } else {
+        PLAYER_X = ORIGIN_X;
+        PLAYER_Y = ORIGIN_Y;
+        rDungeon = null;
+        activeMenu = null;
       }
     }
 
@@ -905,8 +978,29 @@ public class BP_EDITOR extends BasicGame {
       int tileY = screenY + PLAYER_Y - TILE_HALF_H;
 
       if (currentMode == Mode.MINI_MAP) {
-        PLAYER_X = mouseX * 2 + miniMapX - MINI_MAP_SIZE - 60 + 9;
-        PLAYER_Y = mouseY * 2 + miniMapY - MINI_MAP_SIZE - 60 + 5;
+        String selectedType = null;
+        if (activeMenu == DUNGEON_MENU) {
+          selectedType = DUNGEON_MENU.click(mouseX, mouseY);
+        }
+        if (selectedType!=null) {
+          if (rDungeon !=null && activeMenu.isReady()) {
+            int px = PLAYER_X - rDungeon.offset_x;
+            int py = PLAYER_Y - rDungeon.offset_y;
+            System.out.println("Saving RandomDungeon " + selectedType + ": "
+                + px + "," + py + "," + PLAYER_Z);
+            rDungeon.save(selectedType, px, py, PLAYER_Z);
+            PLAYER_X = ORIGIN_X;
+            PLAYER_Y = ORIGIN_Y;
+            loadMiniMap();
+            PLAYER_X = px + rDungeon.offset_x;
+            PLAYER_Y = py + rDungeon.offset_y;
+            activeMenu = null;
+            rDungeon = null;
+          }
+        } else {
+          PLAYER_X = mouseX * 2 + miniMapX - MINI_MAP_SIZE - 60 + 9;
+          PLAYER_Y = mouseY * 2 + miniMapY - MINI_MAP_SIZE - 60 + 5;
+        }
         loadScreen();
         INPUT.clearKeyPressedRecord();
         return;

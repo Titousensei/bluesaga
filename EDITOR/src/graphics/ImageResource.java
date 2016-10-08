@@ -145,6 +145,7 @@ public class ImageResource {
 
     //"./bin/images/";
 
+    Sprite ref = null;
     ArrayList<File> newList = retriveAllFiles(startingPath);
     for (File f : newList) {
       //ServerMessage.printMessage("file path: "+f.getPath());
@@ -180,16 +181,14 @@ public class ImageResource {
 
           //ServerMessage.printMessage("nr ani: "+nrAni);
           gfxName = gfxName.substring(0, gfxName.length() - 2);
-
           gfx.put(gfxName, new Sprite(client_path + gfxName, nrAni));
-
         } else if (!gfxName.substring(gfxName.length() - 2, gfxName.length() - 1).equals("_")) {
-          //ServerMessage.printMessage("char: |"+gfxName.substring(gfxName.length()-2,gfxName.length()-1)+"|");
+          // System.out.println("char: |"+gfxName.substring(gfxName.length()-2,gfxName.length()-1)+"|");
 
           gfx.put(gfxName, new Sprite(client_path + gfxName));
 
         } else {
-          //ServerMessage.printMessage("not loaded: "+gfxName);
+          // System.out.println("not loaded: "+gfxName);
         }
       }
     }

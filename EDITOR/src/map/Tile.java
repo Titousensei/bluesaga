@@ -8,6 +8,7 @@ import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 
 import components.Creature;
+import graphics.Sprite;
 
 public class Tile {
   private String id;
@@ -98,13 +99,22 @@ public class Tile {
     }
   }
 
+  public boolean exists() {
+    return BP_EDITOR
+          .GFX
+          .getSprite("textures/" + Type + "/" + Name) != null;
+  }
+
   public void draw(Graphics g, int x, int y) {
 
     if (!Type.equals("none")) {
-      BP_EDITOR
-          .GFX
-          .getSprite("textures/" + Type + "/" + Name)
-          .draw(x, y, EditColors.WHITE);
+      Sprite t = BP_EDITOR.GFX.getSprite("textures/" + Type + "/" + Name);
+      if (t!=null) {
+        t.draw(x, y, EditColors.WHITE);
+      }
+      else {
+        System.out.println("WARNING - MISSING textures/" + Type + "/" + Name);
+      }
     }
   }
 
@@ -351,36 +361,52 @@ public class Tile {
   }
 
   public boolean isTilePassable() {
-    boolean ret = true;
 
-    if (!isInteger(Name)) {
-      ret = false;
+    if (Type.equals("none")) {
+      return false;
     }
 
     if (Type.equals("beach")) {
-      ret = true;
-    }
-
-    if (Type.equals("none")) {
-      ret = false;
+      return true;
     }
 
     if (Name.contains("Stairs")) {
-      ret = true;
+      return true;
     }
 
     if (Type.contains("patch")) {
-      ret = true;
+      return true;
     }
 
     if (Name.contains("bridge")) {
-      ret = true;
+      return true;
     }
 
     if (Type.equals("shallow")) {
-      ret = true;
+      return true;
     }
 
-    return ret;
+    if (Type.equals("grass")
+    && (Name.startsWith("sand")
+      || Name.startsWith("stream")
+    )
+    ) {
+      return true;
+    }
+
+    if (Type.equals("sand") && Name.startsWith("shallow")) {
+      return true;
+    }
+
+    if (!isInteger(Name)) {
+      return false;
+    }
+
+    return true;
+  }
+
+  @Override
+  public String toString() {
+    return "textures/" + Type + "/" + Name;
   }
 }

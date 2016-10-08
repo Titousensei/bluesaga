@@ -8,12 +8,10 @@ import org.newdawn.slick.SlickException;
 public class Sprite {
 
   private Image image;
-  private Animation animation;
+  private Animation animation = null;
   private Image thumb;
-  private boolean Animated;
 
   public Sprite(String filename, int nrFrames) {
-    Animated = true;
     Image[] graphics;
 
     if (nrFrames <= 2 || filename.contains("largewindow")) {
@@ -50,11 +48,11 @@ public class Sprite {
       duration = 1000 / ((nrFrames * 2) - 2);
     }
     animation = new Animation(graphics, duration, true);
+    animation.restart();
     thumb = animation.getImage(0).getScaledCopy(50, 50);
   }
 
   public Sprite(String filename) {
-    Animated = false;
     try {
       image = new Image(filename + ".png");
       image.setFilter(Image.FILTER_NEAREST);
@@ -66,7 +64,7 @@ public class Sprite {
   }
 
   public boolean isAnimated() {
-    return Animated;
+    return animation != null;
   }
 
   public Animation getAnimation() {
@@ -78,7 +76,7 @@ public class Sprite {
   }
 
   public void draw(int x, int y) {
-    if (Animated) {
+    if (animation != null) {
       animation.draw(x, y);
     } else {
       image.draw(x, y);
@@ -86,7 +84,7 @@ public class Sprite {
   }
 
   public void draw(int x, int y, Color color) {
-    if (Animated) {
+    if (animation != null) {
       animation.draw(x, y, color);
     } else {
       image.draw(x, y, color);
@@ -94,7 +92,7 @@ public class Sprite {
   }
 
   public void draw(int x, int y, int width, int height, Color color) {
-    if (Animated) {
+    if (animation != null) {
       animation.draw(x, y, width, height, color);
     } else {
       image.draw(x, y, width, height, color);

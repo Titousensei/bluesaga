@@ -95,4 +95,9 @@ public class TileObject {
   public void setTrapId(String trapId) {
     TrapId = trapId;
   }
+
+  @Override
+  public String toString() {
+    return "objects/" + name;
+  }
 }

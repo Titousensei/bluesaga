@@ -920,6 +920,7 @@ public class BP_EDITOR extends BasicGame {
               TEXTURE_MENU.getTile(clickButtonIndex).getType(),
               TEXTURE_MENU.getTile(clickButtonIndex).getName());
           INPUT.clearKeyPressedRecord();
+          System.out.println("BRUSH="+MouseTile);
           return;
         } else if (clickButtonIndex == 998) {
           currentMode = Mode.DELETE_TILE;
@@ -936,6 +937,7 @@ public class BP_EDITOR extends BasicGame {
           currentMode = Mode.BRUSH;
           MouseMonster =
               new Monster(MONSTER_MENU.getMonster(clickButtonIndex).getId(), 0, 0, "no");
+          System.out.println("BRUSH="+MouseMonster);
           INPUT.clearKeyPressedRecord();
           return;
         } else if (clickButtonIndex == 999) {
@@ -953,6 +955,7 @@ public class BP_EDITOR extends BasicGame {
           currentMode = Mode.BRUSH;
           MouseObject = OBJECT_MENU.getClickedTileObject(mouseX, mouseY);
           INPUT.clearKeyPressedRecord();
+          System.out.println("BRUSH="+MouseObject);
           return;
         } else if (clickButtonIndex == 999) {
           currentMode = Mode.DELETE_OBJECT;
@@ -1333,6 +1336,7 @@ public class BP_EDITOR extends BasicGame {
           MouseObject = null;
           MouseTile = null;
           currentMode = Mode.BRUSH;
+          System.out.println("BRUSH="+MouseMonster);
         }
         else if (SCREEN_TILES[screenX][screenY][0].getAreaEffectId() != null) {
           currentMode = Mode.EFFECT;
@@ -1351,6 +1355,7 @@ public class BP_EDITOR extends BasicGame {
             MouseObject = SCREEN_OBJECTS[screenX][screenY][0];
             MouseTile = null;
             currentMode = Mode.BRUSH;
+          System.out.println("BRUSH="+MouseObject);
           }
         }
         else {
@@ -1359,6 +1364,7 @@ public class BP_EDITOR extends BasicGame {
               SCREEN_TILES[screenX][screenY][0].getType(),
               SCREEN_TILES[screenX][screenY][0].getName());
           currentMode = Mode.BRUSH;
+          System.out.println("BRUSH="+MouseTile);
         }
       }
       else {
@@ -1415,13 +1421,15 @@ public class BP_EDITOR extends BasicGame {
           SCREEN_TILES[screenX][screenY-1][0],  // onUp
           SCREEN_TILES[screenX][screenY+1][0]); // onDown
       String goodSuffix = EdgeHelper.nextPossible(possible, suffix);
-
       tileName = otherType + goodSuffix;
       MouseTile.setName(tileName);
       try {
         Tile checkTile = new Tile(0, 0, PLAYER_Z);
         if (checkTile.setType(tileType, tileName)) {
           boolean passable = checkTile.isTilePassable();
+          if (!SCREEN_TILES[screenX][screenY][0].isPassable()) {
+            passable = false;
+          }
           SCREEN_TILES[screenX][screenY][0].setType(tileType, tileName);
           SCREEN_TILES[screenX][screenY][0].setPassable(passable);
           int passableInt = 0;
@@ -1620,9 +1628,10 @@ public class BP_EDITOR extends BasicGame {
             }
 
             if (checkTile.setType(tileType, saveName)) {
-              boolean passable = false;
-
-              passable = checkTile.isTilePassable();
+              boolean passable = checkTile.isTilePassable();
+              if (!SCREEN_TILES[i][j][0].isPassable()) {
+                passable = false;
+              }
               SCREEN_TILES[i][j][0].setType(tileType, saveName);
               SCREEN_TILES[i][j][0].setPassable(passable);
               int passableInt = 0;

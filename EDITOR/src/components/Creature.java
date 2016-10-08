@@ -1406,4 +1406,9 @@ public class Creature {
   public String getSpecialType() {
     return SpecialType;
   }
+
+  @Override
+  public String toString() {
+    return "creatures/m" + CreatureId + ": " + "/" + Family + Name;
+  }
 }

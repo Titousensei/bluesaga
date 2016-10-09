@@ -916,6 +916,8 @@ public class BP_EDITOR extends BasicGame {
         if (clickButtonIndex < 998) {
           currentMode = Mode.BRUSH;
           MouseTile = new Tile(0, 0, 0);
+          MouseMonster = null;
+          MouseObject = null;
           MouseTile.setType(
               TEXTURE_MENU.getTile(clickButtonIndex).getType(),
               TEXTURE_MENU.getTile(clickButtonIndex).getName());
@@ -925,6 +927,8 @@ public class BP_EDITOR extends BasicGame {
         } else if (clickButtonIndex == 998) {
           currentMode = Mode.DELETE_TILE;
           MouseTile = null;
+          MouseMonster = null;
+          MouseObject = null;
           INPUT.clearKeyPressedRecord();
           return;
         } else if (clickButtonIndex < 1000) {
@@ -937,12 +941,16 @@ public class BP_EDITOR extends BasicGame {
           currentMode = Mode.BRUSH;
           MouseMonster =
               new Monster(MONSTER_MENU.getMonster(clickButtonIndex).getId(), 0, 0, "no");
+          MouseTile = null;
+          MouseObject = null;
           System.out.println("BRUSH="+MouseMonster);
           INPUT.clearKeyPressedRecord();
           return;
         } else if (clickButtonIndex == 999) {
           currentMode = Mode.DELETE_MONSTER;
+          MouseTile = null;
           MouseMonster = null;
+          MouseObject = null;
           INPUT.clearKeyPressedRecord();
           return;
         } else if (clickButtonIndex < 1000) {
@@ -954,11 +962,15 @@ public class BP_EDITOR extends BasicGame {
         if (clickButtonIndex < 999) {
           currentMode = Mode.BRUSH;
           MouseObject = OBJECT_MENU.getClickedTileObject(mouseX, mouseY);
+          MouseTile = null;
+          MouseMonster = null;
           INPUT.clearKeyPressedRecord();
           System.out.println("BRUSH="+MouseObject);
           return;
         } else if (clickButtonIndex == 999) {
           currentMode = Mode.DELETE_OBJECT;
+          MouseTile = null;
+          MouseMonster = null;
           MouseObject = null;
           INPUT.clearKeyPressedRecord();
           return;

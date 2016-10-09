@@ -26,7 +26,6 @@ public class Creature {
 
   protected int CreatureId;
   protected String Name;
-  protected String Family;
   protected int MobLevel;
 
   protected String SpecialType = "no";
@@ -1293,10 +1292,6 @@ public class Creature {
     return Name;
   }
 
-  public String getFamily() {
-    return Family;
-  }
-
   public int getX() {
     return X;
   }
@@ -1409,6 +1404,6 @@ public class Creature {
 
   @Override
   public String toString() {
-    return "creatures/m" + CreatureId + ": " + "/" + Family + Name;
+    return "creatures/m" + CreatureId + ": " + Name;
   }
 }

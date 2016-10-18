@@ -627,6 +627,7 @@ public class BP_EDITOR extends BasicGame {
       renderHelp(g, "R: Place Door");
       renderHelp(g, "E: Place Effect");
       renderHelp(g, "Del: Clear Area");
+      renderHelp(g, "Home: Go to center of map");
 
       String willEdges = (FixEdges
           && currentMode == Mode.BRUSH
@@ -792,6 +793,7 @@ public class BP_EDITOR extends BasicGame {
       boolean keepOpen = activeMenu.keyLogic(INPUT);
       if (!keepOpen) {
         activeMenu = null;
+        rDungeon = null;
       }
     }
 
@@ -810,6 +812,11 @@ public class BP_EDITOR extends BasicGame {
       ) {
         PLAYER_X = rs.getInt(1);
         PLAYER_Y = rs.getInt(2);
+        if (currentMode == Mode.MINI_MAP) {
+          ORIGIN_X = PLAYER_X;
+          ORIGIN_Y = PLAYER_Y;
+          loadMiniMap();
+        }
         loadScreen();
         rs.getStatement().close();
       } catch (SQLException e) {
@@ -997,7 +1004,11 @@ public class BP_EDITOR extends BasicGame {
             activeMenu = null;
             rDungeon = null;
           }
-        } else {
+        } else if (mouseX>30
+        && mouseX<MINI_MAP_SIZE+25
+        && mouseY>29
+        && mouseY<MINI_MAP_SIZE+29
+        ) {
           PLAYER_X = mouseX * 2 + miniMapX - MINI_MAP_SIZE - 60 + 9;
           PLAYER_Y = mouseY * 2 + miniMapY - MINI_MAP_SIZE - 60 + 5;
         }

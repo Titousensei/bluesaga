@@ -24,6 +24,7 @@ public class DungeonMenu extends BaseMenu {
 
   private final int posx;
   private final int posy;
+  private final int width = 300;
   private final int height;
 
   private String title = "Random Dungeon";
@@ -34,14 +35,14 @@ public class DungeonMenu extends BaseMenu {
     buttons_ = new ArrayList<>();
 
     int y = posy + ORIGIN_Y+ORIGIN_X;
-    y += addButton("wooddungeon", posx, y) + SPACING_Y;
-    y += addButton("dirtcave",    posx, y) + SPACING_Y;
     y += addButton("cave",        posx, y) + SPACING_Y;
-    y += addButton("catacombs",   posx, y) + SPACING_Y;
     y += addButton("crystalcave", posx, y) + SPACING_Y;
+    y += addButton("dirtcave",    posx, y) + SPACING_Y;
+    y += addButton("dungeon",     posx, y) + SPACING_Y;
     y += addButton("icecave",     posx, y) + SPACING_Y;
     y += addButton("sewers",      posx, y) + SPACING_Y;
     y += addButton("watercave",   posx, y) + SPACING_Y;
+    y += addButton("wooddungeon", posx, y) + SPACING_Y;
     height = y + SPACING_Y;
   }
 
@@ -60,7 +61,7 @@ public class DungeonMenu extends BaseMenu {
   @Override
   public void draw(Graphics g, GameContainer app, int mouseX, int mouseY) {
     g.setColor(EditColors.MENU);
-    g.fillRect(posx, posy, 300, height);
+    g.fillRect(posx, posy, width, height);
 
     g.setColor(EditColors.WHITE);
     g.setFont(FONT);

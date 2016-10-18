@@ -11,6 +11,19 @@ import game.MapImporter.Tile;
 import utils.RandomUtils;
 
 public class RandomDungeon {
+  public final static String[] FLAT_MAP = new String[] {
+    // 0    1    2    3    4    5    6    7    8    9
+      "3", "3", "2", "1", "1", "1", "1", "1", "1", "1",
+      "1", "1", "1", "1", "1", "1", "1", "1", "1", "1"
+  };
+
+  public final static String[] CAVE_TYPE_NORMAL = new String[] {
+      "IUL", "IUR", "IDL", "IDR", "DR", "DL", "UL", "UR", "R", "L", "D", "U"
+  };
+
+  public final static String[] CAVE_TYPE_ICECAVE = new String[] {
+      "IDR", "IDL", "IUR", "IUL", "DR", "DL", "UL", "UR", "R", "L", "D", "U"
+  };
 
   public final static int[] LVL10_LARVA_SCARABS = new int[] { 15, 9, 10 }; // Larvas, Scarabs, Ruby scarabs
   public final static int[] LVL10_SPIDER_BATS = new int[] { 6, 34, 4 }; // Spiders, Toxic Spider, Bat
@@ -225,49 +238,51 @@ public class RandomDungeon {
       // If wall, decide wall type
       if (tileNr == 1) {
 
-        String caveType = "";
         String tileName = "1";
+        String[] caveType = "icecave".equals(dungeonType)
+                            ? CAVE_TYPE_ICECAVE
+                            : CAVE_TYPE_NORMAL;
 
         if (equalTile(map, (keyX - 1) + "," + (keyY), 0)
             && equalTile(map, (keyX) + "," + (keyY - 1), 0)
             && equalTile(map, (keyX - 1) + "," + (keyY - 1), 0)) {
-          tileName = caveType + "IUL";
+          tileName = caveType[0]; // "IUL"
         } else if (equalTile(map, (keyX + 1) + "," + (keyY), 0)
             && equalTile(map, (keyX) + "," + (keyY - 1), 0)
             && equalTile(map, (keyX + 1) + "," + (keyY - 1), 0)) {
-          tileName = caveType + "IUR";
+          tileName = caveType[1]; // "IUR"
         } else if (equalTile(map, (keyX - 1) + "," + (keyY), 0)
             && equalTile(map, (keyX) + "," + (keyY + 1), 0)
             && equalTile(map, (keyX - 1) + "," + (keyY + 1), 0)) {
-          tileName = caveType + "IDL";
+          tileName = caveType[2]; // "IDL"
         } else if (equalTile(map, (keyX + 1) + "," + (keyY), 0)
             && equalTile(map, (keyX) + "," + (keyY + 1), 0)
             && equalTile(map, (keyX + 1) + "," + (keyY + 1), 0)) {
-          tileName = caveType + "IDR";
+          tileName = caveType[3]; // "IDR"
         } else if (equalTile(map, (keyX - 1) + "," + (keyY - 1), 0)
             && equalTile(map, (keyX - 1) + "," + (keyY), 1)
             && equalTile(map, (keyX) + "," + (keyY - 1), 1)) {
-          tileName = caveType + "DR";
+          tileName = caveType[4]; // "DR"
         } else if (equalTile(map, (keyX + 1) + "," + (keyY - 1), 0)
             && equalTile(map, (keyX + 1) + "," + (keyY), 1)
             && equalTile(map, (keyX) + "," + (keyY - 1), 1)) {
-          tileName = caveType + "DL";
+          tileName = caveType[5]; // "DL"
         } else if (equalTile(map, (keyX + 1) + "," + (keyY + 1), 0)
             && equalTile(map, (keyX + 1) + "," + (keyY), 1)
             && equalTile(map, (keyX) + "," + (keyY + 1), 1)) {
-          tileName = caveType + "UL";
+          tileName = caveType[6]; // "UL"
         } else if (equalTile(map, (keyX - 1) + "," + (keyY + 1), 0)
             && equalTile(map, (keyX - 1) + "," + (keyY), 1)
             && equalTile(map, (keyX) + "," + (keyY + 1), 1)) {
-          tileName = caveType + "UR";
+          tileName = caveType[7]; // "UR"
         } else if (equalTile(map, (keyX - 1) + "," + (keyY), 0)) {
-          tileName = caveType + "R";
+          tileName = caveType[8]; // "R"
         } else if (equalTile(map, (keyX + 1) + "," + (keyY), 0)) {
-          tileName = caveType + "L";
+          tileName = caveType[9]; // "L"
         } else if (equalTile(map, (keyX) + "," + (keyY - 1), 0)) {
-          tileName = caveType + "D";
+          tileName = caveType[10]; // "D"
         } else if (equalTile(map, (keyX) + "," + (keyY + 1), 0)) {
-          tileName = caveType + "U";
+          tileName = caveType[11]; // "U"
         }
 
         if (!tileName.equals("1")) {
@@ -281,20 +296,9 @@ public class RandomDungeon {
           row[x++] = t;
         }
       } else if (tileNr == 0) {
-        int floorNr = RandomUtils.getInt(1, 10);
-        if (floorNr == 0) {
-          floorNr = 1;
-        } else if (floorNr == 3) {
-          if (dungeonType.equals("wooddungeon")) {
-            floorNr = 1;
-          }
-        } else if (floorNr > 2) {
-          floorNr = 1;
-        }
-
         Tile t = new Tile();
         t.tileType = dungeonType;
-        t.tileName = String.valueOf(floorNr);
+        t.tileName = FLAT_MAP[RandomUtils.getInt(0, 19)];
         t.objType = null;
         t.x = tileX;
         t.y = tileY;

@@ -163,9 +163,7 @@ public class QuestWindow extends Window {
 
   public void showQuest(String questText) {
     Quests.get(selectedQuest)
-        .setDescription(
-            LanguageUtils.getString(
-                "quests." + Quests.get(selectedQuest).getId() + ".description"));
+        .setDescription(questText);
     State = "ShowQuest";
   }
 

@@ -1,0 +1,907 @@
+### q5 / The dark ones are powerful
+NpcId: 73
+Level: 2
+QuestMessage: The undead have grown stronger lately, maybe they've aquired a soul stone...
+
+### q10 / Sorkarh's Artifact
+NpcId: 897
+GetItem: 182
+Level: 30
+Description: Head down to the heart of Sorkarhs underground nest and find his artifact.
+QuestMessage:
+    The legend says that the dark elf Sorkarh built an entire underground village for the one purpose of protecting his most precious treasure..
+    Many brave adventurers have passed here over time and I'm afraid my eyes will never lay their sight on any of them again..
+    No, I have no interest in being the owner of Sorkarh's artifact. I'm only asking for a glimpse of it so that all the questions haunting my troubled mind would go away..
+    You really do seem strong. Bring me the artifact and I shall reward you with something very special. So, what do you say?
+RewardMessage:
+    Un.. be.. lievable! It's.. BEAUTIFUL!
+    I never thought I'd live to see this masterpiece.. I was not even sure it existed..
+    Thank you for showing me this! It's really bringing peace to my soul! I shall remember you and I wish you all the luck in your future adventures!
+    Oh yes, I almost forgot..
+    I promised you a reward..
+    Here you go!This is all the copper that I've got!
+Reward: 2000xp 182item 500cc
+ReturnForReward
+
+### q11 / Am I the only one?
+NpcId: 71
+Level: 1
+QuestMessage:
+    No one believes me, no one...
+    I can feel deep vibrations in the earth, something is waking up...
+    They call me "the worried", but I prefer to see myself as "the enlightened".
+
+### q12 / I want to travel the world
+NpcId: 64
+Level: 2
+QuestMessage:
+    How I long to feel the wind blow through the moss on my head again!
+    Alas I lost my ship... and my crew...
+    I don't remember what happened except a shadow that rose from beneath the surface.
+    I think I will stay on this island a bit longer and collect my strength...
+    Maybe ask Ilgith for a boat when I'm ready.
+
+### q18 / Recipe For My Curse
+NpcId: 237
+Level: 9
+QuestMessage:
+    Hey! Tell my nephew to not worry.. I just need some time on my own..
+    Hmm.. so you came to ask me about the ingredients for a curse to your cure..
+    That curse of yours looks bad.. so I can't promise you that I know exactly how to cure it..
+    Tell Minai that I would try to mix the poison spider with bunny furs and flower petals!
+    You can use my portal over there! It will teleport you back to the Green Leaf Village!
+
+### q27 / Dart Poison
+NpcId: 532
+GetItem:: 100 * 5
+Level: 15
+Description: Collect 5 toxic mushroom caps in the Shroom Forest.
+QuestMessage:
+    Mushroom mushroom mushroom mushroom, NEED MUSHROOMS!
+    Needs THEM for MY POISONOUS DARTS!
+    Bring ME five toxic shroom CAPS and I will reward YOU!
+RewardMessage:
+    MUSHROOOOOOMS!!
+    THANK YOU!
+Reward: 400xp 100cc
+ReturnForReward
+
+### q30 / Talk to the inn-keeper
+TalkTo: 1
+Level: 1
+Description: Talk to the inn-keeper on Chompa Island found on the first floor in the treehouse.
+Reward: 10xp
+
+### q32 / Spirit of the dead
+NpcId: 537
+GoTo: 24
+Level: 10
+Description:
+    There is a rumor about a hidden archipelago where the spirits of the dead are walking.
+    The only way to access it is through a cave on Lockwoods island.
+QuestMessage:
+    There is a legend about a special liquid dropped by the spirits of the dead.
+    It is so rare that merchants would pay anything for it.
+    Another rumor says that there is a hidden archipelago that can only be accessed through a cave on this island.
+    Somewhere there the spirits of the dead are walking.
+Reward: 400xp
+
+### q33 / My island
+NpcId: 689
+Level: 1
+QuestMessage:
+    Why did I buy this island...?
+    I knew it was called Oakstone, but...
+    I didn't know there would only be one oak and one stone on it.
+
+### q34 / Do not forget to rest
+NpcId: 73
+Level: 2
+QuestMessage:
+    Feeling tired after tough battles? Well don't forget that you can rest whenever you are not in danger.
+    Just press the thingie you call "the spacebar" and you will enter a peaceful sleep that will regenerate your health quicker.
+    But beware! Your vision will be limited and monsters might attack you while you rest.
+
+### q35 / They keep coming
+NpcId: 691
+Kill: 43 * 20
+Level: 10
+Description:
+    Go the hidden archipelago and kill 20 killer rabbits.
+    The archipelago can be found behind the cave to the east of Green Leaf village.
+QuestMessage:
+    Pssst!
+    Yes over here! I am on an important mission to save this world!
+    Nobody seems to care, oblivious to the apocalptyptic threat that is approaching...
+    I am talking about the bunnies! KILLER BUNNIES!!
+    They keep cuddling and making more bunnies, and jumping around, ALWAYS JUMPING AROUND!!
+    You need to help me, I don't dare approach them, they will eat my branches.
+    They can be found in the hidden archipelago.
+    Go the cave to east of here, inside the cave you will find an exit to the archipelago.
+RewardMessage:
+    You survived!? Are they gone now?
+    Ok here is your reward, but they will keep coming I tell you!
+    So try and hunt them down if you see them in the future.
+Reward: 600xp 80cc
+ReturnForReward
+
+### q36 / First quest
+NpcId: 1
+Level: 1
+Kill: 1
+Description:
+    Outside of Ilgith's inn there is a practice target.
+    Right-click on it to target and attack it.
+    The attack will be done automatically.
+    When the target is destroyed, return to Ilgith in his tree house and talk to him.
+RewardMessage: Ah well done! You sure are strong!
+QuestMessage:
+    Oh so you're finally awake! You are at the Chompa Inn on Chompa Island.
+    We found you on the beach, barely alive. But don't worry, we took good care of you!
+    Let's see if your strength is back, go out and hit the practice target outside my house.
+    Just walk up to it and right-click on it, I am sure you will smash it to pieces.
+    When you've destroyed it, come back and talk to me!
+Reward: 25xp
+ReturnForReward
+
+### q37 / Love my new moustache!
+NpcId: 721
+Level: 7
+QuestMessage:
+    Have you visited the local barber shop yet?
+    Got my new moustache there and I loooooove it!
+
+### q40 / So sick of these stones...
+NpcId: 722
+Level: 7
+QuestMessage:
+    Aren't you tired of these stones blocking your paths...
+    They are always there conveniently blocking one area from another.
+    "But I can see a gap, maybe I can squeeze my way through?" you ask yourself... but NO! You can't... you never can.
+
+### q41 / Leave this island
+NpcId: 85
+Level: 1
+QuestMessage: Ahoy lubber! You will need a boat if ye want to leave this island! Hahaha!
+
+### q42 / Who are you?
+NpcId: 208
+Story
+Level: 8
+QuestMessage:
+    Oh! How did you get in here?
+    Abandoned? No I live here with my uncle. We just don't go out much.
+
+### q44 / The dark ones are powerful
+NpcId: 731
+Level: 8
+QuestMessage:
+    You must be one of the cursed ones... I am sad for you...
+    They are many and they want your soul...
+    I like you... please try not to die...
+    Do not engage them, just escape through these woods...
+    ... I saw something shiny down there.
+
+### q45 / Guardian Fan
+NpcId: 720
+Level: 7
+QuestMessage:
+    I love the forest guardians! They are sooo coool!
+    Some day I hope to become one...
+    I have heard rumors that the mountains have their guardians too, and so do the birds, but that sounds just silly!
+
+### q47 / Trap walk-through!
+NpcId: 910
+Level: 30
+QuestMessage:
+    Oh, hello there!
+    I've seen many adventurers get past these traps but I'm trying to remember the pattern..
+    Oh, yes! I remember! Counting from the left.. it's.. 2.. 3.. 4.. uhm.. 4.. 4!
+    Oh, no.. wait.. not that many 4's! The third and the last step should be 3's! Yes, that's it!
+
+### q48 / Riddle
+NpcId: 911
+Level: 30
+QuestMessage:
+    I'm going crazy! I can't figure out where I should jump down...
+    I've been here for days and at night I hear voices...
+    They keep repeating the same riddle over and over again. Maybe it might help you! Now listen...
+    There are 100 copper coins scattered in a pitch black room. 90 of the copper coins have heads facing up and the remaining ones have tails up. You cannot distinguish which coins are which...
+    How do you sort the copper coins into two piles that contain the same number of tails?
+    Jump down to the left is you believe that you simply have to split the copper coins into two equal piles.
+    Jump down in the middle if you believe it's not possible to solve the task.
+    Jump down to the right if you believe it's solved by choosing any 10 coins to make a pile and then flip these over.
+
+### q49 / Fishing
+NpcId: 917
+GetItem: 174
+QuestItems: 173
+Level: 2
+QuestAbilityId: 45
+Description:
+    Equip the fishing rod and use the ability "Float fishing" on a water-tile.
+    You will find the "Float fishing" ability in the ability window, you can
+    click on it and place it in the actionbar for quicker access. When a fish
+    appears, right-click on it to grab it. Catch a blue fish and return it to Grodo the fisherman.
+QuestMessage:
+    Orangas are nice, but it doesn't beat the tasty meat of a fish!
+    Here, take this fishing rod and try to get a blue fish.
+    Just equip the fishing rod and then use the ability "Float fishing".
+RewardMessage:
+    Great work! You're a natural!
+    There are more advanced fishing rods available that can give you bigger fishes, so keep practicing!
+Reward: 40xp
+ReturnForReward
+
+### q51 / Are you hurtAAA?
+NpcId: 921
+Level: 1
+QuestMessage:
+    If battles get too rough you can always run back to the inn and rest.
+    Your health and mana will be restored in safe zones!
+
+### q52 / A lost soul
+NpcId: 922
+GetItem: 101
+Level: 20
+Description: Find something that could strengthen Bullghur's soul.
+QuestMessage:
+    Help me.. I need help..
+    Ever since my brother and I were killed in the Green Leaf village..
+    .. I've been trying to figure out a way to feel alive once again.
+    The life of a ghost is not always easy. Please find something that could nourish my soul so that I can feel like a true goblin once again...
+RewardMessage:
+    Ohh! Thank you so much! It's bringing life back to my soul!
+    I'm gonna speak to the other ghosts and make sure that you're given permission to enter the depths of their home!
+Reward: 1000xp 191it
+ReturnForReward
+
+### q53 / The secret passage
+NpcId: 998
+GoTo: 52
+Level: 25
+Description: Locate the secret passage that leads to the depths of Oozemaw Fortress.
+QuestMessage:
+    Urghh.. I'm so angry! Our master abandoned us..
+    Does he honestly think that a few stones will keep him safe? Grrrhh..
+    There is a pasasge that would get you past these stones. I just can't remember where it is..
+    Find me the secret passage that leads to master Oozemaw!
+RewardMessage:
+    Arrrghh.. I knew it was possible to get past these stones! I will tell my brothers and then we shall confront master Oozemaw!
+    How.. could.. he.. leave us behind.
+Reward: 1000xp
+
+### q54 / Oh it's you again...
+NpcId: 1019
+Level: 17
+QuestMessage:
+    I hoped not to see you again...
+    I thought you got rid of the mark of the one that should not be mentioned...
+    This means you are still under his curse and you need to escape his claws once more.
+    Try not to fight, I saw a portal up ahead, good luck!
+    My name?
+    ... noone ever asked me that since I died... I... don't remember...
+    ... I think my mom called me... Gomgom...
+    That's it! My name is Gomgom! Nice to meet you!
+    Please don't die!
+
+### q57 / Something is wrong in there...
+NpcId: 1020
+Level: 21
+QuestMessage:
+    Yes, this is the entrance to the Goblin Archives, the largest library in the world, the pride of the Goblin race!
+    ... but lately something strange is happening in there... I havn't dared to enter its gates lately, they look strange... I can't even call them goblins anymore...
+
+### q61 / The blue books
+NpcId: 1094
+GetItem: 202
+Level: 20
+Description: Find the three magic books that Pyckwyck is looking for.
+QuestMessage: You know I'm the only one that understands all the different kinds of goblin dialects../But lately my memory has been failing me and I need to recover a few words that I can't seem to remember/Would you please bring me the goblin dictionaries? I think there are 3 and if I'm not mistaken they have a beautiful blue color.
+RewardMessage: Thank you! I knew I could count on you! Here you go!
+Reward: 1000xp 49it
+ReturnForReward
+
+### q62 / Orangas!
+NpcId: 1142
+GetItem: 178
+Level: 1
+Description: Collect 100 Orangas and bring them back to Edward in Morwyn Falls.
+QuestMessage:
+    This is terrible! I can't stand living where nothing grows! I was not meant to be a mountain goat..
+    I remember when I used to sail all the way to Lockwoods to in order to get ahold of my favorite fruit.
+    If you bring me 100 orangas, I'll pay you 500 copper!
+RewardMessage:
+    OH! THEY LOOK JUICY!
+    Thank you, thank you! You made my day! Here are the 500 copper we agreed on.
+Reward: 500xp 500cc
+ReturnForReward
+
+### q63 / An evil plan
+NpcId: 1143
+GetItem: 92
+Level: 7
+Description: Collect the poison of 10 spiders and bring it back to Bob in Morwyn Falls.
+QuestMessage:
+    Pssst.. come over here!
+    Do you see that annoying goat over there? Yes, Edward..
+    I can't stand him anymore! It's not that I don't like his juice shop.. it's just that he steals all my customers!
+    So.. I.. thought.. that maybe you could help me. I'm thinking of injecting some poison in his fruits!
+    I'm not an evil man, so I wouldn't risk any lives here! I just need a weaker poison that would make the customers feel dizzy! I guess that would stop them from coming back..
+    Please bring me the poison of 10 spiders and I shall pay you more than Edward does!
+RewardMessage:
+    Psst... thanks! Here you go, 501 copper!
+Reward: 500xp 501cc
+ReturnForReward
+
+### q64 / Be careful
+NpcId: 1189
+Level: 31
+QuestMessage: The northern winds are telling me that you should sail back to where you came from..
+
+### q65 / The north is changing
+NpcId: 1190
+GetItem: 179
+Level: 30
+Description: Collect 10 snowballs and bring them back to Algath.
+QuestMessage:
+    I have to be honest with you..
+    Me and my friend Hardleg have spent alot of time in the north and we can tell if something is changing..
+    In the north, far from all kind of civilization, we can easily sense if something is not right.
+    The snow absorbs the energy of those living in the north. So if you bring me some snow, I could tell you what's going on!
+RewardMessage:
+    This is not good..
+    I don't know where this energy comes from.. But.. Something bad is residing in the north..
+Reward: 500xp
+ReturnForReward
+
+### q66 / Perfect Conditions
+NpcId: 1191
+Kill: 24 * 3
+Level: 30
+Description: Enter the spider cave on Ollghar's island and kill 3 Spider Queens.
+QuestMessage:
+    Ollghar wanted to create the perfect conditions for spiders to grow strong.
+    He bought this little island and paid a fortune for the transport of various spiders. He had to sail them all the way from Green Leaf..
+    I always knew he had the potential to raise the most powerful spiders.. But now the problem is that they've grown too strong.. and I'm worried they might take control of things 'round here.
+    Go ahead and prove to me that you can still retain those beasts!
+RewardMessage:
+    You are amazing! Thank you so much for giving me hope!
+    I promise you that I'll stop Ollghar from experimenting with these creatures!
+Reward: 500xp
+ReturnForReward
+
+### q67 / Who are you?
+NpcId: 1213
+Level: 31
+QuestMessage:
+    My name was removed from me when I joined the guild, it is not important anymore.
+    I am a member of the assassins guild. We are a neutral force and our job is simply to maintain the balance between the great forces in this world.
+    Lately, many of us assassins have been assigned to the north. We've gathered rumors that a new immense power is growing in these northern parts.
+
+### q68 / Warning
+NpcId: 1242
+Level: 35
+QuestMessage: You should not be here..
+
+### q69 / Dangerous cave
+NpcId: 1300
+GetItem: 209
+Level: 35
+Description: Prove to Xin that you can beat whatever it is that's hiding in the depths of the water cave.
+QuestMessage:
+    You shouldn't be heading north! The Queen of the north has awaken!
+    Show me something that can prove that can atleast defeat the strongest creature in that water cave. If you can't, you should not even be here.
+RewardMessage:
+    Oh, you did it. You surely are strong. I'm quite sure the queen has summoned that sea monster.
+    I'm happy you made it but don't let this success fool you! The strength of the Queen is on a whole other level!
+Reward: 2000xp 500cc
+ReturnForReward
+
+### q71 / Pure Evil
+NpcId: 1342
+Level: 35
+QuestMessage:
+    There has been worrying reports coming from the North lately. If you don't believe me, go upstairs and look for yourself. We caught it last night.
+
+### q72 / Scary... isnt it?
+NpcId: 1343
+Level: 35
+QuestMessage: Look at that monster! What is the witch of the north up to?
+
+### q73 / Final Warning
+NpcId: 1379
+Level: 35
+QuestMessage: You shouldn't go any further...
+
+### q75 / The Yearly Tournament
+NpcId: 1388
+Level: 1
+QuestMessage: It's very important that we, the forest family, win the yearly Pirate Ball Tournament! So you better start practicing!
+
+### q76 / Rumors
+NpcId: 1389
+Level: 1
+QuestMessage:
+    I've heard the Mountain family has recruited quite a few good players lately.. Honestly, I'm worried about this years tournament.. Especially now that we've lost Froggo..
+    Froggo is such a unique talent. Too bad he had to end up in prison..
+
+### q77 / Spider Poison
+NpcId: 1391
+Level: 8
+QuestMessage:
+    Ohhh, so you've been cursed too!
+    If you're looking for spider poison, you'll have to go deeper into this cave and fight the green ones.
+
+### q78 / My Brother!
+NpcId: 1392
+Level: 7
+QuestMessage:
+    I'm currently collecting samples of spiders for my brother Ollghar. He needs them for his experiments..
+    He recently bought an island in the north where he is trying to breed spider mutants. One day, when you'll be strong enough, you should go there and visit him!
+
+### q79 / Shroom cave
+Level: 20
+NpcId: 1450
+QuestMessage: Hey there! I'm just warning you... This cave belongs to the shrooms..
+
+### q80 / The luna flower
+NpcId: 1452
+Level: 18
+GetItem: 212
+Description: Try to find a petal that belongs to the legendary luna flower that the Old Man is searching for.
+QuestMessage:
+    There are many old legends that mention the magic luna flower. It's petals are always described as the most nutriotious ingredient in the world.
+    I've spent years looking for it and all the clues lead here! Would you like to help me in my search?
+RewardMessage:
+    A luna flower petal! I can't believe it! You actually found the legendary flower!
+    I'm sure there exists more of these.. I'll keep studying the old legends in order to locate them all! Thank you once again!
+Reward: 5000xp
+ReturnForReward
+
+### q81 / A riddle
+NpcId: 1453
+Level: 1
+QuestMessage:
+    Watch out! Don't push any of these boxes before you've solved this riddle I'm about to tell you! Ready? Ok.
+    You are standing at a fork in the road where one road leads to paradise and the other road leads to hell.
+    Infront of you there are two guards that know which way leads to paradise. One guard always tells the truth and the other is always lying. You can't tell which guard that can be trusted and you may only ask one question to one of them.
+    Can you with certainty know which way leads to paradise? Here are your options..
+    Push the box to the north if you believe that this riddle can't be solved unless more information is given.
+    Push the box in the middle if you don't care about any of this.
+    Push the box to the south if you believe that you can ask any of the guards and that they both can provide you with enough information.
+
+### q82 / The Botanical Maze
+NpcId: 1457
+Level: 14
+QuestMessage: Head south if you're looking for the botanical maze.
+
+### q88 / Life draining
+NpcId: 1464
+Level: 11
+QuestMessage: Watch out for those bats! Once I was bitten by one of them and it seemed as if my blood empowered it!
+
+### q89 / What is that?
+NpcId: 1465
+Level: 11
+QuestMessage: This skull does not belong to a forest creature.. that's for sure..
+
+### q90 / Goblin skull
+NpcId: 1466
+Level: 11
+QuestMessage:
+    I remember seeing one of these in Morwyn. That was back in the days when I travelled the world and I'm quite sure we're looking at a goblin skull.
+
+### q92 / Illusions
+NpcId: 1585
+Level: 31
+QuestMessage:
+    What are you doing here?!
+    You better watch out! There is something strange going on down here. It seems as if this place can drive you mad..
+    Something is messing with my mind down here and I'm sure you're just about to experience the same.
+
+### q93 / Last chance
+NpcId: 1588
+Level: 31
+QuestMessage:
+    You've been given so many warnings!
+    This is your last chance to get out of here alive. I've created a portal back to the safehouse! You should use it..
+
+### q104 / Be careful at night
+NpcId: 1926
+Level: 31
+QuestMessage: At night those scary creeps are not afraid of getting closer to the village..
+
+### q105 / Luna cave
+NpcId: 1927
+GoTo: 69
+Level: 18
+Description: Locate the luna flower cave in the north that Zean mentioned.
+QuestMessage:
+    The people in Lockwoods usually say that the luna flower is a rare one. But in the north we have the perfect conditions for them to grow.
+    I've heard there's a cave filled with lunas flowers.. I wonder if it's true though..
+    You could always go look for it..
+Reward: 5000xp
+
+### q106 / Enter the portal!
+NpcId: 1928
+Level: 1
+QuestMessage: Hrsschh.. Don't be afraid! Come, come! Enter the portal! HRRSCH..
+
+### q107 / Please don't hurt me..
+NpcId: 1946
+Level: 20
+QuestMessage: Albo the King, please don't hurt me.. Albo the King, please don't hurt me.. Albo the King, please don't hurt me..
+
+### q108 / Welcome to Green Leaf!
+NpcId: 1947
+Level: 7
+QuestMessage:
+    Be sure to check in at the Landlubber inn, it looks like a giant snail.
+    It is always good to check in at new locations, if you are planning to go on some dangerous adventures!
+
+### q109 / Cooking!
+NpcId: 1961
+Level: 7
+QuestMessage:
+    It's important that you learn how to cook..
+    It's not only for your own food consumtion. Many people earn fortunes by cooking dishes!
+
+### q110 / Where can I find the forest sage Minai?
+NpcId: 1947
+Level: 7
+QuestMessage:
+    She owns a potion shop here in Green Leaf.
+    Look for the green tree with a potion sign, you will find her there.
+
+### q111 / Albo the Shroom King
+NpcId: 1966
+Level: 20
+QuestMessage:
+    When King Albo took power.. many ran..
+    The few of us to stay were enslaved by him.
+
+### q112 / What lies behind the gate?
+NpcId: 1972
+Level: 37
+QuestMessage: It's the ancient gate leading to the Dead Kingdom. Luckily, it was sealed from the inside a long time ago.
+
+### q113 / What are you doing here?
+NpcId: 1972
+Level: 14
+QuestMessage:
+    Honestly, I'm not sure.. I guess that staring at this closed gate is the only way for me to feel safe..
+    If someone on the inside ever chooses to open up that gate.. then.. I can promise you that no forest guardian will be able to save us.
+
+### q114 / Where is Morwyn?
+NpcId: 1972
+Level: 20
+QuestMessage:
+    Oh, if you're looking for Morwyn then you just have to continue to the south-east..
+    You'll have to go through a water cave to get there.. but there's nothing dangerous in there!
+
+### q115 / Where is Ollghar?
+NpcId: 1191
+Level: 14
+QuestMessage:
+    Honestly, I have no clue. I haven't seen him in a while.
+    But I would start by looking for his secret lab. I know it's hidden somewhere on this island.
+
+### q116 / Where am I?
+NpcId: 1997
+Level: 14
+QuestMessage: You are in the lobby of the Lockwood Prison. Be kind and leave.. we don't have any visiting hours.
+
+### q117 / May I visit the prison?
+NpcId: 1997
+Level: 14
+QuestMessage: Ha! Absolutely not!/And don't you think I would let anything pass.. I work here all day!
+
+### q118 / The Prison Key
+NpcId: 1999
+Level: 7
+GetItem: 31
+Description: Find a root shield and give it to the fox Filou in exchange for the prison key.
+QuestMessage:
+    Psssst.. hey there!
+    I have the prison key! Look, look, look! The guard dropped it last night when he was heading back home!
+    The thing is.. I've wanted a root shield for quite some time.. But I'm not strong enough to fight in the maze. Bring me one and I'll give you the key to the prison.
+RewardMessage:
+    Ah great! You found one! Here's the key! Now you just have to figure out how to get past the guard..
+Reward: 1000xp 258it
+ReturnForReward
+
+### q119 / Why are you in prison?
+NpcId: 2000
+Level: 14
+QuestMessage: SILENCE!
+
+### q120 / Why are you in prison?
+NpcId: 2001
+Level: 14
+QuestMessage:
+    You know.. Sometimes you make the bad choices..
+    After you've robbed a few Inns, you start to feel self-confident. At first it makes you even better at what you do.. but with time you'll get lost to it..
+    All of a sudden I was too confident.. and look where it got me.
+
+### q121 / Froggo the Frog
+NpcId: 2001
+GetItem: 35 * 10
+Level: 7
+Description:
+    Collect 10 silvers and bring them to Finata and she will convince Froggo to talk to you.
+QuestMessage:
+    Froggo? Well.. He's not too fond of people in general. But now that we've shared this little space for quite some time.. he's starting to like me.
+    If you want him to talk to you, I could convince him. But, nothing comes for free. Give me 10 silvers and I'll make him talk.
+RewardMessage:
+    Ah, thank you! I've talked to Froggo about you.. so I think he might have something to say now.
+Reward: 2000xp
+ReturnForReward
+
+### q122 / Rare fish
+NpcId: 2037
+GetItem: 192
+Level: 10
+Description: Find a curly fish and bring it back to the old man in Calm Bay.
+QuestMessage:
+    I've been fishing here for ages and I still haven't gotten one of those curly fishes. Bring me one and I'll reward you well.
+RewardMessage: Wow, thank you! Here's 500 copper!
+Reward: 5000xp 500cc
+ReturnForReward
+
+### q123 / Where is Morwyn?
+NpcId: 2037
+Level: 21
+QuestMessage: Morwyn lies south-east of here.
+
+### q124 / What is this place?
+NpcId: 2037
+Level: 21
+QuestMessage:
+    This is The Outlaw Harbor. A village that used to be a refuge to all those who didn't want to participate in any great war.
+    This bay belongs to no family..
+
+### q125 / The Goblin King
+NpcId: 2038
+Level: 20
+QuestMessage: I've heard rumours saying the Goblin King has gone mad. I think I'm gonna avoid Morwyn for the time being..
+
+### q126 / Food is ready
+NpcId: 2038
+TalkTo: 2039
+Level: 10
+Description: Find Gotie the Goats brother and tell him that the food is ready.
+QuestMessage: Find my brother and tell him this tasty soup is ready! I think he went fishing in the water cave..
+Reward: 2000xp
+
+### q129 / Find Gulhrug
+TalkTo: 2045
+Level: 20
+Description: Since the king couldn't help you, find Minai's friend Gulhrug that lives in Outlaw Harbor.
+Reward: 2000xp
+
+### q131 / Coach Pala Pala
+NpcId: 2000
+TalkTo: 1390
+Level: 10
+Description: Find Froggos former coach Pala Pala and talk to him.
+QuestMessage:
+    I'm doing time here in Lockwoods Prison because I sold information concerning the Forest Family's Pirate ball strategy for the yearly tournament..
+    I used to be a part of that team myself but I couldn't resist the bribes..
+    I want you to go and talk to the coach and find out wheather he's mad at me or not..
+    If you do that I'll reward you well.
+RewardMessage:
+    Oh, so coach Pala Pala is not mad at me! Wow, he's letting me back in! Thank you for letting me know..
+    Here you go! Just like I promised.
+Reward: 2000xp 2000cc
+
+### q133 / Disgusting Food
+NpcId: 2053
+GetItem: 178 * 5
+Level: 7
+Description: Bring 5 orangas to the prisoner Foxan.
+QuestMessage:
+    Hey you! The food here in the prison is so disgusting!
+    Get me a few juicy orangas and I'll pay you more than they are worth!
+RewardMessage: Yummy, thank you!
+Reward: 200xp
+ReturnForReward
+
+### q134 / Why are you in prison?
+NpcId: 2054
+Level: 14
+QuestMessage: Urrghh..
+
+### q135 / Why are you in prison?
+NpcId: 2055
+Level: 14
+QuestMessage: Well, I tried to make a forbidden potion that would make me young and handsome..
+
+### q136 / Why are you in prison?
+NpcId: 2056
+Level: 14
+QuestMessage: Mind your own business!
+
+### q137 / What is the guard guarding?
+NpcId: 2055
+Level: 14
+QuestMessage: The worst of criminals! Those who get to do their time up there are the bad ones!
+
+### q138 / Why are you in prison?
+NpcId: 2057
+Level: 14
+QuestMessage: Ohhh, I wouldn't know where to start my dear! The list is greater than your patience..
+
+### q139 / A Glimpse Of Lord Sorkorh
+NpcId: 2057
+GetItem: 182
+Level: 20
+Description: Find an artifact forged by master Sorkorh himself and bring it to Urkarh the Prisoner.
+QuestMessage:
+    Show me a sign of Sorkorh's greatness and I shall give you access to the depths of his sacred chambers.
+RewardMessage:
+    Ahh, I can sense Sorkorh by just staring at that masterpiece!
+    It's funny how people believe he's been dealth with! MY LORD IS STRONGER THAN THAT!
+    He is more powerful than one could imagine. Are you eager to find out exactly how strong the lord is? Take this key..
+    It might lead you to an answer to that question.. But such answer can only be found if one is willing to sacrifice everything! I think you understand what I'm trying to tell you. Off you go kid!
+Reward: 2000xp 182item
+ReturnForReward
+
+### q140 / Why Are You Standing Here?
+NpcId: 1999
+Level: 14
+QuestMessage: I'm waiting for my brother Foxen to be released..
+
+### q141 / Where Is Sorkorh?
+NpcId: 2065
+TalkTo: 2057
+Level: 25
+Description: Return to Urkarh the Prisoner and ask him why he lied to you.
+QuestMessage:
+    Well.. First of all, I don't know. Second, I wouldn't tell you if I knew. Third, why would you be looking for someone that would most certainly kill you at first sight?
+    But, if ask me to guess than I would say that he's probably somewhere in the Dead Kingdom trying to recruit even greater and darker powers!
+    But why don't you go back and ask whoever gave you the key..
+Reward: 1000xp
+
+### q142 / Is Sorkorh Alive?
+NpcId: 2065
+Level: 1
+QuestMessage: More alive than ever.. Now go away!
+
+### q144 / A Secret Chamber
+NpcId: 721
+GoTo: 75
+Level: 7
+Description: Find the Secret Chamber that lies somewhere in the Green Leaf Village.
+QuestMessage:
+    Psst.. let me tell you something that I overheard a few days ago! People were talking about some secret chamber here in Green Leaf Village where there is a treasure!
+    I'm not sure where.. But I heard them talk about some hole in the ground that is supposed to be located in-between two trees. Yes, that's it! Right here in this very village!
+Reward: 300xp
+
+### q148 / The Yearly Tournament
+NpcId: 1390
+TalkTo: 923
+Level: 15
+Description: When you get to Morwyn, tell Pala Pala that Pila Pila needs to talk to him.
+QuestMessage: If you ever get to Morwyn, please tell Pala Pala that I really need to talk to him about the yearly tournament.
+Reward: 500xp
+
+### q153 / How Come Some Tree's Won't Talk?
+NpcId: 722
+Level: 1
+QuestMessage: Not every tree has something to say.. to someone like yourself..
+
+### q154 / New Sheet
+NpcId: 2069
+GetItem: 241
+Level: 10
+Description: Find a new sheet and give it to Gosie the Ghost.
+QuestMessage: Ahh, my sheet is really dirty! Find me a new one and I'll reward you!
+RewardMessage: Ooooh, thank you! Here you go! 100 copper!
+Reward: 300xp 100cc
+ReturnForReward
+
+### q155 / Scary Bats
+NpcId: 1464
+Level: 10
+GetItem: 87
+Description: Find three bat wings and hand them over to Kuuyi.
+QuestMessage:
+    Ok, I admit! I admit! I'm a coward.. YES, I'm a coward and it's causing me trouble since Minai wants me to collect a few bat wings. She says it's a part of some Forest Guardian trial that I'm going trying to pass..
+    Would you please help me? Well, if you got the time and enough courage that is..
+    Bring me three bat wings and I'll pay you for the effort! Oh, by the way.. don't tell Minai that you're helping me!
+RewardMessage:
+    Wow, this seems easy for you! You're truly inspiring! Here, take these 150 copper!
+Reward: 300xp 150cc
+ReturnForReward
+
+### q156 / Where Is The Botanical Maze?
+NpcId: 1464
+Level: 14
+QuestMessage:
+    It's on the other side of the river. Cross the bridge that lies east of here and then head south-east.. then you'll reach it in no time!
+
+### q157 / Where Is The Botanical Maze?
+NpcId: 1999
+Level: 14
+QuestMessage: Just keep walking south till you see an entrance, among some trees, leading you east.
+
+### q158 / Where Can I Find Spiders?
+NpcId: 720
+Level: 7
+QuestMessage:
+    There are spiders in the cave that lies south-west of here. It's not far, just cross the village and you'll find it.
+
+### q159 / I Can't Leave The Village
+NpcId: 720
+Level: 7
+QuestMessage:
+    The reason why you can't leave the village is probably because Minai hasn't given you permission yet. Go talk to her in the potion shop that lies west of here.
+
+### q161 / You're A Very Big Panda
+NpcId: 1388
+Level: 1
+QuestMessage: Uhm.. Thanks for letting me know..
+
+### q165 / A Treasure Hidden In Sand
+NpcId: 2081
+GoTo: 83
+Level: 20
+Description: Find the hidden treasure that Urgurh says is hidden in the sand of Morwyn.
+QuestMessage:
+    Oh, hello. Do you like hunting treasures?
+    If so, let me tell you a secret! In this very village.. hidden in the sand.. lies a secret chamber. Go find it!
+RewardMessage: Uurrghh, good boy! I've got a more tricky one if you're up for it..
+Reward: 1000xp
+ReturnForReward
+
+### q170 / Return to Minai
+TalkTo: 113
+Level: 20
+Description: Return to Minai to show your success in handling the shroom situation.
+RewardMessage: So it was Albo causing all of this?! It seems as if he was cursed just like you.. Anyways, you did a great job!/
+Reward: 100xp ship2
+
+### q176 / Oozemaws Key
+NpcId: 1020
+Level: 25
+GetItem: 55
+Description: Locate Oozemaw and find out where he hides the key to the hatch.
+QuestMessage:
+    Uurghh.. It seems someone is trying to prevent others from entering the archives! These stones won't let you pass..
+    But you can enter by opening the hatch that is situated to the east. But, I'm sorry to tell you that the owner of that key is Oozemaw.. The kings servant!
+    If you wanna enter the goblin archives you'll have to find Oozemaw and take his key!
+RewardMessage:
+    Uurrrghh.. you found it!
+    Now you can enter the archives via the hatch!
+Reward: 3000xp
+ReturnForReward
+
+### q178 / Talk to Lubo
+TalkTo: 2097
+Level: 35
+Description: Talk to Lubo in the Frostvale Inn.
+Reward: 1000xp
+
+### q181 / Return to Outlaw Harbor
+TalkTo: 2045
+Level: 35
+Description: Return to Outlaw Harbor and tell Gulhrag that you've found the crystal key.
+Reward: 1000xp
+
+### q183 / Potions
+NpcId: 2111
+Level: 6
+QuestMessage:
+    There are a few potions in that chest over there! Take them!
+    Just right-click on a potion If you're running out of health. Also, you can store potions in your hotbar which allows you to heal by just pressing the number displayed in the chosen slot.
+
+### q184 / Where can I find the Green Leaf Village?
+NpcId: 2124
+Level: 35
+QuestMessage: The Green Leaf Village lies just south of here.
+
+### q186 / Key To The Wooden Cabin
+NpcId: 2125
+Level: 8
+QuestMessage: If you're looking for the key to this cabin I suggest you talk to Ema in the Green Leaf Village.

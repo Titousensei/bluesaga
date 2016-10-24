@@ -6,7 +6,7 @@ import java.util.Iterator;
 import java.util.Map.Entry;
 import java.util.function.Consumer;
 
-import components.Quest;
+import components.UserQuest;
 import utils.ServerMessage;
 import utils.TimeUtils;
 import game.ServerSettings;
@@ -89,7 +89,7 @@ public class ConnectHandler extends Handler {
 
           if (!bridge) {
             if (client.playerCharacter.getShip() != null) {
-              if (client.playerCharacter.getShip().getShipId() > 0) {
+              if (client.playerCharacter.getShip().id > 0) {
                 client.playerCharacter.getShip().setShow(true);
 
                 for (Entry<Integer, Client> entry : Server.clients.entrySet()) {
@@ -106,7 +106,7 @@ public class ConnectHandler extends Handler {
                           "goboat",
                           client.playerCharacter.getSmallData()
                               + ";"
-                              + client.playerCharacter.getShip().getShipId()
+                              + client.playerCharacter.getShip().id
                               + ",1");
                     }
                   }
@@ -160,8 +160,8 @@ public class ConnectHandler extends Handler {
       boolean firstTime = true;
       boolean showNoobQuestWarning = ServerSettings.startWithTutorial;
 
-      for (Quest q : client.playerCharacter.getQuests()) {
-        if (q.getId() == 36) {
+      for (UserQuest q : client.playerCharacter.getQuests()) {
+        if (q.questRef.getId() == 36) {
           firstTime = false;
         }
         if (q.getStatus() == 1) {

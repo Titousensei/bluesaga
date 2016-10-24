@@ -25,6 +25,7 @@ import org.newdawn.slick.font.effects.ColorEffect;
 public class Creature {
 
   protected int CreatureId;
+  protected int NpcId;
   protected String Name;
   protected int MobLevel;
 
@@ -170,7 +171,7 @@ public class Creature {
 
   protected boolean ShowLevelUp;
 
-  public Creature(int creatureId, int newX, int newY) {
+  public Creature(int creatureId, int newX, int newY, int id) {
 
     try {
       damageFont = new UnicodeFont("fonts/nokiaFont.ttf", 18, true, true);
@@ -183,6 +184,7 @@ public class Creature {
     mostHitDamage = 0;
     IsCriticalHit = false;
     CreatureId = creatureId;
+    NpcId = id;
     FaceDir = "LEFT";
     STATUS = "IDLE";
     hitType = "";
@@ -223,7 +225,7 @@ public class Creature {
     try (ResultSet rs = BP_EDITOR.gameDB.askDB(
         "select * from creature where Id = " + CreatureId)
     ) {
-      while (rs.next()) {
+      if (rs.next()) {
 
         Name = rs.getString("Name");
         WeaponAttackType = "";
@@ -1404,6 +1406,6 @@ public class Creature {
 
   @Override
   public String toString() {
-    return "creatures/m" + CreatureId + ": " + Name;
+    return "creatures/m" + CreatureId + ": " + Name + " (" + NpcId + ")";
   }
 }

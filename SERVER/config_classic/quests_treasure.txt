@@ -1,0 +1,116 @@
+### q162 / A Hidden Water Cave
+NpcId: 2070
+GoTo: 80
+Level: 15
+Description:
+    Find the hidden treasure that Fiffilina has hidden in the water cave underneath Outlaw Harbor.
+QuestMessage:
+    Hello! Do you like treasure hunting? If so, you've found the right person! I love hiding treasures and then challenge people..
+    There is a hidden treasure room in the water cave beneath us.. Prove to me that you're worthy my treasures!
+RewardMessage:
+    Good job! It was an easy one though.. I've got more treasures if you still enjoy treasure hunting..
+Reward: 1000xp
+ReturnForReward
+
+### q163 / A Well Hidden Treasure
+NpcId: 2070
+ParentQuestId: q162
+GoTo: 81
+Level: 15
+Description:
+    Find the hidden treasure that Fiffilina has hidden in the water cave underneath Outlaw Harbor.
+QuestMessage:
+    Alright then, let's get serious now..
+    The next treasure is hidden on the island that lies just north-west of Outlaw Harbor. It's the island where the ancient gates are.. the ones leading to the Dead Kingdom. Go find it!
+RewardMessage:
+    Nice, you're really starting to get my attention! So, I'm gonna be honest with you..
+    The treasure isn't why I've been talking to you all this time. I've got something much more important for you to deal with. But only when you feel strong enough to change the outcome of the future.
+    When you do, come and talk to me.. I'll tell you everything.
+Reward: 1500xp
+ReturnForReward
+
+### q164 / Nimbul's Curse
+NpcId: 2070
+ParentQuestId: q163
+Level: 37
+QuestMessage:
+    Well, I'm gonna be honest with you..
+    The treasure hunting has never really caught my interest and, most of all, I wouldn't waste my time pleasing others by arranging treasure hunts..
+    I simply used the treasure hunting as a test to measure your capability of finding things you desperately want.
+    The thing is that.. I knew from the very moment I saw you.. that you.. were cursed..
+    How? Well.. They say that people who are facing a certain obstacle are more likely to identify others in the same situation.
+    I think you know what I'm about to say..
+    I've.. been.. cursed.. too..
+    Listen, we are not given many options here. We need to find the dark powers that are threatening us before they find all of us..
+    I bet you saw that locked door in that hidden cave on Island of the Ancient Gates.. And I think you might have a clue on where this door leads..
+    It's an entrance to the Dead Woods.. And underneath those dying woods lies the Dead Kingdom.. and that is where I think we can find answers for a cure.
+    What I'm gonna ask you for is something a lot more dangerous than any task you've ever been handed. I would've done it myself if I believed I was strong enough.. but I know I'm not.
+    I know that Gulhrug has the key to that door and now that I've shown you where it is.. I can do nothing but leave this realms faith in your hands..
+    I'm sorry that I was playing these weird little treasure games with you.. I just needed to know that you were the right person to entrust with this dangerous task. Good luck, I'll be praying for your return!
+
+### q166 / Another Treasure Hidden In Sand
+NpcId: 2081
+ParentQuestId: q165
+GoTo: 84
+Level: 20
+Description:
+    Find the hidden treasure that Urgurh says is hidden in the sand west of Morwyn.
+QuestMessage:
+    Alright, so this one is hidden somewhere west of the village. Go find it!
+RewardMessage:
+    Uurrghh, veery good boy! Hmm.. come back when you think you can do better than this..
+Reward: 1500xp
+ReturnForReward
+
+### q167 / Who Are You?
+NpcId: 2083
+ParentQuestId: q163
+Level: 20
+QuestMessage:
+    Haven't you heard of me?! I'm Karkarh the bomber!
+    I'm one of the legendary founders of the pirate crew Blood Skulls..
+
+### q168 / How Do I Join Your Crew?
+NpcId: 2083
+ParentQuestId: q163
+Level: 20
+QuestMessage:
+    Blood Skulls are not recruiting right now..
+
+### q169 / Is Your Crew Strong?
+NpcId: 2084
+ParentQuestId: q163
+Level: 20
+QuestMessage:
+    We are more than strong.. We've won many incredible battles..
+    Have you heard of when I fought the Sea Bunnies all by myself?
+
+
+### q151 / The Unreachable Spot
+NpcId: 722
+GoTo: 78 / The Unreachable Spot
+Level: 5
+Description:
+    Find a way to get to the other side of the stone that is blocking Gorky's path.
+QuestMessage:
+    Oh, so you think you can find a way around this stone? I won't believe till I see it.. Go ahead, just prove it to me.
+RewardMessage:
+    Ohhh! Nicely done!
+Reward: 200xp
+ReturnForReward
+
+### q152 / A Hidden Treasure
+NpcId: 722
+ParentQuestId: q151
+Goto: 79 / A Hidden Path
+Level: 7
+Description:
+    Find the hidden treasure that Gorky mentioned to you.
+QuestMessage:
+    Hey! Since you've proven yourself being smarter than me.. I figured I'd give you another challenge!
+    There is a treasure hidden among us trees. The treasure lies on a hidden path that can be reached from the hidden archipelagio east of the Green Leaf Village.
+    Find it and I'll give you all the copper that I'm currently storing in my branches!
+RewardMessage:
+    Ohhh! You surely are impressive! Here, take my 77 copper. Good job!
+Reward: 300xp 77cc
+ReturnForReward

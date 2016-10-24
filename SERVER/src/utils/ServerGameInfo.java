@@ -1,14 +1,18 @@
 package utils;
 
+import java.util.*;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.HashMap;
+import java.io.File;
 
+import game.ServerSettings;
 import map.AreaEffect;
 import network.Server;
 import player_classes.*;
+import components.Builder;
 import components.Family;
 import components.Quest;
+import components.QuestBuilder;
 import components.JobSkill;
 import creature.Npc;
 import data_handlers.ability_handler.Ability;
@@ -17,19 +21,20 @@ import data_handlers.item_handler.Item;
 
 public class ServerGameInfo {
 
-  public static HashMap<Integer, Item> itemDef;
+  public static Map<Integer, Item> itemDef;
 
-  public static HashMap<Integer, Ability> abilityDef;
-  public static HashMap<Integer, JobSkill> skillDef;
+  public static Map<Integer, Ability> abilityDef;
+  public static Map<Integer, JobSkill> skillDef;
 
-  public static HashMap<Integer, Family> familyDef;
-  public static HashMap<Integer, BaseClass> classDef;
+  public static Map<Integer, Family> familyDef;
+  public static Map<Integer, BaseClass> classDef;
 
-  public static HashMap<Integer, AreaEffect> areaEffectsDef;
+  public static Map<Integer, AreaEffect> areaEffectsDef;
 
-  public static HashMap<Integer, Quest> questDef;
+  public static Map<Integer, Quest> questDef;
+  public static Map<Integer, List<Quest>> questNpc;
 
-  public static HashMap<Integer, Npc> creatureDef;
+  public static Map<Integer, Npc> creatureDef;
 
   public static void load() {
     // LOAD ITEMS
@@ -149,20 +154,11 @@ public class ServerGameInfo {
     }
 
     // Load quest info
-    questDef = new HashMap<Integer, Quest>();
-
-    ResultSet questInfo = Server.mapDB.askDB("select * from quest");
-
-    try {
-      while (questInfo.next()) {
-        Quest newQuest = new Quest(questInfo.getInt("Id"));
-        newQuest.loadQuest(questInfo);
-        questDef.put(newQuest.getId(), newQuest);
-      }
-      questInfo.close();
-    } catch (SQLException e) {
-      e.printStackTrace();
+    questDef = new HashMap<>();
+    for (File f : new File(ServerSettings.PATH).listFiles((dir, name) -> name.startsWith("quests_"))) {
+      Builder.load(f.getPath(), QuestBuilder.class, questDef);
     }
+    questNpc = QuestBuilder.mapNpc(questDef);
 
     // LOAD ITEM INFO
 

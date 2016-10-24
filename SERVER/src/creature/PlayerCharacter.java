@@ -26,7 +26,7 @@ import utils.ServerGameInfo;
 import utils.TimeUtils;
 import utils.XPTables;
 import components.ActionBar;
-import components.Quest;
+import components.UserQuest;
 import components.JobSkill;
 import components.Ship;
 import creature.Creature.CreatureType;
@@ -60,7 +60,7 @@ public class PlayerCharacter extends Creature {
 
   private ActionBar ActionBar;
 
-  private CopyOnWriteArrayList<Quest> Quests = new CopyOnWriteArrayList<Quest>();
+  private List<UserQuest> userQuests = new CopyOnWriteArrayList<>();
 
   private int Bounty;
 
@@ -232,7 +232,7 @@ public class PlayerCharacter extends Creature {
     int ShipId = 0;
     if (getShip() != null) {
       if (getShip().isShow()) {
-        ShipId = getShip().getShipId();
+        ShipId = getShip().id;
       } else {
       }
     }
@@ -345,7 +345,7 @@ public class PlayerCharacter extends Creature {
     int shipId = 0;
 
     if (getShip() != null) {
-      shipId = getShip().getShipId();
+      shipId = getShip().id;
     }
     info.append(shipId)
         .append(',')
@@ -888,16 +888,12 @@ public class PlayerCharacter extends Creature {
         Server.userDB.askDB(
             "select * from character_quest where CharacterId = " + dbId + " order by QuestId asc");
 
-    Quests.clear();
-
-    Quest tempQuest;
-
+    userQuests.clear();
     try {
       while (rs.next()) {
-        tempQuest = new Quest(ServerGameInfo.questDef.get(rs.getInt("QuestId")));
-        tempQuest.setStatus(rs.getInt("Status"));
-
-        Quests.add(tempQuest);
+        UserQuest uq = new UserQuest(ServerGameInfo.questDef.get(rs.getInt("QuestId")));
+        uq.setStatus(rs.getInt("Status"));
+        userQuests.add(uq);
       }
       rs.close();
     } catch (SQLException e) {
@@ -919,32 +915,30 @@ public class PlayerCharacter extends Creature {
   public ArrayList<String> checkQuests(Database gameDB) {
     ArrayList<String> messages = new ArrayList<String>();
 
-    for (int i = 0; i < Quests.size(); i++) {
-      // KILL X CREATURES X
+    for (UserQuest uq : userQuests) {
 
-      if (Quests.get(i).getType().equals("Kill X creature X")) {
+      if (uq.questRef.getType().equals("Kill X creature X")) {
 
         ResultSet rs = null;
 
         // CHECK IF KILLED ENOUGH MONSTERS OF RIGHT KIND
-        if (Quests.get(i).getTargetType().equals("Creature")) {
-          rs =
-              gameDB.askDB(
+        if (uq.questRef.getTargetType().equals("Creature")) {
+          rs = gameDB.askDB(
                   "select Kills from character_kills where CharacterId = "
                       + dbId
                       + " and CreatureId = "
-                      + Quests.get(i).getTargetId());
+                      + uq.questRef.getTargetId());
 
           try {
             if (rs.next()) {
 
               // IF UNCOMPLETED QUEST
-              if (Quests.get(i).getStatus() == 0) {
-                if (rs.getInt("Kills") >= Quests.get(i).getTargetNumber()) {
-                  messages.add("Completed Quest\n'" + Quests.get(i).getName() + "'!");
+              if (uq.getStatus() == 0) {
+                if (rs.getInt("Kills") >= uq.questRef.getTargetNumber()) {
+                  messages.add("Completed Quest\n'" + uq.questRef.getName() + "'!");
                   gameDB.updateDB(
                       "update character_quest set Completed = 1 where QuestId = "
-                          + Quests.get(i).getId()
+                          + uq.questRef.getId()
                           + " and CharacterId = "
                           + dbId);
                 }
@@ -961,14 +955,14 @@ public class PlayerCharacter extends Creature {
     return messages;
   }
 
-  public CopyOnWriteArrayList<Quest> getQuests() {
-    return Quests;
+  public List<UserQuest> getQuests() {
+    return userQuests;
   }
 
-  public Quest getQuestById(int questId) {
-    for (Quest q : Quests) {
-      if (q.getId() == questId) {
-        return q;
+  public UserQuest getQuestById(int questId) {
+    for (UserQuest uq : userQuests) {
+      if (uq.questRef.getId() == questId) {
+        return uq;
       }
     }
     return null;
@@ -1031,12 +1025,6 @@ public class PlayerCharacter extends Creature {
   public int getCheckpointId() {
     return CheckpointId;
   }
-
-  /*
-  public int getNrQuests() {
-    return Quests.size();
-  }
-   */
 
   public void setBounty(int newBounty) {
     Bounty = newBounty;

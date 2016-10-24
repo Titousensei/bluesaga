@@ -1,0 +1,606 @@
+### q3 / I'm hungry!
+NpcId: 1
+ParentQuestId: q36
+GetItem: 94
+Level: 1
+Description:
+    West of the tree house there is a hole in the ground leading down to a larva den.
+    Kill larvas in order to get 1 specimen of larva juice and bring it back to the innkeeper Iglith.
+QuestMessage:
+    We just fed you the last larva soup in the house!!
+    Due to all people we've taken care of, food has been scarce lately.
+    If you want more food you need to help us get some. Larvas are well known for their delicious juice.
+    To the west you will find a hole in the ground, that's their lair.
+    Go and hunt down some and bring me their juice so I can prepare more larva-soup for you.
+RewardMessage:
+    You did it!
+    These larvas will give a real thick and good taste to the soup.
+Reward: 50xp
+ReturnForReward
+
+### q50 / Eating and Resting
+NpcId: 1
+ParentQuestId: q3
+UseItem: 183
+QuestItems: 183
+Level: 2
+Description:
+    Open your inventory and right-click on the larva soup you just made. If you've eaten it already,
+    then you can buy more from the innkeeper. Right-clicking on eatable items will consume the item and give
+    you health and mana regain. In order to regain the actual health and mana you need to rest.
+    To rest press the spacebar on your keyboard.
+    You can stop resting by either moving your character or pressing space again.
+QuestMessage:
+    In order to restore health and mana you need to eat and rest.
+    Here is some larva-soup, right click on it in order to eat it.
+    When you've eaten the soup you can rest by pressing "SPACE" on your keyboard.
+    Your health and mana will only restore if you've eaten first, remember that.
+RewardMessage:
+    Great job! You seem to feel much better now that your stomach is full.
+    I can sell you more soup if you want some.
+    Remember to always bring some food with you on your adventures, and don't forget to rest!
+Reward: 40xp
+ReturnForReward
+
+### q9 / Pick fruits
+NpcId: 1
+ParentQuestId: q50
+GetItem: 178 * 3
+Level: 2
+Description:
+    Go to the garden outside Iglith's Inn and collect three orangas by right-clicking on the oranga bushes.
+QuestMessage:
+    Now that you know how to fight, you will need to know how to get food in order to restore health and mana after battles.
+    As I told you food will give you health and mana regain that help you restore your health and mana when resting.
+    I have some oranga bushes outside my house, I used to tend the garden myself but these days my jelly back has stiffened...
+    Would you please go outside and collect three juicy orangas from my garden?
+RewardMessage:
+    Thank you so much! I'll keep these for the dish that I'm preparing for you. Now we just need some meat..
+Reward: 50xp
+ReturnForReward
+
+### q4 / Beatle Burger
+NpcId: 1
+ParentQuestId: q9
+GetItem: 95
+QuestItems: 3
+Level: 3
+Description:
+    Find Scarabs deep within the Scarab cave and get one piece of meat from them.
+    The scarab cave lies to the west of Ilgiths tree house.
+QuestMessage:
+    Larva-soup tastes great! But you need REAL food if you are to get back your full strength.
+    Scarabs are rare creatures but rumor has it that some have been seen deep inside the cave to the west of here.
+    Try to get some Scarab meat so I can prepare you a beatle burger.
+    I will give you a health potion for this task.
+    Just use it by right-clicking on it in your inventory or actionbar.
+RewardMessage:
+    Wow, you found a scarab! And you actually defeated it!
+    You have a gift for this kind of thing!
+    Let me prepare that burger for you!
+Reward: 80xp 201it
+ReturnForReward
+
+### q6 / The undead threat
+NpcId: 1
+ParentQuestId: q4
+EventId: 2
+Kill: 8
+QuestItems: 3
+Level: 5
+Description:
+    Explore the crypt in the cemetery on the northern side of Chompa Island. Get rid of the beast that has its lair there.
+QuestMessage:
+    Now that your strength is fully restored and you've proven yourself, maybe you can help me with something more serious.
+    Lately the undead has appeared on the northern side of our island. They are spreading like a plague.
+    We used to have a cemetery there, but who would have thought the dead would come back to life and haunt us...
+    At night, you can hear a terrifying roar from deep within the big crypt, please, help us get rid of the threat that resides there!
+    I will give you a health potion to help you on your adventure.
+    If you defeat whatever is living in there, I will reward you with a raft so you can leave this island.
+RewardMessage:
+    I can't believe it! You did it!
+    Hopefully the undead will dissappear from this island, but... what is that on your chest?
+    So you've been marked as well...
+    To be honest with you, you aren't the only one I've sent to try and defeat the undead in the crypt.
+    Sadly all of you have been cursed by one of the lords of Death.
+    That is the mark of "Nimbul", a fearsome lord that works on its own. Even Death has no control over it.
+    I'm sorry I tricked you, but I had no choice, we need warriors against this threat.
+Reward: 250xp ship1
+ReturnForReward
+
+### q7 / My Curse
+NpcId: 1
+ParentQuestId: q6
+TalkTo: 113
+Level: 7
+Description:
+    Travel to Green Leaf by sea. You can reach the sea from the southern coast of Chompa Island.
+    When you reach the village, find the forest sage Minai, she has a potion shop there.
+    She may be able to help you with the curse.
+QuestMessage:
+    Yes lord Nimbul has marked you...
+    This means creatures of the undead will hunt you for as long as you live.
+    If there is a cure, then the forest sage Minai may know something about it.
+    Travel to the Green Leaf village in west lockwoods and talk to her, she will help you.
+    I've given you a raft so now you'll have to travel the seas south.
+Reward: 60xp
+
+### q14 / How do I use the raft?
+ParentQuestId: q6
+Level: 6
+NpcId: 85
+QuestMessage:
+    Just go down to the beach and step into the water and you will be able to travel the shallow waters.
+    You can't venture out on the deep sea with a simple raft, but I am sure you will be able to find a better ship in west Lockwoods.
+
+### q15 / A Cure
+NpcId: 113
+ParentQuestId: q6
+GetItem: 92
+Level: 7
+Description:
+    South of Green Leaf there is a cave inhabited by poisonous spiders. Venture into its depths and bring back some poison from a toxic spider. Give it to the forest guardian Minai so she may be able to cure your curse.
+QuestMessage:
+    So Ilgith sent you with the message that I can help you?/I can't./Nimbul's mark is a powerful curse, not even us guardians have the powers to unbind it./Maybe I can weaken it so his armies of the undead will have a harder time finding you./In order to do this, we need something strong, something that weakens your soul, there is even a risk that it may kill you./South of here there is a cave inhabited by poisonous spiders, if you can venture into its depths and bring me some spider poison, maybe I will be able to help you.
+RewardMessage:
+    Ah great! You found it!
+Reward: 120xp
+ReturnForReward
+
+### q24 / The Forest Temple
+NpcId: 113
+ParentQuestId: q46
+GoTo: 28
+Level: 15
+Description:
+    Go to East Lockwoods across the bridge to the east of Green Leaf village.
+    There you will find the Botanical Maze, and inside it there is a Temple.
+    Find the Temple and enter it.
+QuestMessage:
+    I sense great potential in you and I have decided to let you become a forest guardian, but in order for you to get that title you need to complete the forest trials.
+    Go east past the the river, back to the botanical maze. There, deep within the maze you will find our temple, I cannot say more... the rest is up to you!
+Reward: 500xp
+NextQuestId: q28
+
+### q28 / The Trials
+GoTo: 29
+Level: 16
+Description: Complete the Trials in the Forest Temple.
+Reward: 1000xp
+NextQuestId: q29
+
+### q29 / Become a Guardian
+TalkTo: 113
+Level: 17
+Description: Return to Minai to show your success in clearing the Forest Temple.
+RewardMessage:
+    So you made it through the trials! Congratulations! You can hereby call yourself a forest guardian!
+    What? A giant monster in the temple? There is no giant monster in there...
+    ... hmm so Nimbuls curse is still there... this has become more complicated than I thought.
+    ...I am afraid this is beyond my powers.
+Reward: 2000xp
+
+### q101 / Wow! You just came from nowhere!?
+NpcId: 1457
+ParentQuestId: q28
+Level: 17
+QuestMessage:
+    Where did you come from!? I was just standing here, minding my own business, when suddenly you materialized from thin air!
+    What? A giant slimey monster? Nope nope nope...
+    Now I won't be able to sleep =(
+
+### q102 / Odd behavior
+NpcId: 113
+ParentQuestId: q29
+TalkTo: 189
+Level: 18
+Description:
+    The shrooms have been acting weird lately.
+    Locate Maduna somewhere in the Shroom Forest and try to find out what is going on.
+QuestMessage:
+    I need you to give me time to think of who could possibly help you with this curse. While I do that I need you to go on your first mission as a forest guardian..
+    Lately, many Green Leaf citizens have reported that they've been ambushed by shrooms in the south of Lockwoods. Something has to be wrong.. Shrooms are a part of our family and they've always been friendly..
+    Can you please go and talk to my shroom friend Maduna? I need to know what's going on down there..
+Reward: 1000xp
+NextQuestId: q103
+
+### q103 / Albo the Shroom King
+NpcId: 189
+ParentQuestId: q102
+Kill: 23
+Level: 20
+Description: Explore the Shroom Cave in Lockwoods and eliminate Albo the Shroom King
+QuestMessage:
+    Hi there! I'm Maduna. I'm so happy that Minai sent you..
+    Something terrible is happening right here.. It all started some time ago when Albo the Shroom came back from his latest adventure..
+    He had always been a kind soul... but the night he came back... he had changed.
+    He started talking about how he served a new master and the weirder things got... the more he grew taller.
+    It felt as if some curse gave him these unnatural powers...
+    After a few nights he had gotten so big and strong that he announced himself as the 'King of the Shrooms'... and that's also when he started giving orders to all of us...
+    He said: "From now on we have no brothers and sisters. None shall call us family. We shall claim what is ours".
+    Ofcourse, none of us wanted to cause any harm.. But you should see Albo's size, it's not like we had any choice but to obey.
+    Would you please help us? Please deal with Albo before he becomes even worse.
+Reward: 5000xp
+NextQuestId: q170
+
+### q55 / The Curse Is Not Gone
+NpcId: 113
+ParentQuestId: q29
+Story
+Level: 17
+QuestMessage:
+    So you made it through the trials! Congratulations! This means you are worthy to become a forest guardian.
+    What? A giant monster in the temple? There is no giant monster in there...
+    ... hmm so Nimbuls curse is still there... this has become more complicated than I thought.
+    ... I am afraid this is beyond my powers.
+
+### q56 / Goblin Archives
+NpcId: 113
+ParentQuestId: q103
+GoTo: 53
+Level: 21
+Description:
+    Go to Mount Morwyn situated south east of Lockwoods.
+    Minai has given you a better boat so you can travel deep waters.
+    When you are there, enter the mountain caves and find the entrance to the Goblin Archives.
+QuestMessage:
+    I've been thinking of how to help you and I've sadly realized that I can't. But I know someone who might...
+    The goblins love to collect books and they have the largest collection in the world.
+    It is called the Goblin Archives and is located somewhere deep in the mountains of Mount Morwyn.
+    Now that you are a forest guardian you can travel there as an ambassador and try to get a meeting with the Goblin King.
+    You will need a better boat, so let me give it to you as a final gift. Good luck!
+    Oh.. and by the way.. one last thing. If the king can't help you, neither can I. So, if you don't get any help from the king I suggest you go and talk to my friend Gulhrug in Outlaw Harbor.
+Reward: 5000xp
+NextQuestId: q58
+
+### q58 / Find the goblin king
+GoTo: 54
+Level: 21
+Description: Go deep into the Goblin Archives and find the Goblin King, only he might help you get rid of your curse.
+Reward: 1000xp
+NextQuestId: q59
+
+### q59 / Defeat the Goblin King
+Kill: 75
+Level: 25
+Description:
+    The Goblin King seems to have been taken over by undead magic.
+    Defeat him in order to access his treasury where he keeps his most precious books.
+Reward: 1200xp
+NextQuestId: q60
+
+### q60 / Get the Goblin Kings treasure
+GetItem: 194
+Level: 25
+Description: When the Goblin King has been defeated, you can access his treasure chest. Get whatever is inside it.
+Reward: 200xp
+NextQuestId: q129
+
+### q46 / Botanical Maze
+NpcId: 113
+ParentQuestId: q31
+GetItem: 147
+Level: 12
+Description:
+    One last ingredient is needed for this cure to be completed!
+    Far east of Green Leaf you will find a bridge going over to the east Lockwoods.
+    There you will find the Botanical maze with its thick vegetation and inhabitants.
+    Collect 3 petals from the ferocious angry flower.
+QuestMessage:
+    One last ingredient is needed for the cure to be completed, the flower petals! But.. it can only be found in a dangerous place.
+    You will need to travel to the east Lockwoods and into the Botanical Maze.
+    It is a twisted place where it is easy to get lost.
+    You need to collect three flower petals from a plant known for its ferocity.
+    You are close now to be cured, do not give up!
+RewardMessage:
+    The last ingredient! Now we can make a cure!
+    Ok, let's see...
+    The curse is strong... but this should do it...
+    Thanks to the powerful spider poison, the bacterias in the bat blood and the oils from a ferocious plant.. it all seems to be working... there you're cured... for now.
+    I cannot guarantee that the curse is completely gone, but at least it is weakened.
+    I can sense some great potential in you, maybe you are ready for the trials...
+Reward: 200xp
+ReturnForReward
+
+### q31 / Bunny Fur
+NpcId: 113
+ParentQuestId: q185
+GetItem: 247
+Level: 11
+Description:
+    East of Green Leaf Village there is a cave where bats reside.
+    Get through the cave to reach a hidden archipelago.
+    On one of the small islands there, you will find rabbits.
+    Collect fur from them, which is the last ingredient for the cure.
+RewardMessage:
+    Great job! I will add this to the mixture.
+QuestMessage:
+    Oh, so you found Goulda! Ahh.. that's right! Bunny fur and flower petals are what we need to add to the spider poison!
+    I want you to start looking for some bunny fur. Bunnies can be found in the hidden archipelagio which can be accessed through the bat cave that lies east of the village.
+    Hurry and get me some bunny fur before the curse strikes again!
+Reward: 120xp
+ReturnForReward
+
+### q173 / Goulda The Chemist
+NpcId: 113
+ParentQuestId: q22
+TalkTo: 237
+QuestItems: 146
+Level: 7
+Description:
+    Find Goulda the chemist and ask him what ingredients that are needed for a cure to your curse!
+    Someone in the Green Leaf Village can certainly help you.
+QuestMessage:
+    Oh, you found the spider poison! Great job!
+    I wish I could retain all the recipes but my memory has been failing me lately and we have to make sure that this cure is more than perfect!
+    I want you to find my friend Goulda the chemist..
+    He is very talented and Im sure that he can confirm what ingredients we need for the cure! But he's always hiding somewhere.. He's one of those hermits..
+    I am now giving you permission to leave the village so that you can find Goulda!
+    I'm sure that someone in this village knows where he is hiding nowadays..
+Reward: 50xp
+NextQuestId: q185
+
+### q22 / Return to Minai
+TalkTo: 113
+Level: 1
+Description: Return to Minai in the Green Leaf Village.
+Reward: 50xp
+
+### q185 / Return to Minai
+TalkTo: 113
+Level: 1
+Description: Get back to Green Leaf Village and talk to Minai about a cure for your curse.
+Reward: 100xp
+
+### q171 / Puppy Problems
+NpcId: 2113
+ParentQuestId: q9
+GetItem: 102
+Level: 4
+Description: Find the puppy at Ilgith's inn a bone
+QuestMessage:
+    Woof woof WOOF
+    ... woof? WOOF!!!!!
+    woof.
+Reward: 100xp
+RewardMessage: WOOF WOOF WOOF WOOF!
+ReturnForReward
+
+### q172 / Tasty Squid
+NpcId: 2124
+ParentQuestId: q9
+GetItem: 240
+Level: 6
+Description: Collect three pink squid tentacles and bring them to Ilgith on Chompa island.
+QuestMessage: If you are planning to leave this island, then please try and bring back some squid for me, It is soo delicious!
+RewardMessage: Yummy, thank you!
+Reward: 120xp
+ReturnForReward
+
+### q177 / Finding Frostvale
+NpcId: 2045
+ParentQuestId: q129
+GoTo: 67
+Level: 35
+Description: Find a village called Frostvale far to the north.
+QuestMessage:
+    Ah, so there you are! Minai has told me a lot about you!
+    Hmm.. so the goblin king was cursed too. I must say that these are worrying news...
+    In the book you found, it mentions the three lords of the undead.
+    The curse is strongly bound to there existence.
+    Sadly the only way to get rid of it, is to defeat all three of them.
+    You need to enter the dead kingdom.
+    Old legends speaks of a Skeleton Key... but the last owner perished far to the north, in the cold lands of Frostvale
+    Travel there and meet my cousin Lubo, he must know more about it.
+RewardMessage:
+    Minai was right about you.. a true guardian of the forest. Listen, now you have the key.. But I'm not sure of where the door is located. It certainly looks too small to fit the large gate on The Island of the Ancient Gates. But, ask the people in this village.. I'm sure someone can guide you to the right place.
+Reward: 5000xp
+NextQuestId: q178
+
+### q179 / The Skeleton Key
+NpcId: 2097
+ParentQuestId: q178
+GetItem: 263
+Level: 35
+Description: Go to the crystal caves that lies north of Frostvale and locate the Skeleton key.
+QuestMessage:
+    Ohhhhh, you! My cousin sent me a letter letting me know that you needed my help.
+    The Skeleton Key? Yes, I have heard of it... why do you seek such a sinister object?
+    There is only one purpose with such an item, why the rush to go meet Death when Death will come to you soon enough?
+    Legends tell that Death lost the key when collecting the soul of a mighty pirate.
+    The pirate was called Blackbeard, greatest pirate that ever lived.
+    He was not ready to die, so a fierce battle took place!
+    In the chaos, the key got lost at the same time that Blackbeard lost his soul.
+    The key was lost for a long time, till it was found by some poor soul. It had many owners, but never for long, it was cursed.
+    Last time I heard about it, it was here in Frostvale.
+    Rumors tell it lies deep within the crystal caves.
+Reward: 5000xp
+NextQuestId: q181
+
+### q180 / Good Luck!
+NpcId: 2097
+ParentQuestId: q179
+Level: 35
+QuestMessage:
+    Oh, so you found the key! Good job!
+    Good luck now.. you might need it!
+
+### q182 / Right key wrong door
+NpcId: 2045
+ParentQuestId: q181
+Level: 35
+QuestMessage:
+    You found the skeleton key! Minai was right about you.. a true guardian of the forest.
+    I'm not sure of where the door is located. It certainly looks too small to fit the large gate on that sinister island.
+    But, ask the people in this village.. I'm sure someone can guide you to the right door. Good luck now!
+
+
+### q174 / Where is Goulda?
+NpcId: 721
+ParentQuestId: q77
+Level: 7
+QuestMessage:
+    Goulda? Hmm.. Oh, yes! I met him a few weeks ago..
+    He said something about hiding in a cabin somewhere in the woods..
+
+### q149 / Lazy Pila Pila
+NpcId: 923
+ParentQuestId: q148
+TalkTo: 1390
+Level: 15
+Description: When you get back to Lockwoods, tell Pila Pila that Pala Pala won't be the one travelling this year.
+QuestMessage: Oh, so he needs to talk to me? Well then, maybe he should consider travelling to Morwyn. Tell him that he should stop being so lazy! I've sailed all the way to Lockwoods every year! Now it's his turn! Would you please tell him that?
+Reward: 500xp
+
+### q150 / Pala Thinks You're Lazy
+NpcId: 1390
+ParentQuestId: q149
+Level: 20
+QuestMessage:
+    So I'm the lazy one? Pfft, what nonsense.. I've travelled a lot further than he ever has in order to attend these pointless meetings. Well, no meeting then!
+
+### q145 / Another Secret Chamber
+NpcId: 721
+ParentQuestId: q144
+GoTo: 76
+Level: 7
+Description: Find the Secret Chamber situated somewhere south of Goulda's Hut.
+QuestMessage:
+    Wow, so you found the chamber in Green Leaf Village! Nice work!
+    Well, since you've proven yourself being good at this.. Maybe you could find the other one I've heard of! Rumor says it's located somewhere south of Goulda's hut..
+Reward: 400xp
+
+### q146 / Cucumbro's Last Secret
+NpcId: 721
+ParentQuestId: q145
+GoTo: 77
+Level: 10
+Description: Find the Secret Chamber situated somewhere close to a bat cave.
+QuestMessage:
+    I can't believe that one can be so good at finding secret chambers! I'll tell you the last rumor that I've heard about secret chambers..
+    Once I heard about one that is hidden somewhere close to a bat cave. I guess we're talking about the one that lies east of Green Leaf.
+    Please come back and tell me what you've found.. Well, if you ever find anything that is..
+RewardMessage:
+    You truly are good at this! Oh, so you've found a lot of potions? They can come in handy whenever your health is in danger. I wish you all the luck in your future adventures!
+    By the way, here's a few copper that I want to give you for easing a troubled mind! I haven't been able to get a good nights sleep ever since I heard rumors of those secret chambers. I guess it's that curiousity which kept me awake..
+Reward: 500xp 100cc
+ReturnForReward
+
+### q147 / Rat Tail
+NpcId: 719
+ParentQuestId: q38
+GetItem: 88
+Level: 7
+Description: Find a rat tail and bring it back to Ema that is waiting for you in the Green Leaf Village.
+RewardMessage: Thank you very much! Here's the 100 copper like promised!
+QuestMessage:
+    Hey! If you ever decide to visit that abandoned cabin.. Maybe you could find a rat tail for me!
+    I'm sure there place is infested with rats! Don't ask me why I need one, I do some witchcraft on the side you see...
+    If you find one, I'd be happy to buy one for 100 copper!
+Reward: 200xp 100cc
+ReturnForReward
+
+### q143 / Liar
+NpcId: 2057
+ParentQuestId: q141
+Level: 1
+QuestMessage:
+    Me, a liar? No.. never. You just need to open up those eyes of yours.
+    Maybe you didn't look hard enough..
+    Those who are not afraid of stepping into the flame, are the ones always finding some answers..
+
+### q132 / Froggo the Frog
+NpcId: 113
+ParentQuestId: q131
+Level: 1
+QuestMessage:
+    I'm not mad at Froggo! We all do mistakes at some point..
+    He was one of our best players! Let him know that once he has done his time.. I'll let him back into the team!
+
+### q127 / Goatie the goats food
+NpcId: 2039
+ParentQuestId: q125
+Level: 20
+QuestMessage: Ahh, noo! I don't wanna eat my brothers soup! It's disgusting! Leave me be!
+
+### q128 / A Cursed King
+NpcId: 113
+ParentQuestId: q59
+Level: 20
+QuestMessage:
+    So the Goblin King went down with the curse as well..
+    The book you found contains some ancient text about curses and cures.
+    This is beyond my knowledge.
+    Travel to Outlaw Harbor and talk to my friend Gulhrug, he may be able help you.
+
+### q74 / Frozen blobs
+NpcId: 1380
+ParentQuestId: q2
+Kill: 84 * 3
+Level: 30
+Description:
+    Kill 3 of the blobs that are now controlled by the Queen of the North.
+QuestMessage:
+    We received a letter from the Assassin's Guild saying that something bad was happening in the North..
+    So our king sent an entire army in order to find out what was happening.. including me..
+    But something came visiting us in the middle of the night, while we were sleeping in this cave..
+    She was tall, she was strong, she was.. pure evil..
+    Now the colder winds are telling me that my friends have become my foes and I need to set them free from whatever is controlling them. Please help me!
+RewardMessage:
+    You're giving me hope! Don't let the Queen of the North get any stronger!
+Reward: 1000xp
+ReturnForReward
+
+### q16 / The study
+NpcId: 113
+ParentQuestId: q15
+GoTo: 13
+QuestItems: 59
+Level: 8
+Description: Go to Minai's study which lies behind the door in the back of the potion shop in Green Leaf.
+QuestMessage: Bring the poison to my study behind the door in the back so I can start working on a cure.
+NextQuestId: q43
+
+### q19 / My cellar
+NpcId: 208
+ParentQuestId: q42
+TalkTo: 237
+Level: 10
+Description: Explore the cellar and see what happened to Goulda.
+QuestMessage: When me and my uncle Goulda bought this house, we didn't know about the cellar./My uncle started to explore it, at first he was gone for hours, then days and now he's been gone for two weeks and I still haven't seen him./Can you help me find him? I don't like dark places...
+Reward: 200xp 4item
+
+### q20 / My uncle
+ParentQuestId: q19
+NpcId: 208
+Level: 9
+QuestMessage:
+    Oh you found him!
+    He wants to stay there?
+    Oh well, as long as he's happy, maybe I can go down and visit him sometime.
+
+### q38 / An abandoned house
+NpcId: 719
+Story
+Level: 8
+QuestMessage:
+    I have heard rumors about an abandoned cabin in the woods south-west of here.
+    A stranger gave me this key telling me it could open it's door.
+    You can have it, I don't care what is in there.
+NextQuestId: q39
+
+### q39 / A Cabin In The Woods
+GoTo: 17
+QuestItems: 145
+Level: 7
+Description:
+    A rumor tells about an abandoned cabin in the woods south of Green Leaf Village.
+    You've been given a key that might open its door.
+Reward: 200xp
+
+### q43 / Escape The Nightmare
+GoTo: 11
+Level: 10
+Description: You've been transported to a strange place, how did you get here? Escape this nightmare as quick as possible!
+Reward: 80xp
+NextQuestId: q22

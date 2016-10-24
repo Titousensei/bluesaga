@@ -98,6 +98,7 @@ public class NpcDialog extends Window {
 
         // QuestId, QuestName, QuestStatus
         int qId = Integer.parseInt(qInfo_data[0]);
+        String qName = qInfo_data[1];
         String qType = qInfo_data[2];
         int qLevel = Integer.parseInt(qInfo_data[3]);
         int qStatus = Integer.parseInt(qInfo_data[4]);
@@ -105,7 +106,7 @@ public class NpcDialog extends Window {
         Quest newQuest = new Quest();
 
         newQuest.setId(qId);
-        newQuest.setName(LanguageUtils.getString("quests." + qId + ".name"));
+        newQuest.setName(qName);
         newQuest.setType(qType);
         newQuest.setLevel(qLevel);
         newQuest.setStatus(qStatus);
@@ -169,11 +170,11 @@ public class NpcDialog extends Window {
   public void showQuestInfo(int questId, String questType, String questMessage, int questStatus) {
     SelectedQuest = List.getQuestWithId(questId);
 
-    if (questStatus < 2) {
-      questMessage = LanguageUtils.getString("quests." + questId + ".quest_message");
-    } else {
-      questMessage = LanguageUtils.getString("quests." + questId + ".reward_message");
-    }
+    //if (questStatus < 2) {
+    //  questMessage = LanguageUtils.getString("quests." + questId + ".quest_message");
+    //} else {
+    //  questMessage = LanguageUtils.getString("quests." + questId + ".reward_message");
+    //}
 
     String fixedMessage = Quest.justifyLeft(50, questMessage);
     SelectedQuest.setMessage(fixedMessage);
@@ -421,7 +422,7 @@ public class NpcDialog extends Window {
 
   /*
   public void setNpcId(int newNpcId){
-  	NpcId = newNpcId;
+    NpcId = newNpcId;
   }
    */
 

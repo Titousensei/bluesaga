@@ -74,6 +74,22 @@ public class Database {
     return null;
   }
 
+  public int askInt(String sqlStatement) {
+    if (conn != null) {
+      try (Statement stat = conn.createStatement()) {
+        if (stat.execute(sqlStatement)) {
+          ResultSet rs = stat.getResultSet();
+          if (rs.next()) {
+            return rs.getInt(1);
+          }
+        }
+      } catch (SQLException e) {
+        e.printStackTrace();
+      }
+    }
+    return 0;
+  }
+
   /*
    *
    * 	BUG REPORT

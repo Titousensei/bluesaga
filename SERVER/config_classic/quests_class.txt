@@ -1,0 +1,84 @@
+--------------------------------------------------------------------------------
+--- WARRIORS -------------------------------------------------------------------
+--------------------------------------------------------------------------------
+
+### q95 / Become a Knight
+NpcId: 1676
+Level: 7
+LearnClass: 4
+QuestMessage:
+    I can show you the way of the Knight.
+    If you are already specialized in two teachings then you will have to lose all knowledge of one them.
+    Are you certain you want to become a Knight?
+RewardAbilityId: 75
+
+### q100 / Become a Tank
+NpcId: 1873
+LearnClass: 7
+Level: 1
+QuestMessage:
+    I can show you the way of the Tank.
+    If you are already specialized in two teachings then you will have to lose all knowledge of one them.
+    Are you certain you want to become a Tank?
+RewardAbilityId: 29
+
+
+--------------------------------------------------------------------------------
+--- HUNTERS --------------------------------------------------------------------
+--------------------------------------------------------------------------------
+
+### q94 / Become an Archer
+NpcId: 1677
+LearnClass: 6
+Level: 7
+QuestMessage:
+    I can show you the way of the Archer.
+    If you are already specialized in two teachings then you will have to lose all knowledge of one them.
+    Are you certain you want to become an Archer?
+RewardAbilityId: 16
+
+### q97 / Become a Druid
+NpcId: 1679
+LearnClass: 9
+Level: 1
+QuestMessage:
+    I can show you the way of the Druid.
+    If you are already specialized in two teachings then you will have to lose all knowledge of one them.
+    Are you certain you want to become a Druid?
+RewardAbilityId: 15
+
+
+--------------------------------------------------------------------------------
+--- MAGES ----------------------------------------------------------------------
+--------------------------------------------------------------------------------
+
+### q96 / Become a Pyromancer
+NpcId: 1678
+LearnClass: 5
+Level: 7
+QuestMessage:
+    I can show you the way of the Pyromancer.
+    If you are already specialized in two teachings then you will have to lose all knowledge of one them.
+    Are you certain you want to become a Pyromancer?
+RewardAbilityId: 42
+
+### q98 / Become a Coldbringer
+NpcId: 1680
+LearnClass: 8
+Level: 35
+QuestMessage:
+    I can show you the way of the Coldbringer.
+    If you are already specialized in two teachings then you will have to lose all knowledge of one them.
+    Are you certain you want to become a Coldbringer?
+RewardAbilityId: 43
+
+### q99 / Become a Sparker
+NpcId: 1872
+LearnClass: 11
+Level: 1
+QuestMessage:
+    I can show you the way of the Sparker.
+    If you are already specialized in two teachings then you will have to lose all knowledge of one them.
+    Are you certain you want to become a Sparker?
+RewardAbilityId: 44
+

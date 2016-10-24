@@ -251,7 +251,7 @@ public class Database {
             + " and AreaId = "
             + AreaId);
   }
-
+/*
   public void addMonster(int AreaId, Monster newMonster, int x, int y) {
     updateDB(
         "insert into area_creature (AreaId,CreatureId,MobLevel, SpawnX,SpawnY,Special,AggroType, NpcName) values ("
@@ -266,7 +266,7 @@ public class Database {
             + newMonster.getSpecialType()
             + "',2,'None')");
   }
-
+*/
   public void removeMonster(int AreaId, int x, int y) {
     updateDB(
         "delete from area_creature where AreaId = "

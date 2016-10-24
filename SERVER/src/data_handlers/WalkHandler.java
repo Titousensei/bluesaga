@@ -513,7 +513,7 @@ public class WalkHandler extends Handler {
           .isWater()) {
         // TURN PLAYER INTO BOAT!
         if (client.playerCharacter.getShip() != null) {
-          if (client.playerCharacter.getShip().getShipId() > 0) {
+          if (client.playerCharacter.getShip().id > 0) {
             if (!client.playerCharacter.getShip().isShow()) {
               client.playerCharacter.getShip().setShow(true);
 
@@ -532,7 +532,7 @@ public class WalkHandler extends Handler {
                         "goboat",
                         client.playerCharacter.getSmallData()
                             + ";"
-                            + client.playerCharacter.getShip().getShipId()
+                            + client.playerCharacter.getShip().id
                             + ",1");
                   }
                 }
@@ -561,7 +561,7 @@ public class WalkHandler extends Handler {
                       "goboat",
                       client.playerCharacter.getSmallData()
                           + ";"
-                          + client.playerCharacter.getShip().getShipId()
+                          + client.playerCharacter.getShip().id
                           + ",0");
                 }
               }

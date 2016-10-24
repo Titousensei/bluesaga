@@ -147,13 +147,13 @@ public class Tile {
     }
 
     if (Type.equals("shallow")) {
-      if (player.getShip().getShipId() > 0) {
+      if (player.getShip().id > 0) {
         return Passable;
       } else {
         return false;
       }
     } else if (Type.equals("water")) {
-      if (player.getShip().getShipId() == 2) {
+      if (player.getShip().id == 2) {
         return Passable;
       } else {
         return false;

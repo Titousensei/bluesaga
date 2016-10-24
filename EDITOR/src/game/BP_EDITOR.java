@@ -418,7 +418,7 @@ public class BP_EDITOR extends BasicGame {
     }
 
     try (ResultSet monsterInfo = mapDB.askDB(
-            "select SpawnX, SpawnY, SpawnZ, CreatureId from area_creature where SpawnX >= "
+            "select SpawnX, SpawnY, SpawnZ, CreatureId, Id from area_creature where SpawnX >= "
                 + (PLAYER_X - TILE_HALF_W)
                 + " and SpawnX < "
                 + (PLAYER_X + TILE_HALF_W)
@@ -436,8 +436,9 @@ public class BP_EDITOR extends BasicGame {
         int tileY = monsterInfo.getInt("SpawnY") - (PLAYER_Y - TILE_HALF_H);
         int tileZ = 0;
         int creatureId = monsterInfo.getInt("CreatureId");
+        int npcId = monsterInfo.getInt("Id");
 
-        SCREEN_TILES[tileX][tileY][tileZ].setOccupant(new Creature(creatureId, 0, 0));
+        SCREEN_TILES[tileX][tileY][tileZ].setOccupant(new Creature(creatureId, 0, 0, npcId));
       }
       monsterInfo.getStatement().close();
     } catch (SQLException e) {
@@ -526,14 +527,14 @@ public class BP_EDITOR extends BasicGame {
 
   private void resetHelp(Graphics g) {
     g.setFont(FONTS.size8);
-    helpY = 40;
+    helpY = 60;
   }
 
   private void renderHelp(Graphics g, String str) {
     g.setColor(EditColors.BLACK);
-    g.drawString(str, 21, helpY+1);
+    g.drawString(str, 11, helpY+1);
     g.setColor(EditColors.WHITE);
-    g.drawString(str, 20, helpY);
+    g.drawString(str, 10, helpY);
     helpY += 20;
   }
 
@@ -761,18 +762,39 @@ public class BP_EDITOR extends BasicGame {
       }
     }
 
-    if (!Loading && activeMenu != null) {
-      activeMenu.draw(g, container, INPUT.getAbsoluteMouseX(), INPUT.getAbsoluteMouseY());
-    }
-
-    g.setFont(FONTS.size8);
-    String coords = PLAYER_X + "," + PLAYER_Y + "," + PLAYER_Z;
-    g.setColor(EditColors.BLACK);
-    g.drawString(coords, 106, 31);
-    g.setColor(EditColors.WHITE);
-    g.drawString(coords, 105, 30);
-
     if (INPUT != null) {
+      if (!Loading && activeMenu != null) {
+        activeMenu.draw(g, container, INPUT.getAbsoluteMouseX(), INPUT.getAbsoluteMouseY());
+      }
+
+      int screenX = (int) Math.floor(INPUT.getAbsoluteMouseX() / TILE_SIZE);
+      int screenY = (int) Math.floor(INPUT.getAbsoluteMouseY() / TILE_SIZE);
+      g.setFont(FONTS.size8);
+      String coords = PLAYER_X + "," + PLAYER_Y + "," + PLAYER_Z;
+      String tileStr = SCREEN_TILES[screenX][screenY][0].getType() + "/" + SCREEN_TILES[screenX][screenY][0].getName();
+
+      String occStr = null;
+      if (SCREEN_TILES[screenX][screenY][0].getOccupant() != null) {
+        occStr = "Npc: " + String.valueOf(SCREEN_TILES[screenX][screenY][0].getOccupant());
+      }
+      else if (SCREEN_OBJECTS[screenX][screenY][0] != null) {
+        occStr = "Object: " + String.valueOf(SCREEN_OBJECTS[screenX][screenY][0]);
+      }
+
+      g.setColor(EditColors.BLACK);
+      g.drawString(coords, 106, 31);
+      g.drawString(tileStr, 106, 43);
+      if (occStr!=null) {
+        g.drawString(occStr,  106, 55);
+      }
+
+      g.setColor(EditColors.WHITE);
+      g.drawString(coords, 105, 30);
+      g.drawString(tileStr, 105, 42);
+      if (occStr!=null) {
+        g.drawString(occStr,  105, 54);
+      }
+
       Mouse.draw(INPUT.getAbsoluteMouseX(), INPUT.getAbsoluteMouseY());
     }
   }

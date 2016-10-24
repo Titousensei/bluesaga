@@ -60,6 +60,7 @@ public class LanguageUtils {
         return originalResource.get(key);
       } else {
         System.out.println("text missing: " + key);
+        Thread.dumpStack();
         return "";
       }
     }

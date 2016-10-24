@@ -2,164 +2,51 @@ package components;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Vector;
+import java.util.*;
 
 import data_handlers.item_handler.Item;
 import utils.ServerGameInfo;
 
-public class Quest {
+public class Quest
+{
+  public enum QType {
+    Instructions, GetItem, GoTo, Kill, LearnClass, Story, TalkTo, UseItem
+  };
 
-  private int Id;
-  private int Status; // 0 = new, 1 = accepted, 2 = get reward, 3 = completed
+  private final int Id;
+  private final String Name;
+  private final String origin;
 
   private int ParentQuestId;
 
-  private String Name;
   private String QuestMessage;
   private String RewardMessage;
+  private String Description;
 
   private int Level;
-  private String Type;
+  private QType Type;
   private int TargetNumber;
   private String TargetType;
   private int TargetId;
   private int NextQuestId;
+  private int RewardXp;
+  private int RewardCopper;
+  private int[] RewardItems;
+  private int RewardShip = 0;
+  private int RewardAbilityId;
+  private int NpcId;
+  private int EventId;
 
-  private Vector<Item> questItems;
+  private List<Item> questItems;
   private int questAbilityId;
+  private int learnClassId;
 
-  private int tempTextLines;
-  private int NrQuestLines;
-  private int NrRewardLines;
+  private boolean ReturnForReward = false;
 
-  private boolean ReturnForReward;
-
-  public Quest(int newId) {
-    Id = newId;
-    questItems = new Vector<Item>();
-    setQuestAbilityId(0);
-  }
-
-  public Quest(Quest questDef) {
-    Id = questDef.getId();
-
-    Name = questDef.getName();
-
-    QuestMessage = questDef.getQuestMessage();
-    RewardMessage = questDef.getRewardMessage();
-
-    Level = questDef.getLevel();
-    Type = questDef.getType();
-    TargetNumber = questDef.getTargetNumber();
-    TargetType = questDef.getTargetType();
-    TargetId = questDef.getTargetId();
-
-    NrQuestLines = tempTextLines;
-
-    NrRewardLines = tempTextLines;
-
-    questItems = new Vector<Item>();
-
-    questItems = questDef.questItems;
-
-    questAbilityId = questDef.getQuestAbilityId();
-
-    setNextQuestId(questDef.getNextQuestId());
-
-    setReturnForReward(questDef.isReturnForReward());
-
-    ParentQuestId = questDef.getParentQuestId();
-  }
-
-  public String justifyLeft(int width, String st) {
-    if (!st.equals("")) {
-      StringBuffer buf = new StringBuffer(st);
-      int lastspace = -1;
-      int linestart = 0;
-      int i = 0;
-
-      tempTextLines = 1;
-      while (i < buf.length()) {
-        if (buf.charAt(i) == ' ') lastspace = i;
-        if (buf.charAt(i) == '\n') {
-          lastspace = -1;
-          linestart = i + 1;
-          tempTextLines++;
-        }
-        if (i > linestart + width - 1) {
-          if (lastspace != -1) {
-            buf.setCharAt(lastspace, '\n');
-            linestart = lastspace + 1;
-            lastspace = -1;
-            tempTextLines++;
-          } else {
-            buf.insert(i, '\n');
-            linestart = i + 1;
-            tempTextLines++;
-          }
-        }
-        i++;
-      }
-
-      return buf.toString();
-    }
-    return st;
-  }
-
-  public void loadQuest(ResultSet rs) {
-    try {
-      Name = rs.getString("Name");
-
-      QuestMessage = rs.getString("QuestMessage");
-      RewardMessage = rs.getString("RewardMessage");
-
-      Level = rs.getInt("Level");
-      Type = rs.getString("Type");
-      TargetNumber = rs.getInt("TargetNumber");
-      TargetType = rs.getString("TargetType");
-      TargetId = rs.getInt("TargetId");
-
-      if (!QuestMessage.equals("")) {
-        QuestMessage = justifyLeft(42, QuestMessage);
-      }
-
-      NrQuestLines = tempTextLines;
-      if (!RewardMessage.equals("")) {
-        RewardMessage = justifyLeft(42, RewardMessage);
-      }
-      NrRewardLines = tempTextLines;
-
-      // Add quest items
-      if (!rs.getString("QuestItems").equals("None")) {
-        String questItemsInfo[] = rs.getString("QuestItems").split(";");
-
-        for (String questItemInfo : questItemsInfo) {
-          String questItemIdNr[] = questItemInfo.split(",");
-
-          int questItemId = Integer.parseInt(questItemIdNr[0]);
-          int questItemNr = Integer.parseInt(questItemIdNr[1]);
-
-          Item questItem = new Item(ServerGameInfo.itemDef.get(questItemId));
-          questItem.setStacked(questItemNr);
-          questItems.add(questItem);
-        }
-      }
-
-      questAbilityId = rs.getInt("QuestAbilityId");
-
-      setNextQuestId(rs.getInt("NextQuestId"));
-
-      if (rs.getInt("ReturnForReward") == 0) {
-        setReturnForReward(false);
-      } else {
-        setReturnForReward(true);
-      }
-
-      ParentQuestId = rs.getInt("ParentQuestId");
-    } catch (SQLException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
-    }
+  Quest(int id, String name, String origin) {
+    this.Id = id;
+    this.Name = name;
+    this.origin = origin;
   }
 
   /****************************************
@@ -168,91 +55,149 @@ public class Quest {
    *                                      *
    *                                      *
    ****************************************/
-  public String getName() {
-    return Name;
-  }
+  public String getName() { return Name; }
 
-  public int getId() {
-    return Id;
-  }
+  public int getId() { return Id; }
 
-  public int getLevel() {
-    return Level;
-  }
+  public int getLevel() { return Level; }
+  void setLevel(int val) { Level = val; }
 
-  public String getType() {
-    return Type;
-  }
+  public QType getType() { return Type; }
+  void setType(QType val) { Type = val; }
 
-  public int getTargetNumber() {
-    return TargetNumber;
-  }
+  public int getTargetNumber() { return TargetNumber; }
+  void setTargetNumber(int val) { TargetNumber = val; }
 
-  public String getTargetType() {
-    return TargetType;
-  }
+  public String getTargetType() { return TargetType; }
+  void setTargetType(String val) { TargetType = val; }
 
-  public int getTargetId() {
-    return TargetId;
-  }
+  public int getTargetId() { return TargetId; }
+  void setTargetId(int val) { TargetId = val; }
 
-  public int getNrQuestLines() {
-    return NrQuestLines;
-  }
+  public int getEventId() { return EventId; }
+  void setEventId(int val) { EventId = val; }
 
-  public int getNrRewardLines() {
-    return NrRewardLines;
-  }
+  public String getQuestMessage() { return QuestMessage; }
+  void setQuestMessage(String val) { QuestMessage = val; }
 
-  public String getQuestMessage() {
-    return QuestMessage;
-  }
+  public String getRewardMessage() { return RewardMessage; }
+  void setRewardMessage(String val) { RewardMessage = val; }
 
-  public String getRewardMessage() {
-    return RewardMessage;
-  }
+  public String getDescription() { return Description; }
+  void setDescription(String val) { Description = val; }
 
-  public void setTargetNumber(int newNr) {
-    TargetNumber = newNr;
-  }
+  public int getParentQuestId() { return ParentQuestId; }
+  void setParentQuestId(int val) { ParentQuestId = val; }
 
-  public void setStatus(int newStatus) {
-    Status = newStatus;
-  }
+  public int getNextQuestId() { return NextQuestId; }
+  void setNextQuestId(int nextQuestId) { NextQuestId = nextQuestId; }
 
-  public int getStatus() {
-    return Status;
-  }
+  public List<Item> getQuestItems() { return questItems; }
+  void setQuestItems(List<Item> val) { questItems = val; }
 
-  public int getParentQuestId() {
-    return ParentQuestId;
-  }
+  public boolean isReturnForReward() { return ReturnForReward; }
+  void setReturnForReward(boolean returnForReward) { ReturnForReward = returnForReward;}
 
-  public int getNextQuestId() {
-    return NextQuestId;
-  }
+  public int getQuestAbilityId() { return questAbilityId; }
+  void setQuestAbilityId(int val) { questAbilityId = val; }
 
-  public void setNextQuestId(int nextQuestId) {
-    NextQuestId = nextQuestId;
-  }
+  public int getLearnClassId() { return learnClassId; }
+  void setLearnClassId(int val) { learnClassId = val; }
 
-  public Vector<Item> getQuestItems() {
-    return questItems;
-  }
+  public int getNpcId() { return NpcId; }
+  void setNpcId(int val) { NpcId = val; }
 
-  public boolean isReturnForReward() {
-    return ReturnForReward;
-  }
+  public int getRewardXp() { return RewardXp; }
+  void setRewardXp(int val) { RewardXp = val; }
 
-  public void setReturnForReward(boolean returnForReward) {
-    ReturnForReward = returnForReward;
-  }
+  public int getRewardCopper() { return RewardCopper; }
+  void setRewardCopper(int val) { RewardCopper = val; }
 
-  public int getQuestAbilityId() {
-    return questAbilityId;
-  }
+  public int[] getRewardItems() { return RewardItems; }
+  void setRewardItems(int[] val) { RewardItems = val; }
 
-  public void setQuestAbilityId(int questAbilityId) {
-    this.questAbilityId = questAbilityId;
+  public int getRewardShip() { return RewardShip; }
+  void setRewardShip(int val) { RewardShip = val; }
+
+  public int getRewardAbilityId() { return RewardAbilityId; }
+  void setRewardAbilityId(int val) { RewardAbilityId = val; }
+
+  public String origin() { return origin; }
+
+  @Override
+  public String toString() {
+    StringBuilder sb = new StringBuilder();
+    sb.append("Quest{").append(Id)
+      .append(" / ").append(Name)
+      .append(", Type=").append(Type);
+
+    if (NpcId!=0) {
+      sb.append(", NpcId=").append(NpcId);
+    }
+
+    if (ParentQuestId!=0) {
+      sb.append(", ParentQuestId=").append(ParentQuestId);
+    }
+
+    if (TargetNumber!=0) {
+      sb.append(", TargetNumber=").append(TargetNumber);
+    }
+    if (TargetType!=null) {
+      sb.append(", TargetType=").append(TargetType);
+    }
+    if (TargetId!=0) {
+      sb.append(", TargetId=").append(TargetId);
+    }
+
+    if (questItems!=null) {
+      sb.append(", questItems=").append(questItems);
+    }
+    if (questAbilityId!=0) {
+      sb.append(", questAbilityId=").append(questAbilityId);
+    }
+    if (learnClassId!=0) {
+      sb.append(", learnClassId=").append(learnClassId);
+    }
+    if (EventId!=0) {
+      sb.append(", EventId=").append(EventId);
+    }
+
+    sb.append(", Level=").append(Level);
+    if (QuestMessage!=null) {
+      sb.append(", QuestMessage=").append(QuestMessage.replace('\n','|'));
+    }
+    if (Description!=null) {
+      sb.append(", Description=").append(Description.replace('\n','|'));
+    }
+
+    if (RewardMessage!=null) {
+      sb.append(", RewardMessage=").append(RewardMessage.replace('\n','|'));
+    }
+    if (RewardXp>0) {
+      sb.append(", RewardXp=").append(RewardXp);
+    }
+    if (RewardCopper>0) {
+      sb.append(", RewardCopper=").append(RewardCopper);
+    }
+    if (RewardItems!=null) {
+      sb.append(", RewardItems=").append(Arrays.toString(RewardItems));
+    }
+    if (RewardShip>0) {
+      sb.append(", RewardShip=").append(RewardShip);
+    }
+    if (RewardAbilityId>0) {
+      sb.append(", RewardAbilityId=").append(RewardAbilityId);
+    }
+    if (ReturnForReward) {
+      sb.append(", ReturnForReward");
+    }
+    if (NextQuestId!=0) {
+      sb.append(", NextQuestId=").append(NextQuestId);
+    }
+
+    sb.append(", Origin=").append(origin)
+      .append('}');
+
+    return sb.toString();
   }
 }

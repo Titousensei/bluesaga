@@ -20,6 +20,7 @@ public final class EditColors
   public final static Color BEACH = new Color(255, 250, 94);
   public final static Color CLIFF = new Color(150, 108, 58);
   public final static Color MAP_OTHER = new Color(166, 217, 124);
+  public final static Color GATHERING = new Color(255, 108, 58);
 
   public final static Color NIGHT = new Color(0, 0, 0, 150);
   public final static Color DAY = new Color(255, 255, 255, 150);
@@ -31,7 +32,7 @@ public final class EditColors
 
   public final static Color IMPASSABLE = new Color(255, 0, 0, 55);
   public final static Color AREA_EFFECT = new Color(255, 104, 235);
-  public final static Color TRIGGER = new Color(255, 128, 0);
+  public final static Color TRIGGER = new Color(255, 190, 30);
 
   public final static Color MENU = new Color(238, 82, 65, 255);
 

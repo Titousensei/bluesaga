@@ -205,35 +205,13 @@ public class BP_EDITOR extends BasicGame {
     loading();
   }
 
-  private String majority4(String group) {
-    String[] parts = group.split(",");
-    if (parts.length==1) {
-      return parts[0];
-    }
-    if (parts.length==2) {
-      if ("None".equals(parts[0])) {
-        return parts[1];
-      }
-      else {
-        return parts[0];
-      }
-    }
-    Arrays.sort(parts);
-    if (parts[0].equals(parts[2])) {
-        return parts[0];
-    }
-    if ("None".equals(parts[0])) {
-        return parts[2];
-    }
-    return parts[0];
-  }
-
   public void loadMiniMap() {
 
+    long t0 = System.currentTimeMillis();
     miniMapX = PLAYER_X;
     miniMapY = PLAYER_Y;
     try (ResultSet mapInfo = mapDB.askDB(
-            "select MIN(X), MIN(Y), group_concat(Type), group_concat(ObjectID) from area_tile where Z = "
+            "select X, Y, Type, max(Name), max(ObjectID), min(ObjectID) from area_tile where Z = "
                 + PLAYER_Z
                 + " AND X>" + (PLAYER_X - MINI_MAP_SIZE)
                 + " AND X<" + (PLAYER_X + MINI_MAP_SIZE)
@@ -249,16 +227,17 @@ public class BP_EDITOR extends BasicGame {
       g.clear();
 
       while (mapInfo.next()) {
-        String groupObjectId = mapInfo.getString("group_concat(ObjectID)");
-        String obj = majority4(groupObjectId);
-        if(obj.startsWith("tree")) {
+        String obj1 = mapInfo.getString(5);
+        String obj2 = mapInfo.getString(6);
+        if(obj1.startsWith("tree") || obj2.startsWith("tree")) {
           g.setColor(EditColors.TREES);
-        } else if(obj.contains("rock")) {
+        } else if(obj1.contains("rock") || obj2.contains("rock")) {
           g.setColor(EditColors.ROCKS);
+        } else if(!"None".equals(obj1) || !"None".equals(obj2)) {
+          g.setColor(EditColors.GATHERING);
         }
         else {
-          String groupType = mapInfo.getString("group_concat(Type)");
-           String type = majority4(groupType);
+          String type = mapInfo.getString(3);
           switch (type) {
           case "water":
             g.setColor(EditColors.WATER);
@@ -267,17 +246,24 @@ public class BP_EDITOR extends BasicGame {
             g.setColor(EditColors.SHALLOW);
             break;
           case "beach":
+          case "sand":
             g.setColor(EditColors.BEACH);
             break;
           case "cliff":
             g.setColor(EditColors.CLIFF);
             break;
           default:
-            g.setColor(EditColors.MAP_OTHER);
+            String name = mapInfo.getString(4);
+            if (name.contains("water") || name.contains("stream")) {
+              g.setColor(EditColors.SHALLOW);
+            }
+            else {
+              g.setColor(EditColors.MAP_OTHER);
+            }
           }
         }
-        int x = (mapInfo.getInt("MIN(X)") - PLAYER_X + MINI_MAP_SIZE) / 2;
-        int y = (mapInfo.getInt("MIN(Y)") - PLAYER_Y + MINI_MAP_SIZE) / 2;
+        int x = (mapInfo.getInt(1) - PLAYER_X + MINI_MAP_SIZE) / 2;
+        int y = (mapInfo.getInt(2) - PLAYER_Y + MINI_MAP_SIZE) / 2;
         g.fillRect(x, y, 1, 1);
       }
       mapInfo.getStatement().close();
@@ -287,6 +273,8 @@ public class BP_EDITOR extends BasicGame {
     } catch (SQLException e) {
       e.printStackTrace();
     }
+    System.out.println("Minimap loaded in " + ((System.currentTimeMillis() - t0)/1000.) + " ms");
+
   }
 
   public static void loadScreen() {

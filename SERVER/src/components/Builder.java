@@ -14,25 +14,33 @@ public abstract class Builder<T>
   public abstract T build();
 
   private final static Pattern R_ID_NAME = Pattern.compile("### *([a-zA-Z]?[0-9]+) ?[^a-zA-Z]? ?(.*) *");
+  private final static Pattern R_INT = Pattern.compile("[a-zA-Z ]*([0-9]+)[^0-9]*");
 
-  protected static int parseInt(String str) {
+  protected static int parseInt(String str)
+  {
     try {
-      if (Character.isDigit(str.charAt(0))) {
-        return Integer.parseInt(str);
-      } else {
-        return Integer.parseInt(str.substring(1));
+      Matcher m = R_INT.matcher(str);
+      if (m.find()) {
+        return Integer.parseInt(m.group(1));
       }
     }
-    catch (NumberFormatException ex) {
-      return 0;
+    catch (NumberFormatException | IllegalStateException ex) {
+      System.err.println("[Builder] ERROR - Can't parseInt in \"" + str + "\": " + ex);
     }
+    return 0;
   }
+
+  protected  boolean set(String name, String value)
+  { return false; }
 
   private static <T> void set(Builder<T> current, String lastSetter, String lastValue)
   throws InvocationTargetException, IllegalAccessException
   {
     boolean isMissing = true;
-    if (lastValue!=null) {
+    if (current.set(lastSetter, lastValue)) {
+      isMissing = false;
+    }
+    else if (lastValue!=null) {
       for (Method m : current.getClass().getMethods()) {
         if (lastSetter.equalsIgnoreCase(m.getName())
         && m.getParameterTypes().length == 1
@@ -84,15 +92,15 @@ public abstract class Builder<T>
                 set(current, lastSetter, lastValue);
               }
               catch (InvocationTargetException ex) {
-                System.err.println("[Builder] WARNING - Value exception in "
+                System.err.println("[Builder] ERROR - New entry exception in "
                     + lastOrigin
-                    + " - " + ex.getCause().getMessage());
+                    + " - " + ex.getCause());
                 //ex.printStackTrace();
               }
               lastSetter = null;
             }
             if (ret.put(currentId, current.build()) != null) {
-              System.err.println("[Builder] WARNING - duplicate Id " + currentId
+              System.err.println("[Builder] ERROR - duplicate Id " + currentId
                   + " found in " + lastOrigin);
             }
           }
@@ -107,9 +115,9 @@ public abstract class Builder<T>
               set(current, lastSetter, lastValue);
             }
             catch (InvocationTargetException ex) {
-              System.err.println("[Builder] WARNING - Value exception in "
+              System.err.println("[Builder] ERROR - Value exception in "
                   + lastOrigin
-                  + " - " + ex.getCause().getMessage());
+                  + " - " + ex.getCause());
               //ex.printStackTrace();
             }
             lastSetter = null;
@@ -126,6 +134,24 @@ public abstract class Builder<T>
         }
         else { // multi-line value
           lastValue = lastValue + "\n" + line.trim();
+        }
+      }
+
+      if (current != null) {
+        if (lastSetter!=null) {
+          try {
+            set(current, lastSetter, lastValue);
+          }
+          catch (InvocationTargetException ex) {
+            System.err.println("[Builder] ERROR - New entry exception in "
+                + lastOrigin
+                + " - " + ex.getCause());
+            //ex.printStackTrace();
+          }
+        }
+        if (ret.put(currentId, current.build()) != null) {
+          System.err.println("[Builder] ERROR - duplicate Id " + currentId
+              + " found in " + lastOrigin);
         }
       }
     }

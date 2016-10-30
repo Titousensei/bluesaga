@@ -1,0 +1,182 @@
+### i8 / Wooden Club
+ReqLevel: 1
+Type: Weapon / Club
+Damage: 8 - 12 STRIKE STRENGTH
+ClassId: 1
+Material: Wood
+Range: 1
+Value: 10
+AttackSpeed: -20
+
+### i12 / Bronze Dagger
+ReqLevel: 8
+Type: Weapon / Dagger
+Damage: 15 - 23 PIERCE STRENGTH
+ClassId: 1
+Material: Bronze
+Range: 1
+Value: 80
+AttackSpeed: -20
+
+### i13 / Small Hammer
+ReqLevel: 11
+Type: Weapon / Hammer
+Damage: 18 - 27 STRIKE STRENGTH
+ClassId: 1
+Material: Iron
+Range: 1
+Value: 110
+AttackSpeed: -20
+
+### i26 / Mace
+ReqLevel: 13
+Type: Weapon / Club
+Damage: 20 - 30 STRIKE STRENGTH
+ClassId: 1
+Material: Iron
+Range: 1
+Value: 130
+AttackSpeed: -20
+
+### i27 / Copper Dagger
+ReqLevel: 4
+Type: Weapon / Dagger
+Damage: 11 - 17 PIERCE STRENGTH
+ClassId: 1
+Material: Copper
+Range: 1
+Value: 40
+AttackSpeed: -20
+
+### i28 / Leather Glove
+ReqLevel: 999
+Type: Weapon / Glove
+Damage: 1006 - 1509 STRIKE STRENGTH
+ClassId: 1
+Material: Leather
+Range: 1
+Value: 9990
+AttackSpeed: -20
+
+### i29 / Boxing Glove
+ReqLevel: 999
+Type: Weapon / Glove
+Damage: 1006 - 1509 STRIKE STRENGTH
+ClassId: 1
+Material: Cloth
+Range: 1
+Value: 9990
+AttackSpeed: -20
+
+### i66 / Iron Club
+ReqLevel: 6
+Type: Weapon / Club
+Damage: 13 - 20 STRIKE STRENGTH
+ClassId: 1
+Material: Wood
+Range: 1
+Value: 60
+AttackSpeed: -20
+
+### i67 / Combat Hammer
+ReqLevel: 16
+Type: Weapon / Hammer
+Damage: 23 - 35 STRIKE STRENGTH
+ClassId: 1
+Material: Iron
+Range: 1
+Value: 160
+AttackSpeed: -20
+
+### i68 / Heavy Mace
+ReqLevel: 22
+Type: Weapon / Club
+Damage: 29 - 44 STRIKE STRENGTH
+ClassId: 1
+Material: Iron
+Range: 1
+Value: 220
+AttackSpeed: -20
+
+### i69 / Spiked Glove
+ReqLevel: 40
+Type: Weapon / Glove
+Damage: 47 - 71 STRIKE STRENGTH
+ClassId: 1
+Material: Cloth
+Range: 1
+Value: 400
+AttackSpeed: -20
+
+### i70 / Iron Fist
+ReqLevel: 32
+Type: Weapon / Glove
+Damage: 39 - 59 STRIKE STRENGTH
+ClassId: 1
+Material: Cloth
+Range: 1
+Value: 320
+AttackSpeed: -20
+
+### i71 / Bronze Gauntlet
+ReqLevel: 999
+Type: Weapon / Glove
+Damage: 1006 - 1509 STRIKE STRENGTH
+ClassId: 1
+Material: Cloth
+Range: 1
+Value: 9990
+AttackSpeed: -20
+
+### i77 / Combat Hatchet
+ReqLevel: 7
+Type: Weapon / Hatchet
+Damage: 14 - 21 SLASH STRENGTH
+ClassId: 1
+Material: Copper
+Range: 1
+Value: 70
+AttackSpeed: -20
+
+### i250 / Giant Club
+ReqLevel: 26
+Type: Weapon / Hammer
+Damage: 33 - 50 STRIKE STRENGTH
+ClassId: 1
+Material: Iron
+Range: 1
+Value: 300
+AttackSpeed: -20
+
+### i268 / Claws
+ReqLevel: 999
+Type: Weapon / Claws
+Damage: 1006 - 1509 STRIKE STRENGTH
+ClassId: 1
+Material: Cloth
+Range: 1
+Value: 9990
+AttackSpeed: -20
+
+### i269 / Morning Star
+ReqLevel: 999
+Type: Weapon / Club
+Damage: 1006 - 1509 SLASH STRENGTH
+ClassId: 1
+Material: Iron
+Range: 1
+Value: 9990
+AttackSpeed: -20
+
+### i270 / Big Spike Gauntlet
+ReqLevel: 999
+Type: Weapon / Gauntlet
+Damage: 1006 - 1509 STRIKE STRENGTH
+ClassId: 1
+Material: Cloth
+Range: 1
+Value: 9990
+AttackSpeed: -20
+
+
+

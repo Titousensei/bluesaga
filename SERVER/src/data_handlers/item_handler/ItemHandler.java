@@ -662,25 +662,17 @@ public class ItemHandler extends Handler {
 
     try {
       while (lostItemsInfo.next()) {
-        ResultSet itemInfo =
-            Server.gameDB.askDB(
-                "select Type from item where Id = " + lostItemsInfo.getInt("ItemId"));
-        if (itemInfo.next()) {
-          if (!itemInfo.getString("Type").equals("Key")) {
-            if (lostLoot.size() < maxLootBagSize) {
-              Item lostItem = new Item(ServerGameInfo.itemDef.get(lostItemsInfo.getInt("ItemId")));
-              lostItem.setStacked(lostItemsInfo.getInt("Nr"));
-              lostItem.setModifierId(lostItemsInfo.getInt("ModifierId"));
-              lostItem.setMagicId(lostItemsInfo.getInt("MagicId"));
-              Server.userDB.updateDB(
-                  "delete from character_item where Id = " + lostItemsInfo.getInt("Id"));
-              lostLoot.add(lostItem);
-            } else {
-              break;
-            }
-          }
+        if (lostLoot.size() < maxLootBagSize) {
+          Item lostItem = ServerGameInfo.cloneItem(lostItemsInfo.getInt("ItemId"));
+          lostItem.setStacked(lostItemsInfo.getInt("Nr"));
+          lostItem.setModifierId(lostItemsInfo.getInt("ModifierId"));
+          lostItem.setMagicId(lostItemsInfo.getInt("MagicId"));
+          Server.userDB.updateDB(
+              "delete from character_item where Id = " + lostItemsInfo.getInt("Id"));
+          lostLoot.add(lostItem);
+        } else {
+          break;
         }
-        itemInfo.close();
       }
       lostItemsInfo.close();
     } catch (SQLException e) {

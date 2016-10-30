@@ -1,0 +1,128 @@
+### i148 / Robin Hood Hat
+Type: Skin / Head
+
+### i149 / Captain Hat
+Type: Skin / Head
+
+### i150 / Giant Spoon
+Type: Skin / Weapon
+
+### i151 / Bear Paw
+Type: Skin / Weapon
+
+### i152 / Cat Paw
+Type: Skin / Weapon
+
+### i153 / Pirate Hat
+Type: Skin / Head
+
+### i154 / Black Pony Tail
+Type: Skin / Head
+
+### i155 / Blonde Pony Tail
+Type: Skin / Head
+
+### i156 / Big Hair
+Type: Skin / Head
+
+### i157 / Suitcase
+Type: Skin / OffHand
+
+### i158 / Purse
+Type: Skin / OffHand
+
+### i159 / Antennas
+Type: Skin / Head
+
+### i160 / Big White Wings
+Type: Skin / Artifact
+
+### i161 / Giant Lollipop
+Type: Skin / Weapon
+
+### i162 / Red Hair Bow
+Type: Skin / Head
+
+### i163 / Big Black Wings
+Type: Skin / Artifact
+
+### i164 / Giant Hammer
+Type: Skin / Weapon
+
+### i165 / Cowboy Hat
+Type: Skin / Head
+
+### i166 / ???
+Type: Skin / Artifact
+
+### i167 / Santa Hat
+Type: Skin / Head
+
+### i168 / Reindeer Horns
+Type: Skin / Amulet
+
+### i169 / Big Bag
+Type: Skin / Artifact
+
+### i170 / Santa Beard
+Type: Customization / Mouth Feature
+Value: 80 not sellable
+
+### i171 / Red Nose
+Type: Customization / Mouth Feature
+Value: 80 not sellable
+
+### i172 / Crown
+Type: Skin / Head
+
+### i219 / Archer Glove
+Type: Skin / OffHand
+
+### i220 / Third Eye
+Type: Skin / Amulet
+
+### i221 / Demon Horns
+Type: Skin / Amulet
+
+### i222 / Demon Wings
+Type: Skin / Artifact
+
+### i223 / Devil Pitchfork
+Type: Skin / Weapon
+
+### i224 / Chef Hat
+Type: Skin / Head
+
+### i225 / Gold Bag
+Type: Skin / OffHand
+
+### i237 / Pumpkin
+Type: Skin / OffHand
+
+### i238 / Old Wizard Hat
+Type: Skin / Head
+
+### i239 / Witch Hat
+Type: Skin / Head
+
+### i252 / Hook
+Type: Skin / Weapon
+
+### i253 / Scythe
+Type: Skin / Weapon
+
+### i254 / Beret
+Type: Skin / Head
+
+### i255 / Paint Brush
+Type: Skin / Weapon
+
+### i256 / Palette
+Type: Skin / OffHand
+
+### i257 / Feathered Pirate Hat
+Type: Skin / Head
+
+### i144 / Flower
+Type: Skin / Head
+

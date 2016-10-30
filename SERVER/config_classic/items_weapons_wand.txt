@@ -1,0 +1,165 @@
+### i20 / Weak Ice Wand
+ReqLevel: 999
+Type: Weapon / Wand
+Damage: 1207 - 1810 COLD INTELLIGENCE
+ClassId: 2
+Material: Wood
+ProjectileId: 2
+Range: 3
+Value: 9990
+AttackSpeed: -30
+
+### i21 / Fire Wand
+ReqLevel: 10
+Type: Weapon / Wand
+Damage: 20 - 30 FIRE INTELLIGENCE
+ClassId: 5
+Material: Wood
+ProjectileId: 1
+Range: 3
+Value: 100
+AttackSpeed: -30
+
+### i22 / Shock Wand
+ReqLevel: 999
+Type: Weapon / Wand
+Damage: 1207 - 1810 SHOCK INTELLIGENCE
+ClassId: 2
+Material: Wood
+ProjectileId: 3
+Range: 3
+Value: 60
+AttackSpeed: -30
+
+### i52 / Ice Wand
+ReqLevel: 999
+Type: Weapon / Wand
+Damage: 1207 - 1810 COLD INTELLIGENCE
+ClassId: 2
+Material: Wood
+ProjectileId: 2
+Range: 3
+Value: 9990
+AttackSpeed: -30
+
+### i72 / Weak Fire Wand
+ReqLevel: 999
+Type: Weapon / Wand
+Damage: 1207 - 1810 FIRE INTELLIGENCE
+ClassId: 2
+Material: Wood
+ProjectileId: 1
+Range: 3
+Value: 9990
+AttackSpeed: -30
+
+### i73 / Weak Shock Wand
+ReqLevel: 999
+Type: Weapon / Wand
+Damage: 1207 - 1810 SHOCK INTELLIGENCE
+ClassId: 2
+Material: Wood
+ProjectileId: 3
+Range: 3
+Value: 9990
+AttackSpeed: -30
+
+### i74 / Fire Staff
+ReqLevel: 30
+Type: Weapon / Wand
+Damage: 44 - 66 FIRE INTELLIGENCE
+ClassId: 5
+Material: Wood
+ProjectileId: 1
+Range: 4
+Value: 300
+AttackSpeed: -30
+
+### i76 / Shock Staff
+ReqLevel: 38
+Type: Weapon / Wand
+Damage: 53 - 81 SHOCK INTELLIGENCE
+ClassId: 11
+Material: Wood
+ProjectileId: 3
+Range: 4
+Value: 350
+AttackSpeed: -30
+
+### i231 / Weak Magic Wand
+ReqLevel: 1
+Type: Weapon / Wand
+Damage: 9 - 14 MAGIC INTELLIGENCE
+ClassId: 2
+Material: Wood
+ProjectileId: 14
+Range: 3
+Value: 10
+AttackSpeed: -30
+
+### i265 / Flame Staff
+ReqLevel: 999
+Type: Weapon / Wand
+Damage: 1207 - 1810 FIRE INTELLIGENCE
+ClassId: 2
+Material: Wood
+ProjectileId: 1
+Range: 4
+Value: 200
+AttackSpeed: -30
+
+### i266 / Frost Staff
+ReqLevel: 999
+Type: Weapon / Wand
+Damage: 1207 - 1810 COLD INTELLIGENCE
+ClassId: 2
+Material: Wood
+ProjectileId: 2
+Range: 4
+Value: 200
+AttackSpeed: -30
+
+### i267 / Lightning Staff
+ReqLevel: 999
+Type: Weapon / Wand
+Damage: 1207 - 1810 SHOCK INTELLIGENCE
+ClassId: 2
+Material: Wood
+ProjectileId: 3
+Range: 4
+Value: 200
+AttackSpeed: -30
+
+### i284 / Magic Wand
+ReqLevel: 5
+Type: Weapon / Wand
+Damage: 14 - 21 MAGIC INTELLIGENCE
+ClassId: 2
+Material: Wood
+ProjectileId: 14
+Range: 3
+Value: 50
+AttackSpeed: -30
+
+### i285 / Lesser Magic Staff
+ReqLevel: 9
+Type: Weapon / Wand
+Damage: 19 - 28 MAGIC INTELLIGENCE
+ClassId: 2
+Material: Wood
+ProjectileId: 14
+Range: 3
+Value: 90
+AttackSpeed: -30
+
+### i291 / Dark Staff
+ReqLevel: 40
+Type: Weapon / Wand
+Damage: 56 - 84 MAGIC INTELLIGENCE
+ClassId: 2
+Material: Wood
+ProjectileId: 14
+Range: 4
+Value: 370
+AttackSpeed: -30
+

@@ -1,0 +1,115 @@
+### i48 / Amulet of Strength
+ReqLevel: 11
+Type: Amulet
+Material: Bronze
+STRENGTH: 4
+Value: 110
+
+### i49 / Amulet of Wisdom
+ReqLevel: 13
+Type: Amulet
+INTELLIGENCE: 4
+Material: Bronze
+Value: 130
+
+### i50 / Amulet of Agility
+ReqLevel: 15
+Type: Amulet
+AGILITY: 4
+Material: Bronze
+Value: 150
+
+### i51 / Amulet of Haste
+ReqLevel: 19
+Type: Amulet
+Material: Bronze
+SPEED: 5
+Value: 190
+
+### i181 / Oozemaw's Amulet
+ReqLevel: 23
+Type: Amulet
+ARMOR: 5
+Material: Bronze
+STRENGTH: 3
+Value: 230
+
+### i195 / Golden Tristone
+ReqLevel: 31
+Type: Amulet
+AGILITY: 3
+INTELLIGENCE: 3
+Material: Bronze
+STRENGTH: 3
+Value: 390
+
+### i196 / Smaragd Tristone
+ReqLevel: 33
+Type: Amulet
+AGILITY: 4
+Material: Bronze
+SPEED: 4
+Value: 330
+
+### i197 / Ruby Tristone
+ReqLevel: 29
+Type: Amulet
+FIRE_DEF: 4
+Material: Bronze
+Value: 290
+
+### i198 / Azur Tristone
+ReqLevel: 37
+Type: Amulet
+INTELLIGENCE: 8
+Material: Bronze
+Value: 370
+
+### i249 / King's Amulet
+ReqLevel: 27
+Type: Amulet
+CHEMS_DEF: 6
+COLD_DEF: 6
+FIRE_DEF: 6
+Material: Bronze
+SHOCK_DEF: 6
+Value: 270
+
+### i307 / Shroom's Amulet
+ReqLevel: 17
+Type: Amulet
+CHEMS_DEF: 4
+Material: Bronze
+Value: 170
+
+### i308 / Amulet of Great Haste
+ReqLevel: 25
+Type: Amulet
+Material: Bronze
+SPEED: 8
+Value: 250
+
+### i309 / Goblin Stone Amulet
+ReqLevel: 21
+Type: Amulet
+ARMOR: 8
+Material: Bronze
+Value: 210
+
+### i310 / Frost Amulet
+ReqLevel: 35
+Type: Amulet
+COLD_DEF: 6
+Material: Bronze
+Value: 310
+
+### i312 / Amulet of the Dead
+ReqLevel: 39
+Type: Amulet
+AGILITY: 10
+INTELLIGENCE: 10
+Material: Bronze
+STRENGTH: 10
+Value: 350
+MAGIC_DEF: 4
+

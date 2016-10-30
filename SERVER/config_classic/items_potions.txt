@@ -1,0 +1,33 @@
+### i3 / Small Health Potion
+Type: Potion / HEALTH
+MAX_HEALTH: 60
+Stackable: 10
+Value: 10
+
+### i4 / Medium Health Potion
+Type: Potion / HEALTH
+MAX_HEALTH: 120
+Stackable: 10
+Value: 30
+
+### i143 / Large Health Potion
+Type: Potion / HEALTH
+MAX_HEALTH: 360
+Stackable: 10
+Value: 100
+
+
+
+
+### i5 / Small Mana Potion
+Type: Potion / MANA
+MAX_MANA: 100
+Stackable: 10
+Value: 10
+
+### i6 / Medium Mana Potion
+Type: Potion / MANA
+MAX_MANA: 240
+Stackable: 10
+Value: 50
+

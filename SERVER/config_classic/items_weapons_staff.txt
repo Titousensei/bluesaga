@@ -1,0 +1,110 @@
+### i53 / Lesser Fire Staff
+ReqLevel: 20
+Type: Weapon / Staff
+Damage: 32 - 48 FIRE INTELLIGENCE
+ClassId: 5
+Material: Wood
+ProjectileId: 1
+Range: 4
+Value: 200
+AttackSpeed: -30
+
+### i54 / Lesser Shock Staff
+ReqLevel: 24
+Type: Weapon / Staff
+Damage: 37 - 55 SHOCK INTELLIGENCE
+ClassId: 11
+Material: Wood
+ProjectileId: 3
+Range: 4
+Value: 240
+AttackSpeed: -30
+
+### i75 / Ice Staff
+ReqLevel: 36
+Type: Weapon / Staff
+Damage: 51 - 77 COLD INTELLIGENCE
+ClassId: 8
+Material: Wood
+ProjectileId: 2
+Range: 4
+Value: 390
+AttackSpeed: -30
+
+### i142 / Lesser Ice Staff
+ReqLevel: 34
+Type: Weapon / Staff
+Damage: 49 - 73 COLD INTELLIGENCE
+ClassId: 8
+Material: Wood
+ProjectileId: 2
+Range: 4
+Value: 320
+AttackSpeed: -30
+
+### i286 / Magic Staff
+ReqLevel: 13
+Type: Weapon / Staff
+Damage: 23 - 36 MAGIC INTELLIGENCE
+ClassId: 2
+Material: Wood
+ProjectileId: 14
+Range: 3
+Value: 130
+AttackSpeed: -30
+
+### i287 / Staff Of Wisdom
+ReqLevel: 17
+Type: Weapon / Staff
+Damage: 28 - 43 MAGIC INTELLIGENCE
+ClassId: 2
+Material: Wood
+ProjectileId: 14
+Range: 3
+Value: 170
+AttackSpeed: -30
+
+### i288 / Enchanted Staff
+ReqLevel: 21
+Type: Weapon / Staff
+Damage: 33 - 50 MAGIC INTELLIGENCE
+ClassId: 2
+Material: Wood
+ProjectileId: 14
+Range: 4
+Value: 210
+AttackSpeed: -30
+
+### i289 / Sacred Staff
+ReqLevel: 25
+Type: Weapon / Staff
+Damage: 38 - 57 MAGIC INTELLIGENCE
+ClassId: 2
+Material: Wood
+ProjectileId: 14
+Range: 4
+Value: 250
+AttackSpeed: -30
+
+### i290 / Mind Sceptre
+ReqLevel: 29
+Type: Weapon / Staff
+Damage: 43 - 64 MAGIC INTELLIGENCE
+ClassId: 2
+Material: Wood
+ProjectileId: 14
+Range: 4
+Value: 290
+AttackSpeed: -30
+
+### i292 / Hollow Staff
+ReqLevel: 33
+Type: Weapon / Staff
+Damage: 47 - 72 MAGIC INTELLIGENCE
+ClassId: 2
+Material: Wood
+ProjectileId: 14
+Range: 4
+Value: 330
+AttackSpeed: -30
+

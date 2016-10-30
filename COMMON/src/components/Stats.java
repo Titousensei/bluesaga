@@ -2,10 +2,16 @@ package components;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class Stats {
+
+  public final static Set<String> NAMES = new HashSet(Arrays.asList(
+        "STRENGTH", "INTELLIGENCE", "AGILITY",
+        "SPEED", "CRITICAL_HIT", "EVASION", "ACCURACY", "ATTACKSPEED",
+        "MAX_HEALTH", "MAX_MANA", "HEALTH_REGAIN", "MANA_REGAIN",
+        "FIRE_DEF", "COLD_DEF", "SHOCK_DEF", "CHEMS_DEF", "MIND_DEF", "MAGIC_DEF",
+        "ACCURACY", "ARMOR"));
 
   private HashMap<String, Integer> Stats;
 

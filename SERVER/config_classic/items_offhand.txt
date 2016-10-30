@@ -1,0 +1,198 @@
+### i19 / Scarab Shield
+ReqLevel: 2
+Type: OffHand / Shield
+ARMOR: 4
+CHEMS_DEF: 4
+Material: Carapace
+Value: 80
+
+### i17 / Small Wooden Shield
+ReqLevel: 4
+Type: OffHand / Shield
+ARMOR: 8
+Material: Wood
+Value: 20
+
+### i82 / Barrel Lid
+ReqLevel: 6
+Type: OffHand / Shield
+ARMOR: 12
+Material: Wood
+Value: 40
+
+### i83 / Pan Lid
+ReqLevel: 8
+Type: OffHand / Shield
+ARMOR: 16
+Material: Wood
+Value: 60
+
+--------------------------------------------------------------------------------
+
+### i84 / Wooden Buckler
+ReqLevel: 10
+Type: OffHand / Shield
+ARMOR: 20
+ClassId: 1
+Material: Wood
+Value: 100
+
+### i125 / Copper Buckler
+ReqLevel: 12
+Type: OffHand / Shield
+ARMOR: 24
+ClassId: 1
+Value: 120
+
+### i85 / Wooden Tower Shield
+ReqLevel: 14
+Type: OffHand / Shield
+ARMOR: 28
+ClassId: 1
+Material: Wood
+Value: 140
+
+### i303 / Leaf Shield
+ReqLevel: 22
+Type: OffHand / Shield
+ARMOR: 30
+ClassId: 1
+Material: Wood
+Value: 9990
+
+### i300 / Goblin Shield
+ReqLevel: 24
+Type: OffHand / Shield
+ARMOR: 48
+ClassId: 1
+Material: Roots
+Value: 220
+
+### i274 / Wooden Kite Shield
+ReqLevel: 26
+Type: OffHand / Shield
+ARMOR: 52
+ClassId: 1
+Material: Carapace
+Value: 260
+
+### i38 / Knight Shield
+ReqLevel: 30
+Type: OffHand / Shield
+ARMOR: 60
+ClassId: 1
+Material: Carapace
+Value: 300
+
+### i304 / Savior
+ReqLevel: 32
+Type: OffHand / Shield
+ARMOR: 64
+ClassId: 1
+Material: Wood
+Value: 340
+
+### i305 / Large Bronze Shield
+ReqLevel: 36
+Type: OffHand / Shield
+ARMOR: 72
+ClassId: 1
+Material: Wood
+Value: 360
+
+--------------------------------------------------------------------------------
+
+### i31 / Root Shield
+ReqLevel: 16
+Type: OffHand / Shield
+ARMOR: 25
+ClassId: 3
+Material: Shroom
+SPEED: 20
+Value: 180
+AttackSpeed: 5
+
+### i302 / Defender
+ReqLevel: 18
+Type: OffHand / Shield
+ARMOR: 36
+ClassId: 7
+Material: Wood
+Value: 160
+
+### i246 / Shroom Shield
+ReqLevel: 20
+Type: OffHand / Shield
+ARMOR: 20
+CHEMS_DEF: 8
+ClassId: 2
+INTELLIGENCE: 8
+Material: Roots
+Value: 200
+
+### i275 / Magic Shield
+ReqLevel: 29
+Type: OffHand / Shield
+ARMOR: 30
+CHEMS_DEF: 5
+ClassId: 2
+INTELLIGENCE: 12
+Material: Carapace
+Value: 280
+
+### i229 / Frost Shield
+ReqLevel: 34
+Type: OffHand / Shield
+ARMOR: 34
+ClassId: 8
+COLD_DEF: 8
+Material: Wood
+Value: 320
+
+### i306 / Storm Shield
+ReqLevel: 38
+Type: OffHand / Shield
+ARMOR: 38
+ClassId: 11
+Material: Wood
+Value: 380
+
+### i301 / Heavy Shield
+ReqLevel: 40
+Type: OffHand / Shield
+ARMOR: 80
+ClassId: 7
+Material: Wood
+Value: 400
+
+--------------------------------------------------------------------------------
+
+### i314 / Archer Glove
+ReqLevel: 35
+Type: OffHand / Glove
+ARMOR: 42
+ClassId: 3
+Material: Carapace
+SPEED: 40
+Value: 260
+AttackSpeed: 10
+
+--------------------------------------------------------------------------------
+
+### i33 / Spider Shield
+ReqLevel: 999
+Type: OffHand / Shield
+ARMOR: 1998
+CHEMS_DEF: 9
+ClassId: 1
+Material: Carapace
+Value: 240
+
+### i37 / White Copper Shield
+ReqLevel: 999
+Type: OffHand / Shield
+ARMOR: 1998
+ClassId: 1
+Material: Copper
+Value: 9990
+

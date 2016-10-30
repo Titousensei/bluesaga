@@ -1,0 +1,29 @@
+### i137 / Drums
+Type: Weapon / Instrument
+AttackSpeed: -1
+TwoHands
+Value: 500
+
+### i138 / Xylophone
+Type: Weapon / Instrument
+AttackSpeed: -1
+TwoHands
+Value: 500
+
+### i139 / Horn
+Type: Weapon / Instrument
+AttackSpeed: -1
+TwoHands
+Value: 500
+
+### i140 / Banjo
+Type: Weapon / Instrument
+AttackSpeed: -1
+TwoHands
+Value: 500
+
+### i141 / Contrabass
+Type: Weapon / Instrument
+AttackSpeed: -1
+TwoHands
+Value: 500

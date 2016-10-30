@@ -22,10 +22,12 @@ import creature.Npc;
 import data_handlers.ability_handler.Ability;
 import data_handlers.ability_handler.StatusEffect;
 import data_handlers.item_handler.Item;
+import data_handlers.item_handler.ItemBuilder;
 
 public class ServerGameInfo {
 
   public static Map<Integer, Item> itemDef;
+  public static Map<Integer, Item> fishDef;
 
   public static Map<Integer, Shop> shopDef;
   public static Map<Integer, Coords> checkpointDef;
@@ -43,22 +45,15 @@ public class ServerGameInfo {
 
   public static Map<Integer, Npc> creatureDef;
 
+  public static Item cloneItem(int id) {
+    return new Item(ServerGameInfo.itemDef.get(id));
+  }
+
   public static void load() {
     // LOAD ITEMS
-    itemDef = new HashMap<Integer, Item>();
-
-    ResultSet itemInfo = Server.gameDB.askDB("select * from item");
-
-    try {
-      while (itemInfo.next()) {
-        Item newItem = new Item();
-        newItem.load(itemInfo);
-
-        itemDef.put(itemInfo.getInt("Id"), newItem);
-      }
-      itemInfo.close();
-    } catch (SQLException e) {
-      e.printStackTrace();
+    itemDef = new HashMap<>();
+    for (File f : new File(ServerSettings.PATH).listFiles((dir, name) -> name.startsWith("items_"))) {
+      Builder.load(f.getPath(), ItemBuilder.class, itemDef);
     }
 
     // LOAD CLASSES INFO

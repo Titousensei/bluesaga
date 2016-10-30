@@ -16,6 +16,7 @@ public class Item {
 
   private int Id; // Id in item table
   private String Name;
+  private String origin;
   private String Type;
   private String SubType;
   private String Material;
@@ -63,8 +64,11 @@ public class Item {
 
   private Vector<StatusEffect> statusEffects;
 
-  public Item() {
-    Stats.reset();
+  public Item(int id, String name, String origin) {
+    this.Id = id; // Id in item table
+    this.Name = name;
+    this.origin = origin;
+
     statusEffects = new Vector<StatusEffect>();
   }
 
@@ -123,83 +127,6 @@ public class Item {
         || getType().equals("Scroll")
         || getType().equals("Material")) {
       setConsumeable(true);
-    }
-  }
-
-  public void load(ResultSet rs) {
-
-    equipable = false;
-    Stats.reset();
-    statusEffects.clear();
-
-    try {
-      Id = rs.getInt("Id");
-      Name = rs.getString("Name");
-      Type = rs.getString("Type");
-      SubType = rs.getString("SubType");
-      Material = rs.getString("Material");
-
-      attackType = rs.getString("AttackType");
-
-      Stats.setValues(rs);
-
-      Stats.addValue("MinDamage", rs.getInt("MinDamage"));
-      Stats.addValue("MaxDamage", rs.getInt("MaxDamage"));
-
-      Value = rs.getInt("Value");
-
-      DamageStat = rs.getString("DamageType");
-
-      Range = rs.getInt("Range");
-
-      ContainerId = 0;
-
-      ProjectileId = rs.getInt("ProjectileId");
-
-      setDescription(rs.getString("Description"));
-
-      if (rs.getInt("TwoHands") == 0) {
-        setTwoHands(false);
-      } else {
-        setTwoHands(true);
-      }
-
-      setClassId(rs.getInt("ClassId"));
-
-      Requirements.put("ReqLevel", rs.getInt("ReqLevel"));
-      Requirements.put("ReqStrength", rs.getInt("ReqStrength"));
-      Requirements.put("ReqIntelligence", rs.getInt("ReqIntelligence"));
-      Requirements.put("ReqAgility", rs.getInt("ReqAgility"));
-
-      if (Type.equals("Head")
-          || Type.equals("Weapon")
-          || Type.equals("OffHand")
-          || Type.equals("Amulet")
-          || Type.equals("Artifact")) {
-        equipable = true;
-      }
-
-      if (rs.getInt("Sellable") == 0) {
-        setSellable(false);
-      } else {
-        setSellable(true);
-      }
-
-      setStackable(rs.getInt("Stackable"));
-      setStacked(1);
-
-      setScrollUseId(rs.getInt("ScrollUseId"));
-
-      if (!rs.getString("StatusEffects").equals("None")) {
-        String statusEffectIds[] = rs.getString("StatusEffects").split(",");
-        for (String statusEffectId : statusEffectIds) {
-          int statusEffectIdInt = Integer.parseInt(statusEffectId);
-          statusEffects.add(new StatusEffect(statusEffectIdInt));
-        }
-      }
-    } catch (SQLException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
     }
   }
 
@@ -582,16 +509,36 @@ public class Item {
     Range = range;
   }
 
-  public void setStats(Stats stats) {
-    Stats = stats;
+  public void setStats(String type, int val) {
+    Stats.setValue(type, val);
   }
 
   public void setRequirements(HashMap<String, Integer> requirements) {
     Requirements = requirements;
   }
 
+  public void setReqLevel(int val) {
+    Requirements.put("ReqLevel", val);
+  }
+
+  public void setReqStrength(int val) {
+    Requirements.put("ReqStrength", val);
+  }
+
+  public void setReqIntelligence(int val) {
+    Requirements.put("ReqIntelligence", val);
+  }
+
+  public void setReqAgility(int val) {
+    Requirements.put("ReqAgility", val);
+  }
+
   public Vector<StatusEffect> getStatusEffects() {
     return statusEffects;
+  }
+
+  public void addStatusEffects(StatusEffect se) {
+    statusEffects.add(se);
   }
 
   public boolean isConsumeable() {

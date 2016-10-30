@@ -3,11 +3,7 @@ package data_handlers;
 import network.Client;
 import network.Server;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Vector;
+import java.util.*;
 
 import utils.ServerGameInfo;
 import utils.RandomUtils;
@@ -16,23 +12,17 @@ import data_handlers.item_handler.Item;
 
 public class FishingHandler extends Handler {
 
-  private static Vector<Item> Fishes;
+  private static Collection<Item> Fishes;
   private static HashMap<Integer, Item> Catches; // CharacterId, Fish
 
   public static void init() {
-    Fishes = new Vector<Item>();
     Catches = new HashMap<Integer, Item>();
-    ResultSet fishesDef =
-        Server.gameDB.askDB("select Id from item where SubType = 'Fish' order by Id asc");
 
-    try {
-      while (fishesDef.next()) {
-        Fishes.add(new Item(ServerGameInfo.itemDef.get(fishesDef.getInt("Id"))));
+    Fishes = new ArrayList<>(10);
+    for (Item it : ServerGameInfo.itemDef.values()) {
+      if ("Fish".equals(it.getSubType())) {
+        Fishes.add(it);
       }
-      fishesDef.close();
-    } catch (SQLException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
     }
 
     DataHandlers.register("fishgamecatch", m -> handleFishCatch(m));
@@ -52,14 +42,15 @@ public class FishingHandler extends Handler {
   public static void generateCatch(Client client, int tileX, int tileY, int tileZ) {
     Item caughtFish = null;
 
-    Collections.shuffle(Fishes);
+    List<Item> myFishes = new ArrayList<>(Fishes);
+    Collections.shuffle(myFishes);
 
     int catchChance =
         RandomUtils.getInt(0, 10000) - (client.playerCharacter.getSkill(101).getLevel() - 1) * 200;
 
     int fishingRodLevel = client.playerCharacter.getEquipment("Weapon").getRequirement("ReqLevel");
 
-    for (Item fish : Fishes) {
+    for (Item fish : myFishes) {
       if (fish.getRequirement("ReqLevel") <= fishingRodLevel) {
         int fishChance = 3000 - fish.getRequirement("ReqLevel") * 500;
 

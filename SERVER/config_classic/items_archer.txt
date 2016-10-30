@@ -1,0 +1,165 @@
+### i14 / Wooden Slingshot
+ReqLevel: 1
+Type: Weapon / Slingshot
+Damage: 8 - 12 STRIKE AGILITY
+ClassId: 3
+Material: Wood
+ProjectileId: 4
+Range: 3
+Value: 10
+AttackSpeed: -1
+
+### i16 / Short Bow
+ReqLevel: 6
+Type: Weapon / Bow
+Damage: 12 - 18 PIERCE AGILITY
+ClassId: 3
+Material: Wood
+ProjectileId: 5
+Range: 4
+Value: 60
+AttackSpeed: -1
+
+### i24 / Combat Bow
+ReqLevel: 12
+Type: Weapon / Bow
+Damage: 16 - 24 PIERCE AGILITY
+ClassId: 3
+Material: Wood
+ProjectileId: 5
+Range: 4
+Value: 120
+AttackSpeed: -1
+
+### i63 / Attack Slingshot
+ReqLevel: 3
+Type: Weapon / Slingshot
+Damage: 10 - 14 STRIKE AGILITY
+ClassId: 3
+Material: Wood
+ProjectileId: 4
+Range: 4
+Value: 30
+AttackSpeed: -1
+
+### i64 / Long Bow
+ReqLevel: 9
+Type: Weapon / Bow
+Damage: 14 - 21 PIERCE AGILITY
+ClassId: 3
+Material: Wood
+ProjectileId: 5
+Range: 5
+Value: 90
+AttackSpeed: -1
+
+### i65 / Battle Bow
+ReqLevel: 15
+Type: Weapon / Bow
+Damage: 19 - 28 PIERCE AGILITY
+ClassId: 3
+Material: Wood
+ProjectileId: 5
+Range: 5
+Value: 150
+AttackSpeed: -1
+
+### i109 / Small Dart Blower
+ReqLevel: 18
+Type: Weapon / Dart Blower
+Damage: 21 - 31 STRIKE AGILITY
+ClassId: 3
+Material: Wood
+ProjectileId: 5
+Range: 4
+Value: 80
+AttackSpeed: -1
+
+### i276 / Bronze Bow
+ReqLevel: 20
+Type: Weapon / Bow
+Damage: 22 - 33 PIERCE AGILITY
+ClassId: 3
+Material: Wood
+ProjectileId: 5
+Range: 5
+Value: 180
+AttackSpeed: -1
+
+### i277 / Warden Bow
+ReqLevel: 21
+Type: Weapon / Bow
+Damage: 23 - 35 PIERCE AGILITY
+ClassId: 9
+Material: Wood
+ProjectileId: 5
+Range: 5
+Value: 210
+AttackSpeed: -1
+
+### i278 / Longshot
+ReqLevel: 24
+Type: Weapon / Bow
+Damage: 25 - 38 PIERCE AGILITY
+ClassId: 6
+Material: Wood
+ProjectileId: 5
+Range: 5
+Value: 240
+AttackSpeed: -1
+
+### i279 / Silver Bow
+ReqLevel: 28
+Type: Weapon / Bow
+Damage: 28 - 42 PIERCE AGILITY
+ClassId: 3
+Material: Wood
+ProjectileId: 5
+Range: 5
+Value: 270
+AttackSpeed: -1
+
+### i280 / Hunter's Bow
+ReqLevel: 30
+Type: Weapon / Bow
+Damage: 30 - 45 PIERCE AGILITY
+ClassId: 3
+Material: Wood
+ProjectileId: 5
+Range: 5
+Value: 300
+AttackSpeed: -1
+
+### i281 / Siege Bow
+ReqLevel: 33
+Type: Weapon / Bow
+Damage: 32 - 48 PIERCE AGILITY
+ClassId: 3
+Material: Wood
+ProjectileId: 5
+Range: 5
+Value: 330
+AttackSpeed: -1
+
+### i282 / Golden Bow
+ReqLevel: 36
+Type: Weapon / Bow
+Damage: 34 - 51 PIERCE AGILITY
+ClassId: 3
+Material: Wood
+ProjectileId: 5
+Range: 5
+Value: 360
+AttackSpeed: -1
+
+### i283 / Bow of Dexterity
+ReqLevel: 39
+Type: Weapon / Bow
+Damage: 37 - 55 PIERCE AGILITY
+ClassId: 6
+Material: Wood
+ProjectileId: 5
+Range: 5
+Value: 390
+AttackSpeed: -1
+

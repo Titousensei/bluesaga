@@ -1,0 +1,19 @@
+### i216 / Larva Soup Recipe
+Type: Recipe / Soup
+Value: 100
+
+### i218 / Beetle Burger Recipe
+Type: Recipe / Soup
+Value: 50
+
+### i226 / Small Health Potion Recipe
+Type: Recipe
+Value: 50
+
+### i251 / Shroom Stew Recipe
+Type: Recipe / Soup
+Value: 100
+
+### i262 / Ancient Goblin Soup Recipe
+Type: Recipe / Soup
+Value: 100

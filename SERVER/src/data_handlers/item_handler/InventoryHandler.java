@@ -556,9 +556,7 @@ public class InventoryHandler extends Handler {
 
     try {
       while (invInfo.next()) {
-        ResultSet itemInfo =
-            Server.gameDB.askDB("select Type from item where Id = " + invInfo.getInt("ItemId"));
-        if (itemInfo.next()) {
+        if (ServerGameInfo.itemDef.containsKey(invInfo.getInt("ItemId"))) {
           inventoryInfo
               .append(invInfo.getInt("Id"))
               .append(',')
@@ -569,7 +567,6 @@ public class InventoryHandler extends Handler {
               .append(invInfo.getString("InventoryPos"))
               .append(';');
         }
-        itemInfo.close();
       }
       invInfo.close();
     } catch (SQLException e) {

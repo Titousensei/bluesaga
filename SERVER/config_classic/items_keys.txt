@@ -1,0 +1,37 @@
+### i55 / Goblin Mines Key
+Type: Key
+
+### i58 / Chompa Crypt Key
+Type: Key
+Material: Metal
+
+### i59 / Study Key
+Type: Key / Destroyable
+
+### i145 / Wood Cabin Key
+Type: Key
+
+### i146 / Wood Access Pass
+Type: Key
+Material: Paper
+
+### i180 / Morwyn - Green Leaf Ticket
+Type: Key
+Material: Paper
+
+### i191 / Passage To Ghost Town
+Type: Key
+Material: Paper
+
+### i215 / North - Green Leaf ticket
+Type: Key
+Material: Paper
+
+### i258 / Prison Key
+Type: Key
+
+### i263 / Skeleton Key
+Type: Key
+
+### i335 / Lost Archipelago Key
+Type: Key

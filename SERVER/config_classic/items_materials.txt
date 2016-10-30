@@ -1,0 +1,142 @@
+### i86 / Blue Goo
+Type: Material / Goo
+Stackable: 10
+Value: 20
+
+### i87 / Bat Wing
+Type: Material / Wing
+Stackable: 10
+Value: 10
+
+### i90 / Green Slime
+Type: Material / Slime
+Stackable: 10
+Value: 20
+
+### i92 / Spider Poison
+Type: Material / Poison
+Stackable: 10
+Value: 10
+
+### i93 / Blob Wing
+Type: Material / Wing
+Stackable: 10
+Value: 10
+
+### i96 / Scarab Mandibles
+Type: Material / Claws
+Stackable: 10
+Value: 20
+
+### i97 / Behemoth Moss
+Type: Material / Moss
+Stackable: 10
+Value: 10
+
+### i98 / Shroom Spore
+Type: Material / Spore
+Stackable: 10
+Value: 20
+
+### i99 / Green Shroom Cap
+Type: Material / Shroom
+Stackable: 10
+Value: 20
+
+### i100 / Toxic Shroom Cap
+Type: Material / Shroom
+Stackable: 10
+Value: 200
+
+### i101 / Ectoplasm
+Type: Material / Spirit
+Stackable: 10
+Value: 2000
+
+### i102 / Bone
+Type: Material / Bone
+Material: Bone
+Stackable: 10
+Value: 2
+
+### i103 / Skull
+Type: Material / Bone
+Stackable: 10
+Value: 40
+
+### i104 / Ink
+Type: Material / Ink
+Stackable: 10
+Value: 10
+
+### i105 / Bear Claw
+Type: Material / Claw
+Stackable: 10
+Value: 2400
+
+### i106 / Bear Fur
+Type: Material / Fur
+Stackable: 10
+Value: 100
+
+### i110 / Bat Blood
+Type: Material / Blood
+Stackable: 10
+Value: 10
+
+### i147 / Flower Petal
+Type: Material / Petal
+Stackable: 10
+Value: 8
+
+### i210 / Shell
+Type: Material / Claws
+Stackable: 10
+Value: 100
+
+### i212 / Luna Flower Petal
+Type: Material / Petal
+Description: Petal from the rare Luna flower
+Stackable: 10
+Value: 20 not sellable
+
+### i217 / Empty small vial
+Type: Material / Glas
+Stackable: 10
+Value: 10
+
+### i241 / Ghost Sheet
+Type: Material / Petal
+Stackable: 10
+Value: 20
+
+### i243 / Shroom Poison
+Type: Material / Poison
+Stackable: 10
+Value: 10
+
+### i244 / Root
+Type: Material / Bone
+Stackable: 10
+Value: 10
+
+### i247 / Bunny Fur
+Type: Material / Fur
+Stackable: 10
+Value: 10
+
+### i248 / Spider Web
+Type: Material / Bone
+Stackable: 10
+Value: 40
+
+### i259 / Ogre Ear
+Type: Material / Ear
+Stackable: 10
+Value: 10
+
+### i260 / Moss
+Type: Material / Moss
+Stackable: 10
+Value: 10
+

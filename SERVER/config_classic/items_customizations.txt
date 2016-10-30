@@ -1,0 +1,79 @@
+### i126 / Round Glasses
+Type: Customization / Accessories
+Value: 80 not sellable
+
+### i127 / Monocle
+Type: Customization / Accessories
+Value: 80 not sellable
+
+### i128 / Reading Glasses
+Type: Customization / Accessories
+Value: 80 not sellable
+
+### i129 / Aristocrat Moustache
+Type: Customization / Mouth Feature
+Value: 80 not sellable
+
+### i130 / Horse Shoe Moustasche
+Type: Customization / Mouth Feature
+Value: 80 not sellable
+
+### i131 / Villain Moustasche
+Type: Customization / Mouth Feature
+Value: 80 not sellable
+
+### i132 / Cross Scar
+Type: Customization / Skin Feature
+Value: 80 not sellable
+
+### i133 / Claws Scar
+Type: Customization / Skin Feature
+Value: 80 not sellable
+
+### i134 / Frankenstein Scar
+Type: Customization / Skin Feature
+Value: 80 not sellable
+
+### i135 / Red Lips
+Type: Customization / Mouth Feature
+Value: 80 not sellable
+
+### i136 / Golden Earring
+Type: Customization / Skin Feature
+Value: 80 not sellable
+
+### i184 / Remove Customizations
+Type: Customization / Remove
+
+### i185 / Black Beard 1
+Type: Customization / Mouth Feature
+Value: 80 not sellable
+
+### i186 / Carneval Mask
+Type: Customization / Accessories
+Value: 80 not sellable
+
+### i187 / Eye Patch
+Type: Customization / Accessories
+Value: 80 not sellable
+
+### i188 / Pipe
+Type: Customization / Mouth Feature
+Value: 80 not sellable
+
+### i205 / Carrot Nose
+Type: Customization / Mouth Feature
+Value: 80 not sellable
+
+### i206 / Brown Moustache
+Type: Customization / Mouth Feature
+Value: 80 not sellable
+
+### i207 / Blonde Moustache
+Type: Customization / Mouth Feature
+Value: 80 not sellable
+
+### i208 / Red Mask
+Type: Customization / Accessories
+Value: 80 not sellable
+

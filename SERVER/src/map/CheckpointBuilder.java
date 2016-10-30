@@ -15,9 +15,9 @@ extends Builder<Coords>
 
   public void position(String val) {
     String xyz[] = val.split(",");
-    int x = Integer.parseInt(xyz[0]);
-    int y = Integer.parseInt(xyz[1]);
-    int z = Integer.parseInt(xyz[2]);
+    int x = parseInt(xyz[0]);
+    int y = parseInt(xyz[1]);
+    int z = parseInt(xyz[2]);
     pos = new Coords(x, y, z);
   }
 

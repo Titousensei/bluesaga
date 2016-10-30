@@ -1,0 +1,96 @@
+### i32 / Chompa Raft Token
+Type: Token / Raft token
+Material: Paper
+
+### i34 / Gold Coins
+Type: Money / Money
+Material: Gold
+Stackable: 100
+Value: 10000 not sellable
+
+### i35 / Silver Coins
+Type: Money / Money
+Material: Silver
+Stackable: 100
+Value: 100 not sellable
+
+### i36 / Copper Coins
+Type: Money / Money
+Material: Copper
+Stackable: 100
+Value: 1 not sellable
+
+### i40 / Small Leather Bag
+Type: Container / Bag
+-- ContainerSize: 3
+Material: Leather
+Value: 0
+
+### i41 / Large Leather Bag
+Type: Container / Bag
+-- ContainerSize: 4
+Material: Leather
+Value: 0
+
+### i42 / Medium Back pack
+Type: Container / Back pack
+-- ContainerSize: 5
+Material: Leather
+Value: 0
+
+### i56 / Chompa Crypt Sceptre
+Type: Treasure / Staff
+Material: Silver
+Value: 0
+
+### i179 / Snow Ball
+Type: Scroll / Ability
+ScrollUseId: 46
+Stackable: 100
+
+### i194 / Curses And Cures
+Type: Readable / Book
+Description:
+  [...] undead curses are the strongest amongst all curses. There is no simple way of removing such a curse since it is often binded to its caster. [...]
+  [...] There are three undead lords who rule the dark world beneath the earth. They possess powerful magic and encountering them will result in instant death.
+  [...] One of the three is called Nimbul, and is referred to as the undead mage. This one specializes in curses and summoning. Nimbul gains its powers from its summonings.
+  [...] By defeating Nimbuls summonings, its powers can be weakened, which is preferred if there should be any chance of defeating the lord itself.
+Material: Paper
+
+### i202 / Goblin Dictionary
+Type: Readable / Book
+Description: [...] Urgurgh burgh burgh markohg. Ragh gorgha urgh. [...]
+Material: Paper
+
+### i213 / Get More Chest Space
+Type: Personal chest / Buy
+
+### i214 / Get more skins
+Type: Item skins / Buy
+
+### i230 / Treasure Map
+Type: Map
+Description: A map showing the location of a hidden treasure.
+Value: 0
+
+### i173 / Twig Rod
+ReqLevel: 2
+Type: Weapon / Fishing
+Damage: STRENGTH STRIKE
+Material: Wood
+Range: 1
+TwoHands
+Value: 100
+AttackSpeed: -25
+
+### i193 / Fishing Stick
+ReqLevel: 10
+Type: Weapon / Fishing
+Damage: STRENGTH STRIKE
+Material: Wood
+Range: 1
+TwoHands
+Value: 500
+AttackSpeed: -25
+
+

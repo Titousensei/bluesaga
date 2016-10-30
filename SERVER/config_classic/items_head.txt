@@ -1,0 +1,198 @@
+### i11 / Bonnet
+ReqLevel: 1
+Type: Head / Bonnet
+ARMOR: 1
+Material: Cloth
+Value: 10
+
+### i15 / Viking Helmet
+ReqLevel: 9
+Type: Head / Helmet
+ARMOR: 9
+Material: Cloth
+Value: 90
+
+### i18 / Bunny Hat
+Type: Head / Bonnet
+Material: Cloth
+Value: 50
+
+### i30 / Shroom Hat
+ReqLevel: 21
+Type: Head / Bonnet
+ARMOR: 21
+CHEMS_DEF: 6
+Material: Cloth
+Value: 180
+
+### i39 / White Copper Helmet
+Type: Head / Helmet
+Material: Copper
+Value: 0
+
+### i78 / Tin Protector
+ReqLevel: 11
+Type: Head / Bonnet
+ARMOR: 11
+Material: Tin
+Value: 110
+
+### i79 / Cloth Cap
+ReqLevel: 5
+Type: Head / Bonnet
+ARMOR: 5
+Material: Cloth
+Value: 50
+
+### i80 / Leather Cap
+ReqLevel: 7
+Type: Head / Bonnet
+ARMOR: 7
+Material: Cloth
+Value: 70
+
+### i81 / Copper Bucket
+ReqLevel: 13
+Type: Head / Bucket
+ARMOR: 13
+Value: 130
+
+### i57 / Captain Hat
+Type: Head / Hat
+Material: Cloth
+Value: 200
+
+### i124 / Red Scarf
+ReqLevel: 3
+Type: Head / Scarf
+ARMOR: 3
+Value: 30
+
+### i189 / Green Cap
+Type: Head / Cap
+Material: Cloth
+Value: 100
+
+### i190 / Red Cap
+Type: Head / Cap
+Material: Cloth
+Value: 30
+
+### i227 / Frost Crown
+ReqLevel: 35
+Type: Head / Crown
+ARMOR: 35
+COLD_DEF: 5
+Value: 310
+
+### i232 / Mage Hat
+ReqLevel: 29
+Type: Head / Bonnet
+ARMOR: 29
+ClassId: 2
+INTELLIGENCE: 5
+Material: Cloth
+Value: 270
+
+### i233 / Wizard Hat
+ReqLevel: 47
+Type: Head / Bonnet
+ARMOR: 47
+CHEMS_DEF: 4
+COLD_DEF: 4
+FIRE_DEF: 4
+INTELLIGENCE: 8
+Material: Cloth
+MIND_DEF: 10
+SHOCK_DEF: 4
+Value: 470
+
+### i234 / Crusader Cap
+ReqLevel: 4
+Type: Head / Bonnet
+ARMOR: 4
+Material: Cloth
+Value: 20
+
+### i235 / Pink Scarf
+ReqLevel: 2
+Type: Head / Bonnet
+ARMOR: 2
+Material: Cloth
+Value: 20
+
+### i264 / Steel Helmet
+ReqLevel: 19
+Type: Head / Helmet
+ARMOR: 19
+Material: Cloth
+Value: 190
+
+### i271 / Copper Cap
+ReqLevel: 15
+Type: Head / Bucket
+ARMOR: 15
+Value: 150
+
+### i293 / Copper Helmet
+ReqLevel: 17
+Type: Head / Helmet
+ARMOR: 17
+Value: 170
+
+### i273 / Copper Crown
+ReqLevel: 30
+Type: Head / Crown
+ARMOR: 30
+Material: Cloth
+Value: 210
+
+### i272 / Spike Casque
+ReqLevel: 23
+Type: Head / Casque
+ARMOR: 23
+Material: Cloth
+Value: 230
+
+### i311 / Soldier's Helmet
+ReqLevel: 25
+Type: Head / Helmet
+ARMOR: 25
+Material: Cloth
+Value: 250
+
+### i295 / Bronze Casque
+ReqLevel: 27
+Type: Head / Bonnet
+ARMOR: 27
+Material: Cloth
+Value: 290
+
+### i297 / Fur Hat
+ReqLevel: 33
+Type: Head / Hat
+ARMOR: 33
+COLD_DEF: 6
+Value: 330
+
+### i298 / Enchanted Scarf
+ReqLevel: 31
+Type: Head / Hat
+ARMOR: 31
+COLD_DEF: 5
+FIRE_DEF: 2
+SHOCK_DEF: 2
+Value: 350
+
+### i236 / Lieutenant Hat
+ReqLevel: 37
+Type: Head / Hat
+ARMOR: 37
+Value: 370
+
+### i299 / Horned Helmet
+ReqLevel: 39
+Type: Head / Hat
+ARMOR: 39
+Value: 390
+

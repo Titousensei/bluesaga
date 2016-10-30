@@ -1,0 +1,145 @@
+### i174 / Blue Fish
+ReqLevel: 1
+Type: Eatable / Fish
+MAX_HEALTH: 30
+MAX_MANA: 40
+Stackable: 100
+Value: 0
+
+### i175 / Blow Fish
+ReqLevel: 2
+Type: Eatable / Fish
+MAX_HEALTH: 50
+MAX_MANA: 80
+Stackable: 100
+Value: 0
+
+### i176 / Horn Fish
+ReqLevel: 5
+Type: Eatable / Fish
+MAX_HEALTH: 70
+MAX_MANA: 120
+Stackable: 100
+Value: 0
+
+### i177 / Fish Bones
+Type: Eatable / Fish
+MAX_HEALTH: 5
+MAX_MANA: 5
+Stackable: 100
+Value: 0
+
+### i178 / Oranga
+Type: Eatable / Fruit
+MAX_HEALTH: 50
+MAX_MANA: 20
+Stackable: 100
+Value: 5
+
+### i107 / Bear Meat
+Type: Eatable / Meat
+MAX_HEALTH: 280
+Stackable: 10
+Value: 20
+
+### i183 / Larva Soup
+Type: Eatable / Soup
+MAX_HEALTH: 100
+MAX_MANA: 100
+Stackable: 10
+Value: 40 not sellable
+
+### i192 / Curly Fish
+ReqLevel: 10
+Type: Eatable / Fish
+MAX_HEALTH: 300
+MAX_MANA: 300
+Stackable: 100
+Value: 300
+
+### i201 / Beetle Burger
+Type: Eatable / Burger
+MAX_HEALTH: 150
+MAX_MANA: 50
+Stackable: 10
+
+### i203 / Picco Berries
+Type: Eatable / Fruit
+MAX_HEALTH: 75
+MAX_MANA: 75
+Stackable: 100
+Value: 0
+
+### i209 / Tentacle
+Type: Eatable / Meat
+MAX_HEALTH: 200
+MAX_MANA: 200
+Stackable: 10
+Value: 80
+
+### i211 / Rump Hob Meat
+Type: Eatable / Meat
+MAX_HEALTH: 100
+Stackable: 10
+Value: 10
+
+### i245 / Shroom Stew
+Type: Eatable / Soup
+MAX_HEALTH: 400
+MAX_MANA: 400
+Stackable: 10
+Value: 400 not sellable
+
+### i261 / Ancient Goblin Soup
+Type: Eatable / Soup
+MAX_HEALTH: 400
+MAX_MANA: 400
+Stackable: 10
+Value: 400 not sellable
+
+### i240 / Pink Tentacle
+Type: Eatable / Meat
+MAX_HEALTH: 90
+MAX_MANA: 90
+Stackable: 10
+Value: 8
+
+### i313 / Soul Fruit
+Type: Eatable / Fruit
+MAX_HEALTH: 200
+MAX_MANA: 200
+Stackable: 100
+
+### i88 / Rat Tail
+Type: Eatable / Meat
+MAX_HEALTH: 70
+Stackable: 10
+Value: 50
+
+### i89 / Rat Meat
+Type: Eatable / Meat
+MAX_HEALTH: 100
+Stackable: 10
+Value: 10
+
+### i91 / Spider Eggs
+Type: Eatable / Eggs
+MAX_HEALTH: 150
+MAX_MANA: 150
+Stackable: 10
+Value: 40
+
+### i94 / Larva Juice
+Type: Eatable / Juice
+MAX_HEALTH: 30
+MAX_MANA: 10
+Stackable: 10
+Value: 4
+
+### i95 / Scarab Meat
+Type: Eatable / Meat
+MAX_HEALTH: 100
+MAX_MANA: 10
+Stackable: 10
+Value: 2
+

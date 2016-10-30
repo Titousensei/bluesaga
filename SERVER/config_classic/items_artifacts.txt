@@ -1,0 +1,93 @@
+### i43 / Bronze Stave Of Wisdom
+ReqLevel: 22
+Type: Artifact / Stave
+Material: Bronze
+MAX_MANA: 20
+Value: 220
+
+### i44 / Bronze Stave Of Life
+ReqLevel: 26
+Type: Artifact / Stave
+Material: Bronze
+MAX_HEALTH: 30
+Value: 260
+
+### i45 / Oughdars Stave
+ReqLevel: 42
+Type: Artifact / Stave
+INTELLIGENCE: 8
+Material: Bronze
+Value: 200
+
+### i46 / Leather Quiver
+ReqLevel: 24
+Type: Artifact / Quiver
+AGILITY: 4
+ClassId: 3
+Material: Leather
+SPEED: 5
+Value: 240
+AttackSpeed: 4
+
+### i47 / Leather Quiver of Athald
+ReqLevel: 28
+Type: Artifact / Quiver
+AGILITY: 8
+ClassId: 3
+Material: Leather
+SPEED: 10
+Value: 280
+AttackSpeed: 5
+
+### i182 / Sorkorh's Artifact
+ReqLevel: 30
+Type: Artifact / Stave
+INTELLIGENCE: 4
+Material: Bronze
+MAX_MANA: 30
+Value: 300
+
+### i199 / Blue Crescent
+ReqLevel: 34
+Type: Artifact / Stave
+COLD_DEF: 4
+INTELLIGENCE: 2
+Value: 320
+
+### i200 / Amethystine Stave
+ReqLevel: 32
+Type: Artifact / Stave
+MAX_MANA: 60
+Value: 340
+MAGIC_DEF: 8
+
+### i228 / Ice Slab
+ReqLevel: 36
+Type: Artifact / Stave
+COLD_DEF: 10
+MAX_MANA: 20
+Value: 360
+
+### i242 / Shroom Stave
+ReqLevel: 20
+Type: Artifact / Stave
+CHEMS_DEF: 8
+INTELLIGENCE: 2
+MAX_HEALTH: 10
+Value: 200
+
+### i294 / Soul Stick
+ReqLevel: 38
+Type: Artifact / Stave
+INTELLIGENCE: 6
+MAX_MANA: 20
+Value: 380
+MAGIC_DEF: 6
+
+### i296 / Bone Stave
+ReqLevel: 40
+Type: Artifact / Stave
+ARMOR: 15
+STRENGTH: 8
+Value: 400
+

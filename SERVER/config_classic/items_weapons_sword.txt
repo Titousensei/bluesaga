@@ -1,0 +1,122 @@
+### i1 / Copper Sword
+ReqLevel: 9
+Type: Weapon / Sword
+Damage: 16 - 24 SLASH STRENGTH
+ClassId: 1
+Material: Copper
+Range: 1
+Value: 90
+AttackSpeed: -20
+
+### i2 / Wooden Sword
+ReqLevel: 2
+Type: Weapon / Sword
+Damage: 9 - 14 SLASH STRENGTH
+ClassId: 1
+Material: Copper
+Range: 1
+Value: 20
+AttackSpeed: -20
+
+### i9 / Bronze Sword
+ReqLevel: 12
+Type: Weapon / Sword
+Damage: 19 - 29 SLASH STRENGTH
+ClassId: 1
+Material: Bronze
+Range: 1
+Value: 120
+AttackSpeed: -20
+
+### i60 / Broad Sword
+ReqLevel: 20
+Type: Weapon / Sword
+Damage: 27 - 41 SLASH STRENGTH
+ClassId: 1
+Material: Iron
+Range: 1
+Value: 200
+AttackSpeed: -20
+
+### i111 / Sabre
+ReqLevel: 999
+Type: Weapon / Sword
+Damage: 1006 - 1509 SLASH STRENGTH
+ClassId: 1
+Material: Iron
+Range: 1
+Value: 9990
+AttackSpeed: -20
+
+### i112 / Long Sword
+ReqLevel: 30
+Type: Weapon / Sword
+Damage: 37 - 56 SLASH STRENGTH
+ClassId: 1
+Range: 1
+Value: 260
+AttackSpeed: -20
+
+### i113 / Falshion
+ReqLevel: 999
+Type: Weapon / Sword
+Damage: 1006 - 1509 SLASH STRENGTH
+ClassId: 1
+Range: 1
+Value: 9990
+AttackSpeed: -20
+
+### i114 / Scimitar
+ReqLevel: 999
+Type: Weapon / Sword
+Damage: 1006 - 1509 SLASH STRENGTH
+ClassId: 1
+Range: 1
+Value: 9990
+AttackSpeed: -20
+
+### i115 / Broken War Sword
+ReqLevel: 38
+Type: Weapon / Sword
+Damage: 45 - 68 SLASH STRENGTH
+ClassId: 1
+Range: 1
+Value: 380
+AttackSpeed: -20
+
+### i117 / Gladius
+ReqLevel: 999
+Type: Weapon / Sword
+Damage: 1006 - 1509 SLASH STRENGTH
+ClassId: 1
+Range: 1
+Value: 9990
+AttackSpeed: -20
+
+### i118 / Cutlass
+ReqLevel: 999
+Type: Weapon / Sword
+Damage: 1006 - 1509 SLASH STRENGTH
+ClassId: 1
+Range: 1
+Value: 9990
+AttackSpeed: -20
+
+### i204 / Bamboo Stick
+ReqLevel: 999
+Type: Weapon / Sword
+Damage: 1006 - 1509 SLASH STRENGTH
+ClassId: 1
+Range: 1
+Value: 9990
+AttackSpeed: -20
+
+### i116 / Bastard Sword
+ReqLevel: 34
+Type: Weapon / Sword
+Damage: 41 - 62 SLASH STRENGTH
+ClassId: 1
+Material: Iron
+Range: 1
+Value: 340
+AttackSpeed: -20

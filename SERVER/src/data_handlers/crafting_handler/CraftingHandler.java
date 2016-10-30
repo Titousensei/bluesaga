@@ -25,9 +25,9 @@ public class CraftingHandler extends Handler {
     craftingStations = new HashMap<String, CraftingStation>();
     recipes = new HashMap<Integer, Recipe>();
 
-    ResultSet recipesInfo = Server.gameDB.askDB("select * from recipe");
-
-    try {
+    try (
+        ResultSet recipesInfo = Server.gameDB.askDB("select * from recipe")
+    ) {
       while (recipesInfo.next()) {
         int recipeId = recipesInfo.getInt("RecipeId");
         int productId = recipesInfo.getInt("ProductId");
@@ -38,22 +38,26 @@ public class CraftingHandler extends Handler {
         bonfire.setSkillId(9);
         newRecipe.setCraftingStation(bonfire);
 
-        String ingredients[] = recipesInfo.getString("Materials").split(";");
+        String[] ingredients = recipesInfo.getString("Materials").split(";");
 
         for (String ingredient : ingredients) {
           String ingredientInfo[] = ingredient.split(",");
           int ingredientId = Integer.parseInt(ingredientInfo[0]);
           int ingredientNr = Integer.parseInt(ingredientInfo[1]);
 
-          Item ingredientItem = new Item(ServerGameInfo.itemDef.get(ingredientId));
-          ingredientItem.setStacked(ingredientNr);
-          newRecipe.addMaterial(ingredientItem);
+          Item ingredientItem = ServerGameInfo.itemDef.get(ingredientId);
+          if (ingredientItem != null) {
+            ingredientItem.setStacked(ingredientNr);
+            newRecipe.addMaterial(ingredientItem);
+          }
+          else {
+            System.err.println("[CraftingHandler] ERROR - Ingredient unknown in recipe "
+                + recipeId + ": " + ingredientId);
+          }
         }
         recipes.put(recipeId, newRecipe);
       }
-      recipesInfo.close();
     } catch (SQLException e) {
-      // TODO Auto-generated catch block
       e.printStackTrace();
     }
 

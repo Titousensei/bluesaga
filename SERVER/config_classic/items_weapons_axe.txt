@@ -1,0 +1,115 @@
+### i7 / Copper Axe
+ReqLevel: 10
+Type: Weapon / Axe
+Damage: 17 - 26 SLASH STRENGTH
+ClassId: 1
+Material: Copper
+Range: 1
+Value: 100
+AttackSpeed: -20
+
+### i10 / Bronze Axe
+ReqLevel: 14
+Type: Weapon / Axe
+Damage: 21 - 32 SLASH STRENGTH
+ClassId: 1
+Material: Bronze
+Range: 1
+Value: 140
+AttackSpeed: -20
+
+### i23 / Hatchet
+ReqLevel: 3
+Type: Weapon / Axe
+Damage: 10 - 15 SLASH STRENGTH
+ClassId: 1
+Material: Wood
+Range: 1
+Value: 30
+AttackSpeed: -20
+
+### i25 / Copper Hatchet
+ReqLevel: 5
+Type: Weapon / Axe
+Damage: 12 - 18 SLASH STRENGTH
+ClassId: 1
+Material: Copper
+Range: 1
+Value: 50
+AttackSpeed: -20
+
+### i61 / Iron Axe
+ReqLevel: 18
+Type: Weapon / Axe
+Damage: 25 - 38 SLASH STRENGTH
+ClassId: 1
+Material: Copper
+Range: 1
+Value: 180
+AttackSpeed: -20
+
+### i62 / Battle Axe
+ReqLevel: 15
+Type: Weapon / Axe
+Damage: 22 - 33 SLASH STRENGTH
+ClassId: 1
+Material: Copper
+Range: 1
+Value: 150
+AttackSpeed: -20
+
+### i108 / Wooden Spear
+ReqLevel: 17
+Type: Weapon / Axe
+Damage: 24 - 36 PIERCE STRENGTH
+ClassId: 1
+Material: Copper
+Range: 2
+Value: 170
+AttackSpeed: -20
+
+### i119 / Broad Axe
+ReqLevel: 36
+Type: Weapon / Axe
+Damage: 43 - 65 SLASH STRENGTH
+ClassId: 1
+Range: 1
+Value: 360
+AttackSpeed: -20
+
+### i120 / Double Axe
+ReqLevel: 27
+Type: Weapon / Axe
+Damage: 34 - 51 SLASH STRENGTH
+ClassId: 1
+Range: 1
+Value: 280
+AttackSpeed: -20
+
+### i121 / Heavy Axe
+ReqLevel: 24
+Type: Weapon / Axe
+Damage: 31 - 47 SLASH STRENGTH
+ClassId: 1
+Range: 1
+Value: 240
+AttackSpeed: -20
+
+### i122 / Soldier Axe
+ReqLevel: 999
+Type: Weapon / Axe
+Damage: 1006 - 1509 SLASH STRENGTH
+ClassId: 1
+Range: 1
+Value: 9990
+AttackSpeed: -20
+
+### i123 / Marauder Axe
+ReqLevel: 999
+Type: Weapon / Axe
+Damage: 1006 - 1509 SLASH STRENGTH
+ClassId: 1
+Range: 1
+Value: 9990
+AttackSpeed: -20
+

@@ -1,0 +1,376 @@
+### a1 / The Old Cemetery
+FogColor: 206,255,198
+TintColor: 100,100,150
+AreaCopper: 5
+
+### a2 / Chompa Woods
+Song: forest
+
+### a3 / The Chompa Crypt
+FogColor: 200,255,150
+AreaCopper: 6
+
+### a4 / Scarab Cave
+FogColor: 253,151,241
+AreaCopper: 4
+
+### a5 / Chompa Inn
+Song: indoors
+
+### a6 / Larva Lair
+
+### a7 / ???
+FogColor: 168,91,232
+Song: event
+AreaCopper: 0
+
+### a8 / The Emerald Seas
+Song: sea
+AreaCopper: 6
+GuardLevel: 0
+
+### a9 / Green Leaf Village
+Song: greenleaf
+
+### a10 / Minai's Shop
+Song: indoors
+
+### a11 / Landlubber Inn
+Song: indoors
+
+### a12 / Elmk's Weapon Shop
+Song: indoors
+
+### a13 / ???
+FogColor: 206,255,198
+TintColor: 100,100,150
+Song: ghosts
+AreaCopper: 0
+
+### a14 / Shroom Forest
+Song: forest
+AreaCopper: 6
+Particles: spore
+
+### a15 / West Lockwoods
+Song: forest
+AreaCopper: 8
+
+### a16 / Goulda's Cellar
+AreaCopper: 12
+
+### a17 / Goulda's House
+Song: indoors
+AreaCopper: 4
+
+### a18 / Bat Cave
+FogColor: 45,255,135
+Song: batcave
+AreaCopper: 8
+
+### a19 / Spider Cave
+FogColor: 255,128,128
+AreaCopper: 7
+
+### a20 / Shroom King's Lair
+AreaCopper: 8
+
+### a21 / Shroom's Den
+FogColor: 141,255,114
+AreaItems: 3,5
+AreaCopper: 14
+
+### a22 / Bounty Hut
+Song: indoors
+
+### a23 / Island of the Buried
+FogColor: 206,255,198
+AreaCopper: 5
+
+### a24 / The Forgottens Abode
+Song: ghosts
+AreaCopper: 4
+
+### a25 / The Hidden Archipelago
+Song: sea
+AreaCopper: 6
+
+### a26 / East Lockwoods
+Song: forest
+AreaCopper: 4
+
+### a27 / The Botanical Maze
+Song: forest
+AreaCopper: 6
+Particles: spore
+
+### a28 / The Forest Temple
+AreaCopper: 15
+Particles: spore
+
+### a29 / The Forest Temple Exit
+AreaCopper: 15
+Particles: spore
+
+### a30 / Green Leaf Arena
+Song: event
+AreaCopper: 3
+
+### a31 / Spider Queen Lair
+FogColor: 255,128,128
+Song: event
+AreaCopper: 4
+
+### a32 / Luri & Guri's Hut
+Song: indoors
+AreaCopper: 6
+
+### a33 / Borgo's Barber Shop
+Song: indoors
+AreaCopper: 6
+
+### a34 / The Spring Hills
+Song: forest
+AreaCopper: 8
+
+### a35 / Oakstone Island
+Song: forest
+AreaCopper: 8
+GuardLevel: 0
+
+### a36 / Carapace Island
+Song: sea
+AreaCopper: 4
+GuardLevel: 0
+
+### a37 / Cray Island
+Song: sea
+AreaCopper: 4
+GuardLevel: 0
+
+### a38 / Mount Morwyn
+Song: mountain
+AreaCopper: 4
+GuardLevel: 0
+
+### a39 / Oozemaw Fortress
+GuardLevel: 0
+
+### a40 / Oozemaw's Hideout
+FogColor: 168,91,232
+Song: event
+AreaCopper: 20
+GuardLevel: 0
+
+### a41 / The Crimson Ocean
+Song: sea
+AreaCopper: 12
+GuardLevel: 0
+
+### a42 / Crab Den
+AreaCopper: 8
+GuardLevel: 0
+
+### a43 / Morwyn's Labyrinth
+GuardLevel: 0
+
+### a44 / Red Rock Mining Town
+Song: mountain
+AreaCopper: 4
+
+### a45 / Gimhwick's Shop
+Song: indoors
+
+### a46 / Horgo's Barber Shop
+Song: indoors
+AreaCopper: 6
+
+### a47 / Borkh's Weapon Shop
+Song: indoors
+
+### a48 / Red Rock Inn
+Song: indoors
+
+### a49 / Sorkorh's Chambers
+AreaCopper: 15
+Particles: spore
+GuardLevel: 0
+
+### a50 / The Dead Gates
+FogColor: 206,255,198
+TintColor: 100,100,100
+AreaCopper: 5
+GuardLevel: 0
+
+### a51 / Oranga Haven
+Song: forest
+AreaCopper: 8
+
+### a52 / Oozemaw's secret passage
+GuardLevel: 0
+
+### a53 / The Goblin Archives
+Song: goblin
+AreaItems: 3,5
+AreaCopper: 10
+GuardLevel: 0
+
+### a54 / The Goblin Kings Throne Room
+Song: event
+AreaCopper: 10
+GuardLevel: 0
+
+### a55 / Ollghar's Island
+Song: forest
+AreaCopper: 8
+GuardLevel: 0
+
+### a56 / Fur Island
+Song: forest
+AreaCopper: 8
+
+### a57 / The North
+Song: snow
+AreaItems: 179
+AreaCopper: 8
+Particles: snow
+GuardLevel: 0
+
+### a58 / Water Cave
+FogColor: 45,255,135
+Song: watercave
+AreaCopper: 8
+GuardLevel: 0
+
+### a59 / Ollghar's Hidden Cave
+FogColor: 255,128,128
+AreaCopper: 7
+GuardLevel: 0
+
+### a60 / The Safehouse
+Song: indoors
+AreaCopper: 8
+
+### a61 / Northern Passage
+FogColor: 45,255,135
+Song: icecave
+AreaItems: 179
+AreaCopper: 8
+GuardLevel: 0
+
+### a62 / The Lockwoods River
+Song: sea
+AreaCopper: 6
+
+### a63 / The Luna Passage
+
+### a64 / Warrior Hut
+Song: indoors
+
+### a65 / Hunter Hut
+Song: indoors
+
+### a66 / Mage Hut
+Song: indoors
+
+### a67 / The Frostvale
+Song: snow
+AreaItems: 179
+AreaCopper: 8
+Particles: snow
+
+### a68 / Frostvale's Tower
+Song: indoors
+AreaCopper: 8
+
+### a69 / The Cold Luna Cave
+FogColor: 45,255,135
+Song: icecave
+AreaItems: 179
+AreaCopper: 8
+GuardLevel: 0
+
+### a70 / Ollghar's Lab
+FogColor: 168,91,232
+Song: event
+AreaCopper: 0
+GuardLevel: 0
+
+### a71 / The Lockwood Prison
+Song: indoors
+
+### a72 / The Outlaw Harbor
+Song: outlaw
+
+### a73 / Foxer's Weapon Shop
+Song: indoors
+
+### a74 / Gulhrug's Potion Shop
+Song: indoors
+
+### a75 / Secret Chamber
+
+### a76 / Secret Chamber
+
+### a77 / Secret Chamber
+
+### a78 / The Unreachable Spot
+Song: greenleaf
+
+### a79 / A Hidden Path
+Song: forest
+AreaCopper: 8
+
+### a80 / A Secret Watercave
+FogColor: 45,255,135
+Song: watercave
+AreaCopper: 8
+
+### a81 / Secret Chamber
+
+### a82 / The Dead Woods
+FogColor: 45,255,135
+Song: batcave
+AreaCopper: 8
+GuardLevel: 0
+
+### a83 / A Secret Chamber
+
+### a84 / A Secret Chamber
+
+### a85 / Blood Skull's Crew Hall
+Song: indoors
+
+### a86 / Sea Bunnies Crew Hall
+Song: indoors
+
+### a87 / Squid Water Cave
+FogColor: 45,255,135
+Song: watercave
+AreaCopper: 8
+
+### a88 / The Hollow
+FogColor: 45,255,135
+Song: batcave
+AreaCopper: 10
+
+### a89 / Mystic Mines
+FogColor: 45,255,135
+Song: batcave
+AreaCopper: 20
+GuardLevel: 0
+
+### a90 / Crystal Caves
+FogColor: 45,255,135
+Song: icecave
+AreaCopper: 20
+GuardLevel: 0
+
+### a91 / The Lost Archipelago
+Song: forest
+AreaCopper: 8
+GuardLevel: 0
+
+### a92 / The Emerald Seas
+Song: sea
+AreaCopper: 6

@@ -2,19 +2,16 @@ package map;
 
 public class AreaEffect {
 
-  private int id = 0;
+  public final int id;
+  public final String name;
+  private final String origin;
 
-  private String areaName = "";
-
-  private int guardedLevel = 0;
+  private int guardedLevel = 1;
 
   private String particles = "None";
 
-  private int tint = 0;
-  private String tintColor = "0";
-
-  private int fog = 0;
-  private String fogColor = "0";
+  private String tintColor = null;
+  private String fogColor = null;
 
   private String song = "None";
   private String ambient = "None";
@@ -22,14 +19,17 @@ public class AreaEffect {
   private String areaItems = "None";
   private int areaCopper = 0;
 
-  public AreaEffect(int id) {
+  public AreaEffect(int id, String name, String origin) {
     this.id = id;
+    this.name = name;
+    this.origin = origin;
   }
 
   public String getInfo() {
-    String effectData =
-        id + "," + areaName + "," + tint + "," + tintColor + "," + fog + "," + fogColor + "," + song
-            + "," + ambient + "," + particles;
+    String effectData = id + "," + name + ","
+            + ((tintColor!=null) ? "1" : "0") + "," + tintColor + ","
+            + ((fogColor!=null) ? "1" : "0") + "," + fogColor + ","
+            + song + "," + ambient + "," + particles;
     return effectData;
   }
 
@@ -37,99 +37,74 @@ public class AreaEffect {
    * Getters and setters
    * @return
    */
-  public int getId() {
-    return id;
-  }
+  public int getTint() { return (tintColor!=null) ? 1 : 0 ; }
+  public String getTintColor() { return tintColor; }
+  void setTintColor(String tintColor) { this.tintColor = tintColor; }
 
-  public String getTintColor() {
-    return tintColor;
-  }
+  public int getFog() { return (fogColor!=null) ? 1 : 0; }
+  public String getFogColor() { return fogColor; }
+  void setFogColor(String fogColor) { this.fogColor = fogColor; }
 
-  public void setTintColor(String tintColor) {
-    this.tintColor = tintColor;
-  }
+  public int getGuardedLevel() { return guardedLevel; }
+  void setGuardedLevel(int guardedLevel) { this.guardedLevel = guardedLevel; }
 
-  public int getFog() {
-    return fog;
-  }
+  public String getParticles() { return particles; }
+  void setParticles(String particles) { this.particles = particles; }
 
-  public void setFog(int fog) {
-    this.fog = fog;
-  }
 
-  public String getFogColor() {
-    return fogColor;
-  }
+  public String getAreaItems() { return areaItems; }
+  void setAreaItems(String areaItems) { this.areaItems = areaItems; }
 
-  public void setFogColor(String fogColor) {
-    this.fogColor = fogColor;
-  }
+  public int getAreaCopper() { return areaCopper; }
+  void setAreaCopper(int areaCopper) { this.areaCopper = areaCopper; }
 
-  public void setId(int id) {
-    this.id = id;
-  }
+  public String getSong() { return song; }
+  void setSong(String song) { this.song = song; }
 
-  public String getAreaName() {
-    return areaName;
-  }
+  public String getAmbient() { return ambient; }
+  void setAmbient(String ambient) { this.ambient = ambient; }
 
-  public void setAreaName(String areaName) {
-    this.areaName = areaName;
-  }
-
-  public int getGuardedLevel() {
-    return guardedLevel;
-  }
-
-  public void setGuardedLevel(int guardedLevel) {
-    this.guardedLevel = guardedLevel;
-  }
-
-  public String getParticles() {
-    return particles;
-  }
-
-  public void setParticles(String particles) {
-    this.particles = particles;
-  }
-
-  public int getTint() {
-    return tint;
-  }
-
-  public void setTint(int tint) {
-    this.tint = tint;
-  }
-
-  public String getAreaItems() {
-    return areaItems;
-  }
-
-  public void setAreaItems(String areaItems) {
-    this.areaItems = areaItems;
-  }
-
-  public int getAreaCopper() {
-    return areaCopper;
-  }
-
-  public void setAreaCopper(int areaCopper) {
-    this.areaCopper = areaCopper;
-  }
-
-  public String getSong() {
-    return song;
-  }
-
-  public void setSong(String song) {
-    this.song = song;
-  }
-
-  public String getAmbient() {
-    return ambient;
-  }
-
-  public void setAmbient(String ambient) {
-    this.ambient = ambient;
+  @Override
+  public String toString() {
+    StringBuilder sb = new StringBuilder(1000);
+    sb.append("AreaEffect{")
+      .append(id)
+      .append(" / ")
+      .append(name)
+      .append(", guardedLevel=")
+      .append(guardedLevel)
+      .append(", areaCopper=")
+      .append(areaCopper);
+    if (!"None".equals(song)) {
+      sb.append(", song=")
+        .append(song);
+    }
+    if (!"None".equals(ambient)) {
+      sb.append(", ambient=")
+        .append(ambient);
+    }
+    if (fogColor!=null) {
+      sb.append(", fogColor=")
+        .append(fogColor);
+    }
+    if (tintColor!=null) {
+      sb.append(", tintColor=")
+        .append(tintColor);
+    }
+    if (tintColor!=null) {
+      sb.append(", tintColor=")
+        .append(tintColor);
+    }
+    if (!"None".equals(particles)) {
+      sb.append(", particles=")
+        .append(particles);
+    }
+    if (!"None".equals(areaItems)) {
+      sb.append(", areaItems=")
+        .append(areaItems);
+    }
+    sb.append(", Origin=").append(origin)
+      .append('}');
+    return sb.toString();
   }
 }

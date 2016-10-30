@@ -7,6 +7,7 @@ import java.io.File;
 
 import game.ServerSettings;
 import map.AreaEffect;
+import map.AreaEffectBuilder;
 import network.Server;
 import player_classes.*;
 import components.Builder;
@@ -124,40 +125,13 @@ public class ServerGameInfo {
     familyDef.put(7, new Family(7, "Ocean Monsters", 0));
     familyDef.put(8, new Family(8, "Practice Targets", 0));
 
-    // Load AreaEffect info
-    areaEffectsDef = new HashMap<Integer, AreaEffect>();
-
-    ResultSet areaEffectInfo = Server.mapDB.askDB("select * from area_effect");
-
-    try {
-      while (areaEffectInfo.next()) {
-        AreaEffect ae = new AreaEffect(areaEffectInfo.getInt("Id"));
-
-        ae.setAreaName(areaEffectInfo.getString("AreaName"));
-
-        ae.setTint(areaEffectInfo.getInt("Tint"));
-        ae.setTintColor(areaEffectInfo.getString("TintColor"));
-
-        ae.setFog(areaEffectInfo.getInt("Fog"));
-        ae.setFogColor(areaEffectInfo.getString("FogColor"));
-
-        ae.setSong(areaEffectInfo.getString("Song"));
-
-        ae.setAreaItems(areaEffectInfo.getString("AreaItems"));
-        ae.setAreaCopper(areaEffectInfo.getInt("AreaCopper"));
-
-        ae.setParticles(areaEffectInfo.getString("Particles"));
-        ae.setGuardedLevel(areaEffectInfo.getInt("GuardLevel"));
-
-        areaEffectsDef.put(ae.getId(), ae);
-      }
-      areaEffectInfo.close();
-
-    } catch (SQLException e1) {
-      e1.printStackTrace();
+    // LOAD AREAEFFECT INFO
+    areaEffectsDef = new HashMap<>();
+    for (File f : new File(ServerSettings.PATH).listFiles((dir, name) -> name.startsWith("areas_"))) {
+      Builder.load(f.getPath(), AreaEffectBuilder.class, areaEffectsDef);
     }
 
-    // Load quest info
+    // LOAD QUEST INFO
     questDef = new HashMap<>();
     for (File f : new File(ServerSettings.PATH).listFiles((dir, name) -> name.startsWith("quests_"))) {
       Builder.load(f.getPath(), QuestBuilder.class, questDef);

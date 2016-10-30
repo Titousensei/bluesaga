@@ -736,9 +736,9 @@ public class WalkHandler extends Handler {
       }
 
       String effectData =
-          ae.getId()
+          ae.id
               + ","
-              + ae.getAreaName()
+              + ae.name
               + ","
               + ae.getTint()
               + ","

@@ -11,9 +11,11 @@ import network.Server;
 import player_classes.*;
 import components.Builder;
 import components.Family;
+import components.JobSkill;
 import components.Quest;
 import components.QuestBuilder;
-import components.JobSkill;
+import components.Shop;
+import components.ShopBuilder;
 import creature.Npc;
 import data_handlers.ability_handler.Ability;
 import data_handlers.ability_handler.StatusEffect;
@@ -22,6 +24,8 @@ import data_handlers.item_handler.Item;
 public class ServerGameInfo {
 
   public static Map<Integer, Item> itemDef;
+
+  public static Map<Integer, Shop> shopDef;
 
   public static Map<Integer, Ability> abilityDef;
   public static Map<Integer, JobSkill> skillDef;
@@ -160,7 +164,11 @@ public class ServerGameInfo {
     }
     questNpc = QuestBuilder.mapNpc(questDef);
 
-    // LOAD ITEM INFO
+    // LOAD SHOP INFO
+    shopDef = new HashMap<>();
+    for (File f : new File(ServerSettings.PATH).listFiles((dir, name) -> name.startsWith("shop"))) {
+      Builder.load(f.getPath(), ShopBuilder.class, shopDef);
+    }
 
     // LOAD MONSTERS INFO
     creatureDef = new HashMap<Integer, Npc>();

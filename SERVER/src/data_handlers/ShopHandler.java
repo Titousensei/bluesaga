@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Map;
 
+import components.Shop;
 import utils.ServerGameInfo;
 import data_handlers.ability_handler.Ability;
 import data_handlers.item_handler.CoinConverter;
@@ -26,6 +27,8 @@ public class ShopHandler extends Handler {
     Client client = m.client;
     int shopId = Integer.parseInt(m.message);
 
+
+
     String shopItemInfo = "None";
     StringBuilder shopAbilitiesInfo = new StringBuilder();
 
@@ -35,34 +38,21 @@ public class ShopHandler extends Handler {
     ResultSet rs =
         Server.gameDB.askDB("select NpcId, Items, Abilities from shop where Id = " + shopId);
 
-    int npcId = 0;
     String npcName = "";
 
-    try {
-      if (rs.next()) {
-        shopItemInfo = rs.getString("Items");
-        String shopAbilities = rs.getString("Abilities");
-        npcId = rs.getInt("NpcId");
+    Shop shop = ServerGameInfo.shopDef.get(shopId);
+    if (shop != null) {
+      shopItemInfo = shop.getItems();
+      int[] abilityIds = shop.getAbilities();
 
-        // GET NPC INFO
-        ResultSet npcInfo =
-            Server.mapDB.askDB("select Name from area_creature where Id = " + npcId);
+      // GET NPC INFO
+      npcName = Server.mapDB.askString("select Name from area_creature where Id = " + shop.npcId);
 
-        try {
-          if (npcInfo.next()) {
-            npcName = npcInfo.getString("Name");
-          }
-          npcInfo.close();
-        } catch (SQLException e) {
-          e.printStackTrace();
-        }
-
-        if (!shopAbilities.equals("None")) {
-          String abilityIds[] = shopAbilities.split(",");
-          for (String aId : abilityIds) {
-            int aIdInt = Integer.parseInt(aId);
+      if (abilityIds!=null) {
+        for (int aId : abilityIds) {
+          try {
             ResultSet abilityInfo =
-                Server.gameDB.askDB("select ClassId, GraphicsNr from ability where Id = " + aIdInt);
+                Server.gameDB.askDB("select ClassId, GraphicsNr from ability where Id = " + aId);
             if (abilityInfo.next()) {
               String color = "0,0,0";
               if (abilityInfo.getInt("ClassId") > 0) {
@@ -77,16 +67,15 @@ public class ShopHandler extends Handler {
                   .append(':');
             }
             abilityInfo.close();
+          } catch (SQLException e) {
+            e.printStackTrace();
           }
-        } else {
-          shopAbilitiesInfo.append("None");
         }
-
-        foundShop = true;
+      } else {
+        shopAbilitiesInfo.append("None");
       }
-      rs.close();
-    } catch (SQLException e) {
-      e.printStackTrace();
+
+      foundShop = true;
     }
 
     if (foundShop) {

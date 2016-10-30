@@ -228,12 +228,15 @@ public class QuestHandler extends Handler {
           }
 
           // GET SHOP FROM NPC
-
-          int shopId =  Server.gameDB.askInt(
-              "select Id from shop where NpcId = " + NPC.getDBId());
-          npcInfo.append('/').append(shopId);
+          if (ServerGameInfo.shopDef.containsKey(NPC.getDBId())) {
+            npcInfo.append('/').append(NPC.getDBId());
+          }
+          else {
+            npcInfo.append("/0");
+          }
 
           // GET CHECKIN FROM NPC
+
           int checkInId = Server.mapDB.askInt(
               "select Id from checkpoint where NpcId = " + NPC.getDBId());
           npcInfo.append('/').append(checkInId);

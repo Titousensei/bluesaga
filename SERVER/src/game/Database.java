@@ -90,6 +90,22 @@ public class Database {
     return 0;
   }
 
+  public String askString(String sqlStatement) {
+    if (conn != null) {
+      try (Statement stat = conn.createStatement()) {
+        if (stat.execute(sqlStatement)) {
+          ResultSet rs = stat.getResultSet();
+          if (rs.next()) {
+            return rs.getString(1);
+          }
+        }
+      } catch (SQLException e) {
+        e.printStackTrace();
+      }
+    }
+    return "";
+  }
+
   /*
    *
    * 	BUG REPORT

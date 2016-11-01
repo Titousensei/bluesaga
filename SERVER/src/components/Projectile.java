@@ -71,7 +71,7 @@ public class Projectile {
     // Check if there is a non-passable tile in the way
     // If not reached, check if obstacle in the way
     // Exception: Goblin bombs
-    if (ability.getAbilityId() != 49) {
+    if (ability.id != 49) {
       float checkDxDy = (float) Math.sqrt(Math.pow(dX, 2) + Math.pow(dY, 2));
 
       for (float i = 0.0f; i <= distance + 50; i += checkDxDy * speed) {
@@ -84,7 +84,7 @@ public class Projectile {
 
             if (checkX == goalX && checkY == goalY) {
               break;
-            } else if ((!checkTile.isPassableType() && ability.getAbilityId() != 45)
+            } else if ((!checkTile.isPassableType() && ability.id != 45)
                 || checkTile.getOccupant() != null) {
               goalX = checkTile.getX();
               goalY = checkTile.getY();

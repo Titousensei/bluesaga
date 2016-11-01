@@ -235,7 +235,7 @@ public class AdminControlsHandler extends Handler {
           addOutGoingMessage(
               client, "abilitydata", "0/" + client.playerCharacter.getAbilitiesAsString());
           addOutGoingMessage(
-              client, "message", ServerGameInfo.abilityDef.get(abilityId).getName() + " added!");
+              client, "message", ServerGameInfo.abilityDef.get(abilityId).name + " added!");
         }
       } catch (NumberFormatException e) {
         // NOT A NUMBER!

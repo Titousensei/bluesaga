@@ -1,7 +1,7 @@
 /************************************
- * 									*
- *		SERVER / CHARACTER			*
- *									*
+ *                                  *
+ *    SERVER / CHARACTER            *
+ *                                  *
  ************************************/
 package creature;
 
@@ -272,7 +272,7 @@ public class PlayerCharacter extends Creature {
 
   /****************************************
    *                                      *
-   *             NETWORK	                *
+   *             NETWORK                  *
    *                                      *
    *                                      *
    ****************************************/
@@ -482,7 +482,7 @@ public class PlayerCharacter extends Creature {
 
   /****************************************
    *                                      *
-   *          LOAD SKILLS		            *
+   *          LOAD SKILLS                 *
    *                                      *
    ****************************************/
   public void loadClasses(int baseClassId) {
@@ -546,7 +546,7 @@ public class PlayerCharacter extends Creature {
 
   /****************************************
    *                                      *
-   *          LOAD SKILLS		            *
+   *          LOAD SKILLS                 *
    *                                      *
    ****************************************/
   public void loadSkills() {
@@ -615,10 +615,10 @@ public class PlayerCharacter extends Creature {
         if (newAB != null) {
           // Check if player can use ability
           if (newAB.getClassId() == 0
-              || hasClass(newAB.getClassId())
-              || newAB.getFamilyId() == getFamilyId()
-              || newAB.getAbilityId() == 31) {
-            if (newAB.getAbilityId() == 31) {
+          || hasClass(newAB.getClassId())
+          || newAB.getFamilyId() == getFamilyId()
+          || newAB.id == 31) {
+            if (newAB.id == 31) {
               hasSoulStone = true;
             }
             newAB.setDbId(rs.getInt("Id"));
@@ -626,7 +626,7 @@ public class PlayerCharacter extends Creature {
             newAB.setCaster(CreatureType.Player, this);
             addAbility(newAB);
           } else {
-            abilitiesToRemove.add(newAB.getAbilityId());
+            abilitiesToRemove.add(newAB.id);
           }
         }
       }
@@ -717,7 +717,7 @@ public class PlayerCharacter extends Creature {
 
   /*******************************************
    *
-   * 				FRIENDSLIST
+   *        FRIENDSLIST
    *
    ******************************************/
   public void loadFriendsList(Client client) {
@@ -743,7 +743,7 @@ public class PlayerCharacter extends Creature {
 
   /****************************************
    *                                      *
-   *             INVENTORY	            *
+   *             INVENTORY                *
    *                                      *
    *                                      *
    ****************************************/
@@ -875,7 +875,7 @@ public class PlayerCharacter extends Creature {
 
   /****************************************
    *                                      *
-   *             QUEST		            *
+   *             QUEST                    *
    *                                      *
    *                                      *
    ****************************************/
@@ -931,9 +931,9 @@ public class PlayerCharacter extends Creature {
 
     for (Ability A : abilities) {
       AbilityInfo.append('/')
-                 .append(A.getAbilityId())
+                 .append(A.id)
                  .append('=')
-                 .append(A.getName())
+                 .append(A.name)
                  .append('=')
                  .append(A.getClassId())
                  .append('=')
@@ -957,7 +957,7 @@ public class PlayerCharacter extends Creature {
                  .append('=')
                  .append(A.isInstant())
                  .append('=')
-                 .append(A.getEquipReq())
+                 .append(A.getEquipReq()==null ? "None" : A.getEquipReq())
                  .append('=')
                  .append(A.getGraphicsNr())
                  .append('=')
@@ -1151,7 +1151,7 @@ public class PlayerCharacter extends Creature {
 
   /****************************************
    *                                      *
-   *             XP / LEVEL UP		  	*
+   *             XP / LEVEL UP            *
    *                                      *
    *                                      *
    ****************************************/
@@ -1365,7 +1365,7 @@ public class PlayerCharacter extends Creature {
 
   /****************************************
    *                                      *
-   *             MOVEMENT  	            *
+   *             MOVEMENT                 *
    *                                      *
    *                                      *
    ****************************************/

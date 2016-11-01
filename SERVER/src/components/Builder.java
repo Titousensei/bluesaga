@@ -15,6 +15,7 @@ public abstract class Builder<T>
 
   private final static Pattern R_ID_NAME = Pattern.compile("### *([a-zA-Z]?[0-9]+) ?[^a-zA-Z]? ?(.*) *");
   private final static Pattern R_INT = Pattern.compile("[a-zA-Z ]*(-?[0-9]+)[^0-9]*");
+  private final static Pattern R_FLOAT = Pattern.compile("(-?[0-9]+[.][0-9]+)[^0-9]*");
 
   protected static int parseInt(String str)
   {
@@ -29,6 +30,23 @@ public abstract class Builder<T>
     }
     return 0;
   }
+
+  protected static float parseFloat(String str)
+  {
+    try {
+      Matcher m = R_FLOAT.matcher(str);
+      if (m.find()) {
+        return Float.parseFloat(m.group(1));
+      }
+    }
+    catch (NumberFormatException | IllegalStateException ex) {
+      System.err.println("[Builder] ERROR - Can't parseFloat in \"" + str + "\": " + ex);
+    }
+    return 0;
+  }
+
+  protected boolean isDuplicateAllowed(String setter)
+  { return false; }
 
   protected  boolean set(String name, String value)
   { return false; }
@@ -78,6 +96,7 @@ public abstract class Builder<T>
     String lastValue = null;
     String lastOrigin = null;
     int line_num = 0;
+    Set<String> already = new HashSet<>();
     try (BufferedReader br = new BufferedReader(new FileReader(filename))) {
       while ((line = br.readLine()) != null) {
         ++ line_num;
@@ -108,6 +127,7 @@ public abstract class Builder<T>
           current = builder.newInstance();
           lastOrigin = filename + ':' + line_num;
           current.init(currentId, m.group(2), lastOrigin);
+          already.clear();
         }
         else if (line.charAt(0) != ' ') {
           if (lastSetter != null) {
@@ -130,6 +150,12 @@ public abstract class Builder<T>
           else {
             lastSetter = line.trim();
             lastValue = null;
+          }
+          if (already.contains(lastSetter) && !current.isDuplicateAllowed(lastSetter)) {
+            System.err.println("[Builder] ERROR - duplicate \"" + lastSetter
+                + "\" found in " + lastOrigin);
+          } else {
+            already.add(lastSetter);
           }
         }
         else { // multi-line value

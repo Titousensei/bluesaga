@@ -454,7 +454,7 @@ public class QuestHandler extends Handler {
               "message",
               "#messages.quest.gained"
                   + " '"
-                  + ServerGameInfo.abilityDef.get(addedQuest.getQuestAbilityId()).getName()
+                  + ServerGameInfo.abilityDef.get(addedQuest.getQuestAbilityId()).name
                   + "' #messages.quest.ability");
         }
       }
@@ -536,7 +536,7 @@ public class QuestHandler extends Handler {
 
   /*
    *
-   * 	DIFFERENT QUEST TYPES
+   *  DIFFERENT QUEST TYPES
    *
    */
 
@@ -848,7 +848,7 @@ public class QuestHandler extends Handler {
             addOutGoingMessage(
                 client,
                 "message",
-                "#messages.quest.gained# '" + newAbility.getName() + "' #messages.quest.ability");
+                "#messages.quest.gained# '" + newAbility.name + "' #messages.quest.ability");
             addOutGoingMessage(
                 client, "abilitydata", "0/" + client.playerCharacter.getAbilitiesAsString());
           } else {
@@ -856,7 +856,7 @@ public class QuestHandler extends Handler {
                 client,
                 "message",
                 "#messages.quest.already_have# '"
-                    + checkAbility.getName()
+                    + checkAbility.name
                     + "' #messages.quest.ability");
           }
         }

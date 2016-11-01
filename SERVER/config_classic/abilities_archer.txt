@@ -1,0 +1,61 @@
+### a16 / Speed Shots
+Color: 129,172,79
+ManaCost: 15
+Cooldown: 20
+Range: 0 creature
+Instant
+StatusEffects: 9
+ClassLevel: 1
+EquipReq: Weapon:3
+Description: Boosts attack speed during short period of time. Enables shooting while running.
+GraphicsNr: 12
+ClassId: 6
+CastingSpeed: 100
+Buff
+
+### a28 / Haste
+Color: 129,172,79
+ManaCost: 20
+Cooldown: 40
+Range: 0 creature
+Instant
+Price: 1800
+StatusEffects: 10
+ClassLevel: 8
+Description: Boosts movement speed during a short period of time
+GraphicsNr: 23
+ClassId: 6
+CastingSpeed: 100
+Buff
+
+### a55 / Pierce Armor
+Color: 129,172,79
+ManaCost: 10
+Cooldown: 20
+Range: 0 creature
+Instant
+Price: 600
+StatusEffects: 32
+ClassLevel: 3
+Description: Armor on targets is nullified during period of time
+GraphicsNr: 39
+ClassId: 6
+CastingSpeed: 100
+Buff
+
+### a74 / Arrow Storm
+Color: 129,172,79
+ManaCost: 15
+Cooldown: 8
+Instant
+Price: 1400
+Range: 0 creature
+Damage: x1.2 PIERCE
+ClassLevel: 5
+ProjectileId: 5
+EquipReq: Weapon:3
+Description: Shoots three arrows to hit several targets
+GraphicsNr: 50
+ClassId: 6
+AnimationId: 10
+CastingSpeed: 100

@@ -10,6 +10,7 @@ extends Builder<Gathering>
 {
   protected Gathering g = null;
 
+  @Override
   public void init(int id, String name, String origin) {
     g = new Gathering(id, name, origin);
   }

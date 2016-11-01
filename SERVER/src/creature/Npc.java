@@ -22,7 +22,7 @@ import network.Server;
 /*
  *
  *
- *		ALL NON PLAYER CHARACTERS
+ *    ALL NON PLAYER CHARACTERS
  *
  *
  */
@@ -368,7 +368,7 @@ public class Npc extends Creature {
 
     if (original_monster.getAbilities() != null) {
       for (Ability a : original_monster.getAbilities()) {
-        Ability newAbility = new Ability(ServerGameInfo.abilityDef.get(a.getAbilityId()));
+        Ability newAbility = new Ability(ServerGameInfo.abilityDef.get(a.id));
         newAbility.setCaster(CreatureType.Monster, this);
         addAbility(newAbility);
       }
@@ -744,7 +744,7 @@ public class Npc extends Creature {
 
   public void setTitan(boolean titan) {
     if (titan) {
-      //	SpecialName = "Titan";
+      //  SpecialName = "Titan";
     } else {
       //SpecialName = "";
     }

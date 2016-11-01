@@ -1,8 +1,8 @@
 package creature;
 /************************************
- * 									*
- *		SERVER / CREATURE			*
- *									*
+ *                                  *
+ *    SERVER / CREATURE             *
+ *                                  *
  ************************************/
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -325,7 +325,7 @@ public class Creature implements Mover {
     // Add abilities
     if (copy.getAbilities() != null) {
       for (Ability ability : copy.getAbilities()) {
-        Ability newAbility = new Ability(ServerGameInfo.abilityDef.get(ability.getAbilityId()));
+        Ability newAbility = new Ability(ServerGameInfo.abilityDef.get(ability.id));
         newAbility.setCaster(CreatureType.Monster, this);
         addAbility(newAbility);
       }
@@ -402,7 +402,7 @@ public class Creature implements Mover {
 
   /****************************************
    *                                      *
-   *          SKILLS              		*
+   *          SKILLS                      *
    *                                      *
    ****************************************/
   public JobSkill getSkill(int skillId) {
@@ -415,7 +415,7 @@ public class Creature implements Mover {
 
   /****************************************
    *                                      *
-   *         STATUS EFFECTS		        *
+   *         STATUS EFFECTS               *
    *                                      *
    *                                      *
    ****************************************/
@@ -607,7 +607,7 @@ public class Creature implements Mover {
 
   /****************************************
    *                                      *
-   *         ABILITIES		            *
+   *         ABILITIES                    *
    *                                      *
    *                                      *
    ****************************************/
@@ -621,7 +621,7 @@ public class Creature implements Mover {
     int abilityId = 9999;
     if (abilities != null) {
       for (int i = 0; i < abilities.size(); i++) {
-        if (abilities.get(i).getName().equals(abilityName)) {
+        if (abilities.get(i).name.equals(abilityName)) {
           abilityId = i;
           break;
         }
@@ -645,7 +645,7 @@ public class Creature implements Mover {
   public Ability getAbilityById(int Id) {
     if (abilities != null) {
       for (Ability ability : abilities) {
-        if (ability.getAbilityId() == Id) {
+        if (ability.id == Id) {
           return ability;
         }
       }
@@ -662,7 +662,7 @@ public class Creature implements Mover {
 
   /****************************************
    *                                      *
-   *             MOVEMENT  	            *
+   *             MOVEMENT                 *
    *                                      *
    *                                      *
    ****************************************/
@@ -773,7 +773,7 @@ public class Creature implements Mover {
 
   /****************************************
    *                                      *
-   *             EQUIPMENT/INVENTORY  	*
+   *             EQUIPMENT/INVENTORY      *
    *                                      *
    *                                      *
    ****************************************/
@@ -942,7 +942,7 @@ public class Creature implements Mover {
 
   /****************************************
    *                                      *
-   *         REGAIN HEALTH AND MANA		*
+   *         REGAIN HEALTH AND MANA       *
    *                                      *
    *                                      *
    ****************************************/
@@ -1460,7 +1460,7 @@ public class Creature implements Mover {
         moveTimerItr = 0;
       }
     } else {
-      //	READY_TO_MOVE = true;
+      //  READY_TO_MOVE = true;
     }
   }
 

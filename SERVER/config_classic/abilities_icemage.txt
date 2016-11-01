@@ -1,0 +1,71 @@
+### a8 / Ice Bolt
+Color: 164,201,255
+ManaCost: 6
+Cooldown: 10
+AoE: square3
+Damage: 30 COLD
+Price: 60
+StatusEffects: 6
+ClassLevel: 3
+ProjectileId: 2
+Description: Deals small cold dmg and freezes target
+GraphicsNr: 6
+ClassId: 8
+
+### a21 / Ice Arrow
+Color: 164,201,255
+ManaCost: 12
+Cooldown: 20
+AoE: square3
+Damage: 50 COLD
+Price: 600
+StatusEffects: 20
+ClassLevel: 5
+ProjectileId: 2
+Description: Deals cold dmg and freezes target
+GraphicsNr: 16
+ClassId: 8
+
+### a22 / Cold Blast
+ManaCost: 100
+Cooldown: 40
+AoE: frame3
+Damage: 70 COLD
+Range: 0 tile
+Instant
+Price: 1000
+StatusEffects: 21
+ClassLevel: 8
+ProjectileId: 2
+Description: Deals cold dmg and freezes all targets around user
+GraphicsNr: 17
+ClassId: 8
+
+### a58 / Ice Shield
+Color: 164,201,255
+ManaCost: 30
+Cooldown: 30
+Range: 0 creature
+Instant
+Price: 3000
+StatusEffects: 34
+ClassLevel: 12
+Description: Increases armor and slows down melee attackers with ice
+GraphicsNr: 46
+ClassId: 8
+CastingSpeed: 100
+Buff
+
+### a94 / Frost Bolt
+Color: 164,201,255
+ManaCost: 6
+Cooldown: 10
+AoE: square3
+Damage: 20 COLD
+Price: 60
+StatusEffects: 6
+ClassLevel: 3
+ProjectileId: 2
+Description: Deals small cold dmg and freezes target
+GraphicsNr: 6
+ClassId: 8

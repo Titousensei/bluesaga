@@ -12,9 +12,14 @@ extends Builder<Recipe>
 {
   protected Recipe r = null;
 
+  @Override
   public void init(int id, String name, String origin) {
     r = new Recipe(id, name, origin);
   }
+
+  @Override
+  protected boolean isDuplicateAllowed(String setter)
+  { return "Material".equals(setter); }
 
   public void productId(String val) {
     Item it = ServerGameInfo.itemDef.get(parseInt(val));

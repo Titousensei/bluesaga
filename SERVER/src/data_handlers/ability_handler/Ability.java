@@ -13,9 +13,16 @@ import creature.Creature.CreatureType;
 
 public class Ability {
 
-  int AbilityId;
-  int dbId; // Id in character_ability table
-  private String Name;
+  public static final Vector<StatusEffect> EMPTY_SE = new Vector<StatusEffect>(0);
+
+  public static final String TARGET_TILE = "tile";
+  public static final String TARGET_CREATURE = "creature";
+
+  public final int id;
+  public final String name;
+  public final String origin;
+
+  private int dbId; // Id in character_ability table
   private Color abilityColor;
   private int ManaCost;
 
@@ -28,49 +35,54 @@ public class Ability {
 
   private int CastingSpeed = 100;
 
-  private boolean Ready;
-  private boolean ReadySent;
+  private boolean Ready = true;
+  private boolean ReadySent = true;
 
-  private String Description;
+  private String Description = null;
 
-  private int ClassId;
-  private int classLevel;
+  private int ClassId = 0;
+  private int classLevel = 0;
 
-  private int jobSkillId;
+  private int jobSkillId = 0;
 
-  private int FamilyId;
+  private int FamilyId = 0;
 
-  private String AoE;
-  private int Damage;
-  private String DamageType;
-  private int Range;
+  private String AoE = "0,0";
+  private int Damage = 0;
+  private String DamageType = "None";
+  private int Range = 0;
   private boolean Instant;
-  private int Price;
+  private int Price = 0;
   private String TargetType;
-  private boolean TargetSelf;
-  private Vector<StatusEffect> StatusEffects;
-  private float WeaponDamageFactor;
+  private boolean TargetSelf = false;
+  private Vector<StatusEffect> StatusEffects = EMPTY_SE;
+  private float WeaponDamageFactor = 0.0f;
 
-  private int Delay;
+  private int Delay = 0;
 
-  private String EquipReq;
+  private String EquipReq = null;
 
-  private String SpawnIds;
+  private String SpawnIds = null;
 
-  private int ProjectileId;
-  private int projectileEffectId;
+  private int ProjectileId = 0;
+  private int projectileEffectId = 0;
 
-  private boolean buffOrNot;
+  private boolean buffOrNot = false;
 
   // INFO ABOUT THE CASTER OF THE ABILITY
   private Creature Caster;
 
-  public Ability() {}
+  Ability(int id, String name, String origin) {
+    this.id = id;
+    this.name = name;
+    this.origin = origin;
+  }
+
 
   public Ability(Ability copy) {
-    AbilityId = copy.getAbilityId();
-
-    Name = copy.getName();
+    id = copy.id;
+    name = copy.name;
+    origin = copy.origin;
 
     abilityColor = copy.getColor();
 
@@ -106,8 +118,6 @@ public class Ability {
 
     TargetSelf = copy.isTargetSelf();
 
-    StatusEffects = new Vector<StatusEffect>();
-
     StatusEffects = copy.getStatusEffects();
 
     EquipReq = copy.getEquipReq();
@@ -127,104 +137,6 @@ public class Ability {
     setBuffOrNot(copy.isBuffOrNot());
   }
 
-  public void load(ResultSet rs) {
-    if (rs != null) {
-      try {
-        AbilityId = rs.getInt("Id");
-
-        Name = rs.getString("Name");
-
-        ManaCost = rs.getInt("ManaCost");
-
-        animationId = rs.getInt("AnimationId");
-
-        Cooldown = rs.getInt("Cooldown");
-        CooldownLeft = 0;
-        Ready = true;
-        ReadySent = true;
-
-        AoE = rs.getString("AoE");
-        Damage = rs.getInt("Damage");
-        setDamageType(rs.getString("DamageType"));
-        Range = rs.getInt("Range");
-
-        setDelay(rs.getInt("Delay"));
-
-        WeaponDamageFactor = rs.getFloat("WeaponDamageFactor");
-
-        setProjectileId(rs.getInt("ProjectileId"));
-
-        if (rs.getInt("Instant") == 1) {
-          Instant = true;
-        } else {
-          Instant = false;
-        }
-
-        setClassId(rs.getInt("ClassId"));
-        setClassLevel(rs.getInt("ClassLevel"));
-
-        jobSkillId = rs.getInt("JobSkillId");
-
-        setFamilyId(rs.getInt("FamilyId"));
-
-        String[] colorRGB = rs.getString("Color").split(",");
-
-        if (rs.getString("Color").equals("0,0,0")
-            && ServerGameInfo.classDef.get(getClassId()) != null) {
-          colorRGB = ServerGameInfo.classDef.get(getClassId()).bgColor.split(",");
-        }
-        abilityColor =
-            new Color(
-                Integer.parseInt(colorRGB[0]),
-                Integer.parseInt(colorRGB[1]),
-                Integer.parseInt(colorRGB[2]),
-                255);
-
-        Price = rs.getInt("Price");
-        TargetType = rs.getString("TargetType");
-
-        if (rs.getInt("TargetSelf") == 0) {
-          TargetSelf = false;
-        } else {
-          TargetSelf = true;
-        }
-
-        StatusEffects = new Vector<StatusEffect>();
-
-        if (!rs.getString("StatusEffects").equals("None")) {
-          String StatusEffectsId[] = rs.getString("StatusEffects").split(";");
-
-          for (String statusEffectInfo : StatusEffectsId) {
-            int statusEffectId = Integer.parseInt(statusEffectInfo);
-            StatusEffect newSE = new StatusEffect(statusEffectId);
-            StatusEffects.add(newSE);
-          }
-        }
-
-        EquipReq = rs.getString("EquipReq");
-
-        setGraphicsNr(rs.getInt("GraphicsNr"));
-
-        setSpawnIds(rs.getString("SpawnIds"));
-
-        setDescription(rs.getString("Description"));
-
-        setCastingSpeed(rs.getInt("CastingSpeed"));
-
-        setProjectileEffectId(rs.getInt("ProjectileEffectId"));
-
-        if (rs.getInt("BuffOrNot") == 1) {
-          setBuffOrNot(true);
-        } else {
-          setBuffOrNot(false);
-        }
-      } catch (SQLException e) {
-        // TODO Auto-generated catch block
-        e.printStackTrace();
-      }
-    }
-  }
-
   /*
    *
    *
@@ -241,6 +153,10 @@ public class Ability {
 
   public int getCooldown() {
     return Cooldown;
+  }
+
+  public void setCooldown(int value) {
+    Cooldown = value;
   }
 
   public boolean isReady() {
@@ -264,7 +180,7 @@ public class Ability {
   /*
    *
    *
-   * 	GETTERS AND SETTERS
+   *    GETTERS AND SETTERS
    *
    *
    */
@@ -281,6 +197,10 @@ public class Ability {
     return Damage;
   }
 
+  public void setDamage(int value) {
+    Damage = value;
+  }
+
   public void setCaster(CreatureType newCasterType, Creature newCaster) {
     Caster = newCaster;
 
@@ -290,12 +210,28 @@ public class Ability {
     }
   }
 
-  public String getName() {
-    return Name;
-  }
-
   public Color getColor() {
     return abilityColor;
+  }
+
+  // Color: 129,172,79
+  void setColor(String val)
+  {
+    String[] colorRGB;
+    if ("0,0,0".equals(val)
+    && ServerGameInfo.classDef != null
+    && ServerGameInfo.classDef.get(getClassId()) != null) {
+      colorRGB = ServerGameInfo.classDef.get(getClassId()).bgColor.split(",");
+    }
+    else {
+      colorRGB = val.split(",");
+    }
+    abilityColor =
+        new Color(
+            Integer.parseInt(colorRGB[0]),
+            Integer.parseInt(colorRGB[1]),
+            Integer.parseInt(colorRGB[2]),
+            255);
   }
 
   public Color getColorAlpha(int alpha) {
@@ -312,12 +248,12 @@ public class Ability {
     return Instant;
   }
 
-  public int getAbilityId() {
-    return AbilityId;
-  }
-
   public String getAoE() {
     return AoE;
+  }
+
+  public void setAoE(String value) {
+    AoE = value;
   }
 
   public int getManaCost() {
@@ -332,8 +268,16 @@ public class Ability {
     return StatusEffects;
   }
 
+  public void setStatusEffects(Vector<StatusEffect> value) {
+    StatusEffects = value;
+  }
+
   public int getRange() {
     return Range;
+  }
+
+  public void setRange(int value) {
+    Range = value;
   }
 
   public void setCooldownLeft(int newCooldownLeft) {
@@ -352,8 +296,16 @@ public class Ability {
     return TargetType;
   }
 
+  public void setTargetType(String value) {
+    TargetType = value;
+  }
+
   public boolean isTargetSelf() {
     return TargetSelf;
+  }
+
+  public void setTargetSelf(boolean value) {
+    TargetSelf = value;
   }
 
   public Creature getCaster() {
@@ -380,6 +332,10 @@ public class Ability {
     return Price;
   }
 
+  public void setPrice(int value) {
+    Price = value;
+  }
+
   public float getWeaponDamageFactor() {
     return WeaponDamageFactor;
   }
@@ -390,6 +346,10 @@ public class Ability {
 
   public String getEquipReq() {
     return EquipReq;
+  }
+
+  public void setEquipReq(String value) {
+    EquipReq = value;
   }
 
   public int getProjectileId() {
@@ -476,6 +436,10 @@ public class Ability {
     return jobSkillId;
   }
 
+  public void setJobSkillId(int value) {
+    jobSkillId = value;
+  }
+
   public int getProjectileEffectId() {
     return projectileEffectId;
   }
@@ -494,6 +458,6 @@ public class Ability {
 
   @Override
   public String toString() {
-    return AbilityId + ":" + Name;
+    return id + ":" + name;
   }
 }

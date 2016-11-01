@@ -10,9 +10,14 @@ extends Builder<AreaEffect>
   protected AreaEffect ae = null;
   protected List<Integer> items = null;
 
+  @Override
   public void init(int id, String name, String origin) {
     ae = new AreaEffect(id, name, origin);
   }
+
+  @Override
+  protected boolean isDuplicateAllowed(String setter)
+  { return "AreaItem".equals(setter); }
 
   public void song(String val) {
     ae.setSong(val);

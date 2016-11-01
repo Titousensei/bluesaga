@@ -29,7 +29,7 @@ public class ActionBarButton {
   public int getAPwidth(int height) {
     // TODO
     if (ActionType.equals("Ability") && Ability != null) {
-      //	return Ability.getAPwidth(height);
+      //  return Ability.getAPwidth(height);
     }
     return 0;
   }
@@ -40,7 +40,7 @@ public class ActionBarButton {
 
   public int getActionId() {
     if (ActionType.equals("Ability")) {
-      return Ability.getAbilityId();
+      return Ability.id;
     } else if (ActionType.equals("Item")) {
       return Item.getUserItemId();
     }

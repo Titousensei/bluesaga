@@ -18,6 +18,7 @@ extends Builder<Item>
   protected Item it = null;
   protected Map<String, Integer> info = null;
 
+  @Override
   public void init(int id, String name, String origin) {
     it = new Item(id, name, origin);
     // Defaults
@@ -31,6 +32,10 @@ extends Builder<Item>
     it.setRange(1);
     info = new LinkedHashMap<>();
   }
+
+  @Override
+  protected boolean isDuplicateAllowed(String setter)
+  { return "Info".equals(setter); }
 
   @Override
   protected  boolean set(String name, String value)

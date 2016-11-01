@@ -1,0 +1,56 @@
+### a27 / Taunt
+Color: 174,174,174
+ManaCost: 12
+Cooldown: 10
+Range: 0 creature
+Instant
+Price: 600
+ClassLevel: 3
+Description: Provokes monsters to attack you
+GraphicsNr: 22
+ClassId: 7
+CastingSpeed: 100
+
+### a29 / Block
+Color: 174,174,174
+ManaCost: 15
+Cooldown: 30
+Range: 0 creature
+Instant
+StatusEffects: 11
+ClassLevel: 1
+Description: Blocks attacks (up to 20% of damage) for a short period of time
+GraphicsNr: 24
+ClassId: 7
+CastingSpeed: 100
+Buff
+
+### a77 / Protect
+ManaCost: 10
+Cooldown: 10
+Range: 0 creature
+Instant
+Price: 500
+StatusEffects: 38
+ClassLevel: 3
+Description: Caster takes damage instead of party members
+GraphicsNr: 52
+Delay: 10
+ClassId: 7
+Buff
+
+### a78 / Lockdown
+Color: 174,174,174
+ManaCost: 15
+Cooldown: 30
+Range: 0 creature
+Instant
+Price: 800
+StatusEffects: 39
+ClassLevel: 5
+Description: Completly locks caster down, absorbing collosal amout of damage but makes caster immobile during that time.
+GraphicsNr: 53
+ClassId: 7
+CastingSpeed: 100
+Buff
+

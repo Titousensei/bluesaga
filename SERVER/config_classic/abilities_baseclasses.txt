@@ -1,0 +1,86 @@
+--- WARRIOR --------------------------------------------------------------------
+
+### a17 / Power Strike
+Color: 174,174,174
+ManaCost: 6
+Cooldown: 6
+Range: 2 creature
+Instant
+Price: 50
+Damage: x1.4 STRIKE
+ClassLevel: 1
+EquipReq: Weapon:1;Weapon:2;Weapon:4;Weapon:5
+Description: Deals 1.4x regular damage on single target
+GraphicsNr: 13
+ClassId: 1
+AnimationId: 3
+CastingSpeed: 100
+
+--- HUNTER ---------------------------------------------------------------------
+
+### a73 / Energy Burst
+Color: 255,190,250
+ManaCost: 3
+Cooldown: 6
+Range: 5 creature
+Instant
+Price: 50
+Damage: x1.4 STRIKE
+ProjectileId: 14
+EquipReq: Weapon:only2
+Description: Deals 1.4x magic weapon damage to a single target
+GraphicsNr: 49
+ClassId: 2
+AnimationId: 10
+
+--- MAGE -----------------------------------------------------------------------
+
+### a54 / Focused Shot
+Color: 129,172,79
+ManaCost: 10
+Cooldown: 6
+Range: 0 creature
+Instant
+Price: 50
+Damage: x1.4 PIERCE
+ClassLevel: 1
+EquipReq: Weapon:3
+Description: Deals 1.4x regular damage on single target
+GraphicsNr: 43
+ClassId: 3
+AnimationId: 10
+CastingSpeed: 20
+ProjectileEffectId: 1
+
+
+--- ??? ------------------------------------------------------------------------
+
+### a30 / Mana Shield
+Color: 195,90,234
+ManaCost: 60
+Cooldown: 300
+Range: 0 creature
+Instant
+Price: 1000
+StatusEffects: 25
+ClassLevel: 3
+Description: Surrounds the caster with a protective coat, damage is taken from casters mana instead of health.
+GraphicsNr: 25
+ClassId: 13
+CastingSpeed: 100
+Buff
+
+### a40 / Healing Touch
+Color: 183,228,104
+ManaCost: 40
+Cooldown: 30
+Damage: -40 Healing
+Price: 200
+Range: 0 creature
+ClassLevel: 1
+Description: Heals target lightly
+GraphicsNr: 30
+ClassId: 13
+FamilyId: 1
+CastingSpeed: 100
+Buff

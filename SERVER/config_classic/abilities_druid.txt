@@ -1,0 +1,50 @@
+### a15 / Roots
+ManaCost: 30
+Cooldown: 30
+AoE: cross3
+StatusEffects: 8
+ClassLevel: 1
+Description: Lower speed of target by entangling them in roots
+GraphicsNr: 11
+ClassId: 9
+AnimationId: 2
+CastingSpeed: 100
+
+### a79 / Nature Blend
+Color: 174,174,174
+ManaCost: 15
+Cooldown: 30
+Range: 0 creature
+Instant
+Price: 3600
+StatusEffects: 40
+ClassLevel: 3
+Description: Blends caster into the nature
+GraphicsNr: 54
+ClassId: 9
+CastingSpeed: 100
+Buff
+
+### a80 / Twister
+ManaCost: 6
+Cooldown: 10
+Damage: 40 SLASH
+Price: 700
+ClassLevel: 5
+ProjectileId: 15
+Description: Sends a twister at the target
+GraphicsNr: 55
+ClassId: 9
+CastingSpeed: 100
+
+### a83 / Grow Stub
+ManaCost: 30
+Cooldown: 60
+Price: 700
+StatusEffects: 41
+ClassLevel: 8
+Description: Summons a stub from the ground that hinders the path of your targets
+GraphicsNr: 56
+ClassId: 9
+AnimationId: 2
+CastingSpeed: 100

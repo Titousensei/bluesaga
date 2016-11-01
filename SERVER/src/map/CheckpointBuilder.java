@@ -10,6 +10,7 @@ extends Builder<Coords>
 {
   protected Coords pos = null;
 
+  @Override
   public void init(int id, String name, String origin) {
   }
 

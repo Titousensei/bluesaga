@@ -23,6 +23,7 @@ import components.Shop;
 import components.ShopBuilder;
 import creature.Npc;
 import data_handlers.ability_handler.Ability;
+import data_handlers.ability_handler.AbilityBuilder;
 import data_handlers.ability_handler.StatusEffect;
 import data_handlers.item_handler.Item;
 import data_handlers.item_handler.ItemBuilder;
@@ -92,23 +93,8 @@ public class ServerGameInfo {
 
     // LOAD ABILITIES
     abilityDef = new HashMap<Integer, Ability>();
-
-    ResultSet abilityInfo = Server.gameDB.askDB("select * from ability");
-
-    try {
-      while (abilityInfo.next()) {
-        Ability newAbility = new Ability();
-        newAbility.load(abilityInfo);
-
-        for (StatusEffect se : newAbility.getStatusEffects()) {
-          se.setAbility(newAbility);
-        }
-
-        abilityDef.put(abilityInfo.getInt("Id"), newAbility);
-      }
-      abilityInfo.close();
-    } catch (SQLException e) {
-      e.printStackTrace();
+    for (File f : new File(ServerSettings.PATH).listFiles((dir, name) -> name.startsWith("abilities"))) {
+      Builder.load(f.getPath(), AbilityBuilder.class, abilityDef);
     }
 
     // LOAD SKILLS INFO

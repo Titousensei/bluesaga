@@ -20,11 +20,16 @@ extends Builder<Shop>
   protected String name = null;
   protected String origin = null;
 
+  @Override
   public void init(int id, String name, String origin) {
     this.id = id;
     this.name = name;
     this.origin = origin;
   }
+
+  @Override
+  protected boolean isDuplicateAllowed(String setter)
+  { return "Item".equals(setter) || "Ability".equals(setter); }
 
   public void skill(String val) {
     skillId = parseInt(val);

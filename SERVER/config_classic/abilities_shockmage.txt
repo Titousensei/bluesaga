@@ -1,0 +1,68 @@
+### a9 / Shock Bolt
+ManaCost: 6
+Cooldown: 10
+AoE: square3
+Damage: 30 SHOCK
+Price: 60
+Range: 0 creature
+StatusEffects: 7
+ClassLevel: 3
+ProjectileId: 3
+Description: Deals shock dmg on several targets
+GraphicsNr: 7
+ClassId: 11
+
+### a19 / Lightning Bolt
+Color: 255,250,111
+ManaCost: 12
+Cooldown: 20
+AoE: square3
+Damage: 50 SHOCK
+Range: 12 creature
+Price: 600
+StatusEffects: 23
+ClassLevel: 5
+ProjectileId: 3
+Description: Deals shock dmg on several targets
+GraphicsNr: 14
+ClassId: 11
+
+### a20 / Thunder Ball
+Color: 255,250,111
+ManaCost: 100
+Cooldown: 40
+AoE: square3
+Damage: 70 SHOCK
+Price: 1000
+Range: 0 creature
+StatusEffects: 24
+ClassLevel: 8
+ProjectileId: 3
+Description: Deals shock dmg on several targets
+GraphicsNr: 15
+ClassId: 11
+
+### a44 / Tiny Spark
+ManaCost: 4
+Cooldown: 6
+Range: 4 creature
+Instant
+Damage: x1.5 SHOCK
+ClassLevel: 1
+ProjectileId: 3
+EquipReq: Weapon:11
+Description: Deals 1.5x regular damage on single target
+GraphicsNr: 34
+ClassId: 11
+AnimationId: 10
+
+### a84 / Flash Step
+Color: 255,250,111
+ManaCost: 12
+Cooldown: 10
+Price: 2000
+ClassLevel: 12
+Description: Teleport to target location
+GraphicsNr: 57
+ClassId: 11
+CastingSpeed: 100

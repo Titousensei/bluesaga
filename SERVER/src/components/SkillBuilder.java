@@ -7,6 +7,7 @@ extends Builder<JobSkill>
 {
   protected JobSkill s = null;
 
+  @Override
   public void init(int id, String name, String origin) {
     s = new JobSkill(id, name, origin);
   }

@@ -1,0 +1,66 @@
+### a1 / Fire bolt
+ManaCost: 6
+Cooldown: 10
+AoE: square3
+Damage: 35 FIRE
+Price: 60
+StatusEffects: 1
+ClassLevel: 3
+ProjectileId: 1
+Description: Deals fire dmg on single target
+GraphicsNr: 1
+ClassId: 5
+
+### a23 / Fire Ball
+ManaCost: 12
+Cooldown: 20
+AoE: square3
+Damage: 52 FIRE
+Price: 600
+StatusEffects: 22
+ClassLevel: 5
+ProjectileId: 1
+Description: Deals fire dmg on a large area
+GraphicsNr: 18
+ClassId: 5
+
+### a24 / Fire Wall
+ManaCost: 100
+Cooldown: 40
+AoE: cross5
+Damage: 70 FIRE
+Price: 1000
+StatusEffects: 22
+ClassLevel: 8
+ProjectileId: 1
+Description: Deals fire dmg in the form of a big cross
+GraphicsNr: 19
+ClassId: 5
+
+### a42 / Fire Burst
+ManaCost: 4
+Cooldown: 6
+Range: 4 creature
+Instant
+Damage: x1.5 FIRE
+ClassLevel: 1
+ProjectileId: 1
+EquipReq: Weapon:5
+Description: Deals 1.5x regular damage on single target
+GraphicsNr: 32
+ClassId: 5
+AnimationId: 10
+
+### a57 / Fire Shield
+ManaCost: 30
+Cooldown: 30
+Range: 0 creature
+Instant
+Price: 2500
+StatusEffects: 33
+ClassLevel: 12
+Description: Increases armor and gives fire dmg to attacker
+GraphicsNr: 45
+ClassId: 5
+CastingSpeed: 100
+Buff

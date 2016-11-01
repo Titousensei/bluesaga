@@ -197,7 +197,7 @@ public class ShopHandler extends Handler {
       // CHECK IF PLAYER CAN AFFORD IT
       if (client.playerCharacter.hasCopper(shopAbility.getPrice())) {
         // CHECK IF PLAYER HAS THE ABILITY ALREADY
-        if (client.playerCharacter.hasAbility(shopAbility.getName()) == 9999) {
+        if (client.playerCharacter.hasAbility(shopAbility.name) == 9999) {
 
           // CHECK IF PLAYER HAS ABILITY REQUIREMENTS
           boolean hasReq = true;
@@ -241,13 +241,13 @@ public class ShopHandler extends Handler {
             if (A != null) {
               String msg =
                   "ability/"
-                      + A.getName()
+                      + A.name
                       + '/'
                       + shopAbility.getPrice()
                       + '/'
-                      + A.getAbilityId()
+                      + A.id
                       + '='
-                      + A.getName()
+                      + A.name
                       + '='
                       + A.getClassId()
                       + '='

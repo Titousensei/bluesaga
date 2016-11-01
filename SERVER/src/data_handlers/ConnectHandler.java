@@ -246,7 +246,7 @@ public class ConnectHandler extends Handler {
               "update character_ability set CooldownLeft = "
                   + a.getCooldownLeft()
                   + " where AbilityId = "
-                  + a.getAbilityId()
+                  + a.id
                   + " and CharacterId = "
                   + client.playerCharacter.getDBId());
         }

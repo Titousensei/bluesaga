@@ -12,6 +12,7 @@ extends Builder<Quest>
 
   protected Quest q = null;
 
+  @Override
   public void init(int id, String name, String origin) {
     q = new Quest(id, name, origin);
     q.setType(Quest.QType.Instructions);

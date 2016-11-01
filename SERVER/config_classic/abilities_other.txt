@@ -1,0 +1,655 @@
+
+### a2 / Acid Spit
+Color: 65,245,65
+ManaCost: 10
+Cooldown: 20
+AoE: cross3
+Damage: 8 CHEMS
+Price: 200
+StatusEffects: 2
+ProjectileId: 6
+GraphicsNr: 2
+AnimationId: 1
+CastingSpeed: 100
+
+### a3 / Charm
+Color: 250,100,200
+ManaCost: 3
+Cooldown: 10
+Instant
+Range: 0 creature
+StatusEffects: 3
+CastingSpeed: 100
+
+### a4 / Gas Cloud
+Color: 230,130,250
+ManaCost: 4
+Cooldown: 10
+AoE: square3
+Damage: 2 CHEMS
+Instant
+StatusEffects: 4
+AnimationId: 2
+CastingSpeed: 100
+
+### a5 / Small Gas Cloud
+Color: 230,130,250
+ManaCost: 4
+Cooldown: 10
+Damage: 1 CHEMS
+Instant
+StatusEffects: 4
+AnimationId: 2
+CastingSpeed: 100
+
+### a6 / Big Gas Cloud
+Color: 230,130,250
+ManaCost: 15
+Cooldown: 20
+AoE: 0,0;-1,0;1,0;2,0;0,-1;1,-1;-1,1;0,1;1,1;2,1;0,2;1,2
+- ..xxx
+- .xOxx
+- ..xx.
+- ..xx.
+Damage: 10 CHEMS
+Instant
+StatusEffects: 5
+AnimationId: 2
+CastingSpeed: 100
+
+### a7 / Fire Sea
+ManaCost: 10
+Cooldown: 10
+AoE: 7x3hollow
+Damage: 10 FIRE
+Instant
+StatusEffects: 1
+EquipReq: Weapon:6
+CastingSpeed: 700
+
+
+### a11 / Giant Gas Cloud
+Color: 230,130,250
+ManaCost: 15
+Cooldown: 20
+AoE: 0,0;-1,0;1,0;2,0;0,-1;1,-1;-1,1;0,1;1,1;2,1;0,2;1,2
+Damage: 5 CHEMS
+Instant
+StatusEffects: 5
+AnimationId: 2
+CastingSpeed: 100
+
+### a12 / Slime Spit
+Color: 78,252,107
+ManaCost: 5
+Cooldown: 20
+Damage: 12 CHEMS
+Price: 200
+Range: 0 creature
+ProjectileId: 6
+GraphicsNr: 2
+AnimationId: 1
+CastingSpeed: 100
+
+### a18 / Queen Spider Spit
+Color: 78,252,107
+ManaCost: 15
+Cooldown: 20
+Damage: 220 CHEMS
+Range: 10 creature
+Price: 200
+ProjectileId: 6
+GraphicsNr: 2
+AnimationId: 1
+CastingSpeed: 100
+
+### a25 / Ink Spit
+ManaCost: 8
+Cooldown: 10
+AoE: cross3
+Damage: 6 CHEMS
+Range: 0 creature
+StatusEffects: 26
+ProjectileId: 7
+Description: Sticky ink will cover the targets vision
+GraphicsNr: 20
+AnimationId: 1
+CastingSpeed: 100
+
+### a26 / Throw Bone
+Color: 255,255,255
+ManaCost: 10
+Cooldown: 10
+Damage: 6 STRIKE
+Range: 0 creature
+ProjectileId: 8
+GraphicsNr: 21
+AnimationId: 4
+CastingSpeed: 100
+
+### a31 / Soul Stone
+ManaCost: 0
+Cooldown: 600
+Range: 0 creature
+Instant
+Description: Teleports player back to inn. Premium ability.
+GraphicsNr: 26
+CastingSpeed: 100
+
+### a32 / Split Into 5 moss blobs
+Color: 157,234,87
+ManaCost: 0
+Cooldown: 10
+Range: 0 tile
+Instant
+StatusEffects: 0
+Description: Splits itself into 5 moss blobs
+SpawnIds: 25,25,25,25,25
+CastingSpeed: 100
+
+### a33 / Dizzyness
+Color: 255,0,255
+ManaCost: 8
+Cooldown: 60
+Range: 0 creature
+StatusEffects: 27
+ProjectileId: 2
+Description: Makes Target dizzy for a period of time
+GraphicsNr: 27
+AnimationId: 2
+CastingSpeed: 100
+
+### a34 / Split Into 1 spear and 1 dart elf
+Color: 157,234,87
+ManaCost: 0
+Cooldown: 10
+Range: 0 tile
+Instant
+StatusEffects: 0
+Description: Splits itself into 1 spear and 1 dart elf
+SpawnIds: 44,45
+CastingSpeed: 100
+
+### a35 / Summon spear elf
+Color: 157,234,87
+ManaCost: 50
+Cooldown: 30
+Range: 0 tile
+Instant
+StatusEffects: 0
+Description: Summons spear Elf
+SpawnIds: 44
+AnimationId: 2
+CastingSpeed: 100
+
+### a36 / Summon dart elf
+Color: 157,234,87
+ManaCost: 50
+Cooldown: 30
+Range: 0 tile
+Instant
+StatusEffects: 0
+Description: Summons dart Elf
+SpawnIds: 45
+AnimationId: 2
+CastingSpeed: 100
+
+### a37 / Trap Fire Bolt
+Color: 230,82,62
+ManaCost: 10
+Cooldown: 10
+Damage: 50 FIRE
+Range: 20 tile
+StatusEffects: 1
+ClassLevel: 3
+ProjectileId: 1
+Description: Deals fire dmg on single target
+GraphicsNr: 1
+CastingSpeed: 100
+
+### a38 / Fade
+Color: 93,94,91
+ManaCost: 30
+Cooldown: 10
+Range: 0 creature
+Instant
+Price: 800
+StatusEffects: 12
+Description: Makes the user hard to hit
+GraphicsNr: 28
+CastingSpeed: 100
+Buff
+
+### a39 / Invisibility
+Color: 93,94,91
+ManaCost: 30
+Cooldown: 10
+Range: 0 creature
+Instant
+Price: 800
+StatusEffects: 13
+Description: Makes the user invisible, effect will be canceled if engaged in combat
+GraphicsNr: 29
+CastingSpeed: 100
+Buff
+
+### a41 / Weak Healing
+ManaCost: 40
+Cooldown: 30
+Damage: -20 Healing
+Range: 0 creature
+ClassLevel: 1
+Description: Heals target lightly
+GraphicsNr: 31
+CastingSpeed: 100
+Buff
+
+### a45 / Float Fishing
+Color: 183,228,104
+ManaCost: 0
+Cooldown: 2
+Range: 7 tile
+Price: 50
+StatusEffects: 28
+ClassLevel: 1
+ProjectileId: 9
+EquipReq: Weapon:101
+Description: Fishing with float to catch fishes
+GraphicsNr: 35
+AnimationId: 4
+CastingSpeed: 100
+JobSkillId: 101
+
+### a46 / Snow Ball
+Color: 164,201,255
+ManaCost: 220
+Cooldown: 20
+Range: 0 creature
+StatusEffects: 29
+ClassLevel: 1
+ProjectileId: 2
+Description: Snow ball that covers the vision of the target with snow
+GraphicsNr: 36
+AnimationId: 4
+CastingSpeed: 100
+
+### a47 / Crystal Spikes Sea
+Color: 114,195,135
+ManaCost: 10
+Cooldown: 30
+AoE: 7x3
+Damage: 180 PIERCE
+Instant
+StatusEffects: 16
+ClassLevel: 1
+GraphicsNr: 37
+AnimationId: 1
+CastingSpeed: 100
+
+### a48 / Oozemaw's Bones
+Color: 255,255,255
+ManaCost: 10
+Cooldown: 10
+Damage: 180 STRIKE
+Range: 0 creature
+ProjectileId: 8
+GraphicsNr: 21
+AnimationId: 4
+CastingSpeed: 100
+
+### a49 / Goblin Bomb
+Color: 50,50,50
+ManaCost: 20
+Cooldown: 7
+AoE: diamond5
+Damage: 20 STRIKE
+Range: 10 tile
+StatusEffects: 30
+ClassLevel: 1
+ProjectileId: 11
+Description: Bomb that expodes after a short delay.
+GraphicsNr: 38
+Delay: 3000
+AnimationId: 4
+CastingSpeed: 100
+
+### a50 / Necro Blast
+Color: 59,158,134
+ManaCost: 20
+Cooldown: 20
+AoE: square3
+Damage: 40 CHEMS
+Price: 600
+StatusEffects: 31
+ProjectileId: 12
+Description: Deals CHEM damage
+AnimationId: 1
+CastingSpeed: 100
+
+### a51 / Summon Necro Spawn
+Color: 59,158,134
+ManaCost: 50
+Cooldown: 80
+Range: 0 tile
+Instant
+StatusEffects: 0
+Description: Summons necro spawn
+SpawnIds: 72,72
+CastingSpeed: 100
+
+### a52 / Giant Necro Blast
+Color: 59,158,134
+ManaCost: 40
+Cooldown: 20
+AoE: 0,0;-1,0;1,0;2,0;0,-1;1,-1;-1,1;0,1;1,1;2,1;0,2;1,2
+Damage: 80 CHEMS
+StatusEffects: 31
+ProjectileId: 13
+AnimationId: 1
+CastingSpeed: 100
+
+### a53 / Summon Necro Spawn 5
+Color: 59,158,134
+ManaCost: 50
+Cooldown: 120
+Range: 0 tile
+Instant
+StatusEffects: 0
+Description: Summons necro spawn
+SpawnIds: 72,72,72,72,72
+CastingSpeed: 100
+
+### a59 / Giant Octopus Ink Spit
+ManaCost: 8
+Cooldown: 10
+Damage: 100 CHEMS
+Range: 0 creature
+StatusEffects: 26
+ProjectileId: 7
+Description: Sticky ink will cover the targets vision
+GraphicsNr: 20
+AnimationId: 1
+CastingSpeed: 100
+
+### a60 / Roll Attack
+Color: 174,174,174
+ManaCost: 6
+Cooldown: 6
+Damage: 3 STRIKE
+Range: 2 creature
+Instant
+Description: Deals 1.4x regular damage on single target
+AnimationId: 7
+CastingSpeed: 100
+
+### a61 / Double Strike
+Color: 255,255,255
+ManaCost: 5
+Cooldown: 20
+Range: 0 creature
+Instant
+StatusEffects: 9
+Description: Double attack
+AnimationId: 5
+CastingSpeed: 100
+
+### a62 / Blood suck
+Color: 200,0,0
+ManaCost: 6
+Cooldown: 15
+Damage: 30 PIERCE
+Range: 2 creature
+Instant
+Description: Drains health from target and give the health to the attacker
+GraphicsNr: 48
+AnimationId: 8
+CastingSpeed: 100
+
+### a63 / Rage
+Color: 200,0,0
+ManaCost: 20
+Cooldown: 60
+Range: 0 creature
+Instant
+StatusEffects: 35
+Description: Enrage caster, giving a speed and strength bonus
+GraphicsNr: 51
+CastingSpeed: 100
+Buff
+
+### a64 / Rage Oozemaw
+Color: 200,0,0
+ManaCost: 20
+Cooldown: 60
+Range: 0 creature
+Instant
+StatusEffects: 35
+Description: Enrage caster, giving a speed and strength bonus
+GraphicsNr: 51
+CastingSpeed: 100
+Buff
+
+### a65 / Oozemaw Power Strike
+Color: 174,174,174
+ManaCost: 20
+Cooldown: 12
+AoE: diamond5hollow
+Range: 0 tile
+Instant
+StatusEffects: 37
+Damage: x2.0 STRIKE
+Description: Deals 2x regular damage on single target
+AnimationId: 3
+CastingSpeed: 1000
+
+### a66 / Summon Goblins
+Color: 59,158,134
+ManaCost: 10
+Cooldown: 30
+Range: 0 tile
+Instant
+StatusEffects: 0
+Description: Summons necro spawn
+SpawnIds: 11,14
+CastingSpeed: 100
+
+### a67 / 500 HP Healing
+Color: 183,228,104
+ManaCost: 40
+Cooldown: 8
+Damage: -500 Healing
+Range: 0 creature
+Instant
+Description: Heals target lightly
+GraphicsNr: 30
+FamilyId: 1
+CastingSpeed: 100
+Buff
+
+### a68 / Summon Tentacles
+Color: 59,158,134
+ManaCost: 10
+Cooldown: 30
+Range: 0 tile
+Instant
+StatusEffects: 0
+Description: Summons tentacles
+SpawnIds: 80,80
+CastingSpeed: 100
+
+### a69 / Shroom King Healing
+Color: 183,228,104
+ManaCost: 40
+Cooldown: 6
+Damage: -1500 Healing
+Range: 0 creature
+Instant
+Description: Heals target lightly
+GraphicsNr: 30
+FamilyId: 1
+CastingSpeed: 100
+Buff
+
+### a70 / Summon Toxic Shrooms
+Color: 59,158,134
+ManaCost: 10
+Cooldown: 20
+Range: 0 tile
+Instant
+StatusEffects: 0
+Description: Summons toxic shrooms
+SpawnIds: 22
+CastingSpeed: 100
+
+### a71 / Summon Frost Blob
+Color: 59,158,134
+ManaCost: 10
+Cooldown: 30
+Range: 0 tile
+Instant
+StatusEffects: 0
+Description: Summons frost blob
+SpawnIds: 84
+CastingSpeed: 100
+
+### a72 / 1000 HP Healing
+Color: 183,228,104
+ManaCost: 40
+Cooldown: 6
+Damage: -1000 Healing
+Range: 0 creature
+Instant
+Description: Heals target with 1000 HP
+GraphicsNr: 30
+FamilyId: 1
+CastingSpeed: 100
+Buff
+
+### a81 / Weak Slime Spit
+Color: 78,252,107
+ManaCost: 5
+Cooldown: 5
+Damage: 3 CHEMS
+Price: 200
+Range: 0 creature
+ProjectileId: 6
+GraphicsNr: 2
+AnimationId: 1
+CastingSpeed: 100
+
+### a82 / Weak Fire AoE
+ManaCost: 10
+Cooldown: 10
+AoE: square3
+Damage: 10 FIRE
+Instant
+StatusEffects: 1
+EquipReq: Weapon:6
+CastingSpeed: 100
+
+### a85 / 100 HP Healing
+Color: 183,228,104
+ManaCost: 40
+Cooldown: 6
+Damage: -100 Healing
+Range: 0 creature
+Instant
+Description: Heals target lightly
+GraphicsNr: 30
+FamilyId: 1
+CastingSpeed: 100
+Buff
+
+### a86 / 150 HP Healing
+Color: 183,228,104
+ManaCost: 40
+Cooldown: 6
+Damage: -150 Healing
+Range: 0 creature
+Instant
+Description: Heals target lightly
+GraphicsNr: 30
+FamilyId: 1
+CastingSpeed: 100
+Buff
+
+### a87 / Summon Moss Blob
+Color: 59,158,134
+ManaCost: 10
+Cooldown: 20
+Range: 0 tile
+Instant
+StatusEffects: 0
+Description: Summons moss blobs
+SpawnIds: 25,25
+CastingSpeed: 100
+
+### a88 / Ruby Scarab Fire bolt
+ManaCost: 6
+Cooldown: 10
+Damage: 6 FIRE
+Price: 60
+StatusEffects: 1
+ClassLevel: 1
+ProjectileId: 1
+Description: Deals fire dmg on single target
+GraphicsNr: 1
+CastingSpeed: 100
+
+### a89 / Throw Bone
+Color: 255,255,255
+ManaCost: 10
+Cooldown: 10
+Damage: 50 STRIKE
+Range: 0 creature
+ProjectileId: 8
+GraphicsNr: 21
+AnimationId: 4
+CastingSpeed: 100
+
+### a90 / Summon Bone Heaps
+Color: 59,158,134
+ManaCost: 20
+Cooldown: 60
+Range: 0 tile
+Instant
+StatusEffects: 0
+Description: Summons necro spawn
+SpawnIds: 28,28
+CastingSpeed: 100
+
+### a91 / Roll Attack Sea Shell
+Color: 174,174,174
+ManaCost: 6
+Cooldown: 6
+Damage: 60 STRIKE
+Range: 2 creature
+Instant
+Description: Deals 1.4x regular damage on single target
+AnimationId: 7
+CastingSpeed: 100
+
+### a92 / Power Swirl Tentacle
+Color: 174,174,174
+ManaCost: 6
+Cooldown: 10
+AoE: frame3
+Damage: 70 SLASH
+Range: 0 creature
+Instant
+AnimationId: 6
+CastingSpeed: 100
+
+### a93 / Ice Spikes Sea
+Color: 114,195,135
+ManaCost: 10
+Cooldown: 10
+AoE: 7x3
+Damage: 50 COLD
+Instant
+StatusEffects: 43
+ClassLevel: 1
+GraphicsNr: 37
+Delay: 10
+AnimationId: 1
+CastingSpeed: 2000

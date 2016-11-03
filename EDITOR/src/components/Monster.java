@@ -30,7 +30,7 @@ public class Monster extends Creature {
   private Image thumb;
 
   public Monster(int creatureId, int newX, int newY, String specialType) {
-    super(creatureId, newX, newY, 0);
+    super(creatureId, newX, newY, 0, 2);
 
     SpecialType = specialType;
 

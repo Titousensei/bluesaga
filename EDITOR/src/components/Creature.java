@@ -6,6 +6,7 @@ package components;
  ************************************/
 import game.BP_EDITOR;
 import graphics.Sprite;
+import game.EditColors;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -34,6 +35,7 @@ public class Creature {
   private boolean Captain = false;
 
   protected Sprite Shadow;
+  protected Sprite emoticon;
 
   private Animation special_glow;
 
@@ -171,7 +173,7 @@ public class Creature {
 
   protected boolean ShowLevelUp;
 
-  public Creature(int creatureId, int newX, int newY, int id) {
+  public Creature(int creatureId, int newX, int newY, int id, int aggro) {
 
     try {
       damageFont = new UnicodeFont("fonts/nokiaFont.ttf", 18, true, true);
@@ -188,6 +190,7 @@ public class Creature {
     FaceDir = "LEFT";
     STATUS = "IDLE";
     hitType = "";
+    AggroType = aggro;
 
     X = newX;
     Y = newY;
@@ -269,6 +272,8 @@ public class Creature {
     targetIcon = BP_EDITOR.GFX.getSprite("gui/world/targetIcon").getAnimation();
 
     special_glow = BP_EDITOR.GFX.getSprite("effects/fx_special_glow").getAnimation();
+
+    emoticon = getAggroTypeEmoticon(AggroType);
   }
 
   public void resetBonusStats() {
@@ -380,6 +385,9 @@ public class Creature {
         if (HeadItem != null && !hideEquipment) {
           HeadImage.draw(x + 75 + HeadX, y - 50 - HeadY + dY, -50, 50, animationColor);
         }
+      }
+      if (emoticon!=null) {
+        emoticon.draw(x + 15,y-(SizeHeight-1)*50 - 15, EditColors.DIM);
       }
     }
   }
@@ -1380,8 +1388,51 @@ public class Creature {
     return Aggro;
   }
 
+  public void setAggroType(int aggro) {
+    AggroType = aggro;
+    emoticon = getAggroTypeEmoticon(AggroType);
+  }
+
   public int getAggroType() {
     return AggroType;
+  }
+
+  public static String getAggroTypeStr(int aggro) {
+    switch (aggro) {
+    case 0:
+      return "practice target";
+    case 1:
+      return "Mov";
+    case 2:
+      return "mov+aggro";
+    case 3:
+      return "npc w/dialog";
+    case 4:
+      return "follow";
+    case 5:
+      return "guardian";
+    default:
+      return "???";
+    }
+  }
+
+  public static Sprite getAggroTypeEmoticon(int aggro) {
+    switch (aggro) {
+    case 0:
+      return BP_EDITOR.GFX.getSprite("gui/emoticons/rest");
+    case 1:
+      return BP_EDITOR.GFX.getSprite("gui/emoticons/emo_smile");
+    case 2:
+      return BP_EDITOR.GFX.getSprite("gui/emoticons/aggro");
+    case 3:
+      return BP_EDITOR.GFX.getSprite("gui/emoticons/talk");
+    case 4:
+      return BP_EDITOR.GFX.getSprite("gui/emoticons/emo_love");
+    case 5:
+      return BP_EDITOR.GFX.getSprite("gui/emoticons/emo_angry");
+    default:
+      return null;
+    }
   }
 
   public void setAggro(boolean aggroState) {
@@ -1406,6 +1457,7 @@ public class Creature {
 
   @Override
   public String toString() {
-    return "creatures/m" + CreatureId + ": " + Name + " (" + NpcId + ")";
+    return "creatures/m" + CreatureId + ": " + Name + " (" + NpcId + ") -> "
+        + getAggroTypeStr(AggroType);
   }
 }

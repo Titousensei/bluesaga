@@ -59,12 +59,12 @@ public class Npc extends Creature {
    */
 
   /**
-   * 0 = not moving and no aggro
-   * 1 = moving and no aggro
-   * 2 = moving and aggro
-   * 3 = npc quest/shop
-   * 4 = moving and aggro but no attackspeed
-   * 5 = guardian
+   * 0 = not moving and no aggro  // Practice Target
+   * 1 = moving and no aggro      // Dead Heap
+   * 2 = moving and aggro         // Default, all monsters
+   * 3 = npc quest/shop           // Dialog Npc
+   * 4 = moving and aggro but no attackspeed  // Rump Hob, Chicken, Kitten
+   * 5 = guardian                 // Forest Guardian
    */
   private int AggroType;
   private int AggroRange;

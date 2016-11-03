@@ -39,7 +39,7 @@ public class BP_EDITOR extends BasicGame {
 
   public enum Mode {
       CLEAR, EFFECT, TRAP, TRIGGER, DOOR, DESTINATION, PASSABLE, BRUSH,
-      DELETE_TILE, DELETE_OBJECT, DELETE_MONSTER, MINI_MAP
+      DELETE_TILE, DELETE_OBJECT, DELETE_MONSTER, MINI_MAP, AGGRO
   };
 
   private static AppGameContainer app;
@@ -98,6 +98,8 @@ public class BP_EDITOR extends BasicGame {
   private static int BrushSize = 1;
 
   private static boolean makePassable = true;
+
+  private static int makeAggro = 2;
 
   // SCREEN DATA
 
@@ -406,7 +408,7 @@ public class BP_EDITOR extends BasicGame {
     }
 
     try (ResultSet monsterInfo = mapDB.askDB(
-            "select SpawnX, SpawnY, SpawnZ, CreatureId, Id from area_creature where SpawnX >= "
+            "select SpawnX, SpawnY, SpawnZ, CreatureId, Id, AggroType from area_creature where SpawnX >= "
                 + (PLAYER_X - TILE_HALF_W)
                 + " and SpawnX < "
                 + (PLAYER_X + TILE_HALF_W)
@@ -425,8 +427,9 @@ public class BP_EDITOR extends BasicGame {
         int tileZ = 0;
         int creatureId = monsterInfo.getInt("CreatureId");
         int npcId = monsterInfo.getInt("Id");
+        int aggroType = monsterInfo.getInt("AggroType");
 
-        SCREEN_TILES[tileX][tileY][tileZ].setOccupant(new Creature(creatureId, 0, 0, npcId));
+        SCREEN_TILES[tileX][tileY][tileZ].setOccupant(new Creature(creatureId, 0, 0, npcId, aggroType));
       }
       monsterInfo.getStatement().close();
     } catch (SQLException e) {
@@ -613,6 +616,7 @@ public class BP_EDITOR extends BasicGame {
       renderHelp(g, "F4: Mini Map");
       renderHelp(g, "1/2: Brushsize -/+ " + BrushSize);
       renderHelp(g, "P: Toggle Passable");
+      renderHelp(g, "Q: Toggle AggroType");
       renderHelp(g, "R: Place Door");
       renderHelp(g, "E: Place Effect");
       renderHelp(g, "Del: Clear Area");
@@ -654,6 +658,9 @@ public class BP_EDITOR extends BasicGame {
         break;
       case PASSABLE:
         renderMode(g, "MODE: Toggle Passable - " + makePassable);
+        break;
+      case AGGRO:
+        renderMode(g, "MODE: Toggle Aggro - " + Creature.getAggroTypeStr(makeAggro));
         break;
       case BRUSH:
         renderMode(g, "MODE: Brush");
@@ -983,6 +990,20 @@ public class BP_EDITOR extends BasicGame {
       }
     }
 
+    if (INPUT.isKeyPressed(Input.KEY_Q)) {
+      activeMenu = null;
+
+      if (currentMode == Mode.AGGRO) {
+        ++ makeAggro;
+        if (makeAggro == 6) {
+          makeAggro = 0;
+        }
+      }
+      else {
+        currentMode = Mode.AGGRO;
+      }
+    }
+
     if (INPUT.isMousePressed(0)) {
 
       int mouseX = INPUT.getAbsoluteMouseX();
@@ -1177,6 +1198,22 @@ public class BP_EDITOR extends BasicGame {
                 + " and Z = "
                 + PLAYER_Z);
         loadScreen();
+        break;
+
+      case AGGRO:
+        Creature c = SCREEN_TILES[screenX][screenY][0].getOccupant();
+        if (c!=null) {
+          c.setAggroType(makeAggro);
+          mapDB.updateDB(
+              "update area_creature set AggroType = "
+                  + makeAggro
+                  + " where SpawnX = "
+                  + tileX
+                  + " and SpawnY = "
+                  + tileY
+                  + " and SpawnZ = "
+                  + PLAYER_Z);
+        }
         break;
 
       case TRIGGER:

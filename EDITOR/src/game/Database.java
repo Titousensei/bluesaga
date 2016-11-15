@@ -1,5 +1,10 @@
 package game;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.FileSystems;
+import java.nio.file.Path;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -10,12 +15,16 @@ import components.Monster;
 import map.Container;
 import map.Tile;
 
+import static java.nio.file.StandardCopyOption.*;
+
 public class Database {
 
   private Connection conn;
+  public final String name;
 
   public Database(String name) throws ClassNotFoundException {
     Class.forName("org.sqlite.JDBC");
+    this.name = name;
 
     try {
       conn = DriverManager.getConnection("jdbc:sqlite:" + EditorSettings.PATH + name + ".db");
@@ -26,6 +35,16 @@ public class Database {
 
   public void bootstrapMap()
   {
+    try {
+      Path source      = FileSystems.getDefault().getPath(EditorSettings.PATH, name + ".db");
+      Path destination = FileSystems.getDefault().getPath(EditorSettings.PATH, name + ".bak");
+      Files.copy(source, destination, REPLACE_EXISTING);
+      System.out.println("Map backup: " + destination);
+    }
+    catch (IOException ex) {
+      ex.printStackTrace();
+    }
+
     updateDB("CREATE TABLE IF NOT EXISTS area_creature (Id integer PRIMARY KEY  DEFAULT (NULL) ,AreaId integer,CreatureId integer,MobLevel integer DEFAULT (NULL) ,SpawnX integer DEFAULT (NULL) ,SpawnY integer DEFAULT (NULL) ,SpawnZ INTEGER DEFAULT (0) , Special VARCHAR DEFAULT None, AggroType INTEGER DEFAULT 0, Name VARCHAR, SpawnCriteria INTEGER DEFAULT 0, Equipment VARCHAR DEFAULT None);");
     updateDB("CREATE TABLE IF NOT EXISTS area_tile (Id INTEGER PRIMARY KEY  NOT NULL ,X INTEGER,Y INTEGER,Z INTEGER,Type VARCHAR,Name VARCHAR,Passable INTEGER,ObjectId VARCHAR DEFAULT ('None') , DoorId INTEGER DEFAULT 0, AreaEffectId INTEGER DEFAULT 0);");
     updateDB("CREATE TABLE IF NOT EXISTS door (Id integer PRIMARY KEY  DEFAULT (0) ,GotoX integer DEFAULT (0) ,GotoY INTEGER DEFAULT (0) ,GotoZ INTEGER DEFAULT (0) ,Locked INTEGER DEFAULT (0) , CreatureIds VARCHAR DEFAULT None, Premium INTEGER DEFAULT 0);");

@@ -1023,25 +1023,19 @@ public class AdminControlsHandler extends Handler {
         int playerId = playerInfo.getInt("Id");
         int CheckpointId = playerInfo.getInt("CheckpointId");
 
-        ResultSet checkpointInfo =
-            Server.mapDB.askDB("select X,Y,Z from checkpoint where Id = " + CheckpointId);
-        if (checkpointInfo.next()) {
-          int checkpointX = checkpointInfo.getInt("X");
-          int checkpointY = checkpointInfo.getInt("Y");
-          int checkpointZ = checkpointInfo.getInt("Z");
-
+        Coords respawn = ServerGameInfo.checkpointDef.get(CheckpointId));
+        if (respawn!=null) {
           Server.userDB.updateDB(
               "update user_character set X = "
-                  + checkpointX
+                  + respawn.x
                   + ", Y = "
-                  + checkpointY
+                  + respawn.y
                   + ", Z = "
-                  + checkpointZ
+                  + respawn.z
                   + " where Id = "
                   + playerId);
           addOutGoingMessage(client, "message", playerName + " has been moved back to checkpoint");
         }
-        checkpointInfo.close();
       }
       playerInfo.close();
     } catch (SQLException e) {

@@ -236,10 +236,12 @@ public class QuestHandler extends Handler {
           }
 
           // GET CHECKIN FROM NPC
-
-          int checkInId = Server.mapDB.askInt(
-              "select Id from checkpoint where NpcId = " + NPC.getDBId());
-          npcInfo.append('/').append(checkInId);
+          if (ServerGameInfo.checkpointDef.containsKey(NPC.getDBId())) {
+            npcInfo.append('/').append(NPC.getDBId());
+          }
+          else {
+            npcInfo.append("/0");
+          }
 
           // GET BOUNTY MERCHANT
 

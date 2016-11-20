@@ -9,6 +9,7 @@ import org.newdawn.slick.Graphics;
 
 import components.Creature;
 import graphics.Sprite;
+import utils.Coords;
 
 public class Tile {
   private String id;

@@ -30,11 +30,11 @@ import data_handlers.monster_handler.MonsterHandler;
 public class BattleHandler extends Handler {
 
   public static int playerHitTime = 20;
-  
+
   public enum PlayerDeathCause {
-	  CREATURE_KILL,
-	  FAIR_PK,
-	  UNFAIR_PK
+    CREATURE_KILL,
+    FAIR_PK,
+    UNFAIR_PK
   }
 
   public static void init() {
@@ -661,7 +661,7 @@ public class BattleHandler extends Handler {
 
       // CHECK IF PLAYER CAN WEAR EQUIP, OTHERWISE DROP IT ON GROUND
       if(pkAttack != PlayerDeathCause.UNFAIR_PK)
-    	  ItemHandler.loseLootUponDeath(client);
+        ItemHandler.loseLootUponDeath(client);
     }
 
     client.playerCharacter.saveInfo();
@@ -756,57 +756,26 @@ public class BattleHandler extends Handler {
 
   public static String respawnPlayer(PlayerCharacter playerCharacter) {
 
-    int checkpointId = 0;
-    int playerX = 0;
-    int playerY = 0;
-    int playerZ = 0;
-
-    String playerpos = "";
-
     Server.WORLD_MAP.removePlayerFromZ(playerCharacter, playerCharacter.getZ());
 
-    ResultSet rs =
-        Server.userDB.askDB(
-            "select CheckpointId from user_character where Id = " + playerCharacter.getDBId());
+    int checkpointId = Server.userDB.askInt(
+         "select CheckpointId from user_character where Id = " + playerCharacter.getDBId());
 
-    try {
-      while (rs.next()) {
-        checkpointId = rs.getInt("CheckpointId");
-      }
-      rs.close();
-    } catch (SQLException e) {
-      e.printStackTrace();
-    }
-
-    rs = Server.mapDB.askDB("select X,Y, Z from checkpoint where Id = " + checkpointId);
-
-    try {
-      while (rs.next()) {
-        playerX = rs.getInt("X");
-        playerY = rs.getInt("Y");
-        playerZ = rs.getInt("Z");
-      }
-      rs.close();
-    } catch (SQLException e) {
-      e.printStackTrace();
-    }
-
-    playerCharacter.walkTo(playerX, playerY, playerZ);
+    Coords respawn = ServerGameInfo.checkpointDef.get(checkpointId);
+    playerCharacter.walkTo(respawn.x, respawn.y, respawn.z);
 
     Server.WORLD_MAP.addPlayerToZ(playerCharacter, playerCharacter.getZ());
 
     Server.userDB.updateDB(
         "update user_character set X = "
-            + playerX
+            + respawn.x
             + ", Y = "
-            + playerY
+            + respawn.y
             + ", Z = "
-            + playerZ
+            + respawn.z
             + ", AreaEffectId = 0 where Id = "
             + playerCharacter.getDBId());
 
-    playerpos = playerX + ";" + playerY + ";" + playerZ;
-
-    return playerpos;
+    return respawn.x + ";" + respawn.y + ";" + respawn.z;;
   }
 }

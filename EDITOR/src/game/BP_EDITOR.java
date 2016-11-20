@@ -9,7 +9,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
 
-import map.Coords;
 import map.RandomDungeon;
 import map.Tile;
 import map.TileObject;
@@ -21,6 +20,7 @@ import menus.MonsterMenu;
 import menus.ObjectMenu;
 import menus.TextureMenu;
 import utils.RandomUtils;
+import utils.Coords;
 
 import org.newdawn.slick.BasicGame;
 import org.newdawn.slick.Color;

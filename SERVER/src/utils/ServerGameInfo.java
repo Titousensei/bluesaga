@@ -27,6 +27,7 @@ public class ServerGameInfo {
   public static Map<Integer, Item> itemDef;
 
   public static Map<Integer, Shop> shopDef;
+  public static Map<Integer, Coords> checkpointDef;
 
   public static Map<Integer, Ability> abilityDef;
   public static Map<Integer, JobSkill> skillDef;
@@ -140,8 +141,14 @@ public class ServerGameInfo {
 
     // LOAD SHOP INFO
     shopDef = new HashMap<>();
-    for (File f : new File(ServerSettings.PATH).listFiles((dir, name) -> name.startsWith("shop"))) {
+    for (File f : new File(ServerSettings.PATH).listFiles((dir, name) -> name.startsWith("shops_"))) {
       Builder.load(f.getPath(), ShopBuilder.class, shopDef);
+    }
+
+    // LOAD CHECK-INS INFO
+    checkpointDef = new HashMap<>();
+    for (File f : new File(ServerSettings.PATH).listFiles((dir, name) -> name.startsWith("checkpoints_"))) {
+      Builder.load(f.getPath(), CheckpointBuilder.class, checkpointDef);
     }
 
     // LOAD MONSTERS INFO

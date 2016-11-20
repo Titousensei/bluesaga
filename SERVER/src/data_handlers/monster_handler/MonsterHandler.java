@@ -2,9 +2,7 @@ package data_handlers.monster_handler;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Vector;
+import java.util.*;
 import java.util.Map.Entry;
 
 import map.Tile;
@@ -165,27 +163,19 @@ public class MonsterHandler extends Handler {
 
   public static void checkMonsterRespawn() {
 
-    String monsterRespawnInfo = Server.WORLD_MAP.checkRespawns();
+    List<Npc> monsterRespawn = Server.WORLD_MAP.checkRespawns();
 
-    if (!monsterRespawnInfo.equals("none")) {
+    for (Npc monster : monsterRespawn) {
+      MapHandler.checkIfDoorCloses(monster.getDBId());
 
-      String monstersToRespawn[] = monsterRespawnInfo.split(",");
+      for (Map.Entry<Integer, Client> entry : Server.clients.entrySet()) {
+        Client s = entry.getValue();
 
-      for (String mId : monstersToRespawn) {
-        int monsterId = Integer.parseInt(mId);
-        Npc monster = Server.WORLD_MAP.getMonster(monsterId);
-
-        MapHandler.checkIfDoorCloses(monsterId);
-
-        for (Map.Entry<Integer, Client> entry : Server.clients.entrySet()) {
-          Client s = entry.getValue();
-
-          if (s.Ready) {
-            if (isVisibleForPlayer(
-                s.playerCharacter, monster.getX(), monster.getY(), monster.getZ())) {
-              addOutGoingMessage(s, "respawnmonster", monster.getSmallData());
-            }
-          }
+        if (s.Ready
+        && isVisibleForPlayer(
+              s.playerCharacter, monster.getX(), monster.getY(), monster.getZ())
+        ) {
+            addOutGoingMessage(s, "respawnmonster", monster.getSmallData());
         }
       }
     }

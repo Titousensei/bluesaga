@@ -8,10 +8,7 @@ import network.Server;
 import java.awt.Point;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Vector;
+import java.util.*;
 import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ThreadLocalRandom;
@@ -56,7 +53,7 @@ public class WorldMap implements TileBasedMap {
 
   private int NrPlayers;
 
-  private ConcurrentHashMap<Integer, Npc> Monsters;
+  private Map<Integer, Npc> Monsters;
 
   private int newMonsterId = 0;
 
@@ -67,10 +64,8 @@ public class WorldMap implements TileBasedMap {
   }
 
   public void loadMap() {
-    Monsters = new ConcurrentHashMap<Integer, Npc>();
-    Monsters.clear();
-
-    MapTiles = new HashMap<String, Tile>();
+    Monsters = new ConcurrentHashMap<>();
+    MapTiles = new HashMap<>();
 
     NrPlayers = 0;
 
@@ -79,9 +74,9 @@ public class WorldMap implements TileBasedMap {
     int maxX = 0;
     int maxY = 0;
 
-    monstersByZ = new HashMap<Integer, Vector<Npc>>();
-    playersByZ = new HashMap<Integer, Vector<PlayerCharacter>>();
-    zLevels = new Vector<Integer>();
+    monstersByZ = new HashMap<>();
+    playersByZ = new HashMap<>();
+    zLevels = new Vector<>();
     pathMapSize = 0;
 
     // LOAD MAP FROM DB
@@ -568,11 +563,11 @@ public class WorldMap implements TileBasedMap {
     }
   }
 
-  public String checkRespawns() {
+  public List<Npc> checkRespawns() {
 
-    String respawnInfo = "";
+    List<Npc> respawnInfo = new ArrayList<>(Monsters.size());
 
-    for (Iterator<Npc> iter = getMonsters().values().iterator(); iter.hasNext(); ) {
+    for (Iterator<Npc> iter = Monsters.values().iterator(); iter.hasNext(); ) {
       Npc m = iter.next();
 
       if (m.isDead() && !m.isSpawned()) {
@@ -624,7 +619,7 @@ public class WorldMap implements TileBasedMap {
 
             MapTiles.get(m.getX() + "," + m.getY() + "," + m.getZ())
                 .setOccupant(CreatureType.Monster, m);
-            respawnInfo += m.getDBId() + ",";
+            respawnInfo.add(m);
           }
         }
       }
@@ -633,9 +628,6 @@ public class WorldMap implements TileBasedMap {
         iter.remove();
       }
     }
-    if (respawnInfo.equals("")) {
-      respawnInfo = "none";
-    }
 
     return respawnInfo;
   }
@@ -643,7 +635,7 @@ public class WorldMap implements TileBasedMap {
   public String getAggroInfo() {
     StringBuilder aggroInfo = new StringBuilder(1000);
 
-    for (Iterator<Npc> iter = getMonsters().values().iterator(); iter.hasNext(); ) {
+    for (Iterator<Npc> iter = Monsters.values().iterator(); iter.hasNext(); ) {
       Npc m = iter.next();
 
       int aggroStatus = 0;
@@ -727,7 +719,7 @@ public class WorldMap implements TileBasedMap {
     m.setCreatureType(CreatureType.Monster);
     m.setReadyToMove(true);
     m.loadEquipment();
-    getMonsters().put(newMonsterId, m);
+    Monsters.put(newMonsterId, m);
     monstersByZ.get(m.getZ()).add(m);
   }
 
@@ -753,7 +745,7 @@ public class WorldMap implements TileBasedMap {
 
     monstersByZ.get(m.getZ()).add(m);
 
-    getMonsters().put(newMonsterId, m);
+    Monsters.put(newMonsterId, m);
   }
 
   /*
@@ -765,7 +757,7 @@ public class WorldMap implements TileBasedMap {
     return MapTiles;
   }
 
-  public ConcurrentHashMap<Integer, Npc> getMonsters() {
+  public Map<Integer, Npc> getMonsters() {
     return Monsters;
   }
 
@@ -773,8 +765,8 @@ public class WorldMap implements TileBasedMap {
     return MapTiles.get(x + "," + y + "," + z);
   }
 
-  public Npc getMonster(int monsterId) {
-    return getMonsters().get(monsterId);
+  public Npc getMonster(Integer monsterId) {
+    return Monsters.get(monsterId);
   }
 
   public int getEntranceX() {
@@ -796,7 +788,7 @@ public class WorldMap implements TileBasedMap {
   public String getMonstersPosAsString() {
     StringBuilder mobinfo = new StringBuilder(1000);
 
-    for (Iterator<Npc> iter = getMonsters().values().iterator(); iter.hasNext(); ) {
+    for (Iterator<Npc> iter = Monsters.values().iterator(); iter.hasNext(); ) {
       Npc m = iter.next();
 
       // SEND dbId, newX, newY

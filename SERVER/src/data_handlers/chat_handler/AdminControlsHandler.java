@@ -11,6 +11,7 @@ import game.ServerSettings;
 import network.Client;
 import network.Server;
 import player_classes.BaseClass;
+import utils.Coords;
 import utils.ServerGameInfo;
 import utils.WebHandler;
 import utils.XPTables;
@@ -1023,7 +1024,7 @@ public class AdminControlsHandler extends Handler {
         int playerId = playerInfo.getInt("Id");
         int CheckpointId = playerInfo.getInt("CheckpointId");
 
-        Coords respawn = ServerGameInfo.checkpointDef.get(CheckpointId));
+        Coords respawn = ServerGameInfo.checkpointDef.get(CheckpointId);
         if (respawn!=null) {
           Server.userDB.updateDB(
               "update user_character set X = "

@@ -12,7 +12,9 @@ import character_info.CharacterInfo;
 import map.Tile;
 import network.Client;
 import network.Server;
+import utils.Coords;
 import utils.MathUtils;
+import utils.ServerGameInfo;
 import utils.XPTables;
 import creature.Creature;
 import creature.Npc;
@@ -776,6 +778,6 @@ public class BattleHandler extends Handler {
             + ", AreaEffectId = 0 where Id = "
             + playerCharacter.getDBId());
 
-    return respawn.x + ";" + respawn.y + ";" + respawn.z;;
+    return respawn.x + ";" + respawn.y + ";" + respawn.z;
   }
 }

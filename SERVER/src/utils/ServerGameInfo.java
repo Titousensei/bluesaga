@@ -8,6 +8,7 @@ import java.io.File;
 import game.ServerSettings;
 import map.AreaEffect;
 import map.AreaEffectBuilder;
+import map.CheckpointBuilder;
 import network.Server;
 import player_classes.*;
 import components.Builder;

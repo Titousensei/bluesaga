@@ -562,17 +562,7 @@ public class ItemHandler extends Handler {
                   rareChance = Math.round(rareChance / 10.0f);
                 }
 
-                ResultSet modifierInfo =
-                    Server.gameDB.askDB(
-                        "select Id from item_modifier where DropRate >= "
-                            + rareChance
-                            + " order by RANDOM() limit 1");
-
-                if (modifierInfo.next()) {
-                  droppedItem.setModifierId(modifierInfo.getInt("Id"));
-                }
-
-                modifierInfo.close();
+                droppedItem.setModifier(Modifier.random());
 
                 if (TARGET.getSpecialType() > 0) {
                   int magicChance = RandomUtils.getInt(0, 100);

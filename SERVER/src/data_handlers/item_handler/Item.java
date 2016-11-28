@@ -20,7 +20,6 @@ public class Item {
   private String SubType;
   private String Material;
   private String Family;
-  private String Color;
 
   private String Description;
 
@@ -44,7 +43,7 @@ public class Item {
   private Stats Stats = new Stats();
 
   // SPECIAL ITEM STATS
-  private int ModifierId = 0;
+  private Modifier modifier = Modifier.Regular;
   private int MagicId = 0;
 
   private HashMap<String, Integer> Requirements = new HashMap<String, Integer>();
@@ -71,7 +70,6 @@ public class Item {
 
   public Item(Item copy) {
     equipable = false;
-    Color = "255,255,255";
 
     Stats.reset();
     statusEffects = new Vector<StatusEffect>();
@@ -131,7 +129,6 @@ public class Item {
   public void load(ResultSet rs) {
 
     equipable = false;
-    Color = "255,255,255";
     Stats.reset();
     statusEffects.clear();
 
@@ -289,11 +286,7 @@ public class Item {
   }
 
   public String getColor() {
-    return Color;
-  }
-
-  public void setColor(String color) {
-    Color = color;
+    return modifier.color;
   }
 
   public void setId(int id) {
@@ -426,51 +419,38 @@ public class Item {
   }
 
   public int getModifierId() {
-    return ModifierId;
+    return modifier.id;
   }
 
-  public void setModifierId(int modifierId) {
+  public void setModifierId(int id) {
+    Modifier mod = Modifier.get(id);
+    setModifier(mod);
+  }
 
-    ModifierId = modifierId;
-    if (ModifierId > 0) {
-      ResultSet rs =
-          Server.gameDB.askDB(
-              "select Name, StatBonus, Color from item_modifier where Id = " + modifierId);
+  public void setModifier(Modifier mod) {
 
-      // Different percent for different equip types
-      HashMap<String, Float> modifiers = new HashMap<String, Float>();
-      modifiers.put("Weapon", 10.0f);
-      modifiers.put("OffHand", 16.0f);
-      modifiers.put("Head", 16.0f);
-      modifiers.put("Amulet", 20.0f);
-      modifiers.put("Artifact", 20.0f);
+    modifier = mod;
+    if (modifier != Modifier.Regular) {
+      Name = modifier.toString() + ' ' + Name;
 
-      try {
-        if (rs.next()) {
+      for (Map.Entry<String, Integer> stat : Stats.getHashMap().entrySet()) {
 
-          Color = rs.getString("Color");
-          Name = rs.getString("Name") + " " + Name;
+        String statName = stat.getKey();
+        int statValue = stat.getValue();
 
-          for (Map.Entry<String, Integer> stat : Stats.getHashMap().entrySet()) {
+        if (statValue != 0
+        && !(getType().equals("Weapon")
+            && statName.equals("ATTACKSPEED"))
+        ) {
+          float statBonus = modifier.bonus * Modifier.ITEM_COEF.get(getType());
+          int newStat = Math.round(statValue * (1.0f + statBonus));
 
-            String statName = stat.getKey();
-            int statValue = stat.getValue();
-
-            if (statValue != 0 && !(getType().equals("Weapon") && statName.equals("ATTACKSPEED"))) {
-              float statBonus = (rs.getInt("StatBonus") * modifiers.get(getType())) / 100.0f;
-              int newStat = Math.round(statValue * (1.0f + statBonus));
-
-              if (newStat < 0) {
-                newStat = 0;
-              }
-
-              Stats.setValue(statName, newStat);
-            }
+          if (newStat < 0) {
+            newStat = 0;
           }
+
+          Stats.setValue(statName, newStat);
         }
-        rs.close();
-      } catch (SQLException e) {
-        e.printStackTrace();
       }
     }
   }
@@ -551,18 +531,7 @@ public class Item {
   }
 
   public int getSoldValue() {
-    int price = (int) Math.floor(getValue() / 2.0f);
-
-    if (getModifierId() > 0) {
-      if (getModifierId() == 1) {
-        price = Math.round(price / 4.0f);
-      } else if (getModifierId() == 2) {
-        price = Math.round(price / 2.5f);
-      } else if (getModifierId() > 2) {
-        price = Math.round(price * (1.0f + (getModifierId() - 2) * 0.1f));
-      }
-    }
-    return price;
+    return (int) Math.floor(getValue() * modifier.priceCoef / 2.0f);
   }
 
   public String getDescription() {

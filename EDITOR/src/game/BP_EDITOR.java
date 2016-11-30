@@ -754,43 +754,39 @@ public class BP_EDITOR extends BasicGame {
             g.drawRect(screenX * 50, screenY * 50, 50 * BrushSize, 50 * BrushSize);
           }
         }
-      }
-    }
 
-    if (INPUT != null) {
-      if (!Loading && activeMenu != null) {
-        activeMenu.draw(g, container, INPUT.getAbsoluteMouseX(), INPUT.getAbsoluteMouseY());
-      }
+        if (!Loading && activeMenu != null) {
+          activeMenu.draw(g, container, INPUT.getAbsoluteMouseX(), INPUT.getAbsoluteMouseY());
+        }
 
-      int screenX = (int) Math.floor(INPUT.getAbsoluteMouseX() / TILE_SIZE);
-      int screenY = (int) Math.floor(INPUT.getAbsoluteMouseY() / TILE_SIZE);
-      g.setFont(FONTS.size8);
-      String coords = PLAYER_X + "," + PLAYER_Y + "," + PLAYER_Z;
-      String tileStr = SCREEN_TILES[screenX][screenY][0].getType() + "/" + SCREEN_TILES[screenX][screenY][0].getName();
+        g.setFont(FONTS.size8);
+        String coords = tileX + "," + tileY + "," + PLAYER_Z;
+        String tileStr = SCREEN_TILES[screenX][screenY][0].getType() + "/" + SCREEN_TILES[screenX][screenY][0].getName();
 
-      String occStr = null;
-      if (SCREEN_TILES[screenX][screenY][0].getOccupant() != null) {
-        occStr = "Npc: " + String.valueOf(SCREEN_TILES[screenX][screenY][0].getOccupant());
-      }
-      else if (SCREEN_OBJECTS[screenX][screenY][0] != null) {
-        occStr = "Object: " + String.valueOf(SCREEN_OBJECTS[screenX][screenY][0]);
-      }
+        String occStr = null;
+        if (SCREEN_TILES[screenX][screenY][0].getOccupant() != null) {
+          occStr = "Npc: " + String.valueOf(SCREEN_TILES[screenX][screenY][0].getOccupant());
+        }
+        else if (SCREEN_OBJECTS[screenX][screenY][0] != null) {
+          occStr = "Object: " + String.valueOf(SCREEN_OBJECTS[screenX][screenY][0]);
+        }
 
-      g.setColor(EditColors.BLACK);
-      g.drawString(coords, 106, 31);
-      g.drawString(tileStr, 106, 43);
-      if (occStr!=null) {
-        g.drawString(occStr,  106, 55);
-      }
+        g.setColor(EditColors.BLACK);
+        g.drawString(coords, 106, 31);
+        g.drawString(tileStr, 106, 43);
+        if (occStr!=null) {
+          g.drawString(occStr,  106, 55);
+        }
 
-      g.setColor(EditColors.WHITE);
-      g.drawString(coords, 105, 30);
-      g.drawString(tileStr, 105, 42);
-      if (occStr!=null) {
-        g.drawString(occStr,  105, 54);
-      }
+        g.setColor(EditColors.WHITE);
+        g.drawString(coords, 105, 30);
+        g.drawString(tileStr, 105, 42);
+        if (occStr!=null) {
+          g.drawString(occStr,  105, 54);
+        }
 
-      Mouse.draw(INPUT.getAbsoluteMouseX(), INPUT.getAbsoluteMouseY());
+        Mouse.draw(INPUT.getAbsoluteMouseX(), INPUT.getAbsoluteMouseY());
+      }
     }
   }
 

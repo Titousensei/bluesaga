@@ -723,38 +723,9 @@ public class WalkHandler extends Handler {
     if (areaEffectId > 0) {
       AreaEffect ae = ServerGameInfo.areaEffectsDef.get(areaEffectId);
 
-      String song = ae.getSong();
-      String ambient = ae.getAmbient();
-      String particles = ae.getParticles();
-
-      if (MapHandler.dayNightTime == 1) {
-        if (client.playerCharacter.getZ() == 0) {
-          song = "night";
-          ambient = "night";
-          particles = "firefly";
-        }
-      }
-
-      String effectData =
-          ae.id
-              + ","
-              + ae.name
-              + ","
-              + ae.getTint()
-              + ","
-              + ae.getTintColor()
-              + ","
-              + ae.getFog()
-              + ","
-              + ae.getFogColor()
-              + ","
-              + song
-              + ","
-              + ambient
-              + ","
-              + particles
-              + ","
-              + ae.getGuardedLevel();
+      String effectData = (MapHandler.dayNightTime == 1 && client.playerCharacter.getZ() == 0)
+                          ? ae.getInfoDay()
+                          : ae.getInfoNight();
 
       if (areaEffectId == 2) {
         TutorialHandler.updateTutorials(3, client);

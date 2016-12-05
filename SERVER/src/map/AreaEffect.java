@@ -19,18 +19,61 @@ public class AreaEffect {
   private String areaItems = "None";
   private int areaCopper = 0;
 
+  private String infoDay = null;
+  private String infoNight = null;
+
   public AreaEffect(int id, String name, String origin) {
     this.id = id;
     this.name = name;
     this.origin = origin;
   }
 
-  public String getInfo() {
-    String effectData = id + "," + name + ","
-            + ((tintColor!=null) ? "1" : "0") + "," + tintColor + ","
-            + ((fogColor!=null) ? "1" : "0") + "," + fogColor + ","
-            + song + "," + ambient + "," + particles;
-    return effectData;
+  public String getInfoDay() {
+    if (infoDay == null) {
+      infoDay = getInfo(song, ambient, particles);
+    }
+    return infoDay;
+  }
+
+  public String getInfoNight() {
+    if (infoNight == null) {
+      infoNight = getInfo("night", "night", "firefly");
+    }
+    return infoNight;
+  }
+
+  private String getInfo(String s, String a, String p)
+  {
+    StringBuilder sb = new StringBuilder(1000);
+    sb.append(id)
+      .append(',')
+      .append(name)
+      .append(',');
+    if (tintColor!=null) {
+      sb.append("1,")
+        .append(tintColor)
+        .append(',');
+    }
+    else {
+      sb.append("0,0,0,0,");
+    }
+    if (fogColor!=null) {
+      sb.append("1,")
+        .append(fogColor)
+        .append(',');
+    }
+    else {
+      sb.append("0,0,0,0,");
+    }
+    sb.append(song)
+      .append(',')
+      .append(ambient)
+      .append(',')
+      .append(particles)
+      .append(',')
+      .append(guardedLevel);
+
+    return sb.toString();
   }
 
   /**

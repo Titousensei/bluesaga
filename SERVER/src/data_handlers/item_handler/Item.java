@@ -245,7 +245,8 @@ public class Item {
   }
 
   public int getRequirement(String Type) {
-    return Requirements.get(Type);
+    Integer ret = Requirements.get(Type);
+    return (ret != null) ? ret.intValue() : 0;
   }
 
   public HashMap<String, Integer> getRequirements() {

@@ -258,7 +258,7 @@ public class Tile {
     return statusEffects;
   }
 
-  private StatusEffect getStatusEffect(int sId) {
+  public StatusEffect getStatusEffect(int sId) {
 
     for (Iterator<StatusEffect> iter = getStatusEffects().iterator(); iter.hasNext(); ) {
       StatusEffect s = iter.next();

@@ -1078,6 +1078,31 @@ public class AbilityHandler extends Handler {
 
                   if (ABILITY.getDamageType().equals("Healing")) {
                     damage = ABILITY.getDamage();
+                  } else if (ABILITY.getDamageType().startsWith("Reveal")) {
+                    PlayerCharacter playerCaster = (PlayerCharacter) CASTER;
+                    int baseClassId = GameInfo.classDef.get(ABILITY.getClassId()).baseClassId;
+                    double att = CASTER.getStat("INTELLIGENCE") + playerCaster.getClassLevel(baseClassId);
+                    double def = TARGET.getStat("INTELLIGENCE") + CASTER.getStat("MIND_DEF");
+                    if (RandomUtils.sigmoidCheck(att, def)) {
+                      String msg;
+                      switch (RandomUtils.getInt(0, 3)) {
+                      case 0: // HP
+                        msg = "You see their HP: " + TARGET.getHealth();
+                        break;
+                      case 1: // MP
+                        msg = "You see their Mana: " + TARGET.getMana();
+                        break;
+                      case 2: // ARMOR
+                        msg = "You see their Armor: " + TARGET.getStat("ARMOR");
+                        break;
+                      default: // DMG
+                        msg = "You see the damage they can do to you: " + DamageCalculator.calculateDamage(TARGET, CASTER);
+                        break;
+                      }
+                      addOutGoingMessage(playerCaster.client, "message", msg);
+                    } else {
+                      addOutGoingMessage(playerCaster.client, "message", "Your vision fades before you understand what it means...");
+                    }
                   } else if (ABILITY.getDamage() > 0 || ABILITY.getWeaponDamageFactor() > 0) {
                     damage = calculateAbilityDamage(ABILITY, TARGET);
                   }

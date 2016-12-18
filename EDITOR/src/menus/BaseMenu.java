@@ -28,5 +28,7 @@ public abstract class BaseMenu {
 
   public void setTitle(String val) {}
 
+  public String getValue() { return null; }
+
   public boolean drawMouseTile() { return true; }
 }

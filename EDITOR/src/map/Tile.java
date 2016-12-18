@@ -28,6 +28,7 @@ public class Tile {
   private String AreaEffectId = null;
   private String doorId = null;
   private String destId = null;
+  private String lockId = null;
   private String TriggerId = null;
   private String TrapId = null;
 
@@ -141,6 +142,13 @@ public class Tile {
           g.setColor(EditColors.DOOR_TXT);
           g.drawString(destStr, x + 2, y + 30);
         }
+        else if (lockId!=null) {
+          String destStr = "k " + lockId;
+          g.setColor(EditColors.BLACK);
+          g.drawString(destStr, x + 3, y + 31);
+          g.setColor(EditColors.LOCK_TXT);
+          g.drawString(destStr, x + 2, y + 30);
+        }
       } else if (destId != null) {
         g.setColor(EditColors.DEST_BG);
         g.fillRect(x, y, 50, 50);
@@ -242,7 +250,12 @@ public class Tile {
   }
 
   public void setDestCoords(Coords value) {
-    destCoords = value;
+    if (value !=null && value.x != 0 && value.y != 0 && value.z != 0) {
+      destCoords = value;
+    }
+    else {
+      destCoords = null;
+    }
   }
 
   public String getAreaEffectId() {
@@ -284,6 +297,15 @@ public class Tile {
     }
     else {
       destId = id;
+    }
+  }
+
+  public void setLockId(String id) {
+    if (id == null || "0".equals(id)) {
+      lockId = null;
+    }
+    else {
+      lockId = id;
     }
   }
 
@@ -347,6 +369,7 @@ public class Tile {
     setAreaEffectId(null);
     setDestCoords(null);
     setDestId(null);
+    setLockId(null);
     setDoorCoords(null);
     setDoorId(null);
   }

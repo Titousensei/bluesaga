@@ -30,6 +30,7 @@ public final class EditColors
   public final static Color DEST_BG = new Color(0, 255, 255, 100);
   public final static Color DOOR_TXT = new Color(0, 0, 255);
   public final static Color DEST_TXT = new Color(128, 255, 255);
+  public final static Color LOCK_TXT = new Color(228, 205, 255);
 
   public final static Color IMPASSABLE = new Color(255, 0, 0, 55);
   public final static Color AREA_EFFECT = new Color(255, 104, 235);

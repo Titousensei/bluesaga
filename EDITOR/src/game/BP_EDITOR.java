@@ -16,6 +16,7 @@ import map.WorldMap;
 import menus.AreaEffectMenu;
 import menus.BaseMenu;
 import menus.DungeonMenu;
+import menus.GenericIdMenu;
 import menus.MonsterMenu;
 import menus.ObjectMenu;
 import menus.TextureMenu;
@@ -39,7 +40,7 @@ public class BP_EDITOR extends BasicGame {
 
   public enum Mode {
       CLEAR, EFFECT, TRAP, TRIGGER, DOOR, DESTINATION, PASSABLE, BRUSH,
-      DELETE_TILE, DELETE_OBJECT, DELETE_MONSTER, MINI_MAP, AGGRO
+      DELETE_TILE, DELETE_OBJECT, DELETE_MONSTER, MINI_MAP, AGGRO, KEY
   };
 
   private static AppGameContainer app;
@@ -113,6 +114,7 @@ public class BP_EDITOR extends BasicGame {
   private static MouseCursor Mouse;
 
   private static AreaEffectMenu AREA_EFFECT_MENU;
+  private static GenericIdMenu KEY_ID_MENU;
 
   private static DungeonMenu DUNGEON_MENU;
   private static TextureMenu TEXTURE_MENU;
@@ -181,6 +183,7 @@ public class BP_EDITOR extends BasicGame {
     MONSTER_MENU = new MonsterMenu(500, 70);
     OBJECT_MENU  = new ObjectMenu(680, 70);
     AREA_EFFECT_MENU = new AreaEffectMenu(container);
+    KEY_ID_MENU = new GenericIdMenu(container, "Enter Key ID");
 
     // GUI INIT
     GUI = new Gui();
@@ -329,7 +332,7 @@ public class BP_EDITOR extends BasicGame {
         String doorId = mapInfo.getString("DoorId");
         if (doorId!=null && !"0".equals(doorId)) {
           try (ResultSet doorInfo = mapDB.askDB(
-                  "select GotoX, GotoY, GotoZ from door where Id = " + doorId);
+                  "select GotoX, GotoY, GotoZ, Locked from door where Id = " + doorId);
           ) {
             if (doorInfo.next()) {
               Coords xyz = new Coords(
@@ -338,6 +341,8 @@ public class BP_EDITOR extends BasicGame {
                   doorInfo.getInt("GotoZ"));
               t.setDestCoords(xyz);
               t.setDoorId(doorId);
+              String lockId = doorInfo.getString("Locked");
+              t.setLockId(lockId);
             }
             doorInfo.getStatement().close();
           } catch (SQLException e) {
@@ -656,6 +661,9 @@ public class BP_EDITOR extends BasicGame {
           renderMode(g, "MODE: Change Destination for Door " + TRIGGER_DOOR_ID);
         }
         break;
+      case KEY:
+        renderMode(g, "MODE: Enter Key ID");
+        break;
       case PASSABLE:
         renderMode(g, "MODE: Toggle Passable - " + makePassable);
         break;
@@ -807,6 +815,17 @@ public class BP_EDITOR extends BasicGame {
       if (!keepOpen) {
         activeMenu = null;
         rDungeon = null;
+
+        if (currentMode == Mode.KEY) {
+          String menuValue = KEY_ID_MENU.getValue();
+          if (menuValue!=null) {
+            mapDB.createDoor(TILE_DOOR_ID, TRIGGER_DOOR_ID, menuValue);
+            TILE_DOOR_ID = null;
+            TRIGGER_DOOR_ID = null;
+            currentMode = Mode.BRUSH;
+            loadScreen();
+          }
+        }
       }
     }
 
@@ -835,14 +854,6 @@ public class BP_EDITOR extends BasicGame {
       } catch (SQLException e) {
         e.printStackTrace();
       }
-    }
-
-    if (INPUT.isKeyPressed(Input.KEY_N)) {
-      DAY_NIGHT_TIME++;
-      if (DAY_NIGHT_TIME > 2) {
-        DAY_NIGHT_TIME = 0;
-      }
-      loadScreen();
     }
 
     if (SlowInputItr == 3) {
@@ -891,21 +902,6 @@ public class BP_EDITOR extends BasicGame {
       TileObject.transparent = !TileObject.transparent;
     }
 
-    if (INPUT.isKeyPressed(Input.KEY_F)) {
-      if (FixEdges) {
-        FixEdges = false;
-      } else {
-        FixEdges = true;
-      }
-    }
-
-    if (INPUT.isKeyPressed(Input.KEY_1) && BrushSize>1) {
-      BrushSize--;
-    }
-    if (INPUT.isKeyPressed(Input.KEY_2) && BrushSize<8) {
-      BrushSize++;
-    }
-
     if (INPUT.isKeyPressed(Input.KEY_F4)) {
       if (currentMode != Mode.MINI_MAP) {
         ORIGIN_X = PLAYER_X;
@@ -932,26 +928,81 @@ public class BP_EDITOR extends BasicGame {
       }
     }
 
-    if (INPUT.isKeyPressed(Input.KEY_O)) {
-      activeMenu = OBJECT_MENU;
-      activeMenu.clear();
-    }
-    if (INPUT.isKeyPressed(Input.KEY_M)) {
-      activeMenu = MONSTER_MENU;
-      BrushSize = 1;
-      activeMenu.clear();
-    }
-    if (INPUT.isKeyPressed(Input.KEY_B)) {
-      activeMenu = TEXTURE_MENU;
-      activeMenu.clear();
-    }
-    if (INPUT.isKeyPressed(Input.KEY_E)) {
-      activeMenu = AREA_EFFECT_MENU;
-      activeMenu.clear();
-    }
-    if (INPUT.isKeyPressed(Input.KEY_R)) { // Door
-      activeMenu = null;
-      currentMode = Mode.DOOR;
+    if (activeMenu == null) {
+      if (INPUT.isKeyPressed(Input.KEY_F)) {
+        if (FixEdges) {
+          FixEdges = false;
+        } else {
+          FixEdges = true;
+        }
+      }
+
+      if (INPUT.isKeyPressed(Input.KEY_1) && BrushSize>1) {
+        BrushSize--;
+      }
+      if (INPUT.isKeyPressed(Input.KEY_2) && BrushSize<8) {
+        BrushSize++;
+      }
+
+      if (INPUT.isKeyPressed(Input.KEY_O)) {
+        activeMenu = OBJECT_MENU;
+        activeMenu.clear();
+      }
+      if (INPUT.isKeyPressed(Input.KEY_M)) {
+        activeMenu = MONSTER_MENU;
+        BrushSize = 1;
+        activeMenu.clear();
+      }
+      if (INPUT.isKeyPressed(Input.KEY_B)) {
+        activeMenu = TEXTURE_MENU;
+        activeMenu.clear();
+      }
+      if (INPUT.isKeyPressed(Input.KEY_E)) {
+        activeMenu = AREA_EFFECT_MENU;
+        activeMenu.clear();
+      }
+      if (INPUT.isKeyPressed(Input.KEY_K) && currentMode == Mode.DESTINATION) {
+        currentMode = Mode.KEY;
+        activeMenu = KEY_ID_MENU;
+        activeMenu.clear();
+      }
+      if (INPUT.isKeyPressed(Input.KEY_R)) { // Door
+        activeMenu = null;
+        currentMode = Mode.DOOR;
+      }
+
+      if (INPUT.isKeyPressed(Input.KEY_P)) {
+        activeMenu = null;
+
+        if (currentMode == Mode.PASSABLE) {
+          makePassable = !makePassable;
+        }
+        else {
+          currentMode = Mode.PASSABLE;
+        }
+      }
+
+      if (INPUT.isKeyPressed(Input.KEY_N)) {
+        DAY_NIGHT_TIME++;
+        if (DAY_NIGHT_TIME > 2) {
+          DAY_NIGHT_TIME = 0;
+        }
+        loadScreen();
+      }
+
+      if (INPUT.isKeyPressed(Input.KEY_Q)) {
+        activeMenu = null;
+
+        if (currentMode == Mode.AGGRO) {
+          ++ makeAggro;
+          if (makeAggro == 6) {
+            makeAggro = 0;
+          }
+        }
+        else {
+          currentMode = Mode.AGGRO;
+        }
+      }
     }
 
     if (INPUT.isKeyPressed(Input.KEY_DELETE)) {
@@ -972,31 +1023,6 @@ public class BP_EDITOR extends BasicGame {
       }
       else {
         currentMode = Mode.CLEAR;
-      }
-    }
-
-    if (INPUT.isKeyPressed(Input.KEY_P)) {
-      activeMenu = null;
-
-      if (currentMode == Mode.PASSABLE) {
-        makePassable = !makePassable;
-      }
-      else {
-        currentMode = Mode.PASSABLE;
-      }
-    }
-
-    if (INPUT.isKeyPressed(Input.KEY_Q)) {
-      activeMenu = null;
-
-      if (currentMode == Mode.AGGRO) {
-        ++ makeAggro;
-        if (makeAggro == 6) {
-          makeAggro = 0;
-        }
-      }
-      else {
-        currentMode = Mode.AGGRO;
       }
     }
 

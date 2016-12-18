@@ -310,6 +310,26 @@ public class Database {
           "update door set GotoX = " + tileX
           + ", GotoY = " + tileY
           + ", GotoZ = " + tileZ
+          + ", Locked = 0"
+          + " where Id = " + doorId);
+    }
+  }
+
+  public void createDoor(String tileId, String doorId, String locked) {
+    if (doorId==null || "0".equals(doorId)) {
+      updateDB("insert into door (GotoX, GotoY, GotoZ, Locked) values ("
+          + "0,0,0," + locked + ")");
+      doorId = getLastKey();
+
+      updateDB("update area_tile set DoorId = " + doorId
+          + " where id = " + tileId);
+    }
+    else {
+      updateDB(
+          "update door set GotoX = 0"
+          + ", GotoY = 0"
+          + ", GotoZ = 0"
+          + ", Locked = " + locked
           + " where Id = " + doorId);
     }
   }

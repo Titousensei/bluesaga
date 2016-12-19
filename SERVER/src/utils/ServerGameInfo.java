@@ -14,6 +14,7 @@ import player_classes.*;
 import components.Builder;
 import components.Family;
 import components.JobSkill;
+import components.SkillBuilder;
 import components.Quest;
 import components.QuestBuilder;
 import components.Shop;
@@ -34,6 +35,7 @@ public class ServerGameInfo {
 
   public static Map<Integer, Ability> abilityDef;
   public static Map<Integer, JobSkill> skillDef;
+  public static Map<String, JobSkill> skillNameDef;
 
   public static Map<Integer, Family> familyDef;
   public static Map<Integer, BaseClass> classDef;
@@ -95,21 +97,11 @@ public class ServerGameInfo {
     }
 
     // LOAD SKILLS INFO
-    skillDef = new HashMap<Integer, JobSkill>();
-
-    ResultSet skillInfo = Server.gameDB.askDB("select * from skill");
-
-    try {
-      while (skillInfo.next()) {
-        JobSkill newSkill = new JobSkill();
-        newSkill.load(skillInfo);
-
-        skillDef.put(skillInfo.getInt("Id"), newSkill);
-      }
-      skillInfo.close();
-    } catch (SQLException e) {
-      e.printStackTrace();
+    skillDef = new HashMap<>();
+    for (File f : new File(ServerSettings.PATH).listFiles((dir, name) -> name.startsWith("skills"))) {
+      Builder.load(f.getPath(), SkillBuilder.class, skillDef);
     }
+    skillNameDef = SkillBuilder.mapNames(skillDef);
 
     // LOAD FAMILIES INFO
     familyDef = new HashMap<Integer, Family>();

@@ -6,37 +6,28 @@ import utils.XPTables;
 
 public class JobSkill {
 
-  private int Id;
-  private String Name;
+  private final int Id;
+  private final String Name;
+  private final String origin;
 
   private String Type;
 
   private int Level;
   private int SP;
 
-  public JobSkill() {}
-
-  public JobSkill(JobSkill copy) {
-    setId(copy.getId());
-    SP = 0;
-    Level = 1;
-    setName(copy.getName());
-    setType(copy.getType());
+  JobSkill(int id, String name, String origin) {
+    this.Id = id;
+    this.Name = name;
+    this.origin = origin;
   }
 
-  public void load(ResultSet rs) {
-    if (rs != null) {
-      try {
-        Id = rs.getInt("Id");
-        SP = 0;
-        Level = 1;
-        Name = rs.getString("Name");
-        Type = rs.getString("Type");
-      } catch (SQLException e) {
-        // TODO Auto-generated catch block
-        e.printStackTrace();
-      }
-    }
+  public JobSkill(JobSkill copy) {
+    Id  = copy.getId();
+    Name = copy.getName();
+    Type = copy.getType();
+    origin = copy.getOrigin();
+    SP = 0;
+    Level = 1;
   }
 
   public boolean addSP(int addedSP) {
@@ -52,10 +43,6 @@ public class JobSkill {
     return levelUp;
   }
 
-  public void setId(int id) {
-    Id = id;
-  }
-
   public int getId() {
     return Id;
   }
@@ -64,8 +51,8 @@ public class JobSkill {
     return Name;
   }
 
-  public void setName(String name) {
-    Name = name;
+  public String getOrigin() {
+    return origin;
   }
 
   public int getLevel() {

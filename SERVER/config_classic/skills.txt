@@ -1,0 +1,8 @@
+### 100 / Cooking
+Type: Job
+
+### 101 / Fishing
+Type: Job
+
+### 102 / Herbalism
+Type: Job

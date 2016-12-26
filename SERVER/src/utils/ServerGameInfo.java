@@ -51,8 +51,8 @@ public class ServerGameInfo {
     return new Item(ServerGameInfo.itemDef.get(id));
   }
 
-  public static int getSkillId(String name) {
-    JobSkill sk = ServerGameInfo.skillNameDef.get(weapon.getSubType());
+  public static int getSkillId(String subType) {
+    JobSkill sk = ServerGameInfo.skillNameDef.get(subType);
     return (sk != null) ? sk.getId() : 0;
   }
 

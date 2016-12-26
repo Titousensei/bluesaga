@@ -25,6 +25,7 @@ import data_handlers.DataHandlers;
 import data_handlers.Handler;
 import data_handlers.Message;
 import data_handlers.QuestHandler;
+import data_handlers.SkillHandler;
 import data_handlers.TutorialHandler;
 import data_handlers.item_handler.ItemHandler;
 import data_handlers.monster_handler.MonsterHandler;
@@ -321,7 +322,7 @@ public class BattleHandler extends Handler {
             }
 
             // Gain Weapon SP
-            int weaponSkillId = ServerGameInfo.getSkillId(weapon.getSubType());
+            int weaponSkillId = ServerGameInfo.getSkillId(ATTACKER.getWeapon().getSubType());
             if (weaponSkillId > 0) {
               SkillHandler.gainSP(playerAttacker.client, weaponSkillId, training);
             }

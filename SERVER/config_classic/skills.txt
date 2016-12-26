@@ -6,3 +6,55 @@ Type: Job
 
 ### 102 / Herbalism
 Type: Job
+
+
+### 200 / Axe
+Type: Weapon
+
+### 201 / Bow
+Type: Weapon
+
+### 202 / Club
+Type: Weapon
+
+### 203 / Dagger
+Type: Weapon
+
+### 204 / Glove
+Type: Weapon
+
+### 205 / Hammer
+Type: Weapon
+
+### 206 / Slingshot
+Type: Weapon
+
+### 207 / Spear
+Type: Weapon
+
+### 208 / Staff
+Type: Weapon
+
+### 209 / Sword
+Type: Weapon
+
+### 210 / Wand
+Type: Weapon
+
+### 211 / Dart Blower
+Type: Weapon
+
+### 212 / Throwing Blade
+Type: Weapon
+
+### 213 / Firearm
+Type: Weapon
+
+### 214 / Crossbow
+Type: Weapon
+
+### 215 / Orb
+Type: Weapon
+
+### 216 / Symbol
+Type: Weapon

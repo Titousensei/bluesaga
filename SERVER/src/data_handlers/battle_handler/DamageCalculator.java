@@ -6,6 +6,7 @@ import creature.PlayerCharacter;
 import creature.Creature.CreatureType;
 import data_handlers.item_handler.Item;
 import network.Server;
+import utils.ServerGameInfo;
 
 public class DamageCalculator {
 
@@ -155,7 +156,7 @@ public class DamageCalculator {
     // GET ATTACK STAT
     String attackStat = "STRENGTH";
 
-    int classId = 0;
+    int skillId = 0;
 
     Item weapon = ATTACKER.getEquipment("Weapon");
 
@@ -164,9 +165,9 @@ public class DamageCalculator {
 
     if (weapon != null) {
       attackStat = weapon.getDamageStat();
-      classId = weapon.getClassId();
       weaponMinBaseDmg = weapon.getStatValue("MinDamage");
       weaponMaxBaseDmg = weapon.getStatValue("MaxDamage");
+      skillId = ServerGameInfo.getSkillId(weapon.getSubType());
     }
 
     int damageMin = 0;
@@ -197,12 +198,12 @@ public class DamageCalculator {
       double ATKmin = (ATTACKER.getStat(attackStat) + 12.0) / 12.0;
       double ATKmax = (ATTACKER.getStat(attackStat) + 10.0) / 10.0;
 
-      double classFac = 1.0;
-      if (classId > 0) {
-        if (playerAttacker.getClassById(classId) != null) {
-          classId = playerAttacker.getClassById(classId).baseClassId;
-          classFac = (playerAttacker.getClassById(classId).level + 12.0) / 13.0;
-        }
+      double classFac = 0.6;
+      if (skillId != 0
+      && playerAttacker.getSkill(skillId) != null
+      ) {
+        int weaponLevel = playerAttacker.getSkill(skillId).getLevel();
+        classFac = 0.8 + (weaponLevel / 10.0);
       }
 
       double WeaponMin = weaponMinBaseDmg / 10.0;

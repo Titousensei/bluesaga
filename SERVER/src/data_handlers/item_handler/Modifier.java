@@ -52,8 +52,8 @@ public enum Modifier
     return Regular;
   }
 
-  public static Modifier random() {
-    double chance = RandomUtils.getPercent();
+  public static Modifier random(double bonus) {
+    double chance = RandomUtils.getPercent() - bonus;
     for (Modifier mod : Modifier.values()) {
       if (mod.dropRate >= chance) {
         return mod;

@@ -557,12 +557,13 @@ public class ItemHandler extends Handler {
                 int rareChance = RandomUtils.getInt(0, 10000);
 
                 if (TARGET.isElite()) {
-                  rareChance = Math.round(rareChance / 2.0f);
+                  droppedItem.setModifier(Modifier.random(0.03));
                 } else if (TARGET.isTitan()) {
-                  rareChance = Math.round(rareChance / 10.0f);
+                  droppedItem.setModifier(Modifier.random(0.10));
                 }
-
-                droppedItem.setModifier(Modifier.random());
+                else {
+                  droppedItem.setModifier(Modifier.random(0.0));
+                }
 
                 if (TARGET.getSpecialType() > 0) {
                   int magicChance = RandomUtils.getInt(0, 100);

@@ -2,8 +2,7 @@ package data_handlers.crafting_handler;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.Vector;
+import java.util.*;
 
 import utils.ServerGameInfo;
 import data_handlers.DataHandlers;
@@ -17,12 +16,17 @@ import network.Server;
 
 public class CraftingHandler extends Handler {
 
-  private static HashMap<String, CraftingStation> craftingStations;
-  private static HashMap<Integer, Recipe> recipes;
+  private static Map<Integer, Recipe> recipes;
 
   public static void init() {
 
-    craftingStations = new HashMap<String, CraftingStation>();
+    // LOAD SHOP INFO
+    recipes = new HashMap<>();
+    for (File f : new File(ServerSettings.PATH).listFiles((dir, name) -> name.startsWith("recipes_"))) {
+      Builder.load(f.getPath(), ShopBuilder.class, shopDef);
+    }
+
+
     recipes = new HashMap<Integer, Recipe>();
 
     try (
@@ -77,7 +81,7 @@ public class CraftingHandler extends Handler {
       craftingStationName = "Bonfire";
     }
 
-    Vector<Recipe> availableRecipes = new Vector<Recipe>();
+    List<Recipe> availableRecipes = new ArrayList<>();
 
     ResultSet recipesInfo =
         Server.userDB.askDB(

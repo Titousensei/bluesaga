@@ -20,6 +20,7 @@ public class TileObject {
   private boolean MENU = false;
 
   private String TrapId = null;
+  private String notes = null;
 
   public static boolean transparent = false;
 
@@ -96,8 +97,17 @@ public class TileObject {
     TrapId = trapId;
   }
 
+  public void setNotes(String val) {
+    notes = val;
+  }
+
   @Override
   public String toString() {
-    return "objects/" + name;
+    if (notes!=null) {
+      return "objects/" + name + " -> " + notes;
+    }
+    else {
+      return "objects/" + name;
+    }
   }
 }

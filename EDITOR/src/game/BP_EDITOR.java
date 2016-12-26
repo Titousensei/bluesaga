@@ -385,7 +385,7 @@ public class BP_EDITOR extends BasicGame {
     }
 
     try (ResultSet containerInfo = mapDB.askDB(
-            "select X,Y,Z,Type from area_container where X >= "
+            "select X,Y,Z,Type, items,copper from area_container where X >= "
                 + (PLAYER_X - TILE_HALF_W)
                 + " and X < "
                 + (PLAYER_X + TILE_HALF_W)
@@ -405,6 +405,18 @@ public class BP_EDITOR extends BasicGame {
 
         TileObject newObject = new TileObject(containerType);
         newObject.setZ(containerInfo.getInt("Z"));
+
+        String items = containerInfo.getString("items");
+        String copper = containerInfo.getString("copper");
+        if (!"0".equals(copper) && !"".equals(items)) {
+          newObject.setNotes(copper + "cc," + items);
+        }
+        else if (!"0".equals(copper)) {
+          newObject.setNotes(copper + "cc");
+        }
+        else if (!"".equals(items)) {
+          newObject.setNotes(items);
+        }
         SCREEN_OBJECTS[tileX][tileY][tileZ] = newObject;
       }
       containerInfo.getStatement().close();
@@ -609,6 +621,9 @@ public class BP_EDITOR extends BasicGame {
       else {
         g.setColor(EditColors.RED);
         g.drawRect(playerx, playery, 9, 5);
+      }
+      if (INPUT != null) {
+        Mouse.draw(INPUT.getAbsoluteMouseX(), INPUT.getAbsoluteMouseY());
       }
     } else {
       resetHelp(g);

@@ -7,15 +7,15 @@ import utils.RandomUtils;
 public enum Modifier
 {
   // .values() returns the values in the order they are declared
-  Legendary (8,  6, 0.000001, 5.0, "247,66,234"),   // .000001  1.0570824524312898E-6
-  Epic      (7,  5, 0.000011, 3.0, "249,81,81"),    // .00001   2.6449433426177612E-5
-  Master    (6,  4, 0.000111, 2.0, "77,176,255"),   // .0001    1.0609035621405735E-4\
-  Champion  (5,  3, 0.001111, 1.5, "81,251,94"),    // .001     3.827871976744301E-4
-  Great     (4,  2, 0.011111, 1.2, "255,175,0"),    // .01      0.009053735103359212
-  Reinforced(3,  1, 0.111111, 1.1, "255,234,116"),  // .10      0.11466120531007765
+  Legendary (8,  6, 0.000001, 5.0, "247,66,234"),   // .000001  1.057E-6
+  Epic      (7,  5, 0.000011, 3.0, "249,81,81"),    // .00001   2.645E-5
+  Master    (6,  4, 0.000111, 2.0, "77,176,255"),   // .0001    1.061E-4
+  Champion  (5,  3, 0.001111, 1.5, "81,251,94"),    // .001     3.828E-4
+  Great     (4,  2, 0.011111, 1.2, "255,175,0"),    // .01      0.00905
+  Reinforced(3,  1, 0.111111, 1.1, "255,234,116"),  // .10      0.11466
   Regular   (0,  0, 0.87,     1.0, "255,255,255"),  // .758889  0.718
-  Weakened  (2, -1, 0.97,     .50, "200,200,200"),  // .10      0.11466120531007765
-  Broken    (1, -2, 1.0,      .25, "100,100,100");  // .03      0.04310747020671842
+  Weakened  (2, -1, 0.97,     .50, "200,200,200"),  // .10      0.11466
+  Broken    (1, -2, 1.0,      .25, "100,100,100");  // .03      0.04311
 
   public final static Map<String, Float> ITEM_COEF = new HashMap<>();
 
@@ -52,8 +52,14 @@ public enum Modifier
     return Regular;
   }
 
-  public static Modifier random(double bonus) {
-    double chance = RandomUtils.getPercent() - bonus;
+  public static Modifier random(int bestOf) {
+    double chance = 1.0;
+    for (int i = 0 ; i < bestOf ; i++) {
+      double c = RandomUtils.getPercent();
+      if (chance>c) {
+        chance = c;
+      }
+    }
     for (Modifier mod : Modifier.values()) {
       if (mod.dropRate >= chance) {
         return mod;

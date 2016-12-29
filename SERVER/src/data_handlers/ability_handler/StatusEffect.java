@@ -193,7 +193,6 @@ Id|Name                       |Color             |Sfx        |StatsModif
   }
 
   public boolean isActive() {
-System.out.println("ActiveTimeEnd="+ActiveTimeEnd);
     if (ActiveTimeEnd > 0) {
       -- ActiveTimeEnd;
       return true;

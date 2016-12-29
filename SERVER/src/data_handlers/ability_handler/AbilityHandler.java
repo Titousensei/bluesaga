@@ -26,6 +26,7 @@ import data_handlers.WalkHandler;
 import data_handlers.battle_handler.BattleHandler;
 import data_handlers.battle_handler.DamageCalculator;
 import data_handlers.battle_handler.HitHandler;
+import data_handlers.item_handler.Item;
 import data_handlers.monster_handler.MonsterHandler;
 import map.Tile;
 import network.Client;
@@ -366,12 +367,6 @@ public class AbilityHandler extends Handler {
                   client.playerCharacter.useAbility(ABILITY);
                   addOutGoingMessage(client, "stat", "Mana;" + client.playerCharacter.getMana());
 
-                  // Flash step
-                  if (ABILITY.getAbilityId() == 84) {
-                    StatusEffectHandler.addStatusEffect(
-                        client.playerCharacter, new StatusEffect(42));
-                  }
-
                   // SEND USE ABILITY TO ALL CLIENTS ON SAME MAP
                   for (Map.Entry<Integer, Client> entry : Server.clients.entrySet()) {
                     Client s = entry.getValue();
@@ -404,7 +399,37 @@ public class AbilityHandler extends Handler {
                     }
                   }
 
-                  if (ABILITY.getAbilityId() == 27) {
+
+
+                  // Flash step
+                  if (ABILITY.getAbilityId() == 84) {
+                    StatusEffectHandler.addStatusEffect(
+                        client.playerCharacter, new StatusEffect(42));
+                  }
+                  else if (ABILITY.getAbilityId() == 29) { // Block
+                    Item offhand = client.playerCharacter.getEquipment("OffHand");
+                    int def = offhand.getStatValue("ARMOR");
+                    StatusEffect se = new StatusEffect(11);
+                    se.setAbility(ABILITY);
+                    se.setCaster(client.playerCharacter);
+                    se.getStatsModif().setValue("ARMOR", def);
+                    StatusEffectHandler.addStatusEffect(
+                        client.playerCharacter, se);
+                  }
+                  else if (ABILITY.getAbilityId() == 96) { // Mana Armor
+                    int def = (int) Math.round(
+                          2 * Math.sqrt(
+                                client.playerCharacter.getBaseClass().level));
+                    StatusEffect se = new StatusEffect(47);
+                    se.setAbility(ABILITY);
+                    se.setCaster(client.playerCharacter);
+                    se.getStatsModif().setValue("ARMOR", def);
+                    se.getStatsModif().setValue("MAGIC_DEF", def);
+                    se.getStatsModif().setValue("SPEED", -5);
+                    StatusEffectHandler.addStatusEffect(
+                        client.playerCharacter, se);
+                  }
+                  else if (ABILITY.getAbilityId() == 27) {
                     // TAUNT ABILITY
                     // MAKE ALL MONSTERS ATTACK PLAYER
                     MonsterHandler.alertNearMonsters(

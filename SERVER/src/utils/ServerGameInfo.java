@@ -13,6 +13,8 @@ import network.Server;
 import player_classes.*;
 import components.Builder;
 import components.Family;
+import components.Gathering;
+import components.GatheringBuilder;
 import components.JobSkill;
 import components.SkillBuilder;
 import components.Quest;
@@ -30,6 +32,7 @@ public class ServerGameInfo {
   public static Map<Integer, Item> itemDef;
   public static Map<Integer, Item> fishDef;
 
+  public static Map<String, Gathering> gatheringDef;
   public static Map<Integer, Shop> shopDef;
   public static Map<Integer, Coords> checkpointDef;
 
@@ -69,6 +72,7 @@ public class ServerGameInfo {
     classDef.put(1, new WarriorClass());
     classDef.put(2, new MageClass());
     classDef.put(3, new HunterClass());
+
     classDef.put(4, new KnightClass());
     classDef.put(5, new FireMageClass());
     classDef.put(6, new ArcherClass());
@@ -137,6 +141,13 @@ public class ServerGameInfo {
     for (File f : new File(ServerSettings.PATH).listFiles((dir, name) -> name.startsWith("shops_"))) {
       Builder.load(f.getPath(), ShopBuilder.class, shopDef);
     }
+
+    // LOAD GATHERING INFO
+    Map<Integer, Gathering> gDef = new HashMap<>();
+    for (File f : new File(ServerSettings.PATH).listFiles((dir, name) -> name.startsWith("gathering"))) {
+      Builder.load(f.getPath(), GatheringBuilder.class, gDef);
+    }
+    gatheringDef = GatheringBuilder.mapName(gDef);
 
     // LOAD CHECK-INS INFO
     checkpointDef = new HashMap<>();

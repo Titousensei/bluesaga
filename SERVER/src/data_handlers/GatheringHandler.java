@@ -6,6 +6,7 @@ import java.util.Map;
 
 import utils.ServerGameInfo;
 import utils.RandomUtils;
+import components.Gathering;
 import data_handlers.item_handler.Container;
 import data_handlers.item_handler.ContainerHandler;
 import data_handlers.item_handler.Item;
@@ -63,32 +64,17 @@ public class GatheringHandler extends Handler {
       int tileY,
       int tileZ) {
 
-    String SourceName = null;
-    int skillLvl = 0;
-    int skillId = 0;
-    int resourceId = 0;
-
-    ResultSet itemInfo =
-        Server.gameDB.askDB(
-            "select SourceName, SkillLevel, SkillId, ResourceId from item_gathering where ItemName = '"
-                + objectId + "'");
-    try {
-      if (itemInfo.next()) {
-        SourceName = itemInfo.getString("SourceName");
-        skillLvl   = itemInfo.getInt("SkillLevel");
-        skillId    = itemInfo.getInt("SkillId");
-        resourceId = itemInfo.getInt("ResourceId");
-        System.out.println("INFO - Found item_gathering: " + SourceName + " " + skillLvl + " " + resourceId);
-      }
-      else {
-        System.out.println("WARNING - No such item_gathering: " + objectId);
-        return;
-      }
-      itemInfo.close();
-    } catch (SQLException e) {
-      e.printStackTrace();
+    Gathering g = ServerGameInfo.gatheringDef.get(objectId);
+    if (g == null) {
+      System.out.println("WARNING - No such item_gathering: " + objectId);
       return;
     }
+
+    String SourceName = g.getSourceName();
+    int skillLvl = g.getSkillLevel();
+    int skillId = g.getSkillId();
+    int resourceId = g.getResourceId();
+    System.out.println("INFO - Found item_gathering: " + SourceName + " " + skillLvl + " " + resourceId);
 
     int charLvl = client.playerCharacter.getSkill(skillId).getLevel();
 

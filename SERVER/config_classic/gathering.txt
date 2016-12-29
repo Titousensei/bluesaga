@@ -1,0 +1,23 @@
+### 1 / gathering/oranga
+SourceName: Oranga Bush
+SkillLevel: 1
+SkillId: 102
+ResourceId: 178
+
+### 2 / gathering/piccoberries
+SourceName: Picco Berries
+SkillLevel: 2
+SkillId: 102
+ResourceId: 203
+
+### 3 / gathering/flowerluna
+SourceName: Luna Petal
+SkillLevel: 3
+SkillId: 102
+ResourceId: 212
+
+### 4 / gathering/soulbush
+SourceName: Soul Bush
+SkillLevel: -5
+SkillId: 102
+ResourceId: 313

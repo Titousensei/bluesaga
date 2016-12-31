@@ -324,7 +324,17 @@ public class WorldMap implements TileBasedMap {
                     + ","
                     + creatureInfo.getInt("SpawnZ"))
             == null) {
-          ServerMessage.printMessage("MONSTER ON NULL TILE: " + creatureInfo.getInt("Id"), false);
+          ServerMessage.printMessage("[WorldMap] WARNING - Monster on null tile: "
+              + creatureInfo.getInt("Id")
+              + " ("
+              + creatureInfo.getInt("SpawnX")
+              + ","
+              + creatureInfo.getInt("SpawnY")
+              + ","
+              + creatureInfo.getInt("SpawnZ")
+              + ") -> "
+              + creatureInfo.getInt("CreatureId")
+              , false);
         } else {
           Monsters.put(creatureInfo.getInt("Id"), tempNpc);
           if (!tempNpc.isDead()) {

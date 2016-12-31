@@ -54,7 +54,7 @@ public class InventoryHandler extends Handler {
               "update character_item set InventoryPos = 'Mouse' where Id = " + rs.getInt("Id"));
 
           if (ServerGameInfo.itemDef.containsKey(rs.getInt("ItemId"))) {
-            Item mouseItem = new Item(ServerGameInfo.itemDef.get(rs.getInt("ItemId")));
+            Item mouseItem = ServerGameInfo.newItem(rs.getInt("ItemId"));
             mouseItem.setUserItemId(rs.getInt("Id"));
             mouseItem.setStacked(rs.getInt("Nr"));
             mouseItem.setModifierId(rs.getInt("ModifierId"));
@@ -98,7 +98,7 @@ public class InventoryHandler extends Handler {
           // PLAYER HAS ITEM AT THAT POSITION
 
           if (ServerGameInfo.itemDef.containsKey(rs.getInt("ItemId"))) {
-            Item mouseItem = new Item(ServerGameInfo.itemDef.get(rs.getInt("ItemId")));
+            Item mouseItem = ServerGameInfo.newItem(rs.getInt("ItemId"));
             mouseItem.setUserItemId(rs.getInt("Id"));
             mouseItem.setStacked(rs.getInt("Nr"));
             mouseItem.setModifierId(rs.getInt("ModifierId"));
@@ -198,7 +198,7 @@ public class InventoryHandler extends Handler {
             }
             if (okToSplit) {
               if (ServerGameInfo.itemDef.containsKey(itemCheck.getInt("ItemId"))) {
-                Item mouseItem = new Item(ServerGameInfo.itemDef.get(itemCheck.getInt("ItemId")));
+                Item mouseItem = ServerGameInfo.newItem(itemCheck.getInt("ItemId"));
                 mouseItem.setStacked(number);
                 client.playerCharacter.setMouseItem(mouseItem);
                 client.playerCharacter.loadInventory();
@@ -273,7 +273,7 @@ public class InventoryHandler extends Handler {
 
               oldInvItemUserItemId = checkInvPos.getInt("Id");
               oldInvItemId = checkInvPos.getInt("ItemId");
-              Item oldInvItem = new Item(ServerGameInfo.itemDef.get(oldInvItemId));
+              Item oldInvItem = ServerGameInfo.newItem(oldInvItemId);
               oldInvItem.setStacked(checkInvPos.getInt("Nr"));
 
               if (oldInvItem.getId() == itemToMove.getId()
@@ -392,7 +392,7 @@ public class InventoryHandler extends Handler {
             // ITEM ALREADY THERE!
             oldInvItemUserItemId = checkInvPos.getInt("Id");
             oldInvItemId = checkInvPos.getInt("ItemId");
-            Item oldInvItem = new Item(ServerGameInfo.itemDef.get(oldInvItemId));
+            Item oldInvItem = ServerGameInfo.newItem(oldInvItemId);
             oldInvItem.setStacked(checkInvPos.getInt("Nr"));
             oldInvItem.setModifierId(checkInvPos.getInt("ModifierId"));
             oldInvItem.setMagicId(checkInvPos.getInt("MagicId"));
@@ -721,7 +721,7 @@ public class InventoryHandler extends Handler {
                   "delete from character_item where Id = " + moneyUpdate.getInt("Id"));
             }
             if (copperRest > 0) {
-              Item CopperItem = new Item(ServerGameInfo.itemDef.get(36));
+              Item CopperItem = ServerGameInfo.newItem(36);
               CopperItem.setStacked(copperRest);
               addItemToInventory(client, CopperItem);
             }
@@ -765,13 +765,13 @@ public class InventoryHandler extends Handler {
             if (copperRest > 0) {
               if (copperRest > 100) {
                 int silverCoins = (int) Math.floor((float) copperRest / 100);
-                Item SilverItem = new Item(ServerGameInfo.itemDef.get(35));
+                Item SilverItem = ServerGameInfo.newItem(35);
                 SilverItem.setStacked(silverCoins);
                 addItemToInventory(client, SilverItem);
                 copperRest -= silverCoins * 100;
               }
               if (copperRest > 0) {
-                Item CopperItem = new Item(ServerGameInfo.itemDef.get(36));
+                Item CopperItem = ServerGameInfo.newItem(36);
                 CopperItem.setStacked(copperRest);
                 addItemToInventory(client, CopperItem);
               }

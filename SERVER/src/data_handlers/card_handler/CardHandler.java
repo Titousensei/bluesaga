@@ -180,7 +180,7 @@ public class CardHandler extends Handler {
       // Check if player has card
       if (hasCard) {
 
-        Item mouseItem = new Item(ServerGameInfo.itemDef.get(card_ids.get(cardId).itemId));
+        Item mouseItem = ServerGameInfo.newItem(card_ids.get(cardId).itemId);
 
         ContainerHandler.addItemToMouse(client, mouseItem);
 

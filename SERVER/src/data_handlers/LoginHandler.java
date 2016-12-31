@@ -533,7 +533,7 @@ public class LoginHandler extends Handler {
             int artifactItemId = characterRS.getInt("ArtifactSkinId");
 
             while (equipRS.next()) {
-              checkItem = new Item(ServerGameInfo.itemDef.get(equipRS.getInt("ItemId")));
+              checkItem = ServerGameInfo.itemDef.get(equipRS.getInt("ItemId"));
               if (checkItem.getType().equals("Head") && headItemId == 0) {
                 headItemId = checkItem.getId();
               } else if (checkItem.getType().equals("Weapon") && weaponItemId == 0) {

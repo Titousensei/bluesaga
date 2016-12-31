@@ -61,7 +61,7 @@ public class FishingHandler extends Handler {
         }
 
         if (catchChance < fishChance) {
-          caughtFish = new Item(ServerGameInfo.itemDef.get(fish.getId()));
+          caughtFish = ServerGameInfo.newItem(fish.getId());
 
           // CHECK IF PLAYER HAS RIGHT FISHING ROD
           if (client.playerCharacter.getWeapon() != null) {

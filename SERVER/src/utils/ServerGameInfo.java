@@ -50,12 +50,16 @@ public class ServerGameInfo {
 
   public static Map<Integer, Npc> creatureDef;
 
-  public static Item cloneItem(int id) {
-    return new Item(ServerGameInfo.itemDef.get(id));
+  public static Item newItem(int id) {
+    Item it = itemDef.get(id);
+    if (it==null) {
+      throw new RuntimeException("Item not found: " + id);
+    }
+    return new Item(it);
   }
 
   public static int getSkillId(String subType) {
-    JobSkill sk = ServerGameInfo.skillNameDef.get(subType);
+    JobSkill sk = skillNameDef.get(subType);
     return (sk != null) ? sk.getId() : 0;
   }
 

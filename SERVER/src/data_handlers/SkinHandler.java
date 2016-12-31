@@ -33,7 +33,7 @@ public class SkinHandler extends Handler {
 
     try {
       while (closetInfo.next()) {
-        Item skinItem = new Item(ServerGameInfo.itemDef.get(closetInfo.getInt("ItemId")));
+        Item skinItem = ServerGameInfo.itemDef.get(closetInfo.getInt("ItemId"));
 
         content
             .append(skinItem.getId())
@@ -122,7 +122,7 @@ public class SkinHandler extends Handler {
 
       try {
         if (checkSkin.next()) {
-          Item skinItem = new Item(ServerGameInfo.itemDef.get(skinId));
+          Item skinItem = ServerGameInfo.itemDef.get(skinId);
 
           if (skinItem.getType().equals("Skin")) {
             if (skinItem.getSubType().equals("Head")) {

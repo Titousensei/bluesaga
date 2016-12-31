@@ -411,17 +411,17 @@ public class MonsterHandler extends Handler {
       if (droppedMoney > 0) {
         CoinConverter cc = new CoinConverter(droppedMoney);
         if (cc.getGold() > 0) {
-          Item GoldItem = new Item(ServerGameInfo.itemDef.get(34));
+          Item GoldItem = ServerGameInfo.newItem(34);
           GoldItem.setStacked(cc.getGold());
           ContainerHandler.addItemToContainer(GoldItem, tileX, tileY, tileZ);
         }
         if (cc.getSilver() > 0) {
-          Item SilverItem = new Item(ServerGameInfo.itemDef.get(35));
+          Item SilverItem = ServerGameInfo.newItem(35);
           SilverItem.setStacked(cc.getSilver());
           ContainerHandler.addItemToContainer(SilverItem, tileX, tileY, tileZ);
         }
         if (cc.getCopper() > 0) {
-          Item CopperItem = new Item(ServerGameInfo.itemDef.get(36));
+          Item CopperItem = ServerGameInfo.newItem(36);
           CopperItem.setStacked(cc.getCopper());
           ContainerHandler.addItemToContainer(CopperItem, tileX, tileY, tileZ);
         }

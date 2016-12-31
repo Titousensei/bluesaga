@@ -297,7 +297,7 @@ public class WorldMap implements TileBasedMap {
             try {
               int itemId = Integer.parseInt(itemId_str);
               if (ServerGameInfo.itemDef.containsKey(itemId)) {
-                tempNpc.equipItem(new Item(ServerGameInfo.itemDef.get(itemId)));
+                tempNpc.equipItem(ServerGameInfo.newItem(itemId));
               }
             } catch (NumberFormatException e) {
             }

@@ -125,7 +125,7 @@ public class ActionbarHandler extends Handler {
 
             // MOVE THE ITEM TO INVENTORY
             InventoryHandler.addItemToInventory(
-                client, new Item(ServerGameInfo.itemDef.get(itemId)));
+                client, ServerGameInfo.newItem(itemId));
           }
           addOutGoingMessage(client, "remove_actionbar", "" + actionbarCheck.getInt("OrderNr"));
         }
@@ -144,7 +144,7 @@ public class ActionbarHandler extends Handler {
                   + " and InventoryPos = 'Mouse' and CharacterId = "
                   + client.playerCharacter.getDBId());
 
-          Item placeItem = new Item(ServerGameInfo.itemDef.get(actionId));
+          Item placeItem = ServerGameInfo.newItem(actionId);
           placeItem.setStacked(nrItems - 1);
 
           InventoryHandler.addItemToInventory(client, placeItem);
@@ -194,7 +194,7 @@ public class ActionbarHandler extends Handler {
         if (itemInfo.getString("ActionType").equals("Item")) {
           int itemId = itemInfo.getInt("ActionId");
 
-          Item newMouseItem = new Item(ServerGameInfo.itemDef.get(itemId));
+          Item newMouseItem = ServerGameInfo.newItem(itemId);
           Server.userDB.updateDB(
               "insert into character_item (CharacterId, ItemId, Equipped, InventoryPos, Nr) values ("
                   + client.playerCharacter.getDBId()

@@ -593,7 +593,7 @@ public class QuestHandler extends Handler {
           if (nrItems >= q.questRef.getTargetNumber()) {
             questCompleted = true;
           } else {
-            Item questItem = new Item(ServerGameInfo.itemDef.get(itemId));
+            Item questItem = ServerGameInfo.itemDef.get(itemId);
             addOutGoingMessage(
                 client,
                 "quest",
@@ -676,7 +676,7 @@ public class QuestHandler extends Handler {
         if (rewardItems != null) {
           for (int i=0 ; i<rewardItems.length ; i++) {
             InventoryHandler.addItemToInventory(
-                client, new Item(ServerGameInfo.itemDef.get(rewardItems[i])));
+                client, ServerGameInfo.newItem(rewardItems[i]));
           }
         }
 
@@ -684,17 +684,17 @@ public class QuestHandler extends Handler {
           CoinConverter cc = new CoinConverter(rewardCopper);
 
           if (cc.getGold() > 0) {
-            Item GoldItem = new Item(ServerGameInfo.itemDef.get(34));
+            Item GoldItem = ServerGameInfo.newItem(34);
             GoldItem.setStacked(cc.getGold());
             InventoryHandler.addItemToInventory(client, GoldItem);
           }
           if (cc.getSilver() > 0) {
-            Item SilverItem = new Item(ServerGameInfo.itemDef.get(35));
+            Item SilverItem = ServerGameInfo.newItem(35);
             SilverItem.setStacked(cc.getSilver());
             InventoryHandler.addItemToInventory(client, SilverItem);
           }
           if (cc.getCopper() > 0) {
-            Item CopperItem = new Item(ServerGameInfo.itemDef.get(36));
+            Item CopperItem = ServerGameInfo.newItem(36);
             CopperItem.setStacked(cc.getCopper());
             InventoryHandler.addItemToInventory(client, CopperItem);
           }

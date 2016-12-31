@@ -365,7 +365,7 @@ public class ContainerHandler extends Handler {
                     for (String loot : allLoot) {
                       int itemId = Integer.parseInt(loot);
 
-                      Item droppedItem = new Item(ServerGameInfo.itemDef.get(itemId));
+                      Item droppedItem = ServerGameInfo.newItem(itemId);
 
                       InventoryHandler.addItemToInventory(client, droppedItem);
                     }
@@ -462,7 +462,7 @@ public class ContainerHandler extends Handler {
                         String itemIds[] = areaItems.split(",");
                         for (String itemId : itemIds) {
                           int id = Integer.parseInt(itemId);
-                          newContainer.addItem(new Item(ServerGameInfo.itemDef.get(id)));
+                          newContainer.addItem(ServerGameInfo.newItem(id));
                         }
                       }
                     }
@@ -477,17 +477,17 @@ public class ContainerHandler extends Handler {
                         CoinConverter cc = new CoinConverter(areaCopper);
 
                         if (cc.getGold() > 0) {
-                          Item GoldItem = new Item(ServerGameInfo.itemDef.get(34));
+                          Item GoldItem = ServerGameInfo.newItem(34);
                           GoldItem.setStacked(cc.getGold());
                           newContainer.addItem(GoldItem);
                         }
                         if (cc.getSilver() > 0) {
-                          Item SilverItem = new Item(ServerGameInfo.itemDef.get(35));
+                          Item SilverItem = ServerGameInfo.newItem(35);
                           SilverItem.setStacked(cc.getSilver());
                           newContainer.addItem(SilverItem);
                         }
                         if (cc.getCopper() > 0) {
-                          Item CopperItem = new Item(ServerGameInfo.itemDef.get(36));
+                          Item CopperItem = ServerGameInfo.newItem(36);
                           CopperItem.setStacked(cc.getCopper());
                           newContainer.addItem(CopperItem);
                         }
@@ -607,14 +607,14 @@ public class ContainerHandler extends Handler {
       /*
       // Check that no players are nearby
       for (Entry<Integer, Client> entry2 : Server.clients.entrySet()) {
-      	Client other = entry2.getValue();
+        Client other = entry2.getValue();
 
-      	if(other.Ready){
-      		if(isVisibleForPlayer(other.playerCharacter,posX,posY,posZ)){
-      			respawnOk = false;
-      			break;
-      		}
-      	}
+        if(other.Ready){
+          if(isVisibleForPlayer(other.playerCharacter,posX,posY,posZ)){
+            respawnOk = false;
+            break;
+          }
+        }
       }
       */
 

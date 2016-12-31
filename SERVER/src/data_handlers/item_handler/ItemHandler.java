@@ -71,7 +71,7 @@ public class ItemHandler extends Handler {
 
     if (infoType.equals("shop")) {
       int itemId = Integer.parseInt(info[1]);
-      infoItem = new Item(ServerGameInfo.itemDef.get(itemId));
+      infoItem = ServerGameInfo.newItem(itemId);
     } else if (infoType.equals("closet")) {
       int itemId = Integer.parseInt(info[1]);
       if (itemId == 214) {
@@ -87,7 +87,7 @@ public class ItemHandler extends Handler {
                 + "#ui.web.customize"
                 + "/";
       } else {
-        infoItem = new Item(ServerGameInfo.itemDef.get(itemId));
+        infoItem = ServerGameInfo.newItem(itemId);
       }
     } else if (infoType.equals("container")) {
 
@@ -122,7 +122,7 @@ public class ItemHandler extends Handler {
           if (userItemInfo.next()) {
 
             // CHECK IF PLAYER HAS ITEM
-            infoItem = new Item(ServerGameInfo.itemDef.get(userItemInfo.getInt("ItemId")));
+            infoItem = ServerGameInfo.newItem(userItemInfo.getInt("ItemId"));
             infoItem.setModifierId(userItemInfo.getInt("ModifierId"));
             infoItem.setMagicId(userItemInfo.getInt("MagicId"));
           }
@@ -145,7 +145,7 @@ public class ItemHandler extends Handler {
         if (userItemInfo.next()) {
 
           // CHECK IF PLAYER HAS ITEM
-          infoItem = new Item(ServerGameInfo.itemDef.get(userItemInfo.getInt("ItemId")));
+          infoItem = ServerGameInfo.newItem(userItemInfo.getInt("ItemId"));
           infoItem.setModifierId(userItemInfo.getInt("ModifierId"));
           infoItem.setMagicId(userItemInfo.getInt("MagicId"));
         }
@@ -341,7 +341,7 @@ public class ItemHandler extends Handler {
 
     try {
       if (itemInfo.next()) {
-        scrollItem = new Item(ServerGameInfo.itemDef.get(itemInfo.getInt("ItemId")));
+        scrollItem = ServerGameInfo.itemDef.get(itemInfo.getInt("ItemId"));
 
         // CHECK THAT IT IS A SCROLL AND AN ABILITY
         useScrollSuccess = true;
@@ -381,7 +381,7 @@ public class ItemHandler extends Handler {
                   + scrollItemId);
       try {
         if (actionbarItem.next()) {
-          scrollItem = new Item(ServerGameInfo.itemDef.get(actionbarItem.getInt("ActionId")));
+          scrollItem = ServerGameInfo.newItem(actionbarItem.getInt("ActionId"));
           Server.userDB.updateDB(
               "delete from character_actionbar where Id = " + actionbarItem.getInt("Id"));
 
@@ -420,7 +420,7 @@ public class ItemHandler extends Handler {
       String itemInfo[] = itemData.split(";");
       int itemId = Integer.parseInt(itemInfo[1]);
 
-      usedItem = new Item(ServerGameInfo.itemDef.get(itemId));
+      usedItem = ServerGameInfo.newItem(itemId);
 
       if (usedItem != null) {
         // Use item from Actionbar
@@ -434,7 +434,7 @@ public class ItemHandler extends Handler {
       int posY = Integer.parseInt(itemInfo[1]);
       int itemId = Integer.parseInt(itemInfo[2]);
 
-      usedItem = new Item(ServerGameInfo.itemDef.get(itemId));
+      usedItem = ServerGameInfo.newItem(itemId);
 
       if (usedItem != null) {
         useItemSuccess = InventoryHandler.useItem(client, usedItem, posX, posY);
@@ -545,7 +545,7 @@ public class ItemHandler extends Handler {
             }
 
             if (dropOrNot < dropChance) {
-              Item droppedItem = new Item(ServerGameInfo.itemDef.get(itemId));
+              Item droppedItem = ServerGameInfo.newItem(itemId);
 
               if (droppedItem.getType().equals("Weapon")
                   || droppedItem.getType().equals("OffHand")
@@ -664,7 +664,7 @@ public class ItemHandler extends Handler {
     try {
       while (lostItemsInfo.next()) {
         if (lostLoot.size() < maxLootBagSize) {
-          Item lostItem = ServerGameInfo.cloneItem(lostItemsInfo.getInt("ItemId"));
+          Item lostItem = ServerGameInfo.newItem(lostItemsInfo.getInt("ItemId"));
           lostItem.setStacked(lostItemsInfo.getInt("Nr"));
           lostItem.setModifierId(lostItemsInfo.getInt("ModifierId"));
           lostItem.setMagicId(lostItemsInfo.getInt("MagicId"));

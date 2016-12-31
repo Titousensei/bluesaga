@@ -891,7 +891,7 @@ public class AdminControlsHandler extends Handler {
           int itemId = Integer.parseInt(itemInfo[0]);
 
           if (ServerGameInfo.itemDef.containsKey(itemId)) {
-            newItem = new Item(ServerGameInfo.itemDef.get(itemId));
+            newItem = ServerGameInfo.newItem(itemId);
           }
 
         } catch (NumberFormatException e) {

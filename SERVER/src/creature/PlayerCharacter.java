@@ -795,7 +795,7 @@ public class PlayerCharacter extends Creature {
     try {
       while (rs.next()) {
         if (ServerGameInfo.itemDef.containsKey(rs.getInt("ItemId"))) {
-          tempItem = new Item(ServerGameInfo.itemDef.get(rs.getInt("ItemId")));
+          tempItem = ServerGameInfo.newItem(rs.getInt("ItemId"));
           tempItem.setUserItemId(rs.getInt("Id"));
           tempItem.setStacked(rs.getInt("Nr"));
           tempItem.setModifierId(rs.getInt("ModifierId"));

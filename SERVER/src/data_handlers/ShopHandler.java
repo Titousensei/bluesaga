@@ -165,7 +165,7 @@ public class ShopHandler extends Handler {
               if (InventoryHandler.countPlayerItem(client, 35) >= 100) {
                 InventoryHandler.removeNumberOfItems(client, 35, 100);
                 InventoryHandler.addItemToInventory(
-                    client, new Item(ServerGameInfo.itemDef.get(34)));
+                    client, ServerGameInfo.newItem(34));
               } else {
                 addOutGoingMessage(client, "message", "#messages.shop.not_enough_silver");
               }
@@ -175,7 +175,7 @@ public class ShopHandler extends Handler {
               if (InventoryHandler.countPlayerItem(client, 36) >= 100) {
                 InventoryHandler.removeNumberOfItems(client, 36, 100);
                 InventoryHandler.addItemToInventory(
-                    client, new Item(ServerGameInfo.itemDef.get(35)));
+                    client, ServerGameInfo.newItem(35));
 
               } else {
                 addOutGoingMessage(client, "message", "#messages.shop.not_enough_copper");
@@ -186,16 +186,16 @@ public class ShopHandler extends Handler {
               if (InventoryHandler.countPlayerItem(client, 35) >= 1) {
                 // REMOVE ONE SILVER
                 InventoryHandler.removeNumberOfItems(client, 35, 1);
-                Item copperCoins = new Item(ServerGameInfo.itemDef.get(36));
+                Item copperCoins = ServerGameInfo.newItem(36);
                 copperCoins.setStacked(100);
                 InventoryHandler.addItemToInventory(client, copperCoins);
               } else if (InventoryHandler.countPlayerItem(client, 34) >= 1) {
                 // REMOVE ONE GOLD
                 InventoryHandler.removeNumberOfItems(client, 34, 1);
-                Item silverCoins = new Item(ServerGameInfo.itemDef.get(35));
+                Item silverCoins = ServerGameInfo.newItem(35);
                 silverCoins.setStacked(99);
                 InventoryHandler.addItemToInventory(client, silverCoins);
-                Item copperCoins = new Item(ServerGameInfo.itemDef.get(36));
+                Item copperCoins = ServerGameInfo.newItem(36);
                 silverCoins.setStacked(100);
                 InventoryHandler.addItemToInventory(client, copperCoins);
               } else {
@@ -209,11 +209,11 @@ public class ShopHandler extends Handler {
             if (client.playerCharacter.hasCopper(rs.getInt("Value"))) {
               // CHECK IF INVENTORY ISN'T FULL
               if (!client.playerCharacter.isInventoryFull(
-                  new Item(ServerGameInfo.itemDef.get(itemId)))) {
+                  ServerGameInfo.newItem(itemId))) {
                 // ADD ITEM AND REMOVE GOLD TO PLAYER
                 InventoryHandler.removeCopperFromInventory(client, rs.getInt("Value"));
                 InventoryHandler.addItemToInventory(
-                    client, new Item(ServerGameInfo.itemDef.get(itemId)));
+                    client, ServerGameInfo.newItem(itemId));
 
                 addOutGoingMessage(
                     client, "buy", "item/" + rs.getString("Name") + "/" + rs.getInt("Value"));
@@ -362,7 +362,7 @@ public class ShopHandler extends Handler {
       try {
         if (rs.next()) {
           itemId = rs.getInt("ItemId");
-          soldItem = new Item(ServerGameInfo.itemDef.get(itemId));
+          soldItem = ServerGameInfo.newItem(itemId);
           soldItem.setModifierId(rs.getInt("ModifierId"));
           soldItem.setMagicId(rs.getInt("MagicId"));
           soldItem.setStacked(rs.getInt("Nr"));
@@ -409,17 +409,17 @@ public class ShopHandler extends Handler {
           CoinConverter cc = new CoinConverter(value);
 
           if (cc.getGold() > 0) {
-            Item GoldItem = new Item(ServerGameInfo.itemDef.get(34));
+            Item GoldItem = ServerGameInfo.newItem(34);
             GoldItem.setStacked(cc.getGold());
             InventoryHandler.addItemToInventory(client, GoldItem);
           }
           if (cc.getSilver() > 0) {
-            Item SilverItem = new Item(ServerGameInfo.itemDef.get(35));
+            Item SilverItem = ServerGameInfo.newItem(35);
             SilverItem.setStacked(cc.getSilver());
             InventoryHandler.addItemToInventory(client, SilverItem);
           }
           if (cc.getCopper() > 0) {
-            Item CopperItem = new Item(ServerGameInfo.itemDef.get(36));
+            Item CopperItem = ServerGameInfo.newItem(36);
             CopperItem.setStacked(cc.getCopper());
             InventoryHandler.addItemToInventory(client, CopperItem);
           }

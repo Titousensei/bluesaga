@@ -190,7 +190,7 @@ public class WalkHandler extends Handler {
                       okWalk = true;
 
                       // CHECK IF KEY IS DESTROYABLE
-                      Item keyItem = new Item(ServerGameInfo.itemDef.get(keyId));
+                      Item keyItem = ServerGameInfo.itemDef.get(keyId);
 
                       addOutGoingMessage(client, "unlockdoor", keyItem.getName());
 

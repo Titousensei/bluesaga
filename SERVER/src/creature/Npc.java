@@ -238,22 +238,22 @@ public class Npc extends Creature {
     int nrHealthPotions = RandomUtils.getInt(1, 10);
     if (level < 20) {
       for (int i = 0; i < nrHealthPotions; i++) {
-        addStashItem(new Item(ServerGameInfo.itemDef.get(3)));
+        addStashItem(ServerGameInfo.newItem(3));
       }
     } else {
       for (int i = 0; i < nrHealthPotions; i++) {
-        addStashItem(new Item(ServerGameInfo.itemDef.get(4)));
+        addStashItem(ServerGameInfo.newItem(4));
       }
     }
 
     int nrManaPotions = RandomUtils.getInt(1, 10);
     if (level < 20) {
       for (int i = 0; i < nrManaPotions; i++) {
-        addStashItem(new Item(ServerGameInfo.itemDef.get(5)));
+        addStashItem(ServerGameInfo.newItem(5));
       }
     } else {
       for (int i = 0; i < nrManaPotions; i++) {
-        addStashItem(new Item(ServerGameInfo.itemDef.get(6)));
+        addStashItem(ServerGameInfo.newItem(6));
       }
     }
 
@@ -550,7 +550,7 @@ public class Npc extends Creature {
       int randomWeaponId = ThreadLocalRandom.current().nextInt(weapons.length);
 
       int weaponId = Integer.parseInt(weapons[randomWeaponId]);
-      equipItem(new Item(ServerGameInfo.itemDef.get(weaponId)));
+      equipItem(ServerGameInfo.newItem(weaponId));
     }
 
     if (!getMonsterOffHandIds().equals("None")) {
@@ -559,7 +559,7 @@ public class Npc extends Creature {
       int randomWeaponId = ThreadLocalRandom.current().nextInt(offhands.length);
 
       int offhandId = Integer.parseInt(offhands[randomWeaponId]);
-      equipItem(new Item(ServerGameInfo.itemDef.get(offhandId)));
+      equipItem(ServerGameInfo.newItem(offhandId));
     }
 
     if (!getMonsterHeadIds().equals("None")) {
@@ -568,7 +568,7 @@ public class Npc extends Creature {
       int randomWeaponId = ThreadLocalRandom.current().nextInt(heads.length);
 
       int headId = Integer.parseInt(heads[randomWeaponId]);
-      equipItem(new Item(ServerGameInfo.itemDef.get(headId)));
+      equipItem(ServerGameInfo.newItem(headId));
     }
   }
 

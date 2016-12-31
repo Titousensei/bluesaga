@@ -46,7 +46,7 @@ public class DataHandlers {
     TrapHandler.init();
     CraftingHandler.init();
     PartyHandler.init();
-    CardHandler.init();
+    //CardHandler.init();
 
     ConnectHandler.init();
     LoginHandler.init();

@@ -1,17 +1,30 @@
 package data_handlers.crafting_handler;
 
-import java.util.Vector;
+import java.util.*;
 
 import data_handlers.item_handler.Item;
 
 public class Recipe {
   private CraftingStation craftingStation;
-  private Vector<Item> materials = new Vector<Item>();
+  private List<Item> materials = new ArrayList<>();
   private Item product;
 
-  public Recipe(int id, Item product) {
-    this.product = product;
+  public final int npcId;
+  public final String name;
+  private final String origin;
+
+  public String items;
+  public int[] abilities;
+
+  public Recipe(int id, String n, String o) {
+    npcId = id;
+    name = n;
+    origin = o;
   }
+
+  //public Recipe(int id, Item product) {
+  //  this.product = product;
+ // }
 
   public void addMaterial(Item material) {
     materials.add(material);
@@ -29,7 +42,7 @@ public class Recipe {
     this.craftingStation = craftingStation;
   }
 
-  public Vector<Item> getMaterials() {
+  public List<Item> getMaterials() {
     return materials;
   }
 }

@@ -3,8 +3,10 @@ package data_handlers.crafting_handler;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
+import java.io.File;
 
-import utils.ServerGameInfo;
+import components.Builder;
+import game.ServerSettings;
 import data_handlers.DataHandlers;
 import data_handlers.Handler;
 import data_handlers.Message;
@@ -13,6 +15,7 @@ import data_handlers.item_handler.InventoryHandler;
 import data_handlers.item_handler.Item;
 import network.Client;
 import network.Server;
+import utils.ServerGameInfo;
 
 public class CraftingHandler extends Handler {
 
@@ -20,49 +23,10 @@ public class CraftingHandler extends Handler {
 
   public static void init() {
 
-    // LOAD SHOP INFO
+    // LOAD RECIPES INFO
     recipes = new HashMap<>();
     for (File f : new File(ServerSettings.PATH).listFiles((dir, name) -> name.startsWith("recipes_"))) {
-      Builder.load(f.getPath(), ShopBuilder.class, shopDef);
-    }
-
-
-    recipes = new HashMap<Integer, Recipe>();
-
-    try (
-        ResultSet recipesInfo = Server.gameDB.askDB("select * from recipe")
-    ) {
-      while (recipesInfo.next()) {
-        int recipeId = recipesInfo.getInt("RecipeId");
-        int productId = recipesInfo.getInt("ProductId");
-
-        Recipe newRecipe = new Recipe(recipeId, ServerGameInfo.itemDef.get(productId));
-
-        CraftingStation bonfire = new CraftingStation(recipesInfo.getString("CraftingStation"));
-        bonfire.setSkillId(9);
-        newRecipe.setCraftingStation(bonfire);
-
-        String[] ingredients = recipesInfo.getString("Materials").split(";");
-
-        for (String ingredient : ingredients) {
-          String ingredientInfo[] = ingredient.split(",");
-          int ingredientId = Integer.parseInt(ingredientInfo[0]);
-          int ingredientNr = Integer.parseInt(ingredientInfo[1]);
-
-          Item ingredientItem = ServerGameInfo.itemDef.get(ingredientId);
-          if (ingredientItem != null) {
-            ingredientItem.setStacked(ingredientNr);
-            newRecipe.addMaterial(ingredientItem);
-          }
-          else {
-            System.err.println("[CraftingHandler] ERROR - Ingredient unknown in recipe "
-                + recipeId + ": " + ingredientId);
-          }
-        }
-        recipes.put(recipeId, newRecipe);
-      }
-    } catch (SQLException e) {
-      e.printStackTrace();
+      Builder.load(f.getPath(), RecipeBuilder.class, recipes);
     }
 
     DataHandlers.register("getrecipe", m -> handleGetRecipe(m));
@@ -71,39 +35,25 @@ public class CraftingHandler extends Handler {
 
   public static void handleGetRecipe(Message m) {
     Client client = m.client;
-    String craftingStationInfo = m.message;
-
-    String craftingStationId = "fire";
-    String craftingStationName = "Bonfire";
-
-    if (craftingStationInfo.contains("fire")) {
-      craftingStationId = "fire";
-      craftingStationName = "Bonfire";
-    }
+    String craftingStationName = m.message;
 
     List<Recipe> availableRecipes = new ArrayList<>();
 
     ResultSet recipesInfo =
         Server.userDB.askDB(
             "select RecipeId from character_recipe where CharacterId = "
-                + client.playerCharacter.getDBId());
+                + client.playerCharacter.getDBId()
+                + " and RecipeId = '" + craftingStationName +"'");
 
     StringBuilder recipesToSend = new StringBuilder(1000);
     recipesToSend.append(craftingStationName).append('/');
 
     try {
       while (recipesInfo.next()) {
-        if (recipes
-            .get(recipesInfo.getInt("RecipeId"))
-            .getCraftingStation()
-            .getName()
-            .equals(craftingStationId)) {
-          availableRecipes.add(recipes.get(recipesInfo.getInt("RecipeId")));
-        }
+        availableRecipes.add(recipes.get(recipesInfo.getInt("RecipeId")));
       }
       recipesInfo.close();
     } catch (SQLException e) {
-      // TODO Auto-generated catch block
       e.printStackTrace();
     }
 
@@ -115,9 +65,7 @@ public class CraftingHandler extends Handler {
           .append(';');
     }
 
-    if (recipesToSend.length() > 0) {
-      addOutGoingMessage(client, "recipes", recipesToSend.toString());
-    }
+    addOutGoingMessage(client, "recipes", recipesToSend.toString());
   }
 
   public static void handleCraftItem(Message m) {
@@ -158,7 +106,7 @@ public class CraftingHandler extends Handler {
         InventoryHandler.addItemToInventory(client, itemRecipe.getProduct());
 
         // Give sp to crafting skill
-        int skillId = itemRecipe.getCraftingStation().getSkillId();
+        int skillId = itemRecipe.getCraftingStation().skillId;
 
         SkillHandler.gainSP(client, skillId, false);
 

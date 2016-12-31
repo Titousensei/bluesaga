@@ -1,0 +1,31 @@
+### r216 / Larva Soup Recipe
+ProductId: i183 / Larva Soup
+CraftingStation: Bonfire
+SkillLevel: 1
+Material: i94 / Larva Juice
+Material: i94 / Larva Juice
+Material: i94 / Larva Juice
+
+### r218 / Beetle Burger Recipe
+ProductId: i201 / Beetle Burger
+CraftingStation: Bonfire
+SkillLevel: 1
+Material: i95 / Scarab Meat
+Material: i178 / Oranga
+Material: i178 / Oranga
+
+### r251 / Shroom Stew Recipe
+ProductId: i245 / Shroom Stew
+CraftingStation: Bonfire
+SkillLevel: 1
+Material: i98 / Shroom Spore
+Material: i98 / Shroom Spore
+Material: i99 / Green Shroom Cap
+
+### r262 / Ancient Goblin Soup Recipe
+ProductId: i261 / Ancient Goblin Soup
+CraftingStation: Bonfire
+SkillLevel: 2
+Material: i259 / Ogre Ear
+Material: i260 / Moss
+Material: i209 / Tentacle

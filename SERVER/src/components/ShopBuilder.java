@@ -2,6 +2,10 @@ package components;
 
 import java.util.*;
 
+import network.Server;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
 import data_handlers.item_handler.Item;
 import utils.ServerGameInfo;
 
@@ -59,7 +63,7 @@ extends Builder<Shop>
 
   public Shop build() {
     if (items!=null) {
-      s.setItems(items.toString());
+      s.setItemsStr(items.toString());
     }
     if (abilities!=null) {
       int[] ab = new int[abilities.size()];
@@ -69,7 +73,31 @@ extends Builder<Shop>
         ++ i;
       }
       s.setAbilities(ab);
+
+      StringBuilder sb = new StringBuilder();
+      for (int aId : ab) {
+        try (ResultSet abilityInfo =
+            Server.gameDB.askDB("select ClassId, GraphicsNr from ability where Id = " + aId);
+        ) {
+          if (abilityInfo.next()) {
+            String color = "0,0,0";
+            if (abilityInfo.getInt("ClassId") > 0) {
+              color = ServerGameInfo.classDef.get(abilityInfo.getInt("ClassId")).bgColor;
+            }
+            sb.append(aId)
+              .append(',')
+              .append(color)
+              .append(',')
+              .append(abilityInfo.getInt("GraphicsNr"))
+              .append(':');
+          }
+        } catch (SQLException e) {
+          e.printStackTrace();
+        }
+      }
+      s.setAbilitiesStr(sb.toString());
     }
+
     return s;
   }
 

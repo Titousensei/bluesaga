@@ -26,61 +26,12 @@ public class ShopHandler extends Handler {
     if (m.client.playerCharacter == null) return;
     Client client = m.client;
     int shopId = Integer.parseInt(m.message);
-
-
-
-    String shopItemInfo = "None";
-    StringBuilder shopAbilitiesInfo = new StringBuilder();
-
-    // CHECK IF SHOP EXIST AND HAS ITEMS
-    boolean foundShop = false;
-
-    ResultSet rs =
-        Server.gameDB.askDB("select NpcId, Items, Abilities from shop where Id = " + shopId);
-
-    String npcName = "";
-
     Shop shop = ServerGameInfo.shopDef.get(shopId);
     if (shop != null) {
-      shopItemInfo = shop.getItems();
-      int[] abilityIds = shop.getAbilities();
-
-      // GET NPC INFO
-      npcName = Server.mapDB.askString("select Name from area_creature where Id = " + shop.npcId);
-
-      if (abilityIds!=null) {
-        for (int aId : abilityIds) {
-          try {
-            ResultSet abilityInfo =
-                Server.gameDB.askDB("select ClassId, GraphicsNr from ability where Id = " + aId);
-            if (abilityInfo.next()) {
-              String color = "0,0,0";
-              if (abilityInfo.getInt("ClassId") > 0) {
-                color = ServerGameInfo.classDef.get(abilityInfo.getInt("ClassId")).bgColor;
-              }
-              shopAbilitiesInfo
-                  .append(aId)
-                  .append(',')
-                  .append(color)
-                  .append(',')
-                  .append(abilityInfo.getInt("GraphicsNr"))
-                  .append(':');
-            }
-            abilityInfo.close();
-          } catch (SQLException e) {
-            e.printStackTrace();
-          }
-        }
-      } else {
-        shopAbilitiesInfo.append("None");
-      }
-
-      foundShop = true;
-    }
-
-    if (foundShop) {
       addOutGoingMessage(
-          client, "shop", npcName + ";" + shopItemInfo + ";" + shopAbilitiesInfo.toString());
+          client, "shop", shop.name + ";"
+          + shop.getItemsStr() + ";"
+          + shop.getAbilitiesStr());
       InventoryHandler.sendInventoryInfo(client);
     }
   }

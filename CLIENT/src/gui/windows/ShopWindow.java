@@ -52,7 +52,7 @@ public class ShopWindow extends Window {
       }
     }
 
-    ShopName = shop_info[0] + "'s Shop";
+    ShopName = shop_info[0];
 
     int boxX = 0;
     int boxY = 0;

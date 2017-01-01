@@ -1,49 +1,49 @@
 -- NpcId / Name
 
-### 1
+### 1 / Old Blob's Shop
 Items: 3,5,8,2,23,14,63,231,11,124,17,82
 
-### 146
+### 146 / Winged Blob's Shop
 Items: 8,2,23,14,63,231,11,124,17,82,34,35,36
 
-### 690
+### 690 / Wizard worm's Shop
 Items: 3,4,143,5
 
-### 542
+### 542 / Pirate Brute's Shop
 Items: 170,171,126,127,128,129,130,131,132,184
 
-### 812
+### 812 / Goblin Warrior's Shop
 Items: 8,2,23,14,63,231,11,124,17,82,34,35,36
 
-### 813
+### 813 / Goblin Bomber's Shop
 Items: 3,4,5
 Abilities: 45
 
-### 814
+### 814 / Pirate Brute's Shop
 Items: 133,134,135,136,185,186,187,188,184
 
-### 923
+### 923 / Referee's Shop
 Items: 189,190
 
-### 689
+### 689 / Old Man's Shop
 Items: 193
 
-### 1390
+### 1390 / Referee's Shop
 Items: 189,190
 
-### 1899
+### 1899 / Assassin's Shop
 Items: 3,4,143,5,6,8,2,23,14,63,231,11,124,17,82,34,35,36
 
-### 1961
+### 1961 / Blob's Shop
 Items: 216,218,98,94,178
 
-### 2045
+### 2045 / Goblin Necromancer's Shop
 Items: 3,4,143,5,6
 
-### 2044
+### 2044 / Fox's Shop
 Items: 8,2,23,14,63,231,11,124,17,82,34,35,36
 
-### 114
+### 114 / Pink Squid's Shop
 -- Small Health Potion, Medium Health Potion, Small Mana Potion, Fishing Stick
 Items: 3,4,5,193
 -- Fishing

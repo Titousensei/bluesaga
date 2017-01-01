@@ -6,20 +6,27 @@ public class Shop
   public final String name;
   private final String origin;
 
-  public String items;
-  public int[] abilities;
+  private String items;
+  private int[] abilities;
+  private String abilitiesStr;
 
   public Shop(int id, String n, String o) {
     npcId = id;
     name = n;
     origin = o;
+    items = "None";
+    abilities = null;
+    abilitiesStr = "None";
   }
 
-  public String getItems() { return items; }
-  void setItems(String val) { items = val; }
+  public String getItemsStr() { return items; }
+  void setItemsStr(String val) { items = val; }
 
   public int[] getAbilities() { return abilities; }
   void setAbilities(int[] val) { abilities = val; }
+
+  public String getAbilitiesStr() { return abilitiesStr; }
+  void setAbilitiesStr(String val) { abilitiesStr = val; }
 
   @Override
   public String toString() {

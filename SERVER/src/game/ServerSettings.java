@@ -49,7 +49,17 @@ public class ServerSettings {
   public static int startX = 5005;
   public static int startY = 9984;
   public static int startZ = 2;
-  public static int initialQuestId = 30;
+
+  public static int initialQuestId = 0;
+
+  public static int initialItemIdWarrior = 0;
+  public static int initialItemIdHunter = 0;
+  public static int initialItemIdMage = 0;
+
+  public static int initialAbilityIdWarrior = 0;
+  public static int initialAbilityIdHunter = 0;
+  public static int initialAbilityIdMage = 0;
+
   public static boolean startWithTutorial = true;
   public static boolean enableCutScenes = true;
 

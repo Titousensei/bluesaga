@@ -387,58 +387,68 @@ public class LoginHandler extends Handler {
         newChar.close();
 
         if (classId == 1) {
-
           // ADD WOODEN CLUB
           Server.userDB.updateDB(
               "insert into character_item (CharacterId, ItemId, Equipped, InventoryPos) values ("
-                  + charId
-                  + ",8,1,'None')");
+                  + charId + "," + ServerSettings.initialItemIdWarrior
+                  + ",1,'None')");
 
-          // ADD POWER STRIKE ABILITY
-          Server.userDB.updateDB(
-              "insert into character_ability (CharacterId, AbilityId, CooldownLeft) values ("
-                  + charId
-                  + ",17,0)");
+          if (ServerSettings.initialAbilityIdWarrior>0) {
+            // ADD POWER STRIKE ABILITY
+            Server.userDB.updateDB(
+                "insert into character_ability (CharacterId, AbilityId, CooldownLeft) values ("
+                    + charId + "," + ServerSettings.initialAbilityIdWarrior
+                    + ",0)");
 
-          // ADD ABILITY TO ACTIONBAR
-          Server.userDB.updateDB(
-              "insert into character_actionbar (ActionType, ActionId, CharacterId, OrderNr) values ('Ability',17,"
-                  + charId
-                  + ",0)");
+            // ADD ABILITY TO ACTIONBAR
+            Server.userDB.updateDB(
+                "insert into character_actionbar (ActionType, ActionId, CharacterId, OrderNr) values ("
+                    + "'Ability',"
+                    + ServerSettings.initialAbilityIdWarrior + "," + charId
+                    + ",0)");
+          }
         } else if (classId == 3) {
           // ADD WOODEN SLINGSHOT
           Server.userDB.updateDB(
               "insert into character_item (CharacterId, ItemId, Equipped, InventoryPos) values ("
-                  + charId
-                  + ",14,1,'None')");
-          // ADD FOCUSED SHOT ABILITY
-          Server.userDB.updateDB(
-              "insert into character_ability (CharacterId, AbilityId, CooldownLeft) values ("
-                  + charId
-                  + ",54,0)");
-          // ADD ABILITY TO ACTIONBAR
-          Server.userDB.updateDB(
-              "insert into character_actionbar (ActionType, ActionId, CharacterId, OrderNr) values ('Ability',54,"
-                  + charId
-                  + ",0)");
+                  + charId + "," + ServerSettings.initialItemIdHunter
+                  + ",1,'None')");
+
+          if (ServerSettings.initialAbilityIdHunter>0) {
+            // ADD FOCUSED SHOT ABILITY
+            Server.userDB.updateDB(
+                "insert into character_ability (CharacterId, AbilityId, CooldownLeft) values ("
+                    + charId + "," + ServerSettings.initialAbilityIdHunter
+                    + ",54,0)");
+
+            // ADD ABILITY TO ACTIONBAR
+            Server.userDB.updateDB(
+                "insert into character_actionbar (ActionType, ActionId, CharacterId, OrderNr) values ("
+                    + "'Ability',"
+                    + ServerSettings.initialAbilityIdHunter + "," + charId
+                    + ",0)");
+          }
         } else if (classId == 2) {
-
-          // ADD ENERGY BURST
-          Server.userDB.updateDB(
-              "insert into character_ability (CharacterId, AbilityId, CooldownLeft) values ("
-                  + charId
-                  + ",73,0)");
-
-          // ADD ABILITY TO ACTIONBAR
           // ADD MAGIC WAND
           Server.userDB.updateDB(
               "insert into character_item (CharacterId, ItemId, Equipped, InventoryPos) values ("
-                  + charId
-                  + ",231,1,'None')");
-          Server.userDB.updateDB(
-              "insert into character_actionbar (ActionType, ActionId, CharacterId, OrderNr) values ('Ability',73,"
-                  + charId
-                  + ",0)");
+                  + charId + "," + ServerSettings.initialItemIdMage
+                  + ",1,'None')");
+
+          if (ServerSettings.initialAbilityIdMage>0) {
+            // ADD ENERGY BURST
+            Server.userDB.updateDB(
+                "insert into character_ability (CharacterId, AbilityId, CooldownLeft) values ("
+                    + charId + "," + ServerSettings.initialAbilityIdMage
+                    + ",73,0)");
+
+          // ADD ABILITY TO ACTIONBAR
+            Server.userDB.updateDB(
+                "insert into character_actionbar (ActionType, ActionId, CharacterId, OrderNr) values ("
+                    + "'Ability',"
+                    + ServerSettings.initialAbilityIdMage + "," + charId
+                    + ",0)");
+          }
         }
 
         if (ServerSettings.initialQuestId>0) {

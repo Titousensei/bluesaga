@@ -1,12 +1,16 @@
 package data_handlers;
 
+import game.ServerSettings;
 import network.Client;
 import network.Server;
 
 public class TutorialHandler extends Handler {
 
   public static void updateTutorials(int tutorialNr, Client client) {
-    if (client.playerCharacter.getTutorialNr() == tutorialNr) {
+
+    if (ServerSettings.startWithTutorial
+    && client.playerCharacter.getTutorialNr() == tutorialNr
+    ) {
       boolean saveTutorialProgress = true;
       if (tutorialNr == 0) {
         // CLOSE WALK TUTORIAL

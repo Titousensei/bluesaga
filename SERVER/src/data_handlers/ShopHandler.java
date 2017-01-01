@@ -45,143 +45,136 @@ public class ShopHandler extends Handler {
 
     client.playerCharacter.loadInventory();
     if (buyType.equals("Item")) {
-      ResultSet rs =
-          Server.gameDB.askDB("select Value, Name, Type, SubType from item where Id = " + itemId);
-      try {
-        if (rs.next()) {
-          if (rs.getString("Type").equals("Customization")) {
-            // CHECK IF PLAYER CAN AFFORD IT
-            if (client.playerCharacter.hasCopper(rs.getInt("Value"))) {
-              // CHECK IF USER IS PREMIUM
-              InventoryHandler.removeCopperFromInventory(client, rs.getInt("Value"));
+      Item it = ServerGameInfo.itemDef.get(itemId);
+      if (it!=null) {
+        if (it.getType().equals("Customization")) {
+          // CHECK IF PLAYER CAN AFFORD IT
+          if (client.playerCharacter.hasCopper(it.getValue())) {
+            // CHECK IF USER IS PREMIUM
+            InventoryHandler.removeCopperFromInventory(client, it.getValue());
 
-              if (rs.getString("SubType").equals("Mouth Feature")) {
-                client.playerCharacter.getCustomization().setMouthFeatureId(itemId);
-                Server.userDB.updateDB(
-                    "update user_character set MouthFeatureId = "
-                        + itemId
-                        + " where Id = "
-                        + client.playerCharacter.getDBId());
-              } else if (rs.getString("SubType").equals("Accessories")) {
-                client.playerCharacter.getCustomization().setAccessoriesId(itemId);
-                Server.userDB.updateDB(
-                    "update user_character set AccessoriesId = "
-                        + itemId
-                        + " where Id = "
-                        + client.playerCharacter.getDBId());
-              } else if (rs.getString("SubType").equals("Skin Feature")) {
-                client.playerCharacter.getCustomization().setSkinFeatureId(itemId);
-                Server.userDB.updateDB(
-                    "update user_character set SkinFeatureId = "
-                        + itemId
-                        + " where Id = "
-                        + client.playerCharacter.getDBId());
-              } else if (rs.getString("SubType").equals("Remove")) {
-                client.playerCharacter.getCustomization().setSkinFeatureId(0);
-                client.playerCharacter.getCustomization().setAccessoriesId(0);
-                client.playerCharacter.getCustomization().setMouthFeatureId(0);
-                Server.userDB.updateDB(
-                    "update user_character set SkinFeatureId = 0, AccessoriesId = 0, MouthFeatureId = 0 where Id = "
-                        + client.playerCharacter.getDBId());
-              }
+            if (it.getSubType().equals("Mouth Feature")) {
+              client.playerCharacter.getCustomization().setMouthFeatureId(itemId);
+              Server.userDB.updateDB(
+                  "update user_character set MouthFeatureId = "
+                      + itemId
+                      + " where Id = "
+                      + client.playerCharacter.getDBId());
+            } else if (it.getSubType().equals("Accessories")) {
+              client.playerCharacter.getCustomization().setAccessoriesId(itemId);
+              Server.userDB.updateDB(
+                  "update user_character set AccessoriesId = "
+                      + itemId
+                      + " where Id = "
+                      + client.playerCharacter.getDBId());
+            } else if (it.getSubType().equals("Skin Feature")) {
+              client.playerCharacter.getCustomization().setSkinFeatureId(itemId);
+              Server.userDB.updateDB(
+                  "update user_character set SkinFeatureId = "
+                      + itemId
+                      + " where Id = "
+                      + client.playerCharacter.getDBId());
+            } else if (it.getSubType().equals("Remove")) {
+              client.playerCharacter.getCustomization().setSkinFeatureId(0);
+              client.playerCharacter.getCustomization().setAccessoriesId(0);
+              client.playerCharacter.getCustomization().setMouthFeatureId(0);
+              Server.userDB.updateDB(
+                  "update user_character set SkinFeatureId = 0, AccessoriesId = 0, MouthFeatureId = 0 where Id = "
+                      + client.playerCharacter.getDBId());
+            }
 
-              for (Map.Entry<Integer, Client> entry : Server.clients.entrySet()) {
-                Client other = entry.getValue();
+            for (Map.Entry<Integer, Client> entry : Server.clients.entrySet()) {
+              Client other = entry.getValue();
 
-                if (other.Ready) {
-                  if (isVisibleForPlayer(
-                      other.playerCharacter,
-                      client.playerCharacter.getX(),
-                      client.playerCharacter.getY(),
-                      client.playerCharacter.getZ())) {
-                    addOutGoingMessage(
-                        other,
-                        "newcustomize",
-                        client.playerCharacter.getSmallData()
-                            + ";"
-                            + rs.getString("SubType")
-                            + ","
-                            + itemId);
-                  }
+              if (other.Ready) {
+                if (isVisibleForPlayer(
+                    other.playerCharacter,
+                    client.playerCharacter.getX(),
+                    client.playerCharacter.getY(),
+                    client.playerCharacter.getZ())) {
+                  addOutGoingMessage(
+                      other,
+                      "newcustomize",
+                      client.playerCharacter.getSmallData()
+                          + ";"
+                          + it.getSubType()
+                          + ","
+                          + itemId);
                 }
               }
-            } else {
-              addOutGoingMessage(client, "shoperror", "nogold");
             }
-          } else if (rs.getString("Type").equals("Money")) {
-            // EXCHANGE MONEY VALUES
-            if (itemId == 34) {
-              // GOLD
-              // REMOVE 100 SILVER
-              if (InventoryHandler.countPlayerItem(client, 35) >= 100) {
-                InventoryHandler.removeNumberOfItems(client, 35, 100);
-                InventoryHandler.addItemToInventory(
-                    client, ServerGameInfo.newItem(34));
-              } else {
-                addOutGoingMessage(client, "message", "#messages.shop.not_enough_silver");
-              }
-            } else if (itemId == 35) {
-              // SILVER
-              // REMOVE 100 COPPER
-              if (InventoryHandler.countPlayerItem(client, 36) >= 100) {
-                InventoryHandler.removeNumberOfItems(client, 36, 100);
-                InventoryHandler.addItemToInventory(
-                    client, ServerGameInfo.newItem(35));
-
-              } else {
-                addOutGoingMessage(client, "message", "#messages.shop.not_enough_copper");
-              }
-
-            } else if (itemId == 36) {
-              // COPPER
-              if (InventoryHandler.countPlayerItem(client, 35) >= 1) {
-                // REMOVE ONE SILVER
-                InventoryHandler.removeNumberOfItems(client, 35, 1);
-                Item copperCoins = ServerGameInfo.newItem(36);
-                copperCoins.setStacked(100);
-                InventoryHandler.addItemToInventory(client, copperCoins);
-              } else if (InventoryHandler.countPlayerItem(client, 34) >= 1) {
-                // REMOVE ONE GOLD
-                InventoryHandler.removeNumberOfItems(client, 34, 1);
-                Item silverCoins = ServerGameInfo.newItem(35);
-                silverCoins.setStacked(99);
-                InventoryHandler.addItemToInventory(client, silverCoins);
-                Item copperCoins = ServerGameInfo.newItem(36);
-                silverCoins.setStacked(100);
-                InventoryHandler.addItemToInventory(client, copperCoins);
-              } else {
-                addOutGoingMessage(client, "message", "#messages.shop.no_money");
-              }
-            }
-
           } else {
-
-            // CHECK IF PLAYER CAN AFFORD IT
-            if (client.playerCharacter.hasCopper(rs.getInt("Value"))) {
-              // CHECK IF INVENTORY ISN'T FULL
-              if (!client.playerCharacter.isInventoryFull(
-                  ServerGameInfo.newItem(itemId))) {
-                // ADD ITEM AND REMOVE GOLD TO PLAYER
-                InventoryHandler.removeCopperFromInventory(client, rs.getInt("Value"));
-                InventoryHandler.addItemToInventory(
-                    client, ServerGameInfo.newItem(itemId));
-
-                addOutGoingMessage(
-                    client, "buy", "item/" + rs.getString("Name") + "/" + rs.getInt("Value"));
-              } else {
-                addOutGoingMessage(client, "shoperror", "inventoryfull");
-              }
+            addOutGoingMessage(client, "shoperror", "nogold");
+          }
+        } else if (it.getType().equals("Money")) {
+          // EXCHANGE MONEY VALUES
+          if (itemId == 34) {
+            // GOLD
+            // REMOVE 100 SILVER
+            if (InventoryHandler.countPlayerItem(client, 35) >= 100) {
+              InventoryHandler.removeNumberOfItems(client, 35, 100);
+              InventoryHandler.addItemToInventory(
+                  client, ServerGameInfo.newItem(34));
             } else {
-              addOutGoingMessage(client, "shoperror", "nogold");
+              addOutGoingMessage(client, "message", "#messages.shop.not_enough_silver");
+            }
+          } else if (itemId == 35) {
+            // SILVER
+            // REMOVE 100 COPPER
+            if (InventoryHandler.countPlayerItem(client, 36) >= 100) {
+              InventoryHandler.removeNumberOfItems(client, 36, 100);
+              InventoryHandler.addItemToInventory(
+                  client, ServerGameInfo.newItem(35));
+
+            } else {
+              addOutGoingMessage(client, "message", "#messages.shop.not_enough_copper");
+            }
+
+          } else if (itemId == 36) {
+            // COPPER
+            if (InventoryHandler.countPlayerItem(client, 35) >= 1) {
+              // REMOVE ONE SILVER
+              InventoryHandler.removeNumberOfItems(client, 35, 1);
+              Item copperCoins = ServerGameInfo.newItem(36);
+              copperCoins.setStacked(100);
+              InventoryHandler.addItemToInventory(client, copperCoins);
+            } else if (InventoryHandler.countPlayerItem(client, 34) >= 1) {
+              // REMOVE ONE GOLD
+              InventoryHandler.removeNumberOfItems(client, 34, 1);
+              Item silverCoins = ServerGameInfo.newItem(35);
+              silverCoins.setStacked(99);
+              InventoryHandler.addItemToInventory(client, silverCoins);
+              Item copperCoins = ServerGameInfo.newItem(36);
+              silverCoins.setStacked(100);
+              InventoryHandler.addItemToInventory(client, copperCoins);
+            } else {
+              addOutGoingMessage(client, "message", "#messages.shop.no_money");
             }
           }
+
         } else {
-          addOutGoingMessage(client, "shoperror", "noitem");
+
+          // CHECK IF PLAYER CAN AFFORD IT
+          if (client.playerCharacter.hasCopper(it.getValue())) {
+            // CHECK IF INVENTORY ISN'T FULL
+            if (!client.playerCharacter.isInventoryFull(
+                ServerGameInfo.newItem(itemId))) {
+              // ADD ITEM AND REMOVE GOLD TO PLAYER
+              InventoryHandler.removeCopperFromInventory(client, it.getValue());
+              InventoryHandler.addItemToInventory(
+                  client, ServerGameInfo.newItem(itemId));
+
+              addOutGoingMessage(
+                  client, "buy", "item/" + it.getName() + "/" + it.getValue());
+            } else {
+              addOutGoingMessage(client, "shoperror", "inventoryfull");
+            }
+          } else {
+            addOutGoingMessage(client, "shoperror", "nogold");
+          }
         }
-        rs.close();
-      } catch (SQLException e) {
-        e.printStackTrace();
-        addOutGoingMessage(client, "shoperror", "error");
+      } else {
+        addOutGoingMessage(client, "shoperror", "noitem");
       }
     } else if (buyType.equals("Ability")) {
       int abilityId = itemId;

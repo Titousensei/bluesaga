@@ -48,7 +48,7 @@ public class SkillWindow extends Window {
 
           int i = 0;
           for (Skill s : BlueSaga.playerCharacter.getSkills().values()) {
-            if (s != null) {
+            if (s != null && (s.getSP()>0 || s.getLevel()>1)) {
               ImageResource.getSprite("skills/icon" + s.getId())
                   .draw(X + 20 + moveX, Y + 65 + moveY + (i) * 30);
               ImageResource.getSprite("gui/world/meter_bg")
@@ -72,7 +72,9 @@ public class SkillWindow extends Window {
 
           int i = 0;
           for (BaseClass playerClass : BlueSaga.playerCharacter.getPlayerClasses().values()) {
-            if (playerClass.available) {
+            if (playerClass.available
+            && (playerClass.getXp()>0 || playerClass.level>1)
+            ) {
               ImageResource.getSprite("classes/icon" + playerClass.id)
                   .draw(X + 20 + moveX, Y + 65 + moveY + (i) * 30);
               ImageResource.getSprite("gui/world/meter_bg")

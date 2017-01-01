@@ -505,11 +505,12 @@ public class Npc extends Creature {
     Health = Stats.getValue("MAX_HEALTH");
     Mana = Stats.getValue("MAX_MANA");
 
-    abilities = null;
-    for (Ability a : original_monster.getAbilities()) {
-      Ability newAbility = new Ability(ServerGameInfo.abilityDef.get(a.getAbilityId()));
-      newAbility.setCaster(CreatureType.Monster, this);
-      addAbility(newAbility);
+    if (original_monster.getAbilities() != null) {
+      for (Ability a : original_monster.getAbilities()) {
+        Ability newAbility = new Ability(ServerGameInfo.abilityDef.get(a.getAbilityId()));
+        newAbility.setCaster(CreatureType.Monster, this);
+        addAbility(newAbility);
+      }
     }
 
     Level = original_monster.getLevel();

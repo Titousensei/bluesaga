@@ -104,6 +104,7 @@ public class PlayerCharacter extends Creature {
     this.client = client;
 
     Level = 1;
+    abilities = new ArrayList(1);
 
     FriendsList = new Vector<Integer>();
 
@@ -976,8 +977,13 @@ public class PlayerCharacter extends Creature {
    ****************************************/
   public String getAbilitiesAsString() {
 
+    if (abilities == null) {
+      return "0";
+    }
+
     // nrAbilities; Id,Name,ClassId,ManaCost,Cooldown,CooldownLeft,Range,Price,TargetSelf,Instant,EquipReq
     StringBuilder AbilityInfo = new StringBuilder(200);
+
     AbilityInfo.append(abilities.size());
 
     for (Ability A : abilities) {

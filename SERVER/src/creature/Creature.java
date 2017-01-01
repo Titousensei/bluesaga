@@ -124,7 +124,7 @@ public class Creature implements Mover {
   private boolean Boss;
 
   protected HashMap<Integer, JobSkill> jobSkills = new HashMap<Integer, JobSkill>();
-  protected List<Ability> abilities;
+  protected List<Ability> abilities = null;
   private int DeathAbilityId = 0;
 
   protected Stats Stats = new Stats();
@@ -320,10 +320,12 @@ public class Creature implements Mover {
     }
 
     // Add abilities
-    for (Ability ability : copy.getAbilities()) {
-      Ability newAbility = new Ability(ServerGameInfo.abilityDef.get(ability.getAbilityId()));
-      newAbility.setCaster(CreatureType.Monster, this);
-      addAbility(newAbility);
+    if (copy.getAbilities() != null) {
+      for (Ability ability : copy.getAbilities()) {
+        Ability newAbility = new Ability(ServerGameInfo.abilityDef.get(ability.getAbilityId()));
+        newAbility.setCaster(CreatureType.Monster, this);
+        addAbility(newAbility);
+      }
     }
 
     Health = Stats.getValue("MAX_HEALTH");
@@ -596,10 +598,12 @@ public class Creature implements Mover {
 
   public int hasAbility(String abilityName) {
     int abilityId = 9999;
-    for (int i = 0; i < abilities.size(); i++) {
-      if (abilities.get(i).getName().equals(abilityName)) {
-        abilityId = i;
-        break;
+    if (abilities != null) {
+      for (int i = 0; i < abilities.size(); i++) {
+        if (abilities.get(i).getName().equals(abilityName)) {
+          abilityId = i;
+          break;
+        }
       }
     }
     return abilityId;
@@ -610,17 +614,19 @@ public class Creature implements Mover {
   }
 
   public int getNrAbilities() {
-    return abilities.size();
+    return (abilities != null) ? abilities.size() : 0;
   }
 
   public Ability getAbility(int index) {
-    return abilities.get(index);
+    return (abilities != null) ? abilities.get(index) : null;
   }
 
   public Ability getAbilityById(int Id) {
-    for (Ability ability : abilities) {
-      if (ability.getAbilityId() == Id) {
-        return ability;
+    if (abilities != null) {
+      for (Ability ability : abilities) {
+        if (ability.getAbilityId() == Id) {
+          return ability;
+        }
       }
     }
     return null;

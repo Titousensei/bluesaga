@@ -345,9 +345,10 @@ public class QuestHandler extends Handler {
   public static void checkQuestItem(Client client, int questId) {
     // CHECK IF THERE IS A QUEST ITEM
     Quest addedQuest = ServerGameInfo.questDef.get(questId);
-
-    for (Item questItem : addedQuest.getQuestItems()) {
-      InventoryHandler.addItemToInventory(client, questItem);
+    if (addedQuest!=null && addedQuest.getQuestItems()!=null) {
+      for (Item questItem : addedQuest.getQuestItems()) {
+        InventoryHandler.addItemToInventory(client, questItem);
+      }
     }
   }
 

@@ -83,7 +83,7 @@ public class WorldMap implements TileBasedMap {
     ServerMessage.printMessage("Loading map...", false);
 
     // LOAD MAP FROM DB
-    ResultSet tileInfo = Server.mapDB.askDB("select * from area_tile order by Y asc, X asc");
+    ResultSet tileInfo = Server.mapDB.askDB("select * from area_tile");
 
     try {
       while (tileInfo.next()) {

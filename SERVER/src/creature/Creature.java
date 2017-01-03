@@ -934,7 +934,6 @@ public class Creature implements Mover {
   public void startAttackTimer() {
 
     ATTACK_READY = false;
-
     float attackTurnTime = 2000.0f * (200.0f / (getAttackSpeed() + 100.0f));
 
     attackTurnTime /= 200.0f;

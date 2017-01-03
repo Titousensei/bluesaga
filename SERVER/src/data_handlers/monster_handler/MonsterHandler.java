@@ -541,8 +541,9 @@ public class MonsterHandler extends Handler {
 
                   if (turnAggro) {
                     // Check if monster can attack, if not do not chase
-                    boolean chaseOk =
-                        BattleHandler.checkAttackOk(m.getX(), m.getY(), m.getZ(), hitX, hitY, hitZ);
+                    boolean chaseOk = BattleHandler.checkAttackOk(
+                        m.getX(), m.getY(), m.getZ(), hitX, hitY, hitZ,
+                        m.getAttackRange() > 1); // is ranged attack
 
                     if (chaseOk) {
                       if (attacker.getCreatureType() == CreatureType.Monster

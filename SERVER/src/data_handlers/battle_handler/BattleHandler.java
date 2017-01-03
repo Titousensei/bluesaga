@@ -205,7 +205,8 @@ public class BattleHandler extends Handler {
             ATTACKER.getZ(),
             TARGET.getX(),
             TARGET.getY(),
-            TARGET.getZ());
+            TARGET.getZ(),
+            ATTACKER.getAttackRange() > 1); // is ranged attack
 
     // Check if target is still alive and not paralyzed
     if (attackOk && !TARGET.isDead() && ATTACKER.getStat("ATTACKSPEED") > 0) {
@@ -213,7 +214,12 @@ public class BattleHandler extends Handler {
       int dX = TARGET.getX() - ATTACKER.getX();
       int dY = TARGET.getY() - ATTACKER.getY();
 
-      double distToTarget = Math.sqrt(Math.pow(dX, 2) + Math.pow(dY, 2));
+      double distToTarget = MathUtils.distance(dX, dY);
+      if (distToTarget > 8.0) {
+        // Too far to see, can't aggro
+        ATTACKER.setAggro(null);
+        return;
+      }
 
       float angleNeeded = MathUtils.angleBetween(-dX, -dY);
 
@@ -225,7 +231,6 @@ public class BattleHandler extends Handler {
       boolean nearTarget = checkTargetNear(ATTACKER, TARGET, angleNeeded, distToTarget);
 
       if (nearTarget) {
-
         // Generate attack info
         String attackDir = "none";
 
@@ -237,26 +242,6 @@ public class BattleHandler extends Handler {
           if (ATTACKER.getWeapon().getProjectileId() > 0) {
             useProjectile = true;
             attackDir += ";proj";
-          }
-        }
-
-        // Get damage, criticalOrMiss, attackType
-        String damageInfo = DamageCalculator.calculateAttack(ATTACKER, TARGET);
-
-        String attack_info[] = damageInfo.split(";");
-
-        String criticalOrMiss = attack_info[0];
-        int damage = Integer.parseInt(attack_info[1]);
-        String hitType = ATTACKER.getAttackType();
-
-        // Check if target is standning in arena, if target is, don't count as PK kill
-        boolean arena = false;
-        if (Server.WORLD_MAP.getTile(TARGET.getX(), TARGET.getY(), TARGET.getZ()) != null) {
-          if (Server.WORLD_MAP
-              .getTile(TARGET.getX(), TARGET.getY(), TARGET.getZ())
-              .getType()
-              .equals("arena")) {
-            arena = true;
           }
         }
 
@@ -273,17 +258,14 @@ public class BattleHandler extends Handler {
             for (Map.Entry<Integer, Client> entry : Server.clients.entrySet()) {
               Client s = entry.getValue();
 
-              if (s.Ready) {
-                if (s.playerCharacter.getZ() == ATTACKER.getZ()) {
-                  double distToMob =
-                      Math.sqrt(
-                          Math.pow(ATTACKER.getX() - s.playerCharacter.getX(), 2)
-                              + Math.pow(ATTACKER.getY() - s.playerCharacter.getY(), 2));
+              if (s.Ready && s.playerCharacter.getZ() == ATTACKER.getZ()) {
+                double distToMob = MathUtils.distance(
+                    ATTACKER.getX() - s.playerCharacter.getX(),
+                    ATTACKER.getY() - s.playerCharacter.getY());
 
-                  int AGGRO_RANGE = 8;
-                  if (distToMob <= AGGRO_RANGE) {
-                    ATTACKER.setAggro(s.playerCharacter);
-                  }
+                int AGGRO_RANGE = 8;
+                if (distToMob <= AGGRO_RANGE) {
+                  ATTACKER.setAggro(s.playerCharacter);
                 }
               }
             }
@@ -298,8 +280,14 @@ public class BattleHandler extends Handler {
         MonsterHandler.alertNearMonsters(
             ATTACKER, TARGET.getX(), TARGET.getY(), TARGET.getZ(), false);
 
+        DamageCalculator.Damage di = DamageCalculator.calculateAttack(ATTACKER, TARGET);
+        String hitType = ATTACKER.getAttackType();
+        // Check if target is standing in arena, if target is, don't count as PK kill
+        boolean arena = Server.WORLD_MAP.isType("arena", TARGET.getX(), TARGET.getY(), TARGET.getZ());
+
         // Check if TARGET dies of attack
-        HitHandler.creatureGetHit(TARGET, ATTACKER, damage, hitType, criticalOrMiss, arena, null);
+        HitHandler.creatureGetHit(TARGET, ATTACKER,
+            di.damage, hitType, di.criticalOrMiss, arena, null);
 
         // SEND INFO ABOUT ATTACK TO ALL PLAYERS IN SAME AREA
         String attackInfo = attackDir;
@@ -308,9 +296,9 @@ public class BattleHandler extends Handler {
           PlayerCharacter playerAttacker = (PlayerCharacter) ATTACKER;
 
           // Gain Class XP
-          if (damage > 0) {
+          if (di.damage > 0) {
             boolean training = false;
-            if (TARGET.getFamilyId() == 8) {
+            if (TARGET.getFamilyId() == 8) { // "Practice Targets"
               training = true;
             }
             int classId = 0;
@@ -332,43 +320,41 @@ public class BattleHandler extends Handler {
         for (Map.Entry<Integer, Client> entry : Server.clients.entrySet()) {
           Client s = entry.getValue();
 
-          if (s.Ready) {
+          if (s.Ready
+          && isVisibleForPlayer(s.playerCharacter,
+              TARGET.getX(), TARGET.getY(), TARGET.getZ())
+          ) {
+            // SEND ATTACK INFO
+            addOutGoingMessage(
+                s,
+                "attack",
+                ATTACKER.getSmallData() + "/" + TARGET.getSmallData() + "/" + attackInfo);
 
-            if (isVisibleForPlayer(
-                s.playerCharacter, TARGET.getX(), TARGET.getY(), TARGET.getZ())) {
-
-              // SEND ATTACK INFO
+            if (useProjectile) {
               addOutGoingMessage(
                   s,
-                  "attack",
-                  ATTACKER.getSmallData() + "/" + TARGET.getSmallData() + "/" + attackInfo);
-
-              if (useProjectile) {
-                addOutGoingMessage(
-                    s,
-                    "projectile",
-                    ATTACKER.getWeapon().getProjectileId()
-                        + ","
-                        + ATTACKER.getX()
-                        + ","
-                        + ATTACKER.getY()
-                        + ","
-                        + ATTACKER.getZ()
-                        + ","
-                        + TARGET.getX()
-                        + ","
-                        + TARGET.getY()
-                        + ",0,1,0");
-              }
+                  "projectile",
+                  ATTACKER.getWeapon().getProjectileId()
+                      + ","
+                      + ATTACKER.getX()
+                      + ","
+                      + ATTACKER.getY()
+                      + ","
+                      + ATTACKER.getZ()
+                      + ","
+                      + TARGET.getX()
+                      + ","
+                      + TARGET.getY()
+                      + ",0,1,0");
             }
           }
         }
       }
-    } else {
+    } else if (ATTACKER.getCreatureType() == CreatureType.Monster
+    && (!attackOk || ATTACKER.isDead())
+    ) {
       // Drop aggro
-      if (ATTACKER.getCreatureType() == CreatureType.Monster && (!attackOk || ATTACKER.isDead())) {
-        ATTACKER.setAggro(null);
-      }
+      ATTACKER.setAggro(null);
     }
   }
 
@@ -387,32 +373,32 @@ public class BattleHandler extends Handler {
     for (Map.Entry<Integer, Client> entry : Server.clients.entrySet()) {
       Client s = entry.getValue();
       if (s.Ready) {
-        if (s.playerCharacter.checkAttackTimer()) {
-          if (s.playerCharacter.isAggro()) {
-            if (s.playerCharacter.getAggroTarget() != null) {
-              boolean attackOk = true;
+        if (s.playerCharacter.isAggro()
+        && s.playerCharacter.getAggroTarget() != null
+        && s.playerCharacter.checkAttackTimer()
+        ) {
+          boolean attackOk = true;
 
-              if (s.playerCharacter.getAggroTarget().getCreatureType() == CreatureType.Player) {
-                PlayerCharacter playerTarget = (PlayerCharacter) s.playerCharacter.getAggroTarget();
-                attackOk = PvpHandler.canAttackPlayer(s.playerCharacter, playerTarget);
-              }
+          if (s.playerCharacter.getAggroTarget().getCreatureType() == CreatureType.Player) {
+            PlayerCharacter playerTarget = (PlayerCharacter) s.playerCharacter.getAggroTarget();
+            attackOk = PvpHandler.canAttackPlayer(s.playerCharacter, playerTarget);
+          }
 
-              boolean rangedAttackReady = true;
+          boolean rangedAttackReady = true;
 
-              // Ranged attacks needs cooldown after movement
-              if (s.playerCharacter.getAttackRange() > 1 && !s.playerCharacter.hasStatusEffect(9)) {
-                if (!s.playerCharacter.isRangedAttackReady()) {
-                  rangedAttackReady = false;
-                }
-              }
+          // Ranged attacks needs cooldown after movement
+          if (s.playerCharacter.getAttackRange() > 1
+          && !s.playerCharacter.hasStatusEffect(9)   // Attack Speed Boost
+          && !s.playerCharacter.isRangedAttackReady()
+          ) {
+            rangedAttackReady = false;
+          }
 
-              if (rangedAttackReady && attackOk) {
-                attack(s.playerCharacter, s.playerCharacter.getAggroTarget());
-              } else if (!attackOk) {
-                s.playerCharacter.setAggro(null);
-                addOutGoingMessage(s, "settarget", "None,0");
-              }
-            }
+          if (rangedAttackReady && attackOk) {
+            attack(s.playerCharacter, s.playerCharacter.getAggroTarget());
+          } else if (!attackOk) {
+            s.playerCharacter.setAggro(null);
+            addOutGoingMessage(s, "settarget", "None,0");
           }
         }
       }
@@ -422,12 +408,9 @@ public class BattleHandler extends Handler {
         iter.hasNext();
         ) {
       Npc monster = iter.next();
-      if (monster.checkAttackTimer()) {
+      if (monster.isAggro() && monster.checkAttackTimer()) {
         monster.setUsedStashItem(false);
-
-        if (monster.isAggro()) {
-          attack(monster, monster.getAggroTarget());
-        }
+        attack(monster, monster.getAggroTarget());
       }
     }
   }
@@ -585,10 +568,7 @@ public class BattleHandler extends Handler {
   public static void playerDeath(Client client, PlayerDeathCause pkAttack) {
     Creature TARGET = client.playerCharacter;
 
-    if (!Server.WORLD_MAP
-        .getTile(TARGET.getX(), TARGET.getY(), TARGET.getZ())
-        .getType()
-        .equals("arena")) {
+    if (!Server.WORLD_MAP.isType("arena", TARGET.getX(), TARGET.getY(), TARGET.getZ())) {
 
       // If not a pvp kill
       if (pkAttack == PlayerDeathCause.CREATURE_KILL) {
@@ -715,52 +695,45 @@ public class BattleHandler extends Handler {
   }
 
   public static boolean checkAttackOk(
-      int attackerX, int attackerY, int attackerZ, int targetX, int targetY, int targetZ) {
+      int attackerX, int attackerY, int attackerZ,
+      int targetX,   int targetY,   int targetZ,
+      boolean isAttackerRanged
+  ) {
     if (Server.WORLD_MAP.getTile(attackerX, attackerY, attackerZ) == null) {
       return false;
     }
 
-    boolean attackOk = true;
-
     if (attackerZ != targetZ) {
-      attackOk = false;
-    }
-
-    // CHECK ARENA ATTACKS
-    if (Server.WORLD_MAP.getTile(attackerX, attackerY, attackerZ).getType().equals("arena")
-        && !Server.WORLD_MAP.getTile(targetX, targetY, targetZ).getType().equals("arena")) {
-      attackOk = false;
-    }
-
-    if (!Server.WORLD_MAP.getTile(attackerX, attackerY, attackerZ).getType().equals("arena")
-        && Server.WORLD_MAP.getTile(targetX, targetY, targetZ).getType().equals("arena")) {
-      attackOk = false;
-    }
-
-    // CHECK WATER ATTACKS
-    boolean attackerWater = false;
-    if (Server.WORLD_MAP.getTile(attackerX, attackerY, attackerZ).isWater()) {
-      attackerWater = true;
-    }
-
-    boolean targetWater = false;
-    if (Server.WORLD_MAP.getTile(targetX, targetY, targetZ).isWater()) {
-      targetWater = true;
-    }
-
-    if (attackerWater && !targetWater) {
-      attackOk = false;
-    }
-
-    if (!attackerWater && targetWater) {
-      attackOk = false;
+      return false;
     }
 
     // NO ATTACKS INDOORS
-    if (Server.WORLD_MAP.getTile(attackerX, attackerY, attackerZ).getType().equals("indoors")) {
-      attackOk = false;
+    if (Server.WORLD_MAP.isType("indoors", attackerX, attackerY, attackerZ)) {
+      return false;
     }
-    return attackOk;
+
+    if (!isAttackerRanged) {
+      // CHECK WATER ATTACKS
+      boolean attackerWater = Server.WORLD_MAP.getTile(attackerX, attackerY, attackerZ).isWater();
+      boolean targetWater = Server.WORLD_MAP.getTile(targetX, targetY, targetZ).isWater();
+
+      if ((attackerWater && !targetWater)
+      || (!attackerWater && targetWater)
+      ) {
+        return false;
+      }
+    }
+
+    // CHECK ARENA ATTACKS
+    boolean attackerArena = Server.WORLD_MAP.isType("arena", attackerX, attackerY, attackerZ);
+    boolean targetArena   = Server.WORLD_MAP.isType("arena", targetX, targetY, targetZ);
+    if ((attackerArena && !targetArena)
+    || (!attackerArena && targetArena)
+    ) {
+      return false;
+    }
+
+    return true;
   }
 
   public static String respawnPlayer(PlayerCharacter playerCharacter) {

@@ -319,7 +319,8 @@ public class AbilityHandler extends Handler {
                     client.playerCharacter.getZ(),
                     goalX,
                     goalY,
-                    goalZ);
+                    goalZ,
+                    client.playerCharacter.getAttackRange() > 1); // is ranged attack
 
             // Flash step and wooden stub can't be cast on a tile that is not passable
             if (ABILITY.getAbilityId() == 84 || ABILITY.getAbilityId() == 83) {
@@ -1381,7 +1382,7 @@ public class AbilityHandler extends Handler {
       }
 
       // Armor or resistance modifier
-      double armorF = DamageCalculator.getDamageArmor(CASTER, TARGET);
+      double armorF = DamageCalculator.getArmorFactor(CASTER, TARGET);
 
       aDmg = aDmg * armorF;
     }

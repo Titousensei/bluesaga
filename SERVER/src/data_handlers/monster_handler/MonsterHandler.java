@@ -515,6 +515,7 @@ public class MonsterHandler extends Handler {
                       AGGRO_RANGE = 40;
                       if (distToMob <= AGGRO_RANGE) {
                         m.setAggro(attacker);
+                        aggroMonsters.add(m);
                       }
                     }
                   }
@@ -585,6 +586,7 @@ public class MonsterHandler extends Handler {
 
                         if (turnAggro) {
                           m.setAggro(attacker);
+                          aggroMonsters.add(m);
                         }
                       }
                     }

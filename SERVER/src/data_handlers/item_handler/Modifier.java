@@ -20,11 +20,11 @@ public enum Modifier
   public final static Map<String, Float> ITEM_COEF = new HashMap<>();
 
   static {
-    ITEM_COEF.put("Weapon",   .010f);
-    ITEM_COEF.put("OffHand",  .016f);
-    ITEM_COEF.put("Head",     .016f);
-    ITEM_COEF.put("Amulet",   .020f);
-    ITEM_COEF.put("Artifact", .020f);
+    ITEM_COEF.put("Weapon",   0.10f);
+    ITEM_COEF.put("OffHand",  0.16f);
+    ITEM_COEF.put("Head",     0.16f);
+    ITEM_COEF.put("Amulet",   0.20f);
+    ITEM_COEF.put("Artifact", 0.20f);
   };
 
   public final int id;

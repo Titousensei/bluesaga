@@ -53,20 +53,15 @@ public class ClientReceiverThread extends Thread {
   }
 
   public void waitForData() {
-    String getMsg = "";
-
     int lostConnectionNr = 0;
 
     while (!BlueSaga.HAS_QUIT) {
       try {
-        try {
-          getMsg = new String((byte[]) in.readObject());
-        } catch (SocketTimeoutException e) {
-          ScreenHandler.setActiveScreen(ScreenType.ERROR);
-          ScreenHandler.LoadingStatus = "Your connection is slow, lost connection with server";
-        }
+        String getMsg = new String((byte[]) in.readObject());
         info.add(getMsg);
-
+      } catch (SocketTimeoutException e) {
+        ScreenHandler.setActiveScreen(ScreenType.ERROR);
+        ScreenHandler.LoadingStatus = "Your connection is slow, lost connection with server";
       } catch (IOException e) {
         lostConnectionNr++;
 
@@ -81,7 +76,6 @@ public class ClientReceiverThread extends Thread {
           startReconnectCountdown();
           break;
         }
-        //e.printStackTrace();
       } catch (ClassNotFoundException e) {
         e.printStackTrace();
       }

@@ -158,10 +158,9 @@ public class BlueSaga extends BasicGame {
     ScreenHandler.setActiveScreen(ScreenType.LOGIN);
   }
 
-  @SuppressWarnings("deprecation")
   public static void stopClient() {
     HAS_QUIT = true;
-    reciever.stop();
+    reciever.interrupt();
     ServerCheck = false;
   }
 

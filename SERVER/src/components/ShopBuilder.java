@@ -101,6 +101,19 @@ extends Builder<Shop>
     return s;
   }
 
+  public static void verify(Map<Integer, Item> items, Map<Integer, Shop> shops) {
+    for (Shop sh : shops.values()) {
+      String sales = sh.getItemsStr();
+      if (sales!=null && !"None".equals(sales)) {
+        for (String it : sales.split(",")) {
+          if (!items.containsKey(parseInt(it))) {
+            System.out.println("WARNING - Shop selling inexistant item " + it + ": " + sh);
+          }
+        }
+      }
+    }
+  }
+
   public static void main(String... args) {
     Map<Integer, Shop> m = new HashMap<>();
     Builder.load(args[0], ShopBuilder.class, m);

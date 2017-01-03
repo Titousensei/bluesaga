@@ -145,12 +145,14 @@ public class ServerGameInfo {
     for (File f : new File(ServerSettings.PATH).listFiles((dir, name) -> name.startsWith("shops_"))) {
       Builder.load(f.getPath(), ShopBuilder.class, shopDef);
     }
+    ShopBuilder.verify(itemDef, shopDef);
 
     // LOAD GATHERING INFO
     Map<Integer, Gathering> gDef = new HashMap<>();
     for (File f : new File(ServerSettings.PATH).listFiles((dir, name) -> name.startsWith("gathering"))) {
       Builder.load(f.getPath(), GatheringBuilder.class, gDef);
     }
+    GatheringBuilder.verify(itemDef, gDef);
     gatheringDef = GatheringBuilder.mapName(gDef);
 
     // LOAD CHECK-INS INFO

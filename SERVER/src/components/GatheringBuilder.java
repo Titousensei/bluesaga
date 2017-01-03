@@ -42,6 +42,14 @@ extends Builder<Gathering>
     return ret;
   }
 
+  public static void verify(Map<Integer, Item> items, Map<Integer, Gathering> def) {
+    for (Gathering ga : def.values()) {
+      if (!items.containsKey(ga.getResourceId())) {
+        System.out.println("WARNING - Gathering inexistant item: "+ ga);
+      }
+    }
+  }
+
   public static void main(String... args) {
     Map<Integer, Gathering> m = new HashMap<>();
     Builder.load(args[0], GatheringBuilder.class, m);

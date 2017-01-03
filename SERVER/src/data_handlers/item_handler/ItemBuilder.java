@@ -1,6 +1,7 @@
 package data_handlers.item_handler;
 
 import java.util.*;
+import java.io.File;
 
 import components.Builder;
 import components.Stats;
@@ -178,6 +179,14 @@ extends Builder<Item>
       if ("-".equals(args[1])) {
         for (Item q : m.values()) {
           System.out.println(q.getId() + ": " + q.getName());
+        }
+      }
+      else if ("+".equals(args[1])) {
+        for (Item q : m.values()) {
+          File f = new File("../CLIENT/bin/images/items/item" + q.getId() + ".png");
+          if (!f.exists()) {
+            System.out.println("WARNING - Missing image for item " + q.getId() + ":" + q.getName());
+          }
         }
       }
       else {

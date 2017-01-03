@@ -103,7 +103,8 @@ Id|Name                       |Color             |Sfx        |StatsModif
     ability = null;
 
     Caster = null;
-
+    // Only for testing with ItemBuilder
+    if (Server.gameDB==null) { return; }
     ResultSet rs = Server.gameDB.askDB("select * from ability_statuseffect where Id = " + newId);
 
     try {

@@ -897,6 +897,11 @@ public class WorldMap implements TileBasedMap {
     return foundTile;
   }
 
+  public boolean isType(String type, int x, int y, int z) {
+    Tile tile = getTile(x, y, z);
+    return (tile != null && type.equals(tile.getType()));
+  }
+
   /****************************************
    * * PATHFINDING * * *
    ****************************************/

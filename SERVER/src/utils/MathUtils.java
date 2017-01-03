@@ -10,7 +10,7 @@ public class MathUtils {
     return angle;
   }
 
-  public static void rotate_point(float cx, float cy, float angle, Point p) {
+  public static void rotate_point(float angle, Point p) {
 
     double newX = Math.cos(angle) * p.x - Math.sin(angle) * p.y;
     double newY = Math.sin(angle) * p.x + Math.cos(angle) * p.y;
@@ -18,4 +18,7 @@ public class MathUtils {
     p.x = (float) newX;
     p.y = (float) newY;
   }
+
+  public static double distance(int dx, int dy)
+  { return Math.sqrt(dx*dx + dy*dy); }
 }

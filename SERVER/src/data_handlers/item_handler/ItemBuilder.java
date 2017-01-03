@@ -26,6 +26,7 @@ extends Builder<Item>
     it.setEquipable(false);
     it.setSellable(true);
     it.setValue(0);
+    it.setRange(1);
   }
 
   @Override

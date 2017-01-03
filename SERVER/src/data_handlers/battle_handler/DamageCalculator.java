@@ -10,6 +10,9 @@ import utils.ServerGameInfo;
 
 public class DamageCalculator {
 
+  public static final Damage DAMAGE_EVADED = new Damage("evade",0);
+  public static final Damage DAMAGE_MISSED = new Damage("miss",0);
+
   private static boolean isCover(int x, int y, int z) {
     return Server.WORLD_MAP.getTile(x, y, z) == null
         || !Server.WORLD_MAP.getTile(x, y, z).getPassable();
@@ -100,9 +103,7 @@ public class DamageCalculator {
 
 
   // Check if miss, evade or hit
-  public static String calculateAttack(Creature ATTACKER, Creature TARGET) {
-
-    String damageInfo = "";
+  public static Damage calculateAttack(Creature ATTACKER, Creature TARGET) {
 
     // 10 -> .13   [50 -> .50]    100 -> .75   150 -> 0.875  200 -> 0.9375
     double accuracy = 1.0 - Math.exp(ATTACKER.getStat("ACCURACY") / -72.0);
@@ -136,18 +137,16 @@ public class DamageCalculator {
         }
 
         if (damage > 0 && critical >= RandomUtils.getPercent()) {
-          damageInfo = "true;" + (damage * 2);
+          return new Damage("true", damage * 2);
         } else {
-          damageInfo = "false;" + damage;
+          return new Damage("false", damage);
         }
       } else {
-        damageInfo = "evade;0";
+        return DAMAGE_EVADED;
       }
     } else {
-      damageInfo = "miss;0";
+      return DAMAGE_MISSED;
     }
-
-    return damageInfo;
   }
 
   // CALCULATE DAMAGE
@@ -177,7 +176,7 @@ public class DamageCalculator {
     double attackMaxF = 0.0;
 
     // Armor or resistance modifier
-    double armorF = getDamageArmor(ATTACKER, TARGET);
+    double armorF = getArmorFactor(ATTACKER, TARGET);
 
     if (ATTACKER.getCreatureType() == CreatureType.Monster) {
 
@@ -195,8 +194,8 @@ public class DamageCalculator {
 
       // (ATK+12)/12 * (SkillLevel+16)/16 * WeaponMin/10 * (60/(60+Armor))
 
-      double ATKmin = (ATTACKER.getStat(attackStat) + 12.0) / 12.0;
-      double ATKmax = (ATTACKER.getStat(attackStat) + 10.0) / 10.0;
+      double ATKmin = (ATTACKER.getStat(attackStat) + 108.0) / 108.0;
+      double ATKmax = (ATTACKER.getStat(attackStat) + 80.0) / 80.0;
 
       double classFac = 0.6;
       if (skillId != 0
@@ -206,11 +205,8 @@ public class DamageCalculator {
         classFac = 0.8 + (weaponLevel / 10.0);
       }
 
-      double WeaponMin = weaponMinBaseDmg / 10.0;
-      double WeaponMax = weaponMaxBaseDmg / 10.0;
-
-      attackMinF = ATKmin * classFac * WeaponMin;
-      attackMaxF = ATKmax * classFac * WeaponMax;
+      attackMinF = ATKmin * classFac * weaponMinBaseDmg;
+      attackMaxF = ATKmax * classFac * weaponMaxBaseDmg;
 
       damageMin = (int) Math.floor(attackMinF * armorF);
       damageMax = (int) Math.floor(attackMaxF * armorF + 1.0f);
@@ -224,17 +220,17 @@ public class DamageCalculator {
       damageMax = (int) Math.floor(damageMax / 2.0);
     }
 
-    if (damageMin < 0) {
-      damageMin = 0;
+    if (damageMin < 1) {
+      damageMin = 1;
     }
-    if (damageMax < 0) {
-      damageMax = 0;
+    if (damageMax < 1) {
+      damageMax = 1;
     }
 
     return RandomUtils.getInt(damageMin, damageMax);
   }
 
-  public static double getDamageArmor(Creature ATTACKER, Creature TARGET) {
+  public static double getArmorFactor(Creature ATTACKER, Creature TARGET) {
     double ret = 0.0;
 
     String damageType = ATTACKER.getAttackType();
@@ -254,7 +250,7 @@ public class DamageCalculator {
         pierceFac *= 1.25f;
       }
       if (ATTACKER.hasStatusEffect(32)) {
-        // ARMOR PIERCING STATUS EFFECT
+        // ARMOR PIERCING STATUS EFFECT; only for PIERCE?
         pierceFac *= 0.5f;
       }
       // 10 -> .90    50 -> .57   [100 -> .33]  150 -> .19   200 -> .11   419 -> .01
@@ -269,5 +265,16 @@ public class DamageCalculator {
     }
 
     return ret;
+  }
+
+  public static class Damage
+  {
+    public final String criticalOrMiss;
+    public final int damage;
+
+    private Damage(String criticalOrMiss, int damage) {
+      this.criticalOrMiss = criticalOrMiss;
+      this.damage = damage;
+    }
   }
 }

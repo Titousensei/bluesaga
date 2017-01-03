@@ -25,6 +25,15 @@
     </javac>
   </target>
 
+  <target name="dist">
+    <mkdir dir="dist"/>
+    <jar jarfile="dist/gameData.jar">
+      <fileset dir="build" includes="**/*.class"/>
+      <fileset dir="assets"/>
+      <fileset dir="bin"/>
+    </jar>
+  </target>
+
   <target name="clean">
     <delete dir="${build}"/>
   </target>

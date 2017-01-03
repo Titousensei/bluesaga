@@ -17,7 +17,7 @@ public class ClientSettings {
   public static String PATH = "./";
 
   // GENERAL
-  public static int VERSION_NR = 724;
+  public static int VERSION_NR = 800;
   public static boolean DEV_MODE = false;
   public static String SERVER_IP = "localhost";
   public static int PORT = 26342;

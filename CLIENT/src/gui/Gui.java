@@ -98,7 +98,7 @@ public class Gui {
   private static Button QuestButton;
   private static Button CommunityButton;
   private static Button MenuButton;
-  private static Button CardButton;
+  private static Button MinimapButton;
 
   // GAME OVER
   private Image Die_Label;
@@ -201,9 +201,9 @@ public class Gui {
 
     buttonX += buttonSpace;
 
-    CardButton = new Button("", buttonX, buttonY, 50, 50, null);
-    CardButton.setImage("gui/world/card_button");
-    CardButton.getToolTip().setText(LanguageUtils.getString("ui.top_menu.card_book"));
+    MinimapButton = new Button("", buttonX, buttonY, 50, 50, null);
+    MinimapButton.setImage("gui/world/map_button");
+    MinimapButton.getToolTip().setText(LanguageUtils.getString("ui.top_menu.minimap"));
 
     buttonX += buttonSpace;
 
@@ -232,7 +232,6 @@ public class Gui {
     BookWindow = new BookWindow(600, 150, 300, 400, true);
     CraftingWindow = new CraftingWindow(680, 160, 320, 400);
     CharacterSkinWindow = new CharacterSkinWindow(680, 160, 320, 400);
-    CardBook = new CardBook(20, 90);
 
     TutorialDialog = new TutorialDialog();
 
@@ -256,7 +255,10 @@ public class Gui {
     ALL_WINDOWS.add(CraftingWindow);
     ALL_WINDOWS.add(TutorialDialog);
     ALL_WINDOWS.add(CharacterSkinWindow);
-    ALL_WINDOWS.add(CardBook);
+    if (ClientSettings.enableCardBook) {
+      CardBook = new CardBook(20, 90);
+      ALL_WINDOWS.add(CardBook);
+    }
 
     closeAllWindows();
 
@@ -323,7 +325,7 @@ public class Gui {
 
       drawBounty(g, 380, 25);
 
-      CardButton.draw(g, mouseX, mouseY);
+      MinimapButton.draw(g, mouseX, mouseY);
       CharacterButton.draw(g, mouseX, mouseY);
       AbilitiesButton.draw(g, mouseX, mouseY);
       InventoryButton.draw(g, mouseX, mouseY);
@@ -713,8 +715,8 @@ public class Gui {
 
       /*
       while(windowIterator.hasNext()){
-      	Window w = windowIterator.next();
-      	w.keyLogic(INPUT);
+        Window w = windowIterator.next();
+        w.keyLogic(INPUT);
       }
       */
 
@@ -738,7 +740,9 @@ public class Gui {
       CraftingWindow.keyLogic(INPUT);
       TutorialDialog.keyLogic(INPUT);
       CharacterSkinWindow.keyLogic(INPUT);
-      CardBook.keyLogic(INPUT);
+      if (ClientSettings.enableCardBook) {
+        CardBook.keyLogic(INPUT);
+      }
 
       Chat_Window.keyLogic(INPUT, BlueSaga.client);
 
@@ -775,14 +779,14 @@ public class Gui {
       }
 
       /*
-      			if(INPUT.isKeyPressed(Input.KEY_M)){
-      				//BlueSaga.MIDI_PLAYER.stopAllNotes();
-      				if(PlayMusicMode){
-      					PlayMusicMode = false;
-      				}else{
-      					PlayMusicMode = true;
-      				}
-      			}
+            if(INPUT.isKeyPressed(Input.KEY_M)){
+              //BlueSaga.MIDI_PLAYER.stopAllNotes();
+              if(PlayMusicMode){
+                PlayMusicMode = false;
+              }else{
+                PlayMusicMode = true;
+              }
+            }
       */
 
       return ActionBar.keyLogic(INPUT);
@@ -814,12 +818,17 @@ public class Gui {
     int mouseY = INPUT.getAbsoluteMouseY();
 
     // TOP MENU
-    if (CardButton.isClicked(mouseX, mouseY)) {
+    if (MinimapButton.isClicked(mouseX, mouseY)) {
       if (DoAction) {
-        CardButton.toggle();
-        CardBook.toggle();
-        if (CardBook.isOpen()) {
-          BlueSaga.client.sendMessage("card_book", "info");
+        MinimapButton.toggle();
+        MapWindow.toggle();
+      }
+    } else if (CharacterButton.isClicked(mouseX, mouseY)) {
+      if (DoAction) {
+        CharacterButton.toggle();
+        StatusWindow.toggle();
+        if (StatusWindow.isOpen()) {
+          BlueSaga.client.sendMessage("statuswindow", "info");
         }
       }
     } else if (CharacterButton.isClicked(mouseX, mouseY)) {

@@ -53,6 +53,8 @@ public class ClientSettings {
   public static float musicVolume = 1.0f;
   public static float soundVolume = 1.0f;
 
+  public static boolean enableCardBook = true;
+
   public static void toggleFullScreen() {
     if (FULL_SCREEN) {
       FULL_SCREEN = false;

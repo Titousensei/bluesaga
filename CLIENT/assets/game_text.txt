@@ -17,7 +17,7 @@
         "top_menu": {
             "skills": "S(k)ills",
             "abilities": "A(b)ilities",
-            "card_book": "Card B(o)ok",
+            "minimap": "(M)ini Map",
             "quests": "(Q)uests",
             "game_menu": "Game Menu (Esc)",
             "players": "(P)layers",

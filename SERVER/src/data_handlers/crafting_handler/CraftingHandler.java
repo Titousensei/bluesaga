@@ -35,34 +35,35 @@ public class CraftingHandler extends Handler {
 
   public static void handleGetRecipe(Message m) {
     Client client = m.client;
-    String craftingStationName = m.message;
+    String[] craftingStationInfo = m.message.split(",");
+    CraftingStation cs = CraftingStation.find(craftingStationInfo[0]);
+    if (cs == null) {
+      System.out.println("ERROR - No such CraftingStation: " + m.message);
+      return;
+    }
+    String craftingStationName = cs.toString();
 
     List<Recipe> availableRecipes = new ArrayList<>();
-
-    ResultSet recipesInfo =
-        Server.userDB.askDB(
-            "select RecipeId from character_recipe where CharacterId = "
-                + client.playerCharacter.getDBId()
-                + " and RecipeId = '" + craftingStationName +"'");
 
     StringBuilder recipesToSend = new StringBuilder(1000);
     recipesToSend.append(craftingStationName).append('/');
 
-    try {
+    try (ResultSet recipesInfo =
+        Server.userDB.askDB(
+            "select RecipeId from character_recipe where CharacterId = "
+                + client.playerCharacter.getDBId()
+                + " and RecipeId = '" + craftingStationName +"'");
+    ) {
       while (recipesInfo.next()) {
-        availableRecipes.add(recipes.get(recipesInfo.getInt("RecipeId")));
+        Recipe recipe = recipes.get(recipesInfo.getInt("RecipeId"));
+        recipesToSend
+            .append(recipe.getProduct().getId())
+            .append(',')
+            .append(recipe.getProduct().getName())
+            .append(';');
       }
-      recipesInfo.close();
     } catch (SQLException e) {
       e.printStackTrace();
-    }
-
-    for (Recipe recipe : availableRecipes) {
-      recipesToSend
-          .append(recipe.getProduct().getId())
-          .append(',')
-          .append(recipe.getProduct().getName())
-          .append(';');
     }
 
     addOutGoingMessage(client, "recipes", recipesToSend.toString());

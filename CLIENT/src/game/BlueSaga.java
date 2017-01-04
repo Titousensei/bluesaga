@@ -100,6 +100,8 @@ public class BlueSaga extends BasicGame {
       LanguageUtils.loadJson(translationJSON, false);
     }
 
+    LanguageUtils._debug = ClientSettings.DEV_MODE;
+
     // Load original english text
     JSONObject originalJSON = ClientSettings.loadOriginalLanguageFile();
     LanguageUtils.loadJson(originalJSON, true);

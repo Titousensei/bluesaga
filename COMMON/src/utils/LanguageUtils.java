@@ -10,6 +10,8 @@ import utils.json.JSONObject;
 
 public class LanguageUtils {
 
+  public static boolean _debug = false;
+
   public static LinkedHashMap<String, String> languageResource =
       new LinkedHashMap<String, String>();
   public static LinkedHashMap<String, String> originalResource =
@@ -59,8 +61,7 @@ public class LanguageUtils {
       if (originalResource.get(key) != null) {
         return originalResource.get(key);
       } else {
-        System.out.println("text missing: " + key);
-        Thread.dumpStack();
+        //System.out.println("text missing: " + key);
         return "";
       }
     }

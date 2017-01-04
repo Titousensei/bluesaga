@@ -2,10 +2,8 @@ package player_classes;
 
 public class IceMageClass extends BaseClass {
 
-  private static int id = 8;
-
   public IceMageClass() {
-    super(id);
+    super(8);
 
     name = "Coldbringer";
 

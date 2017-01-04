@@ -2,10 +2,8 @@ package player_classes;
 
 public class WarriorClass extends BaseClass {
 
-  private static int id = 1;
-
   public WarriorClass() {
-    super(id);
+    super(1);
 
     name = "Warrior";
 
@@ -33,4 +31,7 @@ public class WarriorClass extends BaseClass {
 
     getLevelStats().setValue("SPEED", 1);
   }
+
+  @Override
+  public boolean gainsXP() { return false; }
 }

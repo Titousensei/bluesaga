@@ -309,9 +309,7 @@ public class BattleHandler extends Handler {
             if (ATTACKER.getWeapon() != null) {
               classId = ATTACKER.getWeapon().getClassId();
             }
-            if (classId > 0) {
-              ClassHandler.gainBaseXP(playerAttacker.client, classId, training);
-            }
+            ClassHandler.gainBaseXP(playerAttacker.client, classId, training);
 
             // Gain Weapon SP
             int weaponSkillId = ServerGameInfo.getSkillId(ATTACKER.getWeapon().getSubType());

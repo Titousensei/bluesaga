@@ -28,30 +28,37 @@ public class BaseClass {
    * Constructor
    * @param id
    */
-  public BaseClass(int id) {
+  protected BaseClass(int id) {
     this.id = id;
   }
 
-  public BaseClass(BaseClass copy) {
-    this.id = copy.id;
-    this.name = copy.name;
-    this.baseClassId = copy.baseClassId;
-    this.bgColor = copy.bgColor;
-    this.textColor = copy.textColor;
-    this.nextXP = copy.nextXP;
+  public static BaseClass copy(BaseClass copy) {
+    try {
+      BaseClass ret = copy.getClass().newInstance();
 
-    for (Entry<String, Integer> entry : copy.getStartStats().getHashMap().entrySet()) {
-      String key = entry.getKey();
-      int value = entry.getValue();
+      ret.name = copy.name;
+      ret.baseClassId = copy.baseClassId;
+      ret.bgColor = copy.bgColor;
+      ret.textColor = copy.textColor;
+      ret.nextXP = copy.nextXP;
 
-      startStats.getHashMap().put(key, value);
-    }
+      for (Entry<String, Integer> entry : copy.getStartStats().getHashMap().entrySet()) {
+        String key = entry.getKey();
+        int value = entry.getValue();
 
-    for (Entry<String, Integer> entry : copy.getLevelStats().getHashMap().entrySet()) {
-      String key = entry.getKey();
-      int value = entry.getValue();
+        ret.getStartStats().getHashMap().put(key, value);
+      }
 
-      levelStats.getHashMap().put(key, value);
+      for (Entry<String, Integer> entry : copy.getLevelStats().getHashMap().entrySet()) {
+        String key = entry.getKey();
+        int value = entry.getValue();
+
+        ret.getLevelStats().getHashMap().put(key, value);
+      }
+
+      return ret;
+    } catch (InstantiationException | IllegalAccessException ex) {
+      throw new RuntimeException(ex);
     }
   }
 
@@ -64,6 +71,9 @@ public class BaseClass {
     startStats.addValue("CRITICAL_HIT", 0);
   }
 
+  /**
+   * @return level up
+   */
   public boolean addXP(int addedXP) {
     xp += addedXP;
     if (xp >= nextXP) {
@@ -75,6 +85,8 @@ public class BaseClass {
 
     return false;
   }
+
+  public boolean gainsXP() { return true; }
 
   public int getXPBarWidth(int Max) {
     float fxp = xp;
@@ -94,8 +106,6 @@ public class BaseClass {
   public Stats getLevelStats() {
     return levelStats;
   }
-
-  public void setName(String name) {}
 
   public int getXp() {
     return xp;

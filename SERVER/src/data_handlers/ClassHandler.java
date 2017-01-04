@@ -22,37 +22,35 @@ public class ClassHandler extends Handler {
   public static void gainBaseXP(Client client, int classId, boolean training) {
     int xp = 1;
 
-    if (classId > 0 && classId < 4) {
-      BaseClass playerClass = client.playerCharacter.getClassById(classId);
-      if (playerClass != null) {
-        if (training) {
-          int chanceOfXP = RandomUtils.getInt(0, 4);
-          if (chanceOfXP > 0) {
-            xp = 0;
-          }
+    BaseClass playerClass = client.playerCharacter.getClassById(classId);
+    if (playerClass != null && playerClass.gainsXP()) {
+      if (training) {
+        int chanceOfXP = RandomUtils.getInt(0, 4);
+        if (chanceOfXP > 0) {
+          xp = 0;
         }
-        if (xp > 0) {
-          if (playerClass.addXP(xp)) {
-            // classId, classLevel, classNextXP
-            addOutGoingMessage(
-                client,
-                "class_levelup",
-                playerClass.id + "," + playerClass.level + "," + playerClass.nextXP);
-          } else {
-            addOutGoingMessage(client, "class_xp", playerClass.id + "," + playerClass.getXp());
-          }
-        }
-
-        Server.userDB.updateDB(
-            "update character_class set ClassXP = "
-                + playerClass.getXp()
-                + ", ClassLevel = "
-                + playerClass.level
-                + " where CharacterId = "
-                + client.playerCharacter.getDBId()
-                + " and ClassId = "
-                + playerClass.id);
       }
+      if (xp > 0) {
+        if (playerClass.addXP(xp)) {
+          // classId, classLevel, classNextXP
+          addOutGoingMessage(
+              client,
+              "class_levelup",
+              playerClass.id + "," + playerClass.level + "," + playerClass.nextXP);
+        } else {
+          addOutGoingMessage(client, "class_xp", playerClass.id + "," + playerClass.getXp());
+        }
+      }
+
+      Server.userDB.updateDB(
+          "update character_class set ClassXP = "
+              + playerClass.getXp()
+              + ", ClassLevel = "
+              + playerClass.level
+              + " where CharacterId = "
+              + client.playerCharacter.getDBId()
+              + " and ClassId = "
+              + playerClass.id);
     }
   }
 

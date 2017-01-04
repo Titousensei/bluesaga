@@ -2,10 +2,8 @@ package player_classes;
 
 public class DruidClass extends BaseClass {
 
-  private static int id = 9;
-
   public DruidClass() {
-    super(id);
+    super(9);
 
     name = "Druid";
 

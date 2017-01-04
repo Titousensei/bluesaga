@@ -2,10 +2,8 @@ package player_classes;
 
 public class TankClass extends BaseClass {
 
-  private static int id = 7;
-
   public TankClass() {
-    super(id);
+    super(7);
 
     name = "Tank";
 

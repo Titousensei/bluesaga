@@ -2,10 +2,8 @@ package player_classes;
 
 public class FireMageClass extends BaseClass {
 
-  private static int id = 5;
-
   public FireMageClass() {
-    super(id);
+    super(5);
 
     name = "Pyromancer";
 

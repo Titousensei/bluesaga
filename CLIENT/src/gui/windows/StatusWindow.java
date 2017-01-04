@@ -18,6 +18,7 @@ import graphics.Font;
 import graphics.ImageResource;
 import gui.Gui;
 import gui.dragndrop.DropBox;
+import player_classes.BaseClass;
 
 public class StatusWindow extends Window {
 
@@ -318,15 +319,18 @@ public class StatusWindow extends Window {
               BlueSagaColors.getColorFromString(BlueSaga.playerCharacter.getBaseClass().textColor);
           ;
 
-          baseLabel =
-              BlueSaga.playerCharacter.getBaseClass().name
-                  + " LVL "
-                  + BlueSaga.playerCharacter.getBaseClass().level;
-          baseClassXpWidth =
-              (int)
-                  (((float) BlueSaga.playerCharacter.getBaseClass().getXp()
-                          / (float) BlueSaga.playerCharacter.getBaseClass().nextXP)
-                      * 160);
+          BaseClass cl = BlueSaga.playerCharacter.getBaseClass();
+          if (cl.getXp()>0 || cl.level>1) {
+            baseLabel = cl.name + " LVL " + cl.level;
+            baseClassXpWidth =
+                (int)
+                    (((float) BlueSaga.playerCharacter.getBaseClass().getXp()
+                            / (float) BlueSaga.playerCharacter.getBaseClass().nextXP)
+                        * 160);
+          }
+          else {
+            baseLabel = cl.name;
+          }
         }
 
         ImageResource.getSprite("gui/menu/class_bg").draw(startX, textY, baseClassColor);
@@ -596,11 +600,11 @@ public class StatusWindow extends Window {
     // CHECK WHICH BOX IS CLICKED
 
     if(isVisible() && !BlueSaga.actionServerWait){
-    	for(Entry<String, DropBox> e: Equipment.entrySet()){
-    		if(checkBoxClick(e.getValue(), mouseX, mouseY)){
-    			break;
-    		}
-    	}
+      for(Entry<String, DropBox> e: Equipment.entrySet()){
+        if(checkBoxClick(e.getValue(), mouseX, mouseY)){
+          break;
+        }
+      }
     }
     */
   }

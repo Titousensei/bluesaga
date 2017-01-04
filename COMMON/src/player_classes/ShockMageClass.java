@@ -2,10 +2,8 @@ package player_classes;
 
 public class ShockMageClass extends BaseClass {
 
-  private static int id = 11;
-
   public ShockMageClass() {
-    super(id);
+    super(11);
 
     name = "Sparker";
 

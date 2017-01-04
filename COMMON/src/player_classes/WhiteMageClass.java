@@ -2,10 +2,8 @@ package player_classes;
 
 public class WhiteMageClass extends BaseClass {
 
-  private static int id = 14;
-
   public WhiteMageClass() {
-    super(id);
+    super(14);
 
     name = "White Mage";
 

@@ -31,6 +31,7 @@ import data_handlers.monster_handler.MonsterHandler;
 import map.Tile;
 import network.Client;
 import network.Server;
+import player_classes.BaseClass;
 
 public class AbilityHandler extends Handler {
 
@@ -193,12 +194,14 @@ public class AbilityHandler extends Handler {
               hasClass);
 
           if (hasClass) {
-            if (client.playerCharacter.getClassById(abilityInfo.getClassId()) != null) {
+            BaseClass cl = client.playerCharacter.getClassById(abilityInfo.getClassId());
+            if (cl != null) {
+              int lvl = cl.gainsXP() ? cl.level : client.playerCharacter.getLevel();
               TextFormater.formatReqInfo(
                   infoToSend,
                   "Req Class Lvl: ",
                   abilityInfo.getClassLevel(),
-                  client.playerCharacter.getClassById(abilityInfo.getClassId()).level);
+                  lvl);
             }
           }
         }

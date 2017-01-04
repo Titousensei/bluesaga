@@ -326,7 +326,7 @@ public class AdminControlsHandler extends Handler {
                     + ")");
           }
 
-          BaseClass newClass = new BaseClass(ServerGameInfo.classDef.get(classId));
+          BaseClass newClass = BaseClass.copy(ServerGameInfo.classDef.get(classId));
           newClass.level = level;
 
           if (classType == 1) {

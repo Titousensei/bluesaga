@@ -509,7 +509,7 @@ public class PlayerCharacter extends Creature {
                   + ",1,0,0)");
         }
 
-        BaseClass playerClass = new BaseClass(defClass);
+        BaseClass playerClass = BaseClass.copy(defClass);
         playerClasses.put(defClass.id, playerClass);
       }
     }

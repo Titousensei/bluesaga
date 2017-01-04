@@ -2,10 +2,8 @@ package player_classes;
 
 public class KnightClass extends BaseClass {
 
-  private static int id = 4;
-
   public KnightClass() {
-    super(id);
+    super(4);
 
     name = "Knight";
 

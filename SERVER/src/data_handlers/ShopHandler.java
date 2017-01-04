@@ -13,6 +13,7 @@ import data_handlers.ability_handler.Ability;
 import data_handlers.item_handler.CoinConverter;
 import data_handlers.item_handler.InventoryHandler;
 import data_handlers.item_handler.Item;
+import player_classes.BaseClass;
 
 public class ShopHandler extends Handler {
 
@@ -193,9 +194,10 @@ public class ShopHandler extends Handler {
               hasReq = false;
             } else {
               // Check class level
-              if (client.playerCharacter.getClassById(shopAbility.getClassId()) != null) {
-                if (client.playerCharacter.getClassById(shopAbility.getClassId()).level
-                    < shopAbility.getClassLevel()) {
+              BaseClass cl = client.playerCharacter.getClassById(shopAbility.getClassId());
+              if (cl != null) {
+                int lvl = cl.gainsXP() ? cl.level : client.playerCharacter.getLevel();
+                if (lvl < shopAbility.getClassLevel()) {
                   hasReq = false;
                 }
               } else {

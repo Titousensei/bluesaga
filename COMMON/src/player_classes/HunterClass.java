@@ -2,10 +2,8 @@ package player_classes;
 
 public class HunterClass extends BaseClass {
 
-  private static int id = 3;
-
   public HunterClass() {
-    super(id);
+    super(3);
 
     name = "Hunter";
 
@@ -33,4 +31,7 @@ public class HunterClass extends BaseClass {
 
     getLevelStats().setValue("SPEED", 1);
   }
+
+  @Override
+  public boolean gainsXP() { return false; }
 }

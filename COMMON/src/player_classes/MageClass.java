@@ -2,10 +2,8 @@ package player_classes;
 
 public class MageClass extends BaseClass {
 
-  private static int id = 2;
-
   public MageClass() {
-    super(id);
+    super(2);
 
     name = "Mage";
 
@@ -33,4 +31,7 @@ public class MageClass extends BaseClass {
 
     getLevelStats().setValue("SPEED", 1);
   }
+
+  @Override
+  public boolean gainsXP() { return false; }
 }

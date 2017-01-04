@@ -192,9 +192,9 @@ public class PlayerCharacter extends Creature {
         g.setColor(new Color(0, 0, 0, 150));
 
         g.drawString(Name, nameX, cornerY - 25);
-        
+
         if(BlueSaga.playerCharacter.getLevel() > this.getLevel()+ClientSettings.PK_WEAK_LEVEL)
-        	g.drawString("Weak", centerX - Font.size10.getWidth("Weak")/2, cornerY-12);
+          g.drawString("Weak", centerX - Font.size10.getWidth("Weak")/2, cornerY-12);
 
         if (getAdminLevel() > 3) {
           g.setColor(BlueSagaColors.BLUE);
@@ -470,7 +470,7 @@ public class PlayerCharacter extends Creature {
 
     for (BaseClass classDef : GameInfo.classDef.values()) {
       if (classDef.available) {
-        BaseClass playerClass = new BaseClass(classDef);
+        BaseClass playerClass = BaseClass.copy(classDef);
         playerClass.level = Integer.parseInt(creature_info[classIndex]);
         classIndex++;
         playerClass.setXp(Integer.parseInt(creature_info[classIndex]));
@@ -567,9 +567,9 @@ public class PlayerCharacter extends Creature {
 
   /*
   public void saveCrewInfo(Database gameDB) {
-  	for(int i = 0; i < nrCrewMembers; i++){
-  		members[i].saveStats(gameDB);
-  	}
+    for(int i = 0; i < nrCrewMembers; i++){
+      members[i].saveStats(gameDB);
+    }
   }
    */
 
@@ -604,19 +604,19 @@ public class PlayerCharacter extends Creature {
     int questStatus = 0;
 
     if(nrQuests > 0){
-    	String quest_information[] = quest_info[1].split(";");
+      String quest_information[] = quest_info[1].split(";");
 
-    	for(int i = 0; i < nrQuests; i++){
-    		questId = Integer.parseInt(quest_information[i*2]);
-    		questStatus = Integer.parseInt(quest_information[i*2 + 1]);
+      for(int i = 0; i < nrQuests; i++){
+        questId = Integer.parseInt(quest_information[i*2]);
+        questStatus = Integer.parseInt(quest_information[i*2 + 1]);
 
-    		tempQuest = new Quest();
-    		tempQuest.setId(questId);
-    		tempQuest.loadQuest(gameDB);
-    		tempQuest.setStatus(questStatus);
+        tempQuest = new Quest();
+        tempQuest.setId(questId);
+        tempQuest.loadQuest(gameDB);
+        tempQuest.setStatus(questStatus);
 
-    		Quests.add(tempQuest);
-    	}
+        Quests.add(tempQuest);
+      }
     }
      */
   }

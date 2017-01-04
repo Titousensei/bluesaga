@@ -2,10 +2,8 @@ package player_classes;
 
 public class BerserkerClass extends BaseClass {
 
-  private static int id = 10;
-
   public BerserkerClass() {
-    super(id);
+    super(10);
 
     name = "Berserker";
 

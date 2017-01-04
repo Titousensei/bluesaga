@@ -58,6 +58,8 @@ public class XPTables {
     //System.out.println("*** totalLevelSP " + java.util.Arrays.toString(totalLevelSP));
   }
 
+  /*** Characters XP ***/
+
   public static int getTotalLevelXP(int lvl) {
     if (lvl > 1 && lvl <= ServerSettings.LEVEL_CAP) {
       return totalLevelXP[lvl];
@@ -67,10 +69,21 @@ public class XPTables {
 
   public static int getNextLevelXP(int lvl) {
     if (lvl > 1 && lvl <= ServerSettings.LEVEL_CAP) {
-      return nextLevelSP[lvl];
+      return nextLevelXP[lvl];
     }
     return Integer.MAX_VALUE;
   }
+
+  public static int getLevelByXP(int XP) {
+    for (int lvl = 2; lvl < 100; lvl++) {
+      if (totalLevelXP[lvl] > XP) {
+        return lvl - 1;
+      }
+    }
+    return 1;
+  }
+
+  /*** Skills and Classes SP ***/
 
   public static int getTotalLevelSP(int lvl) {
     if (lvl > 1 && lvl <= ServerSettings.JOB_LEVEL_CAP) {
@@ -89,15 +102,6 @@ public class XPTables {
   public static int getLevelBySP(int SP) {
     for (int lvl = 2; lvl < 100; lvl++) {
       if (totalLevelSP[lvl] > SP) {
-        return lvl - 1;
-      }
-    }
-    return 1;
-  }
-
-  public static int getLevelByXP(int XP) {
-    for (int lvl = 2; lvl < 100; lvl++) {
-      if (totalLevelXP[lvl] > XP) {
         return lvl - 1;
       }
     }

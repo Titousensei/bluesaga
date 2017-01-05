@@ -25,6 +25,7 @@ public class PartyHandler extends Handler {
     DataHandlers.register("party_members", m -> handlePartyMembers(m));
     DataHandlers.register("add_to_party", m -> handleAddToParty(m));
     DataHandlers.register("join_party", m -> handleJoinParty(m));
+    DataHandlers.register("leave_party", m -> handleLeaveParty(m));
   }
 
   public static void handlePartyMembers(Message m) {
@@ -202,6 +203,10 @@ public class PartyHandler extends Handler {
         break;
       }
     }
+  }
+
+  public static void handleLeaveParty(Message m) {
+    leaveParty(m.client, -1);
   }
 
   public static void leaveParty(Client client) {

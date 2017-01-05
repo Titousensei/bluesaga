@@ -37,6 +37,7 @@ public class PlayersWindow extends Window {
 
   private Button PartyButton;
   private Button AddToPartyButton;
+  private Button LeavePartyButton;
 
   private String ACTIVE_VIEW = "LIST";
 
@@ -81,6 +82,14 @@ public class PlayersWindow extends Window {
             LanguageUtils.getString("ui.players_window.add_player").toUpperCase(),
             20,
             height - 58,
+            140,
+            38,
+            this);
+    LeavePartyButton =
+        new Button(
+            LanguageUtils.getString("ui.players_window.leave_party").toUpperCase(),
+            20,
+            height - 100,
             140,
             38,
             this);
@@ -212,6 +221,7 @@ public class PlayersWindow extends Window {
                 LanguageUtils.getString("ui.players_window.party_members"),
                 X + 20 + moveX,
                 Y + 20 + moveY);
+            LeavePartyButton.draw(g, mouseX, mouseY);
           }
 
           PlayerButtons1.draw(g, mouseX, mouseY, moveX, moveY);
@@ -344,6 +354,14 @@ public class PlayersWindow extends Window {
           new_friend_text.setFocus(true);
           new_friend_text.setAcceptingInput(true);
           new_friend_text.setText("");
+        }
+        else if (LeavePartyButton.isClicked(mouseX, mouseY)) {
+          BlueSaga.client.sendMessage("leave_party", "-1");
+          BlueSaga.client.sendMessage("playersonline", "info");
+          ACTIVE_VIEW = "LIST";
+          new_friend_text.setFocus(false);
+          AddFriendButton.setY(Height - 58);
+          new_friend_text.setAcceptingInput(false);
         } else if (BackButton.isClicked(mouseX, mouseY)) {
           BlueSaga.client.sendMessage("playersonline", "info");
           ACTIVE_VIEW = "LIST";

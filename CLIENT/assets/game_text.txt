@@ -100,6 +100,7 @@
             "no_party_active": "No party active",
             "players_online": "Players online",
             "add_player": "Add Player",
+            "leave_party": "Leave party",
             "party": "Party"
         },
         "skins": {"no_character_skins": "You have no character skins"},

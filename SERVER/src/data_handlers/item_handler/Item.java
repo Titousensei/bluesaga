@@ -361,6 +361,19 @@ public class Item {
     if (modifier != Modifier.Regular) {
       Name = modifier.toString() + ' ' + Name;
 
+      Integer ret = Requirements.get("ReqLevel");
+      if (ret != null) {
+        int lvl = ret.intValue();
+        if (modifier.bonus > 0) {
+          lvl += modifier.bonus;
+        }
+        else {
+          lvl += modifier.bonus * 2;
+          if (lvl<1) { lvl = 1; }
+        }
+        Requirements.put("ReqLevel", Integer.valueOf(lvl));
+      }
+
       for (Map.Entry<String, Integer> stat : Stats.getHashMap().entrySet()) {
 
         String statName = stat.getKey();

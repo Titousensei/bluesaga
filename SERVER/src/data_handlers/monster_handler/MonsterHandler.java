@@ -513,7 +513,7 @@ public class MonsterHandler extends Handler {
                           Math.sqrt(Math.pow(m.getX() - hitX, 2) + Math.pow(m.getY() - hitY, 2));
 
                       AGGRO_RANGE = 40;
-                      if (distToMob <= AGGRO_RANGE) {
+                      if (distToMob <= AGGRO_RANGE && !attacker.hasStatusEffect(102)) {   // Stealth
                         m.setAggro(attacker);
                         aggroMonsters.add(m);
                       }
@@ -584,7 +584,7 @@ public class MonsterHandler extends Handler {
                           }
                         }
 
-                        if (turnAggro) {
+                        if (turnAggro && !attacker.hasStatusEffect(102)) {   // Stealth
                           m.setAggro(attacker);
                           aggroMonsters.add(m);
                         }

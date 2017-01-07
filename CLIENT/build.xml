@@ -25,7 +25,7 @@
     </javac>
   </target>
 
-  <target name="dist">
+  <target name="dist" depends="compile">
     <mkdir dir="dist"/>
     <jar jarfile="dist/gameData.jar">
       <fileset dir="build" includes="**/*.class"/>

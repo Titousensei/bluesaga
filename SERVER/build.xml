@@ -26,6 +26,13 @@
     </javac>
   </target>
 
+  <target name="dist" depends="compile">
+    <mkdir dir="dist"/>
+    <jar jarfile="dist/server.jar">
+      <fileset dir="build" includes="**/*.class"/>
+    </jar>
+  </target>
+
   <target name="clean">
     <delete dir="${build}"/>
   </target>

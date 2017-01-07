@@ -77,18 +77,19 @@ extends Builder<Shop>
       StringBuilder sb = new StringBuilder();
       for (int aId : ab) {
         try (ResultSet abilityInfo =
+                                //      1        2
             Server.gameDB.askDB("select ClassId, GraphicsNr from ability where Id = " + aId);
         ) {
           if (abilityInfo.next()) {
             String color = "0,0,0";
-            if (abilityInfo.getInt("ClassId") > 0) {
-              color = ServerGameInfo.classDef.get(abilityInfo.getInt("ClassId")).bgColor;
+            if (abilityInfo.getInt(1) > 0) {
+              color = ServerGameInfo.classDef.get(abilityInfo.getInt(1)).bgColor;
             }
             sb.append(aId)
               .append(',')
               .append(color)
               .append(',')
-              .append(abilityInfo.getInt("GraphicsNr"))
+              .append(abilityInfo.getInt(2))
               .append(':');
           }
         } catch (SQLException e) {

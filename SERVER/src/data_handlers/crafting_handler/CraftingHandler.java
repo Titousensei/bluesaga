@@ -55,7 +55,7 @@ public class CraftingHandler extends Handler {
                 + " and RecipeId = '" + craftingStationName +"'");
     ) {
       while (recipesInfo.next()) {
-        Recipe recipe = recipes.get(recipesInfo.getInt("RecipeId"));
+        Recipe recipe = recipes.get(recipesInfo.getInt(1));
         recipesToSend
             .append(recipe.getProduct().getId())
             .append(',')

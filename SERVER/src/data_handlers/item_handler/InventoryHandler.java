@@ -39,6 +39,7 @@ public class InventoryHandler extends Handler {
       // GET ITEM AT posX, posY IN PLAYER'S INVENTORY
       ResultSet rs =
           Server.userDB.askDB(
+              //      1   2       3   4           5
               "select Id, ItemId, Nr, ModifierId, MagicId from character_item where InventoryPos = '"
                   + posX
                   + ","
@@ -53,17 +54,17 @@ public class InventoryHandler extends Handler {
           Server.userDB.updateDB(
               "update character_item set InventoryPos = 'Mouse' where Id = " + rs.getInt("Id"));
 
-          if (ServerGameInfo.itemDef.containsKey(rs.getInt("ItemId"))) {
-            Item mouseItem = ServerGameInfo.newItem(rs.getInt("ItemId"));
-            mouseItem.setUserItemId(rs.getInt("Id"));
-            mouseItem.setStacked(rs.getInt("Nr"));
-            mouseItem.setModifierId(rs.getInt("ModifierId"));
-            mouseItem.setMagicId(rs.getInt("MagicId"));
+          if (ServerGameInfo.itemDef.containsKey(rs.getInt(2))) {
+            Item mouseItem = ServerGameInfo.newItem(rs.getInt(2));
+            mouseItem.setUserItemId(rs.getInt(1));
+            mouseItem.setStacked(rs.getInt(3));
+            mouseItem.setModifierId(rs.getInt(4));
+            mouseItem.setMagicId(rs.getInt(5));
 
             client.playerCharacter.setMouseItem(mouseItem);
 
             addOutGoingMessage(
-                client, "addmouseitem", rs.getInt("ItemId") + ";" + mouseItem.getType());
+                client, "addmouseitem", rs.getInt(2) + ";" + mouseItem.getType());
 
             if (containerType == 0) {
               // SEND INVENTORY INFO
@@ -85,6 +86,7 @@ public class InventoryHandler extends Handler {
       // GET ITEM AT posX, posY IN PLAYER'S PERSONAL CHEST
       ResultSet rs =
           Server.userDB.askDB(
+              //      1   2       3   4           5
               "select Id, ItemId, Nr, ModifierId, MagicId from user_chest where Pos = '"
                   + posX
                   + ","
@@ -97,12 +99,12 @@ public class InventoryHandler extends Handler {
 
           // PLAYER HAS ITEM AT THAT POSITION
 
-          if (ServerGameInfo.itemDef.containsKey(rs.getInt("ItemId"))) {
-            Item mouseItem = ServerGameInfo.newItem(rs.getInt("ItemId"));
-            mouseItem.setUserItemId(rs.getInt("Id"));
-            mouseItem.setStacked(rs.getInt("Nr"));
-            mouseItem.setModifierId(rs.getInt("ModifierId"));
-            mouseItem.setMagicId(rs.getInt("MagicId"));
+          if (ServerGameInfo.itemDef.containsKey(rs.getInt(2))) {
+            Item mouseItem = ServerGameInfo.newItem(rs.getInt(2));
+            mouseItem.setUserItemId(rs.getInt(1));
+            mouseItem.setStacked(rs.getInt(3));
+            mouseItem.setModifierId(rs.getInt(4));
+            mouseItem.setMagicId(rs.getInt(5));
 
             // ADD ITEM TO MOUSE
             Server.userDB.updateDB(
@@ -165,6 +167,7 @@ public class InventoryHandler extends Handler {
         //CHECK IF ITEM ON POSITION IN INVENTORY
         ResultSet itemCheck =
             Server.userDB.askDB(
+                //      1   2       3
                 "select Id, ItemId, Nr from character_item where InventoryPos = '"
                     + invPos
                     + "' and CharacterId = "
@@ -173,32 +176,32 @@ public class InventoryHandler extends Handler {
         try {
           if (itemCheck.next()) {
             // CHECK IF ENOUGH IN NUMBER
-            if (itemCheck.getInt("Nr") > number) {
+            if (itemCheck.getInt(3) > number) {
               // SPLIT
               Server.userDB.updateDB(
                   "update character_item set Nr = Nr - "
                       + number
                       + " where Id = "
-                      + itemCheck.getInt("Id"));
+                      + itemCheck.getInt(1));
               Server.userDB.updateDB(
                   "insert into character_item (CharacterId, ItemId, Equipped, InventoryPos, Nr) values ("
                       + client.playerCharacter.getDBId()
                       + ","
-                      + itemCheck.getInt("itemId")
+                      + itemCheck.getInt(2)
                       + ",0,'Mouse',"
                       + number
                       + ")");
               okToSplit = true;
-            } else if (itemCheck.getInt("Nr") == number) {
+            } else if (itemCheck.getInt(3) == number) {
               // MOVE ALL TO MOUSE
               Server.userDB.updateDB(
                   "update character_item set InventoryPos = 'Mouse' where Id = "
-                      + itemCheck.getInt("Id"));
+                      + itemCheck.getInt(1));
               okToSplit = true;
             }
             if (okToSplit) {
-              if (ServerGameInfo.itemDef.containsKey(itemCheck.getInt("ItemId"))) {
-                Item mouseItem = ServerGameInfo.newItem(itemCheck.getInt("ItemId"));
+              if (ServerGameInfo.itemDef.containsKey(itemCheck.getInt(2))) {
+                Item mouseItem = ServerGameInfo.newItem(itemCheck.getInt(2));
                 mouseItem.setStacked(number);
                 client.playerCharacter.setMouseItem(mouseItem);
                 client.playerCharacter.loadInventory();
@@ -236,15 +239,16 @@ public class InventoryHandler extends Handler {
 
       ResultSet mouseItemInfo =
           Server.userDB.askDB(
+              //      1   2           3
               "select Nr, ModifierId, MagicId from character_item where CharacterId = "
                   + client.playerCharacter.getDBId()
                   + " and InventoryPos = 'Mouse'");
       try {
         if (mouseItemInfo.next()) {
-          nrItems = mouseItemInfo.getInt("Nr");
+          nrItems = mouseItemInfo.getInt(1);
           itemToMove.setStacked(nrItems);
-          itemToMove.setMagicId(mouseItemInfo.getInt("MagicId"));
-          itemToMove.setModifierId(mouseItemInfo.getInt("ModifierId"));
+          itemToMove.setMagicId(mouseItemInfo.getInt(3));
+          itemToMove.setModifierId(mouseItemInfo.getInt(2));
         }
         mouseItemInfo.close();
       } catch (SQLException e1) {
@@ -260,6 +264,7 @@ public class InventoryHandler extends Handler {
           // CHECK IF ITEM ALREADY EXIST AT LOCATION
           ResultSet checkInvPos =
               Server.userDB.askDB(
+                  //      1   2       3
                   "select Id, ItemId, Nr from character_item where CharacterId = "
                       + client.playerCharacter.getDBId()
                       + " and InventoryPos = '"
@@ -271,10 +276,10 @@ public class InventoryHandler extends Handler {
             if (checkInvPos.next()) {
               // ITEM ALREADY THERE!
 
-              oldInvItemUserItemId = checkInvPos.getInt("Id");
-              oldInvItemId = checkInvPos.getInt("ItemId");
+              oldInvItemUserItemId = checkInvPos.getInt(1);
+              oldInvItemId = checkInvPos.getInt(2);
               Item oldInvItem = ServerGameInfo.newItem(oldInvItemId);
-              oldInvItem.setStacked(checkInvPos.getInt("Nr"));
+              oldInvItem.setStacked(checkInvPos.getInt(3));
 
               if (oldInvItem.getId() == itemToMove.getId()
                   && oldInvItem.getStacked() < oldInvItem.getStackable()) {
@@ -380,6 +385,7 @@ public class InventoryHandler extends Handler {
         // CHECK IF ITEM ALREADY EXIST AT LOCATION
         ResultSet checkInvPos =
             Server.userDB.askDB(
+                //      1   2       3   4           5
                 "select Id, ItemId, Nr, ModifierId, MagicId from user_chest where UserId = "
                     + client.UserId
                     + " and Pos = '"
@@ -390,12 +396,12 @@ public class InventoryHandler extends Handler {
         try {
           if (checkInvPos.next()) {
             // ITEM ALREADY THERE!
-            oldInvItemUserItemId = checkInvPos.getInt("Id");
-            oldInvItemId = checkInvPos.getInt("ItemId");
+            oldInvItemUserItemId = checkInvPos.getInt(1);
+            oldInvItemId = checkInvPos.getInt(2);
             Item oldInvItem = ServerGameInfo.newItem(oldInvItemId);
-            oldInvItem.setStacked(checkInvPos.getInt("Nr"));
-            oldInvItem.setModifierId(checkInvPos.getInt("ModifierId"));
-            oldInvItem.setMagicId(checkInvPos.getInt("MagicId"));
+            oldInvItem.setStacked(checkInvPos.getInt(3));
+            oldInvItem.setModifierId(checkInvPos.getInt(4));
+            oldInvItem.setMagicId(checkInvPos.getInt(5));
 
             if (oldInvItem.getId() == itemToMove.getId()
                 && oldInvItem.getStacked() < oldInvItem.getStackable()) {
@@ -550,21 +556,22 @@ public class InventoryHandler extends Handler {
 
     ResultSet invInfo =
         Server.userDB.askDB(
+            //      1   2       3             4
             "select Id, ItemId, InventoryPos, Nr from character_item where CharacterId = "
                 + client.playerCharacter.getDBId()
                 + " and Equipped = 0 and InventoryPos <> 'None' and InventoryPos <> 'Mouse'");
 
     try {
       while (invInfo.next()) {
-        if (ServerGameInfo.itemDef.containsKey(invInfo.getInt("ItemId"))) {
+        if (ServerGameInfo.itemDef.containsKey(invInfo.getInt(2))) {
           inventoryInfo
-              .append(invInfo.getInt("Id"))
+              .append(invInfo.getInt(1))
               .append(',')
-              .append(invInfo.getInt("ItemId"))
+              .append(invInfo.getInt(2))
               .append(',')
-              .append(invInfo.getInt("Nr"))
+              .append(invInfo.getInt(4))
               .append(',')
-              .append(invInfo.getString("InventoryPos"))
+              .append(invInfo.getString(3))
               .append(';');
         }
       }
@@ -583,22 +590,16 @@ public class InventoryHandler extends Handler {
       // IF KEY, ADD TO KEYCHAIN
       addSpecialItem = true;
 
-      ResultSet keyInfo =
-          Server.userDB.askDB(
+      int keyInfo =
+          Server.userDB.askInt(
               "select KeyId from character_key where KeyId = "
                   + itemToMove.getId()
                   + " and CharacterId = "
                   + client.playerCharacter.getDBId());
 
-      try {
-        if (keyInfo.next()) {
-          addSpecialItem = false;
-          addOutGoingMessage(client, "message", "#messages.inventory.have_key");
-        }
-        keyInfo.close();
-      } catch (SQLException e) {
-        // TODO Auto-generated catch block
-        e.printStackTrace();
+      if (keyInfo != 0) {
+        addSpecialItem = false;
+        addOutGoingMessage(client, "message", "#messages.inventory.have_key");
       }
       if (addSpecialItem) {
         Server.userDB.updateDB(
@@ -621,22 +622,16 @@ public class InventoryHandler extends Handler {
       // IF RECIPE, ADD TO CRAFTBOOK
       addSpecialItem = true;
 
-      ResultSet recipeInfo =
-          Server.userDB.askDB(
+      int recipeInfo =
+          Server.userDB.askInt(
               "select Id from character_recipe where RecipeId = "
                   + itemToMove.getId()
                   + " and CharacterId = "
                   + client.playerCharacter.getDBId());
 
-      try {
-        if (recipeInfo.next()) {
-          addSpecialItem = false;
-          addOutGoingMessage(client, "message", "#messages.inventory.have_recipe");
-        }
-        recipeInfo.close();
-      } catch (SQLException e) {
-        // TODO Auto-generated catch block
-        e.printStackTrace();
+      if (recipeInfo != 0) {
+        addSpecialItem = false;
+        addOutGoingMessage(client, "message", "#messages.inventory.have_recipe");
       }
       if (addSpecialItem) {
         Server.userDB.updateDB(
@@ -662,28 +657,27 @@ public class InventoryHandler extends Handler {
   public static void removeCopperFromInventory(Client client, int copperToRemove) {
 
     // REMOVE COPPER
-    ResultSet moneyUpdate;
-
-    moneyUpdate =
+    ResultSet moneyUpdate =
         Server.userDB.askDB(
+            //      1   2
             "select Id, Nr from character_item where ItemId = 36 and CharacterId = "
                 + client.playerCharacter.getDBId());
 
     try {
       while (moneyUpdate.next() && copperToRemove > 0) {
-        int copperLeft = copperToRemove - moneyUpdate.getInt("Nr");
+        int copperLeft = copperToRemove - moneyUpdate.getInt(2);
         if (copperLeft >= 0) {
           Server.userDB.updateDB(
-              "delete from character_item where Id = " + moneyUpdate.getInt("Id"));
+              "delete from character_item where Id = " + moneyUpdate.getInt(1));
           copperToRemove = copperLeft;
         } else {
-          int restCopper = moneyUpdate.getInt("Nr") - copperToRemove;
+          int restCopper = moneyUpdate.getInt(2) - copperToRemove;
           copperToRemove = 0;
           Server.userDB.updateDB(
               "update character_item set Nr = "
                   + restCopper
                   + " where Id = "
-                  + moneyUpdate.getInt("Id"));
+                  + moneyUpdate.getInt(1));
         }
       }
       moneyUpdate.close();
@@ -695,18 +689,19 @@ public class InventoryHandler extends Handler {
     if (copperToRemove > 0) {
       moneyUpdate =
           Server.userDB.askDB(
+              //      1   2
               "select Id, Nr from character_item where ItemId = 35 and CharacterId = "
                   + client.playerCharacter.getDBId());
 
       try {
         while (moneyUpdate.next() && copperToRemove > 0) {
-          int copperLeft = copperToRemove - moneyUpdate.getInt("Nr") * 100;
+          int copperLeft = copperToRemove - moneyUpdate.getInt(2) * 100;
           if (copperLeft >= 0) {
             Server.userDB.updateDB(
-                "delete from character_item where Id = " + moneyUpdate.getInt("Id"));
+                "delete from character_item where Id = " + moneyUpdate.getInt(1));
             copperToRemove = copperLeft;
           } else {
-            int restCopper = moneyUpdate.getInt("Nr") * 100 - copperToRemove;
+            int restCopper = moneyUpdate.getInt(2) * 100 - copperToRemove;
             int silverLeft = (int) Math.floor((float) restCopper / 100);
             int copperRest = restCopper % 100;
             copperToRemove = 0;
@@ -715,10 +710,10 @@ public class InventoryHandler extends Handler {
                   "update character_item set Nr = "
                       + silverLeft
                       + " where Id = "
-                      + moneyUpdate.getInt("Id"));
+                      + moneyUpdate.getInt(1));
             } else {
               Server.userDB.updateDB(
-                  "delete from character_item where Id = " + moneyUpdate.getInt("Id"));
+                  "delete from character_item where Id = " + moneyUpdate.getInt(1));
             }
             if (copperRest > 0) {
               Item CopperItem = ServerGameInfo.newItem(36);
@@ -737,18 +732,19 @@ public class InventoryHandler extends Handler {
     if (copperToRemove > 0) {
       moneyUpdate =
           Server.userDB.askDB(
+              //      1   2
               "select Id, Nr from character_item where ItemId = 34 and CharacterId = "
                   + client.playerCharacter.getDBId());
 
       try {
         while (moneyUpdate.next() && copperToRemove > 0) {
-          int copperLeft = copperToRemove - moneyUpdate.getInt("Nr") * 10000;
+          int copperLeft = copperToRemove - moneyUpdate.getInt(2) * 10000;
           if (copperLeft >= 0) {
             Server.userDB.updateDB(
-                "delete from character_item where Id = " + moneyUpdate.getInt("Id"));
+                "delete from character_item where Id = " + moneyUpdate.getInt(1));
             copperToRemove = copperLeft;
           } else {
-            int restCopper = moneyUpdate.getInt("Nr") * 10000 - copperToRemove;
+            int restCopper = moneyUpdate.getInt(2) * 10000 - copperToRemove;
             int goldLeft = (int) Math.floor((float) restCopper / 10000);
             int copperRest = restCopper % 10000;
             copperToRemove = 0;
@@ -757,10 +753,10 @@ public class InventoryHandler extends Handler {
                   "update character_item set Nr = "
                       + goldLeft
                       + " where Id = "
-                      + moneyUpdate.getInt("Id"));
+                      + moneyUpdate.getInt(1));
             } else {
               Server.userDB.updateDB(
-                  "delete from character_item where Id = " + moneyUpdate.getInt("Id"));
+                  "delete from character_item where Id = " + moneyUpdate.getInt(1));
             }
             if (copperRest > 0) {
               if (copperRest > 100) {
@@ -849,6 +845,7 @@ public class InventoryHandler extends Handler {
     // CHECK IF ITEM EXIST IN INVENTORY
     ResultSet rs =
         Server.userDB.askDB(
+            //      1   2       3   4
             "select Id, ItemId, Nr, InventoryPos from character_item where ItemId = "
                 + usedItem.getId()
                 + " and InventoryPos = '"
@@ -861,7 +858,7 @@ public class InventoryHandler extends Handler {
     try {
       if (rs.next()) {
         // USE ITEM AND REMOVE IT
-        int userItemId = rs.getInt("Id");
+        int userItemId = rs.getInt(1);
 
         usedItem.setUserItemId(userItemId);
 
@@ -878,7 +875,7 @@ public class InventoryHandler extends Handler {
         } else {
           // USEABLE ITEM
           if (client.playerCharacter.useItem(usedItem)) {
-            if (rs.getInt("Nr") > 1) {
+            if (rs.getInt(3) > 1) {
               Server.userDB.updateDB(
                   "update character_item set Nr = Nr - 1 where Id = " + userItemId);
             } else {
@@ -888,7 +885,7 @@ public class InventoryHandler extends Handler {
             client.playerCharacter.saveInfo();
 
             // SEND REMOVE ITEM FROM INVENTORY
-            addOutGoingMessage(client, "inventory_remove", rs.getString("InventoryPos"));
+            addOutGoingMessage(client, "inventory_remove", rs.getString(4));
             useItemSuccess = true;
 
             QuestHandler.updateUseItemQuests(client, usedItem.getId());
@@ -907,14 +904,15 @@ public class InventoryHandler extends Handler {
 
     ResultSet itemInfo =
         Server.userDB.askDB(
-            "select ItemId, Nr from character_item where CharacterId = "
+            //      1
+            "select Nr from character_item where CharacterId = "
                 + client.playerCharacter.getDBId()
                 + " and ItemId = "
                 + itemId
                 + " and InventoryPos <> 'None' and InventoryPos <> 'Mouse' and InventoryPos <> 'Actionbar'");
     try {
       while (itemInfo.next()) {
-        nrItems += itemInfo.getInt("Nr");
+        nrItems += itemInfo.getInt(1);
       }
       itemInfo.close();
     } catch (SQLException e) {
@@ -928,6 +926,7 @@ public class InventoryHandler extends Handler {
 
     ResultSet itemInfo =
         Server.userDB.askDB(
+            //      1   2
             "select Id, Nr from character_item where CharacterId = "
                 + client.playerCharacter.getDBId()
                 + " and ItemId = "
@@ -935,7 +934,7 @@ public class InventoryHandler extends Handler {
                 + " and InventoryPos <> 'Mouse' and Equipped = 0 and InventoryPos <> 'Actionbar'");
     try {
       while (itemInfo.next() && nrItems > 0) {
-        int nrLeftInInv = itemInfo.getInt("Nr") - nrItems;
+        int nrLeftInInv = itemInfo.getInt(2) - nrItems;
 
         int removedNr = 0;
 
@@ -945,10 +944,10 @@ public class InventoryHandler extends Handler {
               "update character_item set Nr = "
                   + nrLeftInInv
                   + " where Id = "
-                  + itemInfo.getInt("Id"));
+                  + itemInfo.getInt(1));
         } else {
-          removedNr = itemInfo.getInt("Nr");
-          Server.userDB.updateDB("delete from character_item where Id = " + itemInfo.getInt("Id"));
+          removedNr = itemInfo.getInt(2);
+          Server.userDB.updateDB("delete from character_item where Id = " + itemInfo.getInt(1));
         }
 
         nrItems -= removedNr;
@@ -1003,8 +1002,8 @@ public class InventoryHandler extends Handler {
   }
 
   public void removeItemFromInventory(Client client, int posX, int posY, int nr) {
-    ResultSet removeInfo =
-        Server.userDB.askDB(
+    int removeInfo =
+        Server.userDB.askInt(
             "select Nr from character_item where InventoryPos = '"
                 + posX
                 + ","
@@ -1012,34 +1011,26 @@ public class InventoryHandler extends Handler {
                 + "' and CharacterId = "
                 + client.playerCharacter.getDBId());
 
-    try {
-      if (removeInfo.next()) {
-        if (removeInfo.getInt("Nr") > 1) {
-          Server.userDB.updateDB(
-              "update character_item set Nr = Nr - 1 where InventoryPos = '"
-                  + posX
-                  + ","
-                  + posY
-                  + "' and CharacterId = "
-                  + client.playerCharacter.getDBId());
-        } else {
-          Server.userDB.updateDB(
-              "delete from character_item where InventoryPos = '"
-                  + posX
-                  + ","
-                  + posY
-                  + "' and CharacterId = "
-                  + client.playerCharacter.getDBId());
-        }
-
-        client.playerCharacter.loadInventory();
-        // SEND REMOVE ITEM FROM INVENTORY
-        addOutGoingMessage(client, "inventory_remove", "remove");
-      }
-      removeInfo.close();
-    } catch (SQLException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
+    if (removeInfo >= 2) {
+      Server.userDB.updateDB(
+          "update character_item set Nr = Nr - 1 where InventoryPos = '"
+              + posX
+              + ","
+              + posY
+              + "' and CharacterId = "
+              + client.playerCharacter.getDBId());
+    } else if (removeInfo == 1) {
+      Server.userDB.updateDB(
+          "delete from character_item where InventoryPos = '"
+              + posX
+              + ","
+              + posY
+              + "' and CharacterId = "
+              + client.playerCharacter.getDBId());
     }
+
+    client.playerCharacter.loadInventory();
+    // SEND REMOVE ITEM FROM INVENTORY
+    addOutGoingMessage(client, "inventory_remove", "remove");
   }
 }

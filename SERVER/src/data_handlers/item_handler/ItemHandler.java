@@ -35,24 +35,19 @@ public class ItemHandler extends Handler {
   public static void handleDropItem(Message m) {
     if (m.client.playerCharacter == null) return;
     Client client = m.client;
-    ResultSet dropInfo =
-        Server.userDB.askDB(
+    int dropInfo =
+        Server.userDB.askInt(
             "select Nr from character_item where InventoryPos = 'Mouse' and CharacterId = "
                 + client.playerCharacter.getDBId());
-    try {
-      if (dropInfo.next()) {
-        Server.userDB.updateDB(
-            "delete from character_item where InventoryPos = 'Mouse' and CharacterId = "
-                + client.playerCharacter.getDBId());
+    if (dropInfo != 0) {
+      Server.userDB.updateDB(
+          "delete from character_item where InventoryPos = 'Mouse' and CharacterId = "
+              + client.playerCharacter.getDBId());
 
-        if (client.playerCharacter.getMouseItem() != null) {
-          loseItemOnGround(client, client.playerCharacter.getMouseItem());
-        }
-        client.playerCharacter.setMouseItem(null);
+      if (client.playerCharacter.getMouseItem() != null) {
+        loseItemOnGround(client, client.playerCharacter.getMouseItem());
       }
-      dropInfo.close();
-    } catch (SQLException e) {
-      e.printStackTrace();
+      client.playerCharacter.setMouseItem(null);
     }
   }
 
@@ -116,15 +111,16 @@ public class ItemHandler extends Handler {
       } else {
         ResultSet userItemInfo =
             Server.userDB.askDB(
+                //      1       2           3
                 "select ItemId, ModifierId, MagicId from user_chest where Id = " + userItemId);
 
         try {
           if (userItemInfo.next()) {
 
             // CHECK IF PLAYER HAS ITEM
-            infoItem = ServerGameInfo.newItem(userItemInfo.getInt("ItemId"));
-            infoItem.setModifierId(userItemInfo.getInt("ModifierId"));
-            infoItem.setMagicId(userItemInfo.getInt("MagicId"));
+            infoItem = ServerGameInfo.newItem(userItemInfo.getInt(1));
+            infoItem.setModifierId(userItemInfo.getInt(2));
+            infoItem.setMagicId(userItemInfo.getInt(3));
           }
           userItemInfo.close();
         } catch (SQLException e) {
@@ -139,15 +135,16 @@ public class ItemHandler extends Handler {
 
       ResultSet userItemInfo =
           Server.userDB.askDB(
+              //      1       2           3
               "select ItemId, ModifierId, MagicId from character_item where Id = " + userItemId);
 
       try {
         if (userItemInfo.next()) {
 
           // CHECK IF PLAYER HAS ITEM
-          infoItem = ServerGameInfo.newItem(userItemInfo.getInt("ItemId"));
-          infoItem.setModifierId(userItemInfo.getInt("ModifierId"));
-          infoItem.setMagicId(userItemInfo.getInt("MagicId"));
+          infoItem = ServerGameInfo.newItem(userItemInfo.getInt(1));
+          infoItem.setModifierId(userItemInfo.getInt(2));
+          infoItem.setMagicId(userItemInfo.getInt(3));
         }
         userItemInfo.close();
       } catch (SQLException e) {
@@ -167,11 +164,12 @@ public class ItemHandler extends Handler {
 
         ResultSet magicInfo =
             Server.gameDB.askDB(
+                //      1     2
                 "select Name, Color from item_magic where Id = " + infoItem.getMagicId());
         try {
           if (magicInfo.next()) {
-            magicName = magicInfo.getString("Name");
-            magicColor = magicInfo.getString("Color");
+            magicName = magicInfo.getString(1);
+            magicColor = magicInfo.getString(2);
           }
           magicInfo.close();
         } catch (SQLException e) {
@@ -325,6 +323,7 @@ public class ItemHandler extends Handler {
       // Specific inventory scroll
       itemInfo =
           Server.userDB.askDB(
+              //      1       2
               "select ItemId, Nr from character_item where Id = "
                   + scrollUserItemId
                   + " and CharacterId = "
@@ -333,6 +332,7 @@ public class ItemHandler extends Handler {
       // Similar scroll in inventory as the one clicked in the actionbar
       itemInfo =
           Server.userDB.askDB(
+              //      1       2
               "select ItemId, Nr from character_item where ItemId = "
                   + scrollUserItemId
                   + " and CharacterId = "
@@ -341,22 +341,22 @@ public class ItemHandler extends Handler {
 
     try {
       if (itemInfo.next()) {
-        scrollItem = ServerGameInfo.itemDef.get(itemInfo.getInt("ItemId"));
+        scrollItem = ServerGameInfo.itemDef.get(itemInfo.getInt(1));
 
         // CHECK THAT IT IS A SCROLL AND AN ABILITY
         useScrollSuccess = true;
 
         // REMOVE SCROLL
-        if (itemInfo.getInt("Nr") > 1) {
+        if (itemInfo.getInt(2) > 1) {
           Server.userDB.updateDB(
               "update character_item set Nr = Nr - 1 where ItemId = "
-                  + itemInfo.getInt("ItemId")
+                  + itemInfo.getInt(1)
                   + " and CharacterId = "
                   + client.playerCharacter.getDBId());
         } else {
           Server.userDB.updateDB(
               "delete from character_item where ItemId = "
-                  + itemInfo.getInt("ItemId")
+                  + itemInfo.getInt(1)
                   + " and CharacterId = "
                   + client.playerCharacter.getDBId());
         }
@@ -375,18 +375,19 @@ public class ItemHandler extends Handler {
 
       ResultSet actionbarItem =
           Server.userDB.askDB(
+              //      1   2        3
               "select Id, OrderNr, ActionId from character_actionbar where CharacterId = "
                   + client.playerCharacter.getDBId()
                   + " and ActionType = 'Item' and ActionId = "
                   + scrollItemId);
       try {
         if (actionbarItem.next()) {
-          scrollItem = ServerGameInfo.newItem(actionbarItem.getInt("ActionId"));
+          scrollItem = ServerGameInfo.newItem(actionbarItem.getInt(3));
           Server.userDB.updateDB(
-              "delete from character_actionbar where Id = " + actionbarItem.getInt("Id"));
+              "delete from character_actionbar where Id = " + actionbarItem.getInt(1));
 
           // Send remove item from Actionbar
-          addOutGoingMessage(client, "remove_actionbar", actionbarItem.getInt("OrderNr") + "");
+          addOutGoingMessage(client, "remove_actionbar", String.valueOf(actionbarItem.getInt(2)));
           useScrollSuccess = true;
         }
       } catch (SQLException e) {
@@ -517,87 +518,79 @@ public class ItemHandler extends Handler {
 
     Vector<Item> droppedItems = new Vector<Item>();
 
-    ResultSet rs =
-        Server.gameDB.askDB("select LootItems from creature where Id = " + TARGET.getCreatureId());
+    String lootItems =
+        Server.gameDB.askString("select LootItems from creature where Id = " + TARGET.getCreatureId());
 
     int dropOrNot = 0;
     try {
-      if (rs.next()) {
-        if (!rs.getString("LootItems").equals("None")) {
+      if (!"".equals(lootItems) && !"None".equals(lootItems)) {
 
-          String allLoot[] = rs.getString("LootItems").split(";");
+        String allLoot[] = lootItems.split(";");
 
-          for (String loot : allLoot) {
-            String lootInfo[] = loot.split(",");
-            int itemId = Integer.parseInt(lootInfo[0]);
-            int dropChance = Integer.parseInt(lootInfo[1]);
+        for (String loot : allLoot) {
+          String lootInfo[] = loot.split(",");
+          int itemId = Integer.parseInt(lootInfo[0]);
+          int dropChance = Integer.parseInt(lootInfo[1]);
 
-            dropOrNot = RandomUtils.getInt(0, 1000);
+          dropOrNot = RandomUtils.getInt(0, 1000);
 
-            if (TARGET.getSpecialType() > 0) {
-              dropChance *= 4;
-            }
+          if (TARGET.getSpecialType() > 0) {
+            dropChance *= 4;
+          }
 
-            if (TARGET.isElite()) {
-              dropChance *= 3;
-            } else if (TARGET.isTitan()) {
-              dropChance *= 10;
-            }
+          if (TARGET.isElite()) {
+            dropChance *= 3;
+          } else if (TARGET.isTitan()) {
+            dropChance *= 10;
+          }
 
-            if (dropOrNot < dropChance) {
-              Item droppedItem = ServerGameInfo.newItem(itemId);
+          if (dropOrNot < dropChance) {
+            Item droppedItem = ServerGameInfo.newItem(itemId);
 
-              if (droppedItem.getType().equals("Weapon")
-                  || droppedItem.getType().equals("OffHand")
-                  || droppedItem.getType().equals("Head")
-                  || droppedItem.getType().equals("Amulet")
-                  || droppedItem.getType().equals("Artifact")) {
-                // CREATE RARE ITEMS
+            if (droppedItem.getType().equals("Weapon")
+                || droppedItem.getType().equals("OffHand")
+                || droppedItem.getType().equals("Head")
+                || droppedItem.getType().equals("Amulet")
+                || droppedItem.getType().equals("Artifact")) {
+              // CREATE RARE ITEMS
 
-                int rareChance = RandomUtils.getInt(0, 10000);
+              int rareChance = RandomUtils.getInt(0, 10000);
 
-                if (TARGET.isElite()) {
-                  droppedItem.setModifier(Modifier.random(2));
-                } else if (TARGET.isTitan()) {
-                  droppedItem.setModifier(Modifier.random(10));
+              if (TARGET.isElite()) {
+                droppedItem.setModifier(Modifier.random(2));
+              } else if (TARGET.isTitan()) {
+                droppedItem.setModifier(Modifier.random(10));
+              }
+              else {
+                droppedItem.setModifier(Modifier.random(1));
+              }
+
+              if (TARGET.getSpecialType() > 0) {
+                int magicChance = RandomUtils.getInt(0, 100);
+
+                if (TARGET.isTitan()) {
+                  magicChance -= 20;
                 }
-                else {
-                  droppedItem.setModifier(Modifier.random(1));
-                }
 
-                if (TARGET.getSpecialType() > 0) {
-                  int magicChance = RandomUtils.getInt(0, 100);
+                if (magicChance < 20) {
 
-                  if (TARGET.isTitan()) {
-                    magicChance -= 20;
-                  }
+                  int magicInfo =
+                      Server.gameDB.askInt(
+                          "select Id from item_magic where Id = " + TARGET.getSpecialType());
 
-                  if (magicChance < 20) {
-
-                    ResultSet magicInfo =
-                        Server.gameDB.askDB(
-                            "select Id from item_magic where Id = " + TARGET.getSpecialType());
-
-                    if (magicInfo.next()) {
-                      droppedItem.setMagicId(magicInfo.getInt("Id"));
-                    }
-                    magicInfo.close();
+                  if (magicInfo != 0) {
+                    droppedItem.setMagicId(magicInfo);
                   }
                 }
               }
-
-              // DROP ITEM
-              droppedItems.add(droppedItem);
             }
+
+            // DROP ITEM
+            droppedItems.add(droppedItem);
           }
         }
       }
-      rs.close();
     } catch (NumberFormatException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
-    } catch (SQLException e) {
-      // TODO Auto-generated catch block
       e.printStackTrace();
     }
 
@@ -615,20 +608,12 @@ public class ItemHandler extends Handler {
     }
 
     if (dropOrNot < 50) {
-      ResultSet rs =
-          Server.gameDB.askDB(
+      int lootCopper =
+          Server.gameDB.askInt(
               "select LootCopper from creature where Id = " + TARGET.getCreatureId());
 
-      try {
-        if (rs.next()) {
-          if (rs.getInt("LootCopper") > 0) {
-            droppedCopper = RandomUtils.getInt(0, rs.getInt("LootCopper"));
-          }
-        }
-        rs.close();
-      } catch (SQLException e) {
-        // TODO Auto-generated catch block
-        e.printStackTrace();
+      if (lootCopper > 0) {
+        droppedCopper = RandomUtils.getInt(0, lootCopper);
       }
     }
 
@@ -658,16 +643,17 @@ public class ItemHandler extends Handler {
 
     ResultSet lostItemsInfo =
         Server.userDB.askDB(
+            //      1   2           3        4       5
             "select Id, ModifierId, MagicId, ItemId, Nr from character_item where InventoryPos <> 'None' and Equipped = 0 and CharacterId = "
                 + client.playerCharacter.getDBId());
 
     try {
       while (lostItemsInfo.next()) {
         if (lostLoot.size() < maxLootBagSize) {
-          Item lostItem = ServerGameInfo.newItem(lostItemsInfo.getInt("ItemId"));
-          lostItem.setStacked(lostItemsInfo.getInt("Nr"));
-          lostItem.setModifierId(lostItemsInfo.getInt("ModifierId"));
-          lostItem.setMagicId(lostItemsInfo.getInt("MagicId"));
+          Item lostItem = ServerGameInfo.newItem(lostItemsInfo.getInt(4));
+          lostItem.setStacked(lostItemsInfo.getInt(5));
+          lostItem.setModifierId(lostItemsInfo.getInt(2));
+          lostItem.setMagicId(lostItemsInfo.getInt(3));
           Server.userDB.updateDB(
               "delete from character_item where Id = " + lostItemsInfo.getInt("Id"));
           lostLoot.add(lostItem);

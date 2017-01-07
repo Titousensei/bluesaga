@@ -590,13 +590,14 @@ public class BattleHandler extends Handler {
         // REMOVE OLD SOUL
         ResultSet soulInfo =
             Server.userDB.askDB(
+                //      1 2 3
                 "select X,Y,Z from character_soul where CharacterId = "
                     + client.playerCharacter.getDBId());
         try {
           if (soulInfo.next()) {
-            int soulX = soulInfo.getInt("X");
-            int soulY = soulInfo.getInt("Y");
-            int soulZ = soulInfo.getInt("Z");
+            int soulX = soulInfo.getInt(1);
+            int soulY = soulInfo.getInt(2);
+            int soulZ = soulInfo.getInt(3);
 
             Server.WORLD_MAP.getTile(soulX, soulY, soulZ).setSoulCharacterId(0);
 

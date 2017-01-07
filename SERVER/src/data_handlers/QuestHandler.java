@@ -78,6 +78,7 @@ public class QuestHandler extends Handler {
     Client client = m.client;
     ResultSet myQuestInfo =
         Server.userDB.askDB(
+            //      1        2
             "select QuestId, Status from character_quest where CharacterId = "
                 + client.playerCharacter.getDBId()
                 + " and Status > 0 and Status < 3");
@@ -86,7 +87,7 @@ public class QuestHandler extends Handler {
 
     try {
       while (myQuestInfo.next()) {
-        Quest questInfo = ServerGameInfo.questDef.get(myQuestInfo.getInt("QuestId"));
+        Quest questInfo = ServerGameInfo.questDef.get(myQuestInfo.getInt(1));
 
         questData
             .append(questInfo.getId())
@@ -95,7 +96,7 @@ public class QuestHandler extends Handler {
             .append(',')
             .append(questInfo.getType())
             .append(',')
-            .append(myQuestInfo.getString("Status"))
+            .append(myQuestInfo.getString(2))
             .append(',')
             .append(questInfo.getLevel())
             .append(';');
@@ -168,98 +169,90 @@ public class QuestHandler extends Handler {
             .append('/');
 
         // GET QUESTS FROM NPC
-        try {
-          int nrQuests = 0;
-          if (ServerGameInfo.questNpc.get(NPC.getDBId()) != null) {
-            for (Quest questInfo : ServerGameInfo.questNpc.get(NPC.getDBId())) {
-              boolean showOk = true;
+        int nrQuests = 0;
+        if (ServerGameInfo.questNpc.get(NPC.getDBId()) != null) {
+          for (Quest questInfo : ServerGameInfo.questNpc.get(NPC.getDBId())) {
+            boolean showOk = true;
 
-              // IF QUEST HAS PARENT QUEST
-              if (questInfo.getParentQuestId() > 0) {
-                showOk = false;
-                // CHECK IF PARENT QUEST IS COMPLETED
-                ResultSet checkParentQ =
-                    Server.userDB.askDB(
-                        "select Status from character_quest where QuestId = "
-                            + questInfo.getParentQuestId()
-                            + " and CharacterId = "
-                            + client.playerCharacter.getDBId());
-                if (checkParentQ.next()) {
-                  if (checkParentQ.getInt("Status") == 3) {
-                    showOk = true;
-                  }
-                }
-                checkParentQ.close();
-              }
-
-              // NOT SHOW COMPLETED QUESTS
-              // 0 = new, 1 = accepted, 2 = get reward, 3 = completed
-              int questStatus = Server.userDB.askInt(
-                  "select Status from character_quest where QuestId = "
-                      + questInfo.getId()
-                      + " and CharacterId = "
-                      + client.playerCharacter.getDBId());
-
-              if (questStatus == 3) {
-                showOk = false;
-              }
-
-              if (showOk) {
-                // SEND QUEST IF NOT COMPLETED
-
-                npcInfo
-                    .append(questInfo.getId())
-                    .append(',')
-                    .append(questInfo.getName())
-                    .append(',')
-                    .append(questInfo.getType())
-                    .append(',')
-                    .append(questInfo.getLevel())
-                    .append(',')
-                    .append(questStatus)
-                    .append(';');
-
-                nrQuests++;
+            // IF QUEST HAS PARENT QUEST
+            if (questInfo.getParentQuestId() > 0) {
+              showOk = false;
+              // CHECK IF PARENT QUEST IS COMPLETED
+              int questParentStatus =
+                  Server.userDB.askInt(
+                      "select Status from character_quest where QuestId = "
+                          + questInfo.getParentQuestId()
+                          + " and CharacterId = "
+                          + client.playerCharacter.getDBId());
+              if (questParentStatus == 3) {
+                showOk = true;
               }
             }
+
+            // NOT SHOW COMPLETED QUESTS
+            // 0 = new, 1 = accepted, 2 = get reward, 3 = completed
+            int questStatus = Server.userDB.askInt(
+                "select Status from character_quest where QuestId = "
+                    + questInfo.getId()
+                    + " and CharacterId = "
+                    + client.playerCharacter.getDBId());
+
+            if (questStatus == 3) {
+              showOk = false;
+            }
+
+            if (showOk) {
+              // SEND QUEST IF NOT COMPLETED
+
+              npcInfo
+                  .append(questInfo.getId())
+                  .append(',')
+                  .append(questInfo.getName())
+                  .append(',')
+                  .append(questInfo.getType())
+                  .append(',')
+                  .append(questInfo.getLevel())
+                  .append(',')
+                  .append(questStatus)
+                  .append(';');
+
+              nrQuests++;
+            }
           }
-
-          if (nrQuests == 0) {
-            npcInfo.append("None");
-          }
-
-          // GET SHOP FROM NPC
-          if (ServerGameInfo.shopDef.containsKey(NPC.getDBId())) {
-            npcInfo.append('/').append(NPC.getDBId());
-          }
-          else {
-            npcInfo.append("/0");
-          }
-
-          // GET CHECKIN FROM NPC
-          if (ServerGameInfo.checkpointDef.containsKey(NPC.getDBId())) {
-            npcInfo.append('/').append(NPC.getDBId());
-          }
-          else {
-            npcInfo.append("/0");
-          }
-
-          // GET BOUNTY MERCHANT
-
-          int bountyId = 0;
-          /*
-                    rs = Server.gameDB.askDB("select Id from bountyhut where NpcId = "+NPC.getDBId());
-
-                    if(rs.next()){
-                      bountyId = rs.getInt("Id");
-                    }
-                    rs.close();
-          */
-          npcInfo.append('/').append(bountyId);
-
-        } catch (SQLException e) {
-          e.printStackTrace();
         }
+
+        if (nrQuests == 0) {
+          npcInfo.append("None");
+        }
+
+        // GET SHOP FROM NPC
+        if (ServerGameInfo.shopDef.containsKey(NPC.getDBId())) {
+          npcInfo.append('/').append(NPC.getDBId());
+        }
+        else {
+          npcInfo.append("/0");
+        }
+
+        // GET CHECKIN FROM NPC
+        if (ServerGameInfo.checkpointDef.containsKey(NPC.getDBId())) {
+          npcInfo.append('/').append(NPC.getDBId());
+        }
+        else {
+          npcInfo.append("/0");
+        }
+
+        // GET BOUNTY MERCHANT
+
+        int bountyId = 0;
+        /*
+                  rs = Server.gameDB.askDB("select Id from bountyhut where NpcId = "+NPC.getDBId());
+
+                  if(rs.next()){
+                    bountyId = rs.getInt("Id");
+                  }
+                  rs.close();
+        */
+        npcInfo.append('/').append(bountyId);
 
         addOutGoingMessage(client, "talknpc", npcInfo.toString());
       }

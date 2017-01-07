@@ -51,22 +51,11 @@ public class PartyHandler extends Handler {
     Client client = m.client;
     String playerName = m.message;
 
-    int playerDbId = 0;
-
     // CHECK IF PLAYER EXISTS AND GET PLAYER ID
-    ResultSet playerInfo =
-        Server.userDB.askDB(
+    int playerDbId = Server.userDB.askInt(
             "SELECT Id FROM user_character WHERE LOWER(Name) LIKE '"
                 + playerName.toLowerCase()
                 + "'");
-    try {
-      if (playerInfo.next()) {
-        playerDbId = playerInfo.getInt("Id");
-      }
-      playerInfo.close();
-    } catch (SQLException e) {
-      e.printStackTrace();
-    }
 
     if (playerDbId > 0 && playerDbId != client.playerCharacter.getDBId()) {
       // IF PLAYER EXISTS

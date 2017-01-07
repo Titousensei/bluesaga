@@ -33,7 +33,7 @@ public class SkinHandler extends Handler {
 
     try {
       while (closetInfo.next()) {
-        Item skinItem = ServerGameInfo.itemDef.get(closetInfo.getInt("ItemId"));
+        Item skinItem = ServerGameInfo.itemDef.get(closetInfo.getInt(1));
 
         content
             .append(skinItem.getId())
@@ -66,13 +66,13 @@ public class SkinHandler extends Handler {
       while (closetInfo.next()) {
         ResultSet skinInfo =
             Server.gameDB.askDB(
-                "select Name from creature where Id = " + closetInfo.getInt("ItemId"));
+                "select Name from creature where Id = " + closetInfo.getInt(1));
 
         if (skinInfo.next()) {
           skins
-              .append(closetInfo.getInt("ItemId"))
+              .append(closetInfo.getInt(1))
               .append(',')
-              .append(skinInfo.getString("Name"))
+              .append(skinInfo.getString(1))
               .append(';');
         }
         skinInfo.close();
@@ -117,54 +117,48 @@ public class SkinHandler extends Handler {
       }
     } else {
       // CHECK IF PLAYER OWNS SKIN
-      ResultSet checkSkin =
-          Server.userDB.askDB("select ItemId from character_skin where ItemId = " + skinId);
+      int checkSkin =
+          Server.userDB.askInt("select ItemId from character_skin where ItemId = " + skinId);
 
-      try {
-        if (checkSkin.next()) {
-          Item skinItem = ServerGameInfo.itemDef.get(skinId);
+      if (checkSkin !=0 ) {
+        Item skinItem = ServerGameInfo.itemDef.get(skinId);
 
-          if (skinItem.getType().equals("Skin")) {
-            if (skinItem.getSubType().equals("Head")) {
-              client.playerCharacter.getCustomization().setHeadSkinId(skinId);
-            } else if (skinItem.getSubType().equals("Weapon")) {
-              client.playerCharacter.getCustomization().setWeaponSkinId(skinId);
-            } else if (skinItem.getSubType().equals("OffHand")) {
-              client.playerCharacter.getCustomization().setOffHandSkinId(skinId);
-            } else if (skinItem.getSubType().equals("Amulet")) {
-              client.playerCharacter.getCustomization().setAmuletSkinId(skinId);
-            } else if (skinItem.getSubType().equals("Artifact")) {
-              client.playerCharacter.getCustomization().setArtifactSkinId(skinId);
-            }
+        if (skinItem.getType().equals("Skin")) {
+          if (skinItem.getSubType().equals("Head")) {
+            client.playerCharacter.getCustomization().setHeadSkinId(skinId);
+          } else if (skinItem.getSubType().equals("Weapon")) {
+            client.playerCharacter.getCustomization().setWeaponSkinId(skinId);
+          } else if (skinItem.getSubType().equals("OffHand")) {
+            client.playerCharacter.getCustomization().setOffHandSkinId(skinId);
+          } else if (skinItem.getSubType().equals("Amulet")) {
+            client.playerCharacter.getCustomization().setAmuletSkinId(skinId);
+          } else if (skinItem.getSubType().equals("Artifact")) {
+            client.playerCharacter.getCustomization().setArtifactSkinId(skinId);
+          }
 
-            client.playerCharacter.saveInfo();
+          client.playerCharacter.saveInfo();
 
-            // SEND SKIN CHANGE TO PLAYERS IN AREA
-            for (Map.Entry<Integer, Client> entry : Server.clients.entrySet()) {
-              Client s = entry.getValue();
+          // SEND SKIN CHANGE TO PLAYERS IN AREA
+          for (Map.Entry<Integer, Client> entry : Server.clients.entrySet()) {
+            Client s = entry.getValue();
 
-              if (s.Ready
-                  && isVisibleForPlayer(
-                      s.playerCharacter,
-                      client.playerCharacter.getX(),
-                      client.playerCharacter.getY(),
-                      client.playerCharacter.getZ())) {
-                addOutGoingMessage(
-                    s,
-                    "set_skin",
-                    client.playerCharacter.getSmallData()
-                        + ";"
-                        + skinItem.getSubType()
-                        + ","
-                        + skinItem.getId());
-              }
+            if (s.Ready
+                && isVisibleForPlayer(
+                    s.playerCharacter,
+                    client.playerCharacter.getX(),
+                    client.playerCharacter.getY(),
+                    client.playerCharacter.getZ())) {
+              addOutGoingMessage(
+                  s,
+                  "set_skin",
+                  client.playerCharacter.getSmallData()
+                      + ";"
+                      + skinItem.getSubType()
+                      + ","
+                      + skinItem.getId());
             }
           }
         }
-        checkSkin.close();
-      } catch (SQLException e) {
-        // TODO Auto-generated catch block
-        e.printStackTrace();
       }
     }
   }
@@ -174,39 +168,32 @@ public class SkinHandler extends Handler {
     int skinId = Integer.parseInt(m.message);
 
     // Check if character has skin
-    ResultSet skinCheck =
-        Server.userDB.askDB(
+    int skinCheck =
+        Server.userDB.askInt(
             "select ItemId from character_skin where SkinType = 'Character' and ItemId = "
                 + skinId);
-    try {
-      if (skinCheck.next()) {
-        client.playerCharacter.setCreatureId(skinId);
-        Server.userDB.updateDB(
-            "update user_character set CreatureId = "
-                + skinId
-                + " where Id = "
-                + client.playerCharacter.getDBId());
+    if (skinCheck != 0) {
+      client.playerCharacter.setCreatureId(skinId);
+      Server.userDB.updateDB(
+          "update user_character set CreatureId = "
+              + skinId
+              + " where Id = "
+              + client.playerCharacter.getDBId());
 
-        // Send to clients skin change
-        for (Map.Entry<Integer, Client> entry : Server.clients.entrySet()) {
-          Client s = entry.getValue();
+      // Send to clients skin change
+      for (Map.Entry<Integer, Client> entry : Server.clients.entrySet()) {
+        Client s = entry.getValue();
 
-          if (s.Ready
-              && isVisibleForPlayer(
-                  s.playerCharacter,
-                  client.playerCharacter.getX(),
-                  client.playerCharacter.getY(),
-                  client.playerCharacter.getZ())) {
-            addOutGoingMessage(
-                s, "set_character_skin", client.playerCharacter.getSmallData() + ";" + skinId);
-          }
+        if (s.Ready
+            && isVisibleForPlayer(
+                s.playerCharacter,
+                client.playerCharacter.getX(),
+                client.playerCharacter.getY(),
+                client.playerCharacter.getZ())) {
+          addOutGoingMessage(
+              s, "set_character_skin", client.playerCharacter.getSmallData() + ";" + skinId);
         }
       }
-
-      skinCheck.close();
-    } catch (SQLException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
     }
   }
 

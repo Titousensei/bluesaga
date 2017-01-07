@@ -113,17 +113,18 @@ public class Npc extends Creature {
 
     ResultSet rs =
         Server.gameDB.askDB(
+            //      1          2            3                 4                  5               6       7
             "select AggroRange,RespawnTime, MonsterWeaponIds, MonsterOffHandIds, MonsterHeadIds, GiveXP, Level from creature where Id = "
                 + creatureId);
     try {
       if (rs.next()) {
-        setMonsterWeaponIds(rs.getString("MonsterWeaponIds"));
-        setMonsterOffHandIds(rs.getString("MonsterOffHandIds"));
-        setMonsterHeadIds(rs.getString("MonsterHeadIds"));
-        setGiveXP(rs.getInt("GiveXP"));
-        setAggroRange(rs.getInt("AggroRange"));
-        respawnTime = rs.getInt("RespawnTime");
-        Level = rs.getInt("Level");
+        setMonsterWeaponIds(rs.getString(3));
+        setMonsterOffHandIds(rs.getString(4));
+        setMonsterHeadIds(rs.getString(5));
+        setGiveXP(rs.getInt(6));
+        setAggroRange(rs.getInt(1));
+        respawnTime = rs.getInt(2);
+        Level = rs.getInt(7);
       }
       rs.close();
     } catch (SQLException e) {

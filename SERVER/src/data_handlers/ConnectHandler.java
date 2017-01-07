@@ -311,6 +311,7 @@ public class ConnectHandler extends Handler {
     boolean foundAbility = false;
     ResultSet aInfo =
         Server.userDB.askDB(
+            //      1           2         3
             "select ActionType, ActionId, OrderNr from character_actionbar where CharacterId = "
                 + client.playerCharacter.getDBId()
                 + " order by OrderNr asc");
@@ -318,11 +319,11 @@ public class ConnectHandler extends Handler {
       while (aInfo.next()) {
         //TODO: CHECK IF CAN HAVE ABILITY
         foundAbility = true;
-        info.append(aInfo.getInt("OrderNr"))
+        info.append(aInfo.getInt(3))
             .append(',')
-            .append(aInfo.getString("ActionType"))
+            .append(aInfo.getString(1))
             .append(',')
-            .append(aInfo.getInt("ActionId"))
+            .append(aInfo.getInt(2))
             .append(';');
       }
       aInfo.close();
@@ -342,6 +343,7 @@ public class ConnectHandler extends Handler {
 
       ResultSet charInfo =
           Server.userDB.askDB(
+              //      1           2  3  4  5
               "select CreatureId, X, Y, Z, AreaEffectId from user_character where UserId = "
                   + client.UserId
                   + " and Id = "
@@ -352,10 +354,10 @@ public class ConnectHandler extends Handler {
           client.playerCharacter =
               new PlayerCharacter(
                   client,
-                  charInfo.getInt("CreatureId"),
-                  charInfo.getInt("X"),
-                  charInfo.getInt("Y"),
-                  charInfo.getInt("Z"));
+                  charInfo.getInt(1),
+                  charInfo.getInt(2),
+                  charInfo.getInt(3),
+                  charInfo.getInt(4));
           client.playerCharacter.load(characterId, client);
           client.playerCharacter.setCreatureType(CreatureType.Player);
 

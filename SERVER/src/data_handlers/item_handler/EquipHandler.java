@@ -31,22 +31,17 @@ public class EquipHandler extends Handler {
     if (client.playerCharacter.getMouseItem() != null
         && client.playerCharacter.getMouseItem().getId() == itemId) {
 
-      ResultSet itemInfo =
-          Server.userDB.askDB(
-              "select Id, ItemId from character_item where CharacterId = "
+      int itemInfo =
+          Server.userDB.askInt(
+              "select Id from character_item where CharacterId = "
                   + client.playerCharacter.getDBId()
                   + " and InventoryPos = 'Mouse' and ItemId = "
                   + itemId);
 
-      try {
-        if (itemInfo.next()) {
-          equipOk = true;
-          equippedItem = client.playerCharacter.getMouseItem();
-          equippedItem.setUserItemId(itemInfo.getInt("Id"));
-        }
-        itemInfo.close();
-      } catch (SQLException e) {
-        e.printStackTrace();
+      if (itemInfo != 0) {
+        equipOk = true;
+        equippedItem = client.playerCharacter.getMouseItem();
+        equippedItem.setUserItemId(itemInfo);
       }
     }
 
@@ -287,7 +282,7 @@ public class EquipHandler extends Handler {
 
     /*
     if(client.playerCharacter.getPkMarker() > 0){
-    	randomLost = RandomUtils.getInt(0, 10);
+      randomLost = RandomUtils.getInt(0, 10);
     }
     */
 

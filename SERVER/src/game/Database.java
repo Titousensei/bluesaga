@@ -60,7 +60,6 @@ public class Database {
     try {
       if (conn != null) {
         Statement stat = conn.createStatement();
-
         if (stat.execute(sqlStatement)) {
           ResultSet rs = stat.getResultSet();
           return rs;
@@ -118,25 +117,25 @@ public class Database {
 
     try {
       // CHECK IF FRIEND IS A PLAYER
-      PreparedStatement stat =
+      PreparedStatement stat =  //      1   2
           conn.prepareStatement("select Id, AdminLevel from user_character where lower(Name) = ?");
       stat.setString(1, friendName.toLowerCase());
       ResultSet checkResult = stat.executeQuery();
 
       if (checkResult.next()) {
-        friendId = checkResult.getInt("Id");
+        friendId = checkResult.getInt(1);
 
-        if (checkResult.getInt("AdminLevel") > 2) {
+        if (checkResult.getInt(2) > 2) {
           friendId = -3;
         } else if (friendId != client.playerCharacter.getDBId()) {
           // CHECK IF PLAYER IS ALREADY IN FRIEND LIST
-          ResultSet friendCheck =
-              askDB(
+          int friendCheck =
+              askInt(
                   "select Id from user_friend where UserId = "
                       + client.UserId
                       + " and FriendCharacterId = "
                       + friendId);
-          if (friendCheck.next()) {
+          if (friendCheck != 0) {
             friendId = 0;
           } else {
             updateDB(
@@ -149,7 +148,6 @@ public class Database {
                     + "')");
             client.playerCharacter.getFriendsList().add(friendId);
           }
-          friendCheck.close();
         } else {
           friendId = -2;
         }
@@ -167,7 +165,27 @@ public class Database {
     // 0 = player is already in friend list
     return friendId;
   }
+/*
+  private ThreadLocal<PreparedStatement> STMT_PLAYER_POS =
+          conn.prepareStatement(
+              "update user_character set X = ?, Y = ?, Z = ? where Id = ?");
 
+  public void savePlayerPosition(int id, int x, int y, int z) {
+    try {
+      PreparedStatement stat =
+          conn.prepareStatement(
+              "update user_character set X = ?, Y = ?, Z = ? where Id = ?");
+      stat.setInt(1, x);
+      stat.setInt(2, y);
+      stat.setInt(3, z);
+      stat.setInt(4, id);
+      stat.executeUpdate();
+      conn.commit();
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+  }
+*/
   /*******************************************
    *
    * 		CHAT LOG
@@ -201,52 +219,31 @@ public class Database {
    */
   public void addKills(int PlayerId, int CreatureId) {
 
-    try {
+    int rowId = askInt(
+            "select Id from user_kills where CreatureId = "
+                + CreatureId
+                + " and UserId = "
+                + PlayerId);
 
-      ResultSet updateSql =
-          askDB(
-              "select Id from user_kills where CreatureId = "
-                  + CreatureId
-                  + " and UserId = "
-                  + PlayerId);
-
-      if (updateSql.next()) {
-        int rowId = updateSql.getInt("Id");
-        if (rowId != 0) {
-          updateDB("update user_kills set Kills = Kills + 1 where Id = " + rowId);
-        } else {
-          updateDB(
-              "insert into user_kills (UserId, CreatureId, Kills) values("
-                  + PlayerId
-                  + ","
-                  + CreatureId
-                  + ",1)");
-        }
-      }
-      updateSql.close();
-    } catch (SQLException e) {
-      e.printStackTrace();
+    if (rowId != 0) {
+      updateDB("update user_kills set Kills = Kills + 1 where Id = " + rowId);
+    } else {
+      updateDB(
+          "insert into user_kills (UserId, CreatureId, Kills) values("
+              + PlayerId
+              + ","
+              + CreatureId
+              + ",1)");
     }
   }
 
   public int monsterKillCount(int userId, int monsterId) {
-    ResultSet monster_info =
-        askDB(
+    int nrKills = askInt(
             "select Kills from user_kills where CreatureId = "
                 + monsterId
                 + " and UserId = "
                 + userId);
 
-    int nrKills = 0;
-
-    try {
-      if (monster_info.next()) {
-        nrKills = monster_info.getInt("Kills");
-      }
-      monster_info.close();
-    } catch (SQLException e) {
-      e.printStackTrace();
-    }
     return nrKills;
   }
 
@@ -257,23 +254,15 @@ public class Database {
    */
 
   public boolean checkCharacterOwnership(int characterId, int userId) {
-    boolean own = false;
-    ResultSet rs =
-        askDB(
+    int own = askInt(
             "select Id from user_character where Id = " + characterId + " and UserId = " + userId);
 
-    try {
-      while (rs.next()) {
-        own = true;
-      }
-      rs.close();
-    } catch (SQLException e) {
+    if (own == 0) {
       ServerMessage.printMessage(
           "Hack attempt? User " + userId + " does not own character " + characterId, false);
-      e.printStackTrace();
     }
 
-    return own;
+    return (own != 0);
   }
 
   /*
@@ -287,12 +276,12 @@ public class Database {
     int playerX = 0;
     int playerY = 0;
 
-    try {
+    try {                  //      1  2
       ResultSet rs = askDB("select X, Y from user where Id = " + playerId);
 
       while (rs.next()) {
-        playerX = rs.getInt("X");
-        playerY = rs.getInt("Y");
+        playerX = rs.getInt(1);
+        playerY = rs.getInt(2);
       }
       rs.close();
     } catch (SQLException e) {

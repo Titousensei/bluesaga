@@ -54,7 +54,7 @@ public class ChatHandler extends Handler {
     ResultSet badWordsInfo = Server.gameDB.askDB("select Word from bad_words");
     try {
       while (badWordsInfo.next()) {
-        String bw = badWordsInfo.getString("Word").toLowerCase();
+        String bw = badWordsInfo.getString(1).toLowerCase();
         BadWords.add(bw);
         BadSubWords.add(bw + " ");
         BadSubWords.add(" " + bw);
@@ -68,7 +68,7 @@ public class ChatHandler extends Handler {
     ResultSet cuteWordsInfo = Server.gameDB.askDB("select Word from cute_words");
     try {
       while (cuteWordsInfo.next()) {
-        CuteWords.add(cuteWordsInfo.getString("Word").toLowerCase());
+        CuteWords.add(cuteWordsInfo.getString(1).toLowerCase());
       }
       cuteWordsInfo.close();
     } catch (SQLException e) {
@@ -161,7 +161,7 @@ public class ChatHandler extends Handler {
                 }
               }
             }
-            Server.userDB.addChatText("emo", client.playerCharacter.getDBId(), 0, emoticon);
+            //Server.userDB.addChatText("emo", client.playerCharacter.getDBId(), 0, emoticon);
           }
         }
       }

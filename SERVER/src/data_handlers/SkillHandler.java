@@ -122,6 +122,7 @@ public class SkillHandler extends Handler {
       // GET SKILL INFO
       ResultSet skillInfo =
           Server.userDB.askDB(
+              //      1        2      3
               "select SkillId, Level, SP from character_skill where CharacterId = "
                   + client.playerCharacter.getDBId()
                   + " order by SkillId asc");
@@ -132,18 +133,18 @@ public class SkillHandler extends Handler {
 
       try {
         while (skillInfo.next()) {
-          JobSkill skillDef = ServerGameInfo.skillDef.get(skillInfo.getInt("SkillId"));
+          JobSkill skillDef = ServerGameInfo.skillDef.get(skillInfo.getInt(1));
 
           if (skillDef != null) {
-            nextSP = XPTables.getNextLevelSP(skillInfo.getInt("Level") + 1);
+            nextSP = XPTables.getNextLevelSP(skillInfo.getInt(2) + 1);
             skillData
-                .append(skillInfo.getInt("SkillId"))
+                .append(skillInfo.getInt(1))
                 .append(',')
                 .append(skillDef.getName())
                 .append(',')
-                .append(skillInfo.getInt("Level"))
+                .append(skillInfo.getInt(2))
                 .append(',')
-                .append(skillInfo.getInt("SP"))
+                .append(skillInfo.getInt(3))
                 .append(',')
                 .append(nextSP)
                 .append(';');

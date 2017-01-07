@@ -1,7 +1,5 @@
 package data_handlers.item_handler;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -403,63 +401,58 @@ public class Item {
   public void setMagicId(int magicId) {
     MagicId = magicId;
 
-    ResultSet rs = Server.gameDB.askDB("select ExtraBonus from item_magic where Id = " + magicId);
+    int extraBonus = Server.gameDB.askInt("select ExtraBonus from item_magic where Id = " + magicId);
 
-    try {
-      if (rs.next()) {
-        int levelModif = 1;
+    if (extraBonus != 0) {
+      int levelModif = 1;
 
-        if (getRequirement("ReqLevel") > 0) {
-          levelModif = getRequirement("ReqLevel");
-        }
-
-        float statBonus = levelModif * 0.25f;
-        int statBonusInt = (int) Math.ceil(statBonus);
-
-        if (magicId == 1) {
-          if (getType().equals("Weapon")) {
-            StatusEffect seEffect = new StatusEffect(1);
-            seEffect.setRepeatDamage(statBonusInt);
-            statusEffects.add(seEffect);
-          } else {
-            Stats.setValue("FIRE_DEF", Stats.getValue("FIRE_DEF") + statBonusInt);
-          }
-          magicType = "FIRE";
-        } else if (magicId == 2) {
-          if (getType().equals("Weapon")) {
-            StatusEffect seEffect = new StatusEffect(6);
-            seEffect.setRepeatDamage(Math.round(statBonusInt * 0.75f));
-            statusEffects.add(seEffect);
-          } else {
-            Stats.setValue("COLD_DEF", Stats.getValue("COLD_DEF") + statBonusInt);
-          }
-          magicType = "COLD";
-        } else if (magicId == 3) {
-          if (getType().equals("Weapon")) {
-            StatusEffect seEffect = new StatusEffect(7);
-            seEffect.setRepeatDamage(statBonusInt);
-            statusEffects.add(seEffect);
-          } else {
-            Stats.setValue("SHOCK_DEF", Stats.getValue("SHOCK_DEF") + statBonusInt);
-          }
-          magicType = "SHOCK";
-        } else if (magicId == 4) {
-          Stats.setValue("STRENGTH", Stats.getValue("STRENGTH") + statBonusInt);
-        } else if (magicId == 5) {
-          if (getType().equals("Weapon")) {
-            statusEffects.add(new StatusEffect(4));
-          } else {
-            Stats.setValue("CHEMS_DEF", Stats.getValue("CHEMS_DEF") + statBonusInt);
-          }
-          magicType = "CHEMS";
-        } else if (magicId == 6) {
-          Stats.setValue("SPEED", Stats.getValue("SPEED") + statBonusInt);
-          Stats.setValue("ATTACKSPEED", Stats.getValue("ATTACKSPEED") + statBonusInt);
-        }
+      if (getRequirement("ReqLevel") > 0) {
+        levelModif = getRequirement("ReqLevel");
       }
-      rs.close();
-    } catch (SQLException e) {
-      e.printStackTrace();
+
+      float statBonus = levelModif * 0.25f;
+      int statBonusInt = (int) Math.ceil(statBonus);
+
+      if (magicId == 1) {
+        if (getType().equals("Weapon")) {
+          StatusEffect seEffect = new StatusEffect(1);
+          seEffect.setRepeatDamage(statBonusInt);
+          statusEffects.add(seEffect);
+        } else {
+          Stats.setValue("FIRE_DEF", Stats.getValue("FIRE_DEF") + statBonusInt);
+        }
+        magicType = "FIRE";
+      } else if (magicId == 2) {
+        if (getType().equals("Weapon")) {
+          StatusEffect seEffect = new StatusEffect(6);
+          seEffect.setRepeatDamage(Math.round(statBonusInt * 0.75f));
+          statusEffects.add(seEffect);
+        } else {
+          Stats.setValue("COLD_DEF", Stats.getValue("COLD_DEF") + statBonusInt);
+        }
+        magicType = "COLD";
+      } else if (magicId == 3) {
+        if (getType().equals("Weapon")) {
+          StatusEffect seEffect = new StatusEffect(7);
+          seEffect.setRepeatDamage(statBonusInt);
+          statusEffects.add(seEffect);
+        } else {
+          Stats.setValue("SHOCK_DEF", Stats.getValue("SHOCK_DEF") + statBonusInt);
+        }
+        magicType = "SHOCK";
+      } else if (magicId == 4) {
+        Stats.setValue("STRENGTH", Stats.getValue("STRENGTH") + statBonusInt);
+      } else if (magicId == 5) {
+        if (getType().equals("Weapon")) {
+          statusEffects.add(new StatusEffect(4));
+        } else {
+          Stats.setValue("CHEMS_DEF", Stats.getValue("CHEMS_DEF") + statBonusInt);
+        }
+        magicType = "CHEMS";
+      } else if (magicId == 6) {
+        Stats.setValue("SPEED", Stats.getValue("SPEED") + statBonusInt);
+        Stats.setValue("ATTACKSPEED", Stats.getValue("ATTACKSPEED") + statBonusInt);
+      }
     }
   }
 

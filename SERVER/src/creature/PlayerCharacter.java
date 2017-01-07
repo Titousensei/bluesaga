@@ -175,13 +175,14 @@ public class PlayerCharacter extends Creature {
         // LOAD CREW INFO
         ResultSet crewRS =
             Server.userDB.askDB(
-                "select crew.Id as crewId, crew.Name as crewName, character_crew.MemberState as memberState from crew, character_crew where CharacterId = "
+                //      1        2          3
+                "select crew.Id, crew.Name, character_crew.MemberState from crew, character_crew where CharacterId = "
                     + getDBId()
                     + " and character_crew.CrewId = crew.Id");
         if (crewRS.next()) {
-          Crew = new Crew(crewRS.getInt("crewId"));
-          Crew.setName(crewRS.getString("crewName"));
-          Crew.setMemberState(crewRS.getString("memberState"));
+          Crew = new Crew(crewRS.getInt(1));
+          Crew.setName(crewRS.getString(2));
+          Crew.setMemberState(crewRS.getString(3));
         } else {
           Crew = new Crew(0);
         }
@@ -485,22 +486,13 @@ public class PlayerCharacter extends Creature {
     playerClasses = new HashMap<Integer, BaseClass>();
     for (BaseClass defClass : ServerGameInfo.classDef.values()) {
       if (defClass.available) {
-        boolean hasClass = false;
-        ResultSet classCheck =
-            Server.userDB.askDB(
+        int classCheck =
+            Server.userDB.askInt(
                 "select Id from character_class where ClassId = "
                     + defClass.id
                     + " and CharacterId = "
                     + client.playerCharacter.getDBId());
-        try {
-          if (classCheck.next()) {
-            hasClass = true;
-          }
-          classCheck.close();
-        } catch (SQLException e) {
-          e.printStackTrace();
-        }
-        if (!hasClass) {
+        if (classCheck == 0) {
           Server.userDB.updateDB(
               "insert into character_class (CharacterId, ClassId, ClassLevel, ClassXP, Type) values ("
                   + client.playerCharacter.getDBId()
@@ -642,24 +634,16 @@ public class PlayerCharacter extends Creature {
 
     // Check if soul stone should be added
     if (!hasSoulStone) {
-      ResultSet shopCheck =
-          Server.userDB.askDB(
+      int shopCheck =
+          Server.userDB.askInt(
               "select SoulStone from user_settings where UserId = " + client.UserId);
-      try {
-        if (shopCheck.next()) {
-          if (shopCheck.getInt("SoulStone") == 1) {
-            // Add soul stone!
-            Server.userDB.updateDB(
-                "insert into character_ability (CharacterId,AbilityId,CooldownLeft) values ("
-                    + getDBId()
-                    + ",31,0)");
-            addAbility(AbilityHandler.getAbility(31));
-          }
-        }
-        shopCheck.close();
-      } catch (SQLException e) {
-        // TODO Auto-generated catch block
-        e.printStackTrace();
+      if (shopCheck == 1) {
+        // Add soul stone!
+        Server.userDB.updateDB(
+            "insert into character_ability (CharacterId,AbilityId,CooldownLeft) values ("
+                + getDBId()
+                + ",31,0)");
+        addAbility(AbilityHandler.getAbility(31));
       }
     }
 
@@ -697,7 +681,7 @@ public class PlayerCharacter extends Creature {
                 + " ORDER BY CardId ASC");
     try {
       while (cardsInfo.next()) {
-        cardBook.add(CardHandler.card_ids.get(cardsInfo.getInt("CardId")));
+        cardBook.add(CardHandler.card_ids.get(cardsInfo.getInt(1)));
       }
       cardsInfo.close();
     } catch (SQLException e) {
@@ -734,7 +718,7 @@ public class PlayerCharacter extends Creature {
                 + " order by Date asc");
     try {
       while (friends.next()) {
-        FriendsList.add(friends.getInt("FriendCharacterId"));
+        FriendsList.add(friends.getInt(1));
       }
       friends.close();
     } catch (SQLException e) {
@@ -779,6 +763,7 @@ public class PlayerCharacter extends Creature {
   public void loadInventory() {
     ResultSet rs =
         Server.userDB.askDB(
+            //      1   2       3             4         5   6           7
             "select Id, ItemId, InventoryPos, Equipped, Nr, ModifierId, MagicId from character_item where CharacterId = "
                 + dbId
                 + " order by Id desc");
@@ -795,20 +780,20 @@ public class PlayerCharacter extends Creature {
 
     try {
       while (rs.next()) {
-        if (ServerGameInfo.itemDef.containsKey(rs.getInt("ItemId"))) {
-          tempItem = ServerGameInfo.newItem(rs.getInt("ItemId"));
-          tempItem.setUserItemId(rs.getInt("Id"));
-          tempItem.setStacked(rs.getInt("Nr"));
-          tempItem.setModifierId(rs.getInt("ModifierId"));
-          tempItem.setMagicId(rs.getInt("MagicId"));
+        if (ServerGameInfo.itemDef.containsKey(rs.getInt(2))) {
+          tempItem = ServerGameInfo.newItem(rs.getInt(2));
+          tempItem.setUserItemId(rs.getInt(1));
+          tempItem.setStacked(rs.getInt(5));
+          tempItem.setModifierId(rs.getInt(6));
+          tempItem.setMagicId(rs.getInt(7));
 
-          if (rs.getInt("Equipped") == 1) {
+          if (rs.getInt(4) == 1) {
             tempItem.equip();
             equipItem(tempItem);
-          } else if (rs.getString("InventoryPos").equals("Mouse")) {
+          } else if (rs.getString(3).equals("Mouse")) {
             setMouseItem(tempItem);
           } else {
-            String invPos[] = rs.getString("InventoryPos").split(",");
+            String invPos[] = rs.getString(3).split(",");
             int posX = Integer.parseInt(invPos[0]);
             int posY = Integer.parseInt(invPos[1]);
             if (posX < inventorySize && posY < inventorySize) {
@@ -920,34 +905,24 @@ public class PlayerCharacter extends Creature {
 
       if (uq.questRef.getType().equals("Kill X creature X")) {
 
-        ResultSet rs = null;
-
         // CHECK IF KILLED ENOUGH MONSTERS OF RIGHT KIND
         if (uq.questRef.getTargetType().equals("Creature")) {
-          rs = gameDB.askDB(
+          // IF UNCOMPLETED QUEST
+          if (uq.getStatus() == 0) {
+            int kills = gameDB.askInt(
                   "select Kills from character_kills where CharacterId = "
                       + dbId
                       + " and CreatureId = "
                       + uq.questRef.getTargetId());
 
-          try {
-            if (rs.next()) {
-
-              // IF UNCOMPLETED QUEST
-              if (uq.getStatus() == 0) {
-                if (rs.getInt("Kills") >= uq.questRef.getTargetNumber()) {
-                  messages.add("Completed Quest\n'" + uq.questRef.getName() + "'!");
-                  gameDB.updateDB(
-                      "update character_quest set Completed = 1 where QuestId = "
-                          + uq.questRef.getId()
-                          + " and CharacterId = "
-                          + dbId);
-                }
-              }
+            if (kills >= uq.questRef.getTargetNumber()) {
+              messages.add("Completed Quest\n'" + uq.questRef.getName() + "'!");
+              gameDB.updateDB(
+                  "update character_quest set Completed = 1 where QuestId = "
+                      + uq.questRef.getId()
+                      + " and CharacterId = "
+                      + dbId);
             }
-            rs.close();
-          } catch (SQLException e) {
-            e.printStackTrace();
           }
         }
       }

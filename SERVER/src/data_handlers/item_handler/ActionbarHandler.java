@@ -71,6 +71,7 @@ public class ActionbarHandler extends Handler {
 
           ResultSet actionCheck =
               Server.userDB.askDB(
+                  //      1   2       3
                   "select Id, ItemId, Nr from character_item where Id = "
                       + MouseItem.getUserItemId()
                       + " and CharacterId = "
@@ -79,8 +80,8 @@ public class ActionbarHandler extends Handler {
 
           try {
             if (actionCheck.next()) {
-              nrItems = actionCheck.getInt("Nr");
-              if (MouseItem.getId() != actionCheck.getInt("ItemId")) {
+              nrItems = actionCheck.getInt(3);
+              if (MouseItem.getId() != actionCheck.getInt(2)) {
                 addOk = false;
               }
             } else {
@@ -104,6 +105,7 @@ public class ActionbarHandler extends Handler {
       // OR IF POSITION HAS ITEM/ABILITY ALREADY
       ResultSet actionbarCheck =
           Server.userDB.askDB(
+              //      1   2        3           4
               "select Id, OrderNr, ActionType, ActionId from character_actionbar where CharacterId = "
                   + client.playerCharacter.getDBId()
                   + " and ((ActionType = '"
@@ -118,16 +120,16 @@ public class ActionbarHandler extends Handler {
         while (actionbarCheck.next()) {
           // REMOVE ITEM/ABILITY THAT OCCUPIES ACTIONBAR BOX
           Server.userDB.updateDB(
-              "delete from character_actionbar where Id = " + actionbarCheck.getInt("Id"));
+              "delete from character_actionbar where Id = " + actionbarCheck.getInt(1));
 
-          if (actionbarCheck.getString("ActionType").equals("Item")) {
-            int itemId = actionbarCheck.getInt("ActionId");
+          if (actionbarCheck.getString(3).equals("Item")) {
+            int itemId = actionbarCheck.getInt(4);
 
             // MOVE THE ITEM TO INVENTORY
             InventoryHandler.addItemToInventory(
                 client, ServerGameInfo.newItem(itemId));
           }
-          addOutGoingMessage(client, "remove_actionbar", "" + actionbarCheck.getInt("OrderNr"));
+          addOutGoingMessage(client, "remove_actionbar", "" + actionbarCheck.getInt(2));
         }
         actionbarCheck.close();
       } catch (SQLException e1) {
@@ -184,6 +186,7 @@ public class ActionbarHandler extends Handler {
 
     ResultSet itemInfo =
         Server.userDB.askDB(
+            //      1           2
             "select ActionType, ActionId from character_actionbar where CharacterId = "
                 + client.playerCharacter.getDBId()
                 + " and OrderNr = "
@@ -191,8 +194,8 @@ public class ActionbarHandler extends Handler {
     try {
       if (itemInfo.next()) {
         client.playerCharacter.setMouseItem(null);
-        if (itemInfo.getString("ActionType").equals("Item")) {
-          int itemId = itemInfo.getInt("ActionId");
+        if (itemInfo.getString(1).equals("Item")) {
+          int itemId = itemInfo.getInt(2);
 
           Item newMouseItem = ServerGameInfo.newItem(itemId);
           Server.userDB.updateDB(
@@ -202,15 +205,14 @@ public class ActionbarHandler extends Handler {
                   + itemId
                   + ",0,'Mouse',1)");
 
-          ResultSet mouseItemId =
-              Server.userDB.askDB(
+          int mouseItemId =
+              Server.userDB.askInt(
                   "select Id from character_item where InventoryPos = 'Mouse' and CharacterId = "
                       + client.playerCharacter.getDBId());
 
-          if (mouseItemId.next()) {
-            newMouseItem.setUserItemId(mouseItemId.getInt("Id"));
+          if (mouseItemId != 0) {
+            newMouseItem.setUserItemId(mouseItemId);
           }
-          mouseItemId.close();
 
           client.playerCharacter.setMouseItem(newMouseItem);
           addOutGoingMessage(client, "addmouseitem", itemId + ";" + newMouseItem.getType() + ";0");
@@ -246,6 +248,7 @@ public class ActionbarHandler extends Handler {
       // CHECK IF ITEM EXIST FIRST IN INVENTORY
       ResultSet rs =
           Server.userDB.askDB(
+              //      1   2             3
               "select Id, InventoryPos, Nr from character_item where ItemId = "
                   + usedItem.getId()
                   + " and InventoryPos <> 'None' and CharacterId = "
@@ -254,13 +257,13 @@ public class ActionbarHandler extends Handler {
       try {
         if (rs.next()) {
           // USE ITEM AND REMOVE IT
-          int userItemId = rs.getInt("Id");
+          int userItemId = rs.getInt(1);
 
           usedItem.setUserItemId(userItemId);
 
           // USEABLE / POTIONS
           if (client.playerCharacter.useItem(usedItem)) {
-            if (rs.getInt("Nr") > 1) {
+            if (rs.getInt(3) > 1) {
               Server.userDB.updateDB(
                   "update character_item set Nr = Nr - 1 where Id = " + userItemId);
             } else {
@@ -282,29 +285,24 @@ public class ActionbarHandler extends Handler {
       if (!useItemSuccess) {
 
         // IF NOT, CHECK ACTIONBAR, AND REMOVE IT FROM ACTIONBAR
-        rs =
-            Server.userDB.askDB(
-                "select ActionId, OrderNr from character_actionbar where ActionType = 'Item' and ActionId = "
+        int itemActionBar =
+            Server.userDB.askInt(
+                "select OrderNr from character_actionbar where ActionType = 'Item' and ActionId = "
                     + usedItem.getId()
                     + " and CharacterId = "
                     + client.playerCharacter.getDBId());
-        try {
-          if (rs.next()) {
-            if (client.playerCharacter.useItem(usedItem)) {
-              Server.userDB.updateDB(
-                  "delete from character_actionbar where ActionType = 'Item' and ActionId = "
-                      + usedItem.getId()
-                      + " and CharacterId = "
-                      + client.playerCharacter.getDBId());
+        if (itemActionBar != 0) {
+          if (client.playerCharacter.useItem(usedItem)) {
+            Server.userDB.updateDB(
+                "delete from character_actionbar where ActionType = 'Item' and ActionId = "
+                    + usedItem.getId()
+                    + " and CharacterId = "
+                    + client.playerCharacter.getDBId());
 
-              // SEND REMOVE ITEM FROM ACTIONBAR
-              addOutGoingMessage(client, "remove_actionbar", rs.getInt("OrderNr") + "");
-              useItemSuccess = true;
-            }
+            // SEND REMOVE ITEM FROM ACTIONBAR
+            addOutGoingMessage(client, "remove_actionbar", String.valueOf(itemActionBar));
+            useItemSuccess = true;
           }
-          rs.close();
-        } catch (SQLException e) {
-          e.printStackTrace();
         }
       }
     }

@@ -42,6 +42,8 @@ public class LoginHandler extends Handler {
             try {
               newUserId = Integer.parseInt(trusted.substring(attempt.length()));
               System.out.println("Auto login matched " + trusted);
+
+              client.ConfirmAccount = true;
             } catch (NumberFormatException ex) {
               ex.printStackTrace();
               return;
@@ -52,14 +54,9 @@ public class LoginHandler extends Handler {
           ex.printStackTrace();
         }
       }
-      else if (Server.clients.size() == 1) {
-        newUserId = 2;
-      } else if (Server.clients.size() == 2) {
-        newUserId = 1;
-      }
+    }
 
-      client.ConfirmAccount = true;
-    } else {
+    if (newUserId == 0) {
       String mail = loginInfo[0];
       String password = loginInfo[1];
 
@@ -112,24 +109,19 @@ public class LoginHandler extends Handler {
 
       // GET CHEST SIZE
       // IF NOT SET, CREATE A 4x4 CHEST
-      ResultSet chestInfo =
-          Server.userDB.askDB(
+      int chestInfo =
+          Server.userDB.askInt(
               "select ChestSize from user_settings where UserId = " + client.UserId);
-      try {
-        if (chestInfo.next()) {
-          client.chestSize = chestInfo.getInt("ChestSize");
-        } else {
-          client.chestSize = 6;
-          Server.userDB.updateDB(
-              "insert into user_settings (UserId,ChestSize) values("
-                  + client.UserId
-                  + ","
-                  + client.chestSize
-                  + ")");
-        }
-        chestInfo.close();
-      } catch (SQLException e) {
-        e.printStackTrace();
+      if (chestInfo != 0) {
+        client.chestSize = chestInfo;
+      } else {
+        client.chestSize = 6;
+        Server.userDB.updateDB(
+            "insert into user_settings (UserId,ChestSize) values("
+                + client.UserId
+                + ","
+                + client.chestSize
+                + ")");
       }
 
       ServerMessage.printMessage(
@@ -173,13 +165,14 @@ public class LoginHandler extends Handler {
     // CreatureId, FamilyName; CreaureId2, FamilyName2 / ItemId; ItemId2
     ResultSet creatureInfo =
         Server.gameDB.askDB(
+            //      1   2     3
             "select Id, Name, ClassId from creature where PlayerCreature = 1 and FamilyId = 1 and Level = 1");
     try {
       while (creatureInfo.next()) {
         newInfo
-            .append(creatureInfo.getString("Id"))
+            .append(creatureInfo.getString(1))
             .append(',')
-            .append(creatureInfo.getString("Name"))
+            .append(creatureInfo.getString(2))
             .append(';');
       }
       creatureInfo.close();
@@ -238,30 +231,23 @@ public class LoginHandler extends Handler {
     // CHECK IF USER OWNS CHARACTER
     if (Server.userDB.checkCharacterOwnership(characterId, client.UserId)) {
 
-      ResultSet charInfo =
-          Server.userDB.askDB(
+      String charInfo =
+          Server.userDB.askString(
               "select Deleted from user_character where UserId = "
                   + client.UserId
                   + " and Id = "
                   + characterId);
-      try {
-        if (charInfo.next()) {
-          if (charInfo.getString("Deleted").equals("No")) {
-            Server.userDB.updateDB(
-                "update user_character set Deleted = '"
-                    + TimeUtils.now()
-                    + "' where Id = "
-                    + characterId);
-            addOutGoingMessage(client, "deletechar", characterId + ",0");
-          } else {
-            Server.userDB.updateDB(
-                "update user_character set Deleted = 'No' where Id = " + characterId);
-            addOutGoingMessage(client, "deletechar", characterId + ",-1");
-          }
-        }
-        charInfo.close();
-      } catch (SQLException e) {
-        e.printStackTrace();
+      if ("No".equals(charInfo)) {
+        Server.userDB.updateDB(
+            "update user_character set Deleted = '"
+                + TimeUtils.now()
+                + "' where Id = "
+                + characterId);
+        addOutGoingMessage(client, "deletechar", characterId + ",0");
+      } else if (!"".equals(charInfo)) {
+        Server.userDB.updateDB(
+            "update user_character set Deleted = 'No' where Id = " + characterId);
+        addOutGoingMessage(client, "deletechar", characterId + ",-1");
       }
     }
   }
@@ -288,7 +274,6 @@ public class LoginHandler extends Handler {
    */
 
   public static int createCharacter(Client client, String name, int creatureId, int classId) {
-    int charId = 0;
 
     boolean correctName = true;
     int blueSagaId = 0;
@@ -302,13 +287,8 @@ public class LoginHandler extends Handler {
           return 0;
         }
       }
-      ResultSet charInfo = Server.userDB.askDB("select Id from user_character where Name like '" + name + "'");
-      try {
-        if (charInfo.next()) {
-          return 0;
-        }
-      } catch (SQLException ex) {
-        ex.printStackTrace();
+      int charInfo = Server.userDB.askInt("select Id from user_character where Name like '" + name + "'");
+      if (charInfo != 0) {
         return 0;
       }
     }
@@ -376,91 +356,84 @@ public class LoginHandler extends Handler {
           .append(blueSagaId)
           .append(')'); // BlueSagaId
 
-      try {
-        Server.userDB.updateDB(sqlStatement.toString());
+      Server.userDB.updateDB(sqlStatement.toString());
 
-        ResultSet newChar =
-            Server.userDB.askDB("select Id from user_character order by Id desc limit 1");
-        if (newChar.next()) {
-          charId = newChar.getInt("Id");
-        }
-        newChar.close();
+      int charId = Server.userDB.askInt("select Id from user_character order by Id desc limit 1");
 
-        if (classId == 1) {
-          // ADD WOODEN CLUB
+      if (classId == 1) {
+        // ADD WOODEN CLUB
+        Server.userDB.updateDB(
+            "insert into character_item (CharacterId, ItemId, Equipped, InventoryPos) values ("
+                + charId + "," + ServerSettings.initialItemIdWarrior
+                + ",1,'None')");
+
+        if (ServerSettings.initialAbilityIdWarrior>0) {
+          // ADD POWER STRIKE ABILITY
           Server.userDB.updateDB(
-              "insert into character_item (CharacterId, ItemId, Equipped, InventoryPos) values ("
-                  + charId + "," + ServerSettings.initialItemIdWarrior
-                  + ",1,'None')");
-
-          if (ServerSettings.initialAbilityIdWarrior>0) {
-            // ADD POWER STRIKE ABILITY
-            Server.userDB.updateDB(
-                "insert into character_ability (CharacterId, AbilityId, CooldownLeft) values ("
-                    + charId + "," + ServerSettings.initialAbilityIdWarrior
-                    + ",0)");
-
-            // ADD ABILITY TO ACTIONBAR
-            Server.userDB.updateDB(
-                "insert into character_actionbar (ActionType, ActionId, CharacterId, OrderNr) values ("
-                    + "'Ability',"
-                    + ServerSettings.initialAbilityIdWarrior + "," + charId
-                    + ",0)");
-          }
-        } else if (classId == 3) {
-          // ADD WOODEN SLINGSHOT
-          Server.userDB.updateDB(
-              "insert into character_item (CharacterId, ItemId, Equipped, InventoryPos) values ("
-                  + charId + "," + ServerSettings.initialItemIdHunter
-                  + ",1,'None')");
-
-          if (ServerSettings.initialAbilityIdHunter>0) {
-            // ADD FOCUSED SHOT ABILITY
-            Server.userDB.updateDB(
-                "insert into character_ability (CharacterId, AbilityId, CooldownLeft) values ("
-                    + charId + "," + ServerSettings.initialAbilityIdHunter
-                    + ",54,0)");
-
-            // ADD ABILITY TO ACTIONBAR
-            Server.userDB.updateDB(
-                "insert into character_actionbar (ActionType, ActionId, CharacterId, OrderNr) values ("
-                    + "'Ability',"
-                    + ServerSettings.initialAbilityIdHunter + "," + charId
-                    + ",0)");
-          }
-        } else if (classId == 2) {
-          // ADD MAGIC WAND
-          Server.userDB.updateDB(
-              "insert into character_item (CharacterId, ItemId, Equipped, InventoryPos) values ("
-                  + charId + "," + ServerSettings.initialItemIdMage
-                  + ",1,'None')");
-
-          if (ServerSettings.initialAbilityIdMage>0) {
-            // ADD ENERGY BURST
-            Server.userDB.updateDB(
-                "insert into character_ability (CharacterId, AbilityId, CooldownLeft) values ("
-                    + charId + "," + ServerSettings.initialAbilityIdMage
-                    + ",73,0)");
+              "insert into character_ability (CharacterId, AbilityId, CooldownLeft) values ("
+                  + charId + "," + ServerSettings.initialAbilityIdWarrior
+                  + ",0)");
 
           // ADD ABILITY TO ACTIONBAR
-            Server.userDB.updateDB(
-                "insert into character_actionbar (ActionType, ActionId, CharacterId, OrderNr) values ("
-                    + "'Ability',"
-                    + ServerSettings.initialAbilityIdMage + "," + charId
-                    + ",0)");
-          }
-        }
-
-        if (ServerSettings.initialQuestId>0) {
           Server.userDB.updateDB(
-              "insert into character_quest (QuestId, CharacterId, Status) values ("
-                  + ServerSettings.initialQuestId + ',' + charId + ",1)");
+              "insert into character_actionbar (ActionType, ActionId, CharacterId, OrderNr) values ("
+                  + "'Ability',"
+                  + ServerSettings.initialAbilityIdWarrior + "," + charId
+                  + ",0)");
         }
-      } catch (SQLException e) {
-        e.printStackTrace();
+      } else if (classId == 3) {
+        // ADD WOODEN SLINGSHOT
+        Server.userDB.updateDB(
+            "insert into character_item (CharacterId, ItemId, Equipped, InventoryPos) values ("
+                + charId + "," + ServerSettings.initialItemIdHunter
+                + ",1,'None')");
+
+        if (ServerSettings.initialAbilityIdHunter>0) {
+          // ADD FOCUSED SHOT ABILITY
+          Server.userDB.updateDB(
+              "insert into character_ability (CharacterId, AbilityId, CooldownLeft) values ("
+                  + charId + "," + ServerSettings.initialAbilityIdHunter
+                  + ",54,0)");
+
+          // ADD ABILITY TO ACTIONBAR
+          Server.userDB.updateDB(
+              "insert into character_actionbar (ActionType, ActionId, CharacterId, OrderNr) values ("
+                  + "'Ability',"
+                  + ServerSettings.initialAbilityIdHunter + "," + charId
+                  + ",0)");
+        }
+      } else if (classId == 2) {
+        // ADD MAGIC WAND
+        Server.userDB.updateDB(
+            "insert into character_item (CharacterId, ItemId, Equipped, InventoryPos) values ("
+                + charId + "," + ServerSettings.initialItemIdMage
+                + ",1,'None')");
+
+        if (ServerSettings.initialAbilityIdMage>0) {
+          // ADD ENERGY BURST
+          Server.userDB.updateDB(
+              "insert into character_ability (CharacterId, AbilityId, CooldownLeft) values ("
+                  + charId + "," + ServerSettings.initialAbilityIdMage
+                  + ",73,0)");
+
+        // ADD ABILITY TO ACTIONBAR
+          Server.userDB.updateDB(
+              "insert into character_actionbar (ActionType, ActionId, CharacterId, OrderNr) values ("
+                  + "'Ability',"
+                  + ServerSettings.initialAbilityIdMage + "," + charId
+                  + ",0)");
+        }
       }
+
+      if (ServerSettings.initialQuestId>0) {
+        Server.userDB.updateDB(
+            "insert into character_quest (QuestId, CharacterId, Status) values ("
+                + ServerSettings.initialQuestId + ',' + charId + ",1)");
+      }
+
+      return charId;
     }
-    return charId;
+    return 0;
   }
 
   public static String getCharacterInfo(Client client) {
@@ -531,6 +504,7 @@ public class LoginHandler extends Handler {
 
             ResultSet equipRS =
                 Server.userDB.askDB(
+                    //      1
                     "select ItemId from character_item where CharacterId = "
                         + characterRS.getInt("Id")
                         + " and Equipped = 1");
@@ -543,7 +517,7 @@ public class LoginHandler extends Handler {
             int artifactItemId = characterRS.getInt("ArtifactSkinId");
 
             while (equipRS.next()) {
-              checkItem = ServerGameInfo.itemDef.get(equipRS.getInt("ItemId"));
+              checkItem = ServerGameInfo.itemDef.get(equipRS.getInt(1));
               if (checkItem.getType().equals("Head") && headItemId == 0) {
                 headItemId = checkItem.getId();
               } else if (checkItem.getType().equals("Weapon") && weaponItemId == 0) {

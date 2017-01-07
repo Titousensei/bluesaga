@@ -80,22 +80,31 @@ public class WorldMap implements TileBasedMap {
     pathMapSize = 0;
 
     // LOAD MAP FROM DB
-    ServerMessage.printMessage("Loading map...", false);
+    System.out.print("Loading map");
 
-    // LOAD MAP FROM DB
-    ResultSet tileInfo = Server.mapDB.askDB("select * from area_tile");
+    // LOAD MAP FROM DB                             1 2 3 4    5    6        7        8      9
+    ResultSet tileInfo = Server.mapDB.askDB("select X,Y,Z,Type,Name,Passable,ObjectId,DoorId,AreaEffectId from area_tile");
 
     try {
+      int count = 0;
       while (tileInfo.next()) {
-        Tile newTile = new Tile(tileInfo.getInt("X"), tileInfo.getInt("Y"), tileInfo.getInt("Z"));
-        newTile.setZ(tileInfo.getInt("Z"));
+        ++ count;
+        if (count % 10000 == 0) {
+          System.out.print(".");
+          System.out.flush();
+        }
+        int tileX = tileInfo.getInt(1);
+        int tileY = tileInfo.getInt(2);
+        int tileZ = tileInfo.getInt(3);
+        Tile newTile = new Tile(tileX, tileY, tileZ);
+        newTile.setZ(tileZ);
         newTile.setType(
-            tileInfo.getString("Type").intern(),
-            tileInfo.getString("Name").intern(),
-            tileInfo.getInt("Passable"));
-        newTile.setObjectId(tileInfo.getString("ObjectId").intern());
-        newTile.setDoorId(tileInfo.getInt("DoorId"));
-        newTile.setAreaEffectId(tileInfo.getInt("AreaEffectId"));
+            tileInfo.getString(4).intern(),
+            tileInfo.getString(5).intern(),
+            tileInfo.getInt(6));
+        newTile.setObjectId(tileInfo.getString(7).intern());
+        newTile.setDoorId(tileInfo.getInt(8));
+        newTile.setAreaEffectId(tileInfo.getInt(9));
 
         if (newTile.getObjectId().contains("moveable")) {
           ContainerHandler.MOVEABLES.put(
@@ -104,39 +113,36 @@ public class WorldMap implements TileBasedMap {
         }
 
         MapTiles.put(
-            tileInfo.getInt("X") + "," + tileInfo.getInt("Y") + "," + tileInfo.getInt("Z"),
+            tileX + "," + tileY + "," + tileZ,
             newTile);
 
-        if (tileInfo.getInt("X") > maxX) {
-          maxX = tileInfo.getInt("X");
+        if (tileX > maxX) {
+          maxX = tileX;
         }
 
-        if (tileInfo.getInt("Y") > maxY) {
-          maxY = tileInfo.getInt("Y");
+        if (tileY > maxY) {
+          maxY = tileY;
         }
 
-        if (tileInfo.getInt("X") < minX) {
-          minX = tileInfo.getInt("X");
+        if (tileX < minX) {
+          minX = tileX;
         }
 
-        if (tileInfo.getInt("Y") < minY) {
-          minY = tileInfo.getInt("Y");
+        if (tileY < minY) {
+          minY = tileY;
         }
 
         if (newTile.getDoorId() > 0) {
           // LOAD DOORINFO
-          ResultSet doorInfo =
-              Server.mapDB.askDB(
-                  "select CreatureIds from door where Id = "
+          int doorInfo =
+              Server.mapDB.askInt(
+                  "select Id from door where Id = "
                       + newTile.getDoorId()
                       + " and CreatureIds != 'None'");
-          while (doorInfo.next()) {
+          if (doorInfo != 0) {
             newTile.setMonsterLocked(true);
           }
-          doorInfo.close();
         }
-
-        int tileZ = tileInfo.getInt("Z");
 
         if (!monstersByZ.containsKey(tileZ)) {
           monstersByZ.put(tileZ, new Vector<Npc>());
@@ -148,6 +154,7 @@ public class WorldMap implements TileBasedMap {
           zLevels.add(tileZ);
         }
       }
+      System.out.println(" " + count);
       tileInfo.close();
     } catch (SQLException e) {
       e.printStackTrace();
@@ -213,19 +220,20 @@ public class WorldMap implements TileBasedMap {
 
     // LOAD CONTAINERS
     ResultSet containerInfo =
+        //                         1   2     3  4  5
         Server.mapDB.askDB("select Id, Type, X, Y, Z from area_container order by Y asc, X asc");
 
     try {
       while (containerInfo.next()) {
         String coordStr =
-            containerInfo.getInt("X")
+            containerInfo.getInt(3)
                 + ","
-                + containerInfo.getInt("Y")
+                + containerInfo.getInt(4)
                 + ","
-                + containerInfo.getInt("Z");
+                + containerInfo.getInt(5);
         if (MapTiles.get(coordStr) != null) {
-          MapTiles.get(coordStr).setObjectId(containerInfo.getString("Type").intern());
-          MapTiles.get(coordStr).setContainerId(containerInfo.getInt("Id"));
+          MapTiles.get(coordStr).setObjectId(containerInfo.getString(2).intern());
+          MapTiles.get(coordStr).setContainerId(containerInfo.getInt(1));
         }
       }
       containerInfo.close();
@@ -235,16 +243,14 @@ public class WorldMap implements TileBasedMap {
 
     ServerMessage.printMessage("Load souls...", false);
 
-    // LOAD SOULS
+    // LOAD SOULS                                    1   2 3 4 5
     ResultSet soulInfo = Server.userDB.askDB("select Id, X,Y,Z,CharacterId from character_soul");
     try {
       while (soulInfo.next()) {
-        if (MapTiles.get(
-                soulInfo.getInt("X") + "," + soulInfo.getInt("Y") + "," + soulInfo.getInt("Z"))
-            != null) {
-          MapTiles.get(
-                  soulInfo.getInt("X") + "," + soulInfo.getInt("Y") + "," + soulInfo.getInt("Z"))
-              .setSoulCharacterId(soulInfo.getInt("CharacterId"));
+        String coords = soulInfo.getInt(2) + "," + soulInfo.getInt(3) + "," + soulInfo.getInt(4);
+        if (MapTiles.containsKey(coords)) {
+          MapTiles.get(coords)
+              .setSoulCharacterId(soulInfo.getInt(5));
         } else {
           Server.userDB.updateDB("delete from character_soul where Id = " + soulInfo.getInt("Id"));
         }

@@ -240,19 +240,14 @@ public class MapHandler extends Handler {
         String objectId = TILE.getObjectId();
         if (objectId.contains("chest")) {
           // CHECK IF CHEST IS OPENED FOR PLAYER
-          ResultSet chestInfo =
-              Server.userDB.askDB(
+          int chestInfo =
+              Server.userDB.askInt(
                   "select ContainerId from character_container where ContainerId = "
                       + TILE.getContainerId()
                       + " and CharacterId = "
                       + client.playerCharacter.getDBId());
-          try {
-            if (chestInfo.next()) {
-              objectId += "_open";
-            }
-            chestInfo.close();
-          } catch (SQLException e) {
-            e.printStackTrace();
+          if (chestInfo != 0) {
+            objectId += "_open";
           }
         }
         objectInfo = objectId;
@@ -325,17 +320,18 @@ public class MapHandler extends Handler {
 
   public static void checkIfDoorOpens(int MonsterDBId) {
     // CHECK IF OPENS DOOR
-    ResultSet doorCheck =
-        Server.mapDB.askDB("select Id from door where CreatureIds = '" + MonsterDBId + "'");
+    int doorCheck =
+        Server.mapDB.askInt("select Id from door where CreatureIds = '" + MonsterDBId + "'");
     try {
-      if (doorCheck.next()) {
+      if (doorCheck != 0) {
         ResultSet tileInfo =
             Server.mapDB.askDB(
-                "select X,Y,Z from area_tile where DoorId = " + doorCheck.getInt("Id"));
+                //      1 2 3
+                "select X,Y,Z from area_tile where DoorId = " + doorCheck);
         if (tileInfo.next()) {
           Tile DoorTile =
               Server.WORLD_MAP.getTile(
-                  tileInfo.getInt("X"), tileInfo.getInt("Y"), tileInfo.getInt("Z"));
+                  tileInfo.getInt(1), tileInfo.getInt(2), tileInfo.getInt(3));
           if (DoorTile != null) {
             DoorTile.setMonsterLocked(false);
           }
@@ -356,7 +352,6 @@ public class MapHandler extends Handler {
         }
         tileInfo.close();
       }
-      doorCheck.close();
     } catch (SQLException e) {
       // TODO Auto-generated catch block
       e.printStackTrace();
@@ -365,17 +360,18 @@ public class MapHandler extends Handler {
 
   public static void checkIfDoorCloses(int MonsterDBId) {
     // CHECK IF CLOSES DOOR
-    ResultSet doorCheck =
-        Server.mapDB.askDB("select Id from door where CreatureIds = '" + MonsterDBId + "'");
+    int doorCheck =
+        Server.mapDB.askInt("select Id from door where CreatureIds = '" + MonsterDBId + "'");
     try {
-      if (doorCheck.next()) {
+      if (doorCheck != 0) {
         ResultSet tileInfo =
             Server.mapDB.askDB(
-                "select X,Y,Z from area_tile where DoorId = " + doorCheck.getInt("Id"));
+                //      1 2 3
+                "select X,Y,Z from area_tile where DoorId = " + doorCheck);
         if (tileInfo.next()) {
           Tile DoorTile =
               Server.WORLD_MAP.getTile(
-                  tileInfo.getInt("X"), tileInfo.getInt("Y"), tileInfo.getInt("Z"));
+                  tileInfo.getInt(1), tileInfo.getInt(2), tileInfo.getInt(3));
           if (DoorTile != null) {
             DoorTile.setMonsterLocked(true);
           }
@@ -396,9 +392,7 @@ public class MapHandler extends Handler {
         }
         tileInfo.close();
       }
-      doorCheck.close();
     } catch (SQLException e) {
-      // TODO Auto-generated catch block
       e.printStackTrace();
     }
   }

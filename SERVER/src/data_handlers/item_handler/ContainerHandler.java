@@ -226,21 +226,15 @@ public class ContainerHandler extends Handler {
             + mouseItem.getMagicId()
             + ")");
 
-    ResultSet newItemInfo =
-        Server.userDB.askDB(
+    int newItemInfo =
+        Server.userDB.askInt(
             "select Id from character_item where CharacterId = "
                 + client.playerCharacter.getDBId()
                 + " order by Id desc limit 1");
-    try {
-      if (newItemInfo.next()) {
-        mouseItem.setUserItemId(newItemInfo.getInt("Id"));
-        client.playerCharacter.setMouseItem(mouseItem);
-        addOutGoingMessage(client, "addmouseitem", mouseItem.getId() + ";" + mouseItem.getType());
-      }
-      newItemInfo.close();
-    } catch (SQLException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
+    if (newItemInfo != 0) {
+      mouseItem.setUserItemId(newItemInfo);
+      client.playerCharacter.setMouseItem(mouseItem);
+      addOutGoingMessage(client, "addmouseitem", mouseItem.getId() + ";" + mouseItem.getType());
     }
   }
 
@@ -328,47 +322,35 @@ public class ContainerHandler extends Handler {
             addOutGoingMessage(client, "container_content", content);
           } else if (objectId.contains("chest")) {
             // RED CHESTS
-            boolean openAlready = false;
 
             // CHECK PLAYER HAS OPENED CHEST BEFORE
-            ResultSet chestInfo =
-                Server.userDB.askDB(
+            int chestInfo =
+                Server.userDB.askInt(
                     "select ContainerId from character_container where ContainerId = "
                         + TILE.getContainerId()
                         + " and CharacterId = "
                         + client.playerCharacter.getDBId());
-            try {
-              if (chestInfo.next()) {
-
-                openAlready = true;
-              }
-              chestInfo.close();
-            } catch (SQLException e) {
-              e.printStackTrace();
-            }
+            boolean openAlready = (chestInfo != 0);
 
             if (!openAlready) {
               // GET ITEMS
 
               // GIVE ITEMS AUTOMATICALLY TO PLAYER
               // GET LOOT FROM CHEST
-              ResultSet chestLootInfo =
-                  Server.mapDB.askDB(
+              String chestLootInfo =
+                  Server.mapDB.askString(
                       "select Items from area_container where Id = " + TILE.getContainerId());
 
               try {
-                if (chestLootInfo.next()) {
-                  if (!chestLootInfo.getString("Items").equals("")) {
+                if (!"".equals(chestLootInfo)) {
+                  String allLoot[] = chestLootInfo.split(",");
 
-                    String allLoot[] = chestLootInfo.getString("Items").split(",");
+                  for (String loot : allLoot) {
+                    int itemId = Integer.parseInt(loot);
 
-                    for (String loot : allLoot) {
-                      int itemId = Integer.parseInt(loot);
+                    Item droppedItem = ServerGameInfo.newItem(itemId);
 
-                      Item droppedItem = ServerGameInfo.newItem(itemId);
-
-                      InventoryHandler.addItemToInventory(client, droppedItem);
-                    }
+                    InventoryHandler.addItemToInventory(client, droppedItem);
                   }
 
                   // SAVE CHEST AS OPENED FOR PLAYER
@@ -391,12 +373,7 @@ public class ContainerHandler extends Handler {
                           + ","
                           + client.playerCharacter.getAttackSpeed());
                 }
-                chestLootInfo.close();
               } catch (NumberFormatException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-              } catch (SQLException e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
               }
             }
@@ -446,12 +423,13 @@ public class ContainerHandler extends Handler {
 
                 ResultSet areaEffectInfo =
                     Server.mapDB.askDB(
+                        //      1          2
                         "select AreaItems, AreaCopper from area_effect where Id = " + areaEffectId);
                 try {
                   if (areaEffectInfo.next()) {
 
-                    areaItems = areaEffectInfo.getString("AreaItems");
-                    areaCopper = areaEffectInfo.getInt("AreaCopper");
+                    areaItems = areaEffectInfo.getString(1);
+                    areaCopper = areaEffectInfo.getInt(2);
 
                     if (TILE.getZ() <= -100) {
                       //
@@ -556,6 +534,7 @@ public class ContainerHandler extends Handler {
 
     ResultSet chestInfo =
         Server.userDB.askDB(
+            //      1   2       3   4
             "select Id, ItemId, Nr, Pos from user_chest where UserId = " + client.UserId);
 
     StringBuilder content = new StringBuilder(1000);
@@ -569,18 +548,17 @@ public class ContainerHandler extends Handler {
     try {
       while (chestInfo.next()) {
         content
-            .append(chestInfo.getInt("ItemId"))
+            .append(chestInfo.getInt(2))
             .append(',')
-            .append(chestInfo.getInt("Nr"))
+            .append(chestInfo.getInt(3))
             .append(',')
-            .append(chestInfo.getString("Pos"))
+            .append(chestInfo.getString(4))
             .append(',')
-            .append(chestInfo.getInt("Id"))
+            .append(chestInfo.getInt(1))
             .append(';');
       }
       chestInfo.close();
     } catch (SQLException e) {
-      // TODO Auto-generated catch block
       e.printStackTrace();
     }
 

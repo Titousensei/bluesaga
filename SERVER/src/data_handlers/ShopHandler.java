@@ -300,6 +300,7 @@ public class ShopHandler extends Handler {
       // CHECK IF PLAYER HAS ITEM
       ResultSet rs =
           Server.userDB.askDB(
+              //      1       2           3        4
               "select ItemId, ModifierId, MagicId, Nr from character_item where InventoryPos = '"
                   + invPos
                   + "' and CharacterId = "
@@ -307,11 +308,11 @@ public class ShopHandler extends Handler {
 
       try {
         if (rs.next()) {
-          itemId = rs.getInt("ItemId");
+          itemId = rs.getInt(1);
           soldItem = ServerGameInfo.newItem(itemId);
-          soldItem.setModifierId(rs.getInt("ModifierId"));
-          soldItem.setMagicId(rs.getInt("MagicId"));
-          soldItem.setStacked(rs.getInt("Nr"));
+          soldItem.setModifierId(rs.getInt(2));
+          soldItem.setMagicId(rs.getInt(3));
+          soldItem.setStacked(rs.getInt(4));
         }
         rs.close();
       } catch (SQLException e) {

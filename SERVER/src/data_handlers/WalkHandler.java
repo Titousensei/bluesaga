@@ -146,12 +146,13 @@ public class WalkHandler extends Handler {
           if (gotoTile.getDoorId() > 0) {
             ResultSet doorInfo =
                 Server.mapDB.askDB(
+                    //      1       2      3      4      5            6
                     "select Locked, GotoX, GotoY, GotoZ, CreatureIds, Premium from door where Id = "
                         + gotoTile.getDoorId());
             try {
               if (doorInfo.next()) {
-                int keyId = doorInfo.getInt("Locked");
-                int premiumDoor = doorInfo.getInt("Premium");
+                int keyId = doorInfo.getInt(1);
+                int premiumDoor = doorInfo.getInt(6);
 
                 if (keyId > 0) {
                   okWalk = false;
@@ -161,14 +162,15 @@ public class WalkHandler extends Handler {
                     // CHECK IF USER HAS TICKET
                     ResultSet checkTickets =
                         Server.userDB.askDB(
+                            //      1             2
                             "select TicketMorwyn, TicketNorth from user_settings where UserId = "
                                 + client.UserId);
 
                     if (checkTickets.next()) {
-                      if (keyId == 180 && checkTickets.getInt("TicketMorwyn") == 1) {
+                      if (keyId == 180 && checkTickets.getInt(1) == 1) {
                         okWalk = true;
                         addOutGoingMessage(client, "unlockdoor", "Boat Ticket");
-                      } else if (keyId == 215 && checkTickets.getInt("TicketNorth") == 1) {
+                      } else if (keyId == 215 && checkTickets.getInt(2) == 1) {
                         okWalk = true;
                         addOutGoingMessage(client, "unlockdoor", "Boat Ticket");
                       } else {
@@ -179,14 +181,14 @@ public class WalkHandler extends Handler {
 
                   } else {
                     // CHECK IF PLAYER HAS KEY
-                    ResultSet checkKeys =
-                        Server.userDB.askDB(
+                    int checkKeys =
+                        Server.userDB.askInt(
                             "select KeyId from character_key where KeyId = "
                                 + keyId
                                 + " and CharacterId = "
                                 + client.playerCharacter.getDBId());
 
-                    if (checkKeys.next()) {
+                    if (checkKeys != 0) {
                       okWalk = true;
 
                       // CHECK IF KEY IS DESTROYABLE
@@ -208,9 +210,8 @@ public class WalkHandler extends Handler {
                     } else {
                       addOutGoingMessage(client, "message", "#messages.walking.need_key");
                     }
-                    checkKeys.close();
                   }
-                } else if (!doorInfo.getString("CreatureIds").equals("None")) {
+                } else if (!doorInfo.getString(5).equals("None")) {
                   okWalk = false;
                   if (!gotoTile.isMonsterLocked()) {
                     okWalk = true;
@@ -223,15 +224,15 @@ public class WalkHandler extends Handler {
                 // THEN FORBID PLAYER TO WALK INTO SAFE ZONES
                 if (client.playerCharacter.getPkMarker() > 0) {
                   if (Server.WORLD_MAP.getTile(
-                          doorInfo.getInt("GotoX"),
-                          doorInfo.getInt("GotoY"),
-                          doorInfo.getInt("GotoZ"))
+                          doorInfo.getInt(2),
+                          doorInfo.getInt(3),
+                          doorInfo.getInt(4))
                       != null) {
                     if (Server.WORLD_MAP
                         .getTile(
-                            doorInfo.getInt("GotoX"),
-                            doorInfo.getInt("GotoY"),
-                            doorInfo.getInt("GotoZ"))
+                            doorInfo.getInt(2),
+                            doorInfo.getInt(3),
+                            doorInfo.getInt(4))
                         .getType()
                         .equals("indoors")) {
                       okWalk = false;
@@ -240,9 +241,9 @@ public class WalkHandler extends Handler {
                     int areaEffectId =
                         Server.WORLD_MAP
                             .getTile(
-                                doorInfo.getInt("GotoX"),
-                                doorInfo.getInt("GotoY"),
-                                doorInfo.getInt("GotoZ"))
+                                doorInfo.getInt(2),
+                                doorInfo.getInt(3),
+                                doorInfo.getInt(4))
                             .getAreaEffectId();
                     if (areaEffectId > 0) {
                       if (ServerGameInfo.areaEffectsDef.get(areaEffectId).getGuardedLevel() == 0) {
@@ -375,21 +376,22 @@ public class WalkHandler extends Handler {
         }
       } else {
         ResultSet doorData =
+            //                         1     2     3
             Server.mapDB.askDB("select GotoX,GotoY,GotoZ from door where Id = " + doorId);
 
         try {
           if (doorData.next()) {
-            if (doorData.getInt("GotoX") == 0
-                && doorData.getInt("GotoX") == 0
-                && doorData.getInt("GotoX") == 0) {
+            if (doorData.getInt(1) == 0
+                && doorData.getInt(2) == 0
+                && doorData.getInt(3) == 0) {
               // IF DOOR HAS NO GOTO POSITION, THEN JUST LET PLAYER PASS THROUGH
               dirX = PlayerX - client.playerCharacter.getX();
               dirY = PlayerY - client.playerCharacter.getY();
               doorId = 0;
             } else {
-              PlayerX = doorData.getInt("GotoX");
-              PlayerY = doorData.getInt("GotoY");
-              PlayerZ = doorData.getInt("GotoZ");
+              PlayerX = doorData.getInt(1);
+              PlayerY = doorData.getInt(2);
+              PlayerZ = doorData.getInt(3);
 
               if (Server.WORLD_MAP.getTile(PlayerX, PlayerY, PlayerZ) != null) {
                 addOutGoingMessage(client, "fade", "yes");
@@ -601,28 +603,22 @@ public class WalkHandler extends Handler {
 
       // CHECK IF PLAYER WALKS ON SOUL
       if (playerTile.getSoulCharacterId() == client.playerCharacter.getDBId()) {
-        ResultSet soulInfo =
-            Server.userDB.askDB(
-                "select Id, XP from character_soul where CharacterId = "
+        int xp =
+            Server.userDB.askInt(
+                "select XP from character_soul where CharacterId = "
                     + client.playerCharacter.getDBId());
 
-        try {
-          if (soulInfo.next()) {
-            int xp = soulInfo.getInt("XP");
-            BattleHandler.addXP(client, xp);
+        if (xp != 0) {
+          BattleHandler.addXP(client, xp);
 
-            Server.userDB.updateDB(
-                "delete from character_soul where CharacterId  = "
-                    + client.playerCharacter.getDBId());
+          Server.userDB.updateDB(
+              "delete from character_soul where CharacterId  = "
+                  + client.playerCharacter.getDBId());
 
-            addOutGoingMessage(
-                client,
-                "remove_soul",
-                playerTile.getX() + "," + playerTile.getY() + "," + playerTile.getZ());
-          }
-          soulInfo.close();
-        } catch (SQLException e) {
-          e.printStackTrace();
+          addOutGoingMessage(
+              client,
+              "remove_soul",
+              playerTile.getX() + "," + playerTile.getY() + "," + playerTile.getZ());
         }
         playerTile.setSoulCharacterId(0);
       }

@@ -180,23 +180,15 @@ public class ClassHandler extends Handler {
     if (classChangeOk) {
       changed = true;
 
-      boolean hasClass = false;
       // Save class change
-      ResultSet classCheck =
-          Server.userDB.askDB(
+      int classCheck =
+          Server.userDB.askInt(
               "select Id from character_class where ClassId = "
                   + classId
                   + " and CharacterId = "
                   + client.playerCharacter.getDBId());
 
-      try {
-        if (classCheck.next()) {
-          hasClass = true;
-        }
-        classCheck.close();
-      } catch (SQLException e) {
-        e.printStackTrace();
-      }
+      boolean hasClass = (classCheck != 0);
 
       Server.userDB.updateDB(
           "update character_class set Type = 0 where CharacterId = "

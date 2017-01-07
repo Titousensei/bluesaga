@@ -14,12 +14,12 @@ import utils.json.JSONObject;
 
 public class ClientSettings {
 
-  public static String PATH = "./";
+  public static String PATH = "libs/";
 
   // GENERAL
   public static int VERSION_NR = 800;
   public static boolean DEV_MODE = false;
-  public static String SERVER_IP = "localhost";
+  public static String SERVER_IP = "titousensei.duckdns.org";
   public static int PORT = 26342;
   public static boolean auto_login = false;
 

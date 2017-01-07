@@ -31,24 +31,26 @@ public class FileCopy {
   }
 
   public static void backupDB() {
-    if (!ServerSettings.DEV_MODE) {
-      String filePath = new File("").getAbsolutePath();
+    String dbPath = ServerSettings.PATH + "usersDB.db";
+    String bakPath = ServerSettings.PATH + "db_backups/usersDB_"
+        + TimeUtils.getDate("yyyyMMdd_HHmmss") + ".db";
 
-      File originalDB = new File(filePath + "/usersDB.db");
-      String fileName = "/db_backups/usersDB_" + TimeUtils.getDate("yyyyMMdd_HHmmss") + ".db";
-      File copyDB = new File(filePath + fileName);
+    if (!ServerSettings.DEV_MODE) {
+      File originalDB = new File(dbPath);
+      File copyDB = new File(bakPath);
 
       ServerMessage.printMessage("Make backup of usersDB.db...", false);
 
       try {
         FileCopy.copyFile(originalDB, copyDB);
+        ServerMessage.printMessage("Done saving backup: " + dbPath, false);
       } catch (IOException e) {
-        // TODO Auto-generated catch block
-        e.printStackTrace();
         ServerMessage.printMessage("Failed to backup db!", false);
+        e.printStackTrace();
       }
-
-      ServerMessage.printMessage("Done saving backup: " + fileName, false);
+    } else {
+      System.out.println("INFO - Pretending to backup: " + dbPath);
+      System.out.println("INFO - Would save to: " + bakPath);
     }
   }
 }

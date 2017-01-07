@@ -47,7 +47,7 @@ public class Client {
 
       connected = true;
     } catch (UnknownHostException e) {
-      BlueSaga.DEBUG.print("Connection to server failed to reconnect");
+      BlueSaga.DEBUG.print("Connection to server failed to connect to " + ClientSettings.SERVER_IP);
       return "error";
     } catch (IOException e) {
       BlueSaga.DEBUG.print("Connection to server failed to reconnect");

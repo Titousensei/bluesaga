@@ -164,14 +164,15 @@ public class MapHandler extends Handler {
       // Gather tile data
       StringBuilder screenData = new StringBuilder(40000);
 
-      for (int j = client.playerCharacter.getY() - ServerSettings.TILE_HALF_H - 1;
-          j < client.playerCharacter.getY() + ServerSettings.TILE_HALF_H + 2;
-          j++) {
-        for (int i = client.playerCharacter.getX() - ServerSettings.TILE_HALF_W - 1;
-            i < client.playerCharacter.getX() + ServerSettings.TILE_HALF_W + 2;
-            i++) {
+      Tile lastTile = Tile.DUMMY;
+      for (int i = client.playerCharacter.getX() - ServerSettings.TILE_HALF_W - 1;
+          i < client.playerCharacter.getX() + ServerSettings.TILE_HALF_W + 2;
+          i++) {
+        for (int j = client.playerCharacter.getY() - ServerSettings.TILE_HALF_H - 1;
+            j < client.playerCharacter.getY() + ServerSettings.TILE_HALF_H + 2;
+            j++) {
 
-          getTileInfo(client, i, j, z, tileData, screenData);
+          lastTile = getTileInfo(client, i, j, z, tileData, screenData, lastTile);
         }
       }
 
@@ -209,19 +210,33 @@ public class MapHandler extends Handler {
    * @param tileData - additional info about the whole screen of tiles
    * @return
    */
-  public static void getTileInfo(
-      Client client, int tileX, int tileY, int tileZ, TileData tileData, StringBuilder buf) {
+  public static Tile getTileInfo(
+      Client client, int tileX, int tileY, int tileZ, TileData tileData,
+      StringBuilder buf, Tile lastTile
+  ) {
 
     Tile TILE = Server.WORLD_MAP.getTile(tileX, tileY, tileZ);
+
+    String lastType = "none";
+    String lastName = "none";
+    int lastX = Integer.MIN_VALUE;
+    int lastY = Integer.MIN_VALUE;
+    int lastZ = Integer.MIN_VALUE;
+    if (lastTile!=null) {
+      lastType = lastTile.getType();
+      lastName = lastTile.getName();
+      lastX = lastTile.getX();
+      lastY = lastTile.getY();
+      lastZ = lastTile.getZ();
+    }
 
     // Data to send
     String tileType = "none";
     String tileName = "none";
-    int passable = 0;
-    int lootInfo = 0;
-    String objectInfo = "0";
-    StringBuilder statusEffects = new StringBuilder(1000).append("0");
-    String occupantInfo = "0";
+    boolean passable = false;
+    String objectInfo = "";
+    StringBuilder statusEffects = new StringBuilder(1000);
+    String occupantInfo = null;
 
     // Check if tile exists
     if (TILE != null) {
@@ -231,8 +246,6 @@ public class MapHandler extends Handler {
       // Occupant info
       if (TILE.getOccupant() != null) {
         occupantInfo = TILE.getOccupant().getSmallData();
-      } else {
-        occupantInfo = "0";
       }
 
       // Object info
@@ -251,20 +264,11 @@ public class MapHandler extends Handler {
           }
         }
         objectInfo = objectId;
-      } else {
-        objectInfo = "0";
-      }
-
-      // Loot info
-      if (TILE.getLoot().size() > 0) {
-        lootInfo = 1;
-      } else {
-        lootInfo = 0;
       }
 
       // Passable info
       if (TILE.isPassableType() || TILE.getDoorId() > 0) {
-        passable = 1;
+        passable = true;
       }
 
       // Status effects info
@@ -296,26 +300,32 @@ public class MapHandler extends Handler {
       }
     }
 
-    buf.append(tileX)
-        .append(',')
-        .append(tileY)
-        .append(',')
-        .append(tileZ)
-        .append(',')
-        .append(tileType)
-        .append(',')
-        .append(tileName)
-        .append(',')
-        .append(passable)
-        .append(',')
-        .append(lootInfo)
-        .append(',')
-        .append(objectInfo)
-        .append(',')
-        .append(statusEffects)
-        .append(':')
-        .append(occupantInfo)
-        .append(';');
+    buf.append((tileX == lastX) ? "" : tileX)
+       .append(',')
+       .append((tileY == lastY) ? "" : tileY)
+       .append(',')
+       .append((tileZ == lastZ) ? "" : tileZ)
+       .append(',')
+       .append(tileType.equals(lastType) ? "" : tileType)
+       .append(',')
+       .append(tileName.equals(lastName) ? "" : tileName)
+       .append(',')
+       .append(passable ? "" : "0")
+       .append(',')
+       //.append(lootInfo)
+       .append(',')
+       .append((objectInfo!=null) ? objectInfo : "")
+       .append(',')
+       .append(statusEffects);
+
+    if (occupantInfo != null) {
+      buf.append(':')
+         .append(occupantInfo);
+    }
+
+    buf.append(';');
+
+    return TILE;
   }
 
   public static void checkIfDoorOpens(int MonsterDBId) {

@@ -14,11 +14,7 @@ public class Database {
     Class.forName("org.sqlite.JDBC");
 
     try {
-      if (ClientSettings.DEV_MODE) {
-        conn = DriverManager.getConnection("jdbc:sqlite:" + ClientSettings.PATH + "gameDB.db");
-      } else {
-        conn = DriverManager.getConnection("jdbc:sqlite:" + ClientSettings.PATH + "libs/gameDB.db");
-      }
+      conn = DriverManager.getConnection("jdbc:sqlite:" + ClientSettings.PATH + "gameDB.db");
     } catch (SQLException e) {
       e.printStackTrace();
     }

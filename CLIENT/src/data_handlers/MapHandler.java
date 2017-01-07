@@ -135,7 +135,7 @@ public class MapHandler extends Handler {
 
       /*
       if(BlueSaga.SCREEN_TILES.get(fromXYZ) != null){
-      	BlueSaga.SCREEN_TILES.get(fromXYZ).setPassable(true);
+        BlueSaga.SCREEN_TILES.get(fromXYZ).setPassable(true);
       }
       */
 
@@ -144,7 +144,7 @@ public class MapHandler extends Handler {
 
       /*
       if(BlueSaga.SCREEN_TILES.get(toXYZ) != null){
-      	BlueSaga.SCREEN_TILES.get(toXYZ).setPassable(false);
+        BlueSaga.SCREEN_TILES.get(toXYZ).setPassable(false);
       }
       */
 
@@ -202,13 +202,15 @@ public class MapHandler extends Handler {
   public static void updateScreenTiles(String tilesData) {
     String tilesInfo[] = tilesData.split(";");
 
+    Tile lastTile = null;
+
     // ADD NEW TILES TO SCREEN
     for (String tileData : tilesInfo) {
 
       if (tileData.contains(":")) {
         String tileInfo[] = tileData.split(":");
 
-        addTileToScreen(tileInfo[0]);
+        lastTile = addTileToScreen(tileInfo[0], lastTile);
 
         //OCCUPANT
         if (!tileInfo[1].equals("0")) {
@@ -216,49 +218,73 @@ public class MapHandler extends Handler {
         }
 
       } else {
-        addTileToScreen(tileData);
+        lastTile = addTileToScreen(tileData, lastTile);
       }
     }
     updateScreenObjects();
   }
 
-  private static void addTileToScreen(String tileData) {
+  private static Tile addTileToScreen(String tileData, Tile lastTile) {
     if (tileData.contains(",")) {
-      String tileInfo[] = tileData.split(",");
-      int x = Integer.parseInt(tileInfo[0]);
-      int y = Integer.parseInt(tileInfo[1]);
-      int z = Integer.parseInt(tileInfo[2]);
-      String type = tileInfo[3];
-      String name = tileInfo[4];
-      int passable = Integer.parseInt(tileInfo[5]);
-      Integer.parseInt(tileInfo[6]);
+      String tileInfo[] = tileData.split(",", 9);
+      int x, y, z;
+      if (!"".equals(tileInfo[0])) {
+        x = Integer.parseInt(tileInfo[0]);
+      } else if (lastTile != null) {
+        x = lastTile.getX();
+      } else {
+        return null;
+      }
+      if (!"".equals(tileInfo[1])) {
+        y = Integer.parseInt(tileInfo[1]);
+      } else if (lastTile != null) {
+        y = lastTile.getY();
+      } else {
+        return null;
+      }
+      if (!"".equals(tileInfo[2])) {
+        z = Integer.parseInt(tileInfo[2]);
+      } else if (lastTile != null) {
+        z = lastTile.getZ();
+      } else {
+        return null;
+      }
+
+      String type, name;
+      if (!"".equals(tileInfo[3])) {
+        type = tileInfo[3];
+      } else if (lastTile != null) {
+        type = lastTile.getType();
+      } else {
+        return null;
+      }
+      if (!"".equals(tileInfo[4])) {
+        name = tileInfo[4];
+      } else if (lastTile != null) {
+        name = lastTile.getName();
+      } else {
+        return null;
+      }
+      boolean passable = !"0".equals(tileInfo[5]);
+      //Integer.parseInt(tileInfo[6]);
       String objectId = tileInfo[7];
       String statusEffects = tileInfo[8];
 
-      boolean isNewTile = true;
+      String posStr = x + "," + y + "," + z;
+      Tile newTile = ScreenHandler.SCREEN_TILES.get(posStr);
 
-      Tile newTile = new Tile(x, y, z);
-
-      if (ScreenHandler.SCREEN_TILES.containsKey(x + "," + y + "," + z)) {
-        if (ScreenHandler.SCREEN_TILES.get(x + "," + y + "," + z).getType().equals(type)
-            && ScreenHandler.SCREEN_TILES.get(x + "," + y + "," + z).getName().equals(name)) {
-          newTile = ScreenHandler.SCREEN_TILES.get(x + "," + y + "," + z);
-          isNewTile = false;
-        }
-      }
-
-      if (isNewTile) {
+      if (newTile == null
+      || !newTile.getType().equals(type)
+      || !newTile.getName().equals(name)
+      ) {
+        newTile = new Tile(x, y, z);
         newTile.setType(type, name);
       }
 
-      if (passable == 1) {
-        newTile.setPassable(true);
-      } else {
-        newTile.setPassable(false);
-      }
+      newTile.setPassable(passable);
 
       //Status effects
-      if (!statusEffects.equals("0")) {
+      if (!"".equals(statusEffects) && !"0".equals(statusEffects)) {
         String statusEffectsInfo[] = statusEffects.split("-");
         for (String se : statusEffectsInfo) {
           String seInfo[] = se.split("/");
@@ -273,7 +299,7 @@ public class MapHandler extends Handler {
       boolean hasTileObject = false;
 
       // Add object
-      if (!objectId.equals("0")) {
+      if (!"".equals(objectId) && !"0".equals(objectId)) {
         addObjectToScreen(x, y, z, objectId);
         hasTileObject = Gui.MapWindow.updateTileObject(x, y, z, objectId);
       }
@@ -282,8 +308,10 @@ public class MapHandler extends Handler {
         Gui.MapWindow.updateTile(x, y, z, type, name);
       }
 
-      ScreenHandler.SCREEN_TILES.put(x + "," + y + "," + z, newTile);
+      ScreenHandler.SCREEN_TILES.put(posStr, newTile);
+      return newTile;
     }
+    return null;
   }
 
   public static void addObjectToScreen(int x, int y, int z, String objectId) {

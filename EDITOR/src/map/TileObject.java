@@ -27,6 +27,9 @@ public class TileObject {
   public TileObject(String newName) {
     name = newName;
     graphics = BP_EDITOR.GFX.getSprite("objects/" + name);
+    if (graphics==null) {
+      System.out.println("ERROR - Null graphics for objects/" + name);
+    }
 
     if (graphics.isAnimated()) {
       width = graphics.getAnimation().getWidth() / 50;

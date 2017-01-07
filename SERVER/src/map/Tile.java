@@ -10,6 +10,11 @@ import data_handlers.item_handler.Item;
 
 public class Tile {
 
+  public static final Tile DUMMY = new Tile(Integer.MAX_VALUE, Integer.MAX_VALUE, Integer.MAX_VALUE);
+  static {
+    DUMMY.setType("", "", 1);
+  }
+
   private String Type;
   private String Name;
   private boolean Passable;

@@ -435,6 +435,8 @@ public class WalkHandler extends Handler {
       int tileY = 0;
       int tileZ = client.playerCharacter.getZ();
 
+      Tile lastTile = Tile.DUMMY;
+
       for (int i = 0; i < Math.abs(dirX); i++) {
         if (dirX < 0) {
           // GO LEFT
@@ -443,7 +445,7 @@ public class WalkHandler extends Handler {
           for (tileY = client.playerCharacter.getY() - ServerSettings.TILE_HALF_H - 1;
               tileY <= client.playerCharacter.getY() + ServerSettings.TILE_HALF_H + 1;
               tileY++) {
-            MapHandler.getTileInfo(client, tileX, tileY, tileZ, tileData, rowData);
+            lastTile = MapHandler.getTileInfo(client, tileX, tileY, tileZ, tileData, rowData, lastTile);
           }
           //client.playerCharacter.setGotoRotation(270);
 
@@ -454,7 +456,7 @@ public class WalkHandler extends Handler {
           for (tileY = client.playerCharacter.getY() - ServerSettings.TILE_HALF_H - 1;
               tileY <= client.playerCharacter.getY() + ServerSettings.TILE_HALF_H + 1;
               tileY++) {
-            MapHandler.getTileInfo(client, tileX, tileY, tileZ, tileData, rowData);
+            lastTile = MapHandler.getTileInfo(client, tileX, tileY, tileZ, tileData, rowData, lastTile);
           }
           //client.playerCharacter.setGotoRotation(90);
         }
@@ -468,7 +470,7 @@ public class WalkHandler extends Handler {
           for (tileX = client.playerCharacter.getX() - ServerSettings.TILE_HALF_W - 1;
               tileX <= client.playerCharacter.getX() + ServerSettings.TILE_HALF_W + 1;
               tileX++) {
-            MapHandler.getTileInfo(client, tileX, tileY, tileZ, tileData, rowData);
+            lastTile = MapHandler.getTileInfo(client, tileX, tileY, tileZ, tileData, rowData, lastTile);
           }
           //client.playerCharacter.setGotoRotation(180);
 
@@ -479,7 +481,7 @@ public class WalkHandler extends Handler {
           for (tileX = client.playerCharacter.getX() - ServerSettings.TILE_HALF_W - 1;
               tileX <= client.playerCharacter.getX() + ServerSettings.TILE_HALF_W + 1;
               tileX++) {
-            MapHandler.getTileInfo(client, tileX, tileY, tileZ, tileData, rowData);
+            lastTile = MapHandler.getTileInfo(client, tileX, tileY, tileZ, tileData, rowData, lastTile);
           }
           //client.playerCharacter.setGotoRotation(0);
         }

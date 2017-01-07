@@ -207,6 +207,11 @@ public abstract class Server {
   }
 
   private void serverLoop() {
+    Runtime.getRuntime().addShutdownHook(new Thread() {
+        public void run() {
+          Server.restartServer();
+        }
+    });
 
     // Initialize last tick/second time
     long lastTickTime = TimeUtils.nanos();

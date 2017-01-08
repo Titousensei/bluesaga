@@ -154,7 +154,7 @@ public class BlueSaga extends BasicGame {
 
     BG_MUSIC.changeSong("title", "title");
     if (ClientSettings.auto_login && ClientSettings.DEV_MODE) {
-      System.out.println("Attempting auto login");
+      System.out.println("Attempting auto login " + ClientSettings.SERVER_IP + ":" + ClientSettings.PORT);
       chooseServer(null);
     }
     ScreenHandler.setActiveScreen(ScreenType.LOGIN);

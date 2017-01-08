@@ -14,7 +14,7 @@ public abstract class Builder<T>
   public abstract T build();
 
   private final static Pattern R_ID_NAME = Pattern.compile("### *([a-zA-Z]?[0-9]+) ?[^a-zA-Z]? ?(.*) *");
-  private final static Pattern R_INT = Pattern.compile("[a-zA-Z ]*([0-9]+)[^0-9]*");
+  private final static Pattern R_INT = Pattern.compile("[a-zA-Z ]*(-?[0-9]+)[^0-9]*");
 
   protected static int parseInt(String str)
   {

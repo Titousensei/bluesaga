@@ -750,6 +750,8 @@ public class BattleHandler extends Handler {
     playerCharacter.walkTo(respawn.x, respawn.y, respawn.z);
 
     Server.WORLD_MAP.addPlayerToZ(playerCharacter, playerCharacter.getZ());
+    System.out.println("INFO - Respawning " + playerCharacter
+        + " @" + checkpointId + ": " + respawn);
 
     Server.userDB.updateDB(
         "update user_character set X = "

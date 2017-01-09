@@ -29,7 +29,7 @@ public class ConnectHandler extends Handler {
       String connectInfo = serverData.substring(9);
       int checkversion = Integer.parseInt(connectInfo);
 
-      if (checkversion != ClientSettings.VERSION_NR) {
+      if (checkversion > ClientSettings.VERSION_NR) {
         ScreenHandler.LoadingStatus =
             "         "
                 + LanguageUtils.getString("ui.status.new_client_available")

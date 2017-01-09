@@ -179,7 +179,10 @@ public class MapHandler extends Handler {
 
       // Send tile data
       addOutGoingMessage(client, "screen", screenData.toString());
-      ServerMessage.println(false, "Sreen - ", client.playerCharacter, ": Z=", client.playerCharacter.getZ());
+      ServerMessage.println(true, "Screen - ", client.playerCharacter, ": ",
+          client.playerCharacter.getX(), ",",
+          client.playerCharacter.getY(), ",",
+          client.playerCharacter.getZ());
 
       // Send info about soul if found
       if (tileData.foundSoul) {

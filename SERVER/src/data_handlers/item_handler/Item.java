@@ -567,10 +567,6 @@ public class Item {
       sb.append(' ')
         .append(magicType);
     }
-    if (modifier != Modifier.Regular) {
-      sb.append(' ')
-        .append(modifier);
-    }
     return sb.toString();
   }
 }

@@ -9,6 +9,7 @@ import java.util.Map;
 
 import components.Shop;
 import utils.ServerGameInfo;
+import utils.ServerMessage;
 import data_handlers.ability_handler.Ability;
 import data_handlers.item_handler.CoinConverter;
 import data_handlers.item_handler.InventoryHandler;
@@ -167,6 +168,7 @@ public class ShopHandler extends Handler {
 
               addOutGoingMessage(
                   client, "buy", "item/" + it.getName() + "/" + it.getValue());
+              ServerMessage.println(false, "Buy item - ", client.playerCharacter, ": ", it);
             } else {
               addOutGoingMessage(client, "shoperror", "inventoryfull");
             }
@@ -264,6 +266,7 @@ public class ShopHandler extends Handler {
                       + '='
                       + A.getAoE();
               addOutGoingMessage(client, "buy", msg);
+              ServerMessage.println(false, "Buy ability - ", client.playerCharacter, ": ", A);
             }
           } else {
             addOutGoingMessage(client, "shoperror", "noreq");
@@ -371,6 +374,7 @@ public class ShopHandler extends Handler {
             InventoryHandler.addItemToInventory(client, CopperItem);
           }
 
+          ServerMessage.println(false, "Sell - ", client.playerCharacter, ": ", soldItem);
         } else {
           addOutGoingMessage(client, "shoperror", "lowlevel");
         }

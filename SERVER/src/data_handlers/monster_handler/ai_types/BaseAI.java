@@ -76,7 +76,8 @@ public class BaseAI {
               goalX - pathMap.getPathMapStartX(),
               goalY - pathMap.getPathMapStartY());
     } catch (ArrayIndexOutOfBoundsException e) {
-      ServerMessage.printMessage("crash! - can't find path!", true);
+      ServerMessage.println(true, "Can't find path between ",
+          me.getX(), ",", me.getY(), " and ", goalX, ",", goalY);
       foundPath = null;
     }
 

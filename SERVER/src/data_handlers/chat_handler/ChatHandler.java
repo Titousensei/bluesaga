@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import java.util.*;
 
 import utils.RandomUtils;
+import utils.ServerMessage;
 import utils.TimeUtils;
 import data_handlers.DataHandlers;
 import data_handlers.Handler;
@@ -19,8 +20,6 @@ import network.Client;
 import network.Server;
 
 public class ChatHandler extends Handler {
-
-  public static PrintStream chatLog = null;
 
   private static Set<String> Emoticons = new TreeSet<String>();
   private static String emoHelp = "To show emoticon type '/emo name'.";
@@ -75,17 +74,6 @@ public class ChatHandler extends Handler {
       e.printStackTrace();
     }
 
-    if (ServerSettings.CHATLOG_PATH != null) {
-      try {
-        new File(ServerSettings.PATH + ServerSettings.CHATLOG_PATH).mkdir();
-        chatLog = new PrintStream(ServerSettings.PATH
-            + ServerSettings.CHATLOG_PATH + "/chatLog-" + TimeUtils.now() + ".txt");
-      } catch (FileNotFoundException ex) {
-        System.err.println("WARNING - Can't open chatLog: " + ex.getMessage());
-        chatLog = System.out;
-      }
-    }
-
     DataHandlers.register("newchat", m -> handleNewChat(m));
   }
 
@@ -96,9 +84,8 @@ public class ChatHandler extends Handler {
 
     String chatInfo[] = m.message.split(";", 2);
 
-    if (chatLog!=null) {
-      chatLog.println(TimeUtils.now() + ' ' + client.UserId + ": " + m.message);
-    }
+    ServerMessage.println(false, "CHAT - ", m.client.playerCharacter,
+        ": ", m.message);
 
     if (chatInfo.length == 2) {
       String chatChannel = chatInfo[0].toLowerCase();

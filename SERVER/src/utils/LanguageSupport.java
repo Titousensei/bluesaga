@@ -26,7 +26,7 @@ public class LanguageSupport {
     }
     server_path += "game_text.json";
 
-    System.out.println("Read language file: " + server_path);
+    ServerMessage.println(false, "Reading language file: " + server_path);
 
     try {
       BufferedReader br = new BufferedReader(new FileReader(server_path));

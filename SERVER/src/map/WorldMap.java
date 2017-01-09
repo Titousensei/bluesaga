@@ -160,7 +160,7 @@ public class WorldMap implements TileBasedMap {
       e.printStackTrace();
     }
 
-    ServerMessage.printMessage("Load traps...", false);
+    ServerMessage.println(false, "Loading traps...");
 
     // LOAD TRAPS AND TRIGGERS
     ResultSet areatrapInfo = Server.mapDB.askDB("select * from area_trap");
@@ -194,7 +194,7 @@ public class WorldMap implements TileBasedMap {
       e.printStackTrace();
     }
 
-    ServerMessage.printMessage("Load triggers...", false);
+    ServerMessage.println(false, "Loading triggers...");
 
     ResultSet triggerInfo = Server.mapDB.askDB("select * from trigger");
 
@@ -216,7 +216,7 @@ public class WorldMap implements TileBasedMap {
       e.printStackTrace();
     }
 
-    ServerMessage.printMessage("Load containers...", false);
+    ServerMessage.println(false, "Loading containers...");
 
     // LOAD CONTAINERS
     ResultSet containerInfo =
@@ -241,7 +241,7 @@ public class WorldMap implements TileBasedMap {
       e1.printStackTrace();
     }
 
-    ServerMessage.printMessage("Load souls...", false);
+    ServerMessage.println(false, "Loading souls...");
 
     // LOAD SOULS                                    1   2 3 4 5
     ResultSet soulInfo = Server.userDB.askDB("select Id, X,Y,Z,CharacterId from character_soul");
@@ -266,7 +266,7 @@ public class WorldMap implements TileBasedMap {
       pathMapSize = maxY;
     }
 
-    ServerMessage.printMessage("Load monsters...", false);
+    ServerMessage.println(false, "Loading monsters...");
 
     // LOAD NPCs FROM DATABASE
     ResultSet creatureInfo;
@@ -330,17 +330,17 @@ public class WorldMap implements TileBasedMap {
                     + ","
                     + creatureInfo.getInt("SpawnZ"))
             == null) {
-          ServerMessage.printMessage("[WorldMap] WARNING - Monster on null tile: "
-              + creatureInfo.getInt("Id")
-              + " ("
-              + creatureInfo.getInt("SpawnX")
-              + ","
-              + creatureInfo.getInt("SpawnY")
-              + ","
-              + creatureInfo.getInt("SpawnZ")
-              + ") -> "
-              + creatureInfo.getInt("CreatureId")
-              , false);
+          ServerMessage.println(false,
+              "WARNING - Monster on null tile: ",
+              creatureInfo.getInt("Id"),
+              " (",
+              creatureInfo.getInt("SpawnX"),
+              ",",
+              creatureInfo.getInt("SpawnY"),
+              ",",
+              creatureInfo.getInt("SpawnZ"),
+              ") -> ",
+              creatureInfo.getInt("CreatureId"));
         } else {
           Monsters.put(creatureInfo.getInt("Id"), tempNpc);
           if (!tempNpc.isDead()) {
@@ -367,7 +367,7 @@ public class WorldMap implements TileBasedMap {
     }
 
     if (ServerSettings.RANDOM_ARCHIPELAGO) {
-      ServerMessage.printMessage("Generating random archipelago...", false);
+      ServerMessage.println(false, "Generating random archipelago...");
 
       // Pirate island
       zLevels.add(-200);
@@ -379,7 +379,7 @@ public class WorldMap implements TileBasedMap {
 
 
     if (ServerSettings.RANDOM_DUNGEON) {
-      ServerMessage.printMessage("Generating random dungeons...", false);
+      ServerMessage.println(false, "Generating random dungeons...");
 
       // Generate instances
       DungeonGenerator dGenerator = new DungeonGenerator();
@@ -390,7 +390,7 @@ public class WorldMap implements TileBasedMap {
       dGenerator.generate(MapTiles, 30);
     }
 
-    ServerMessage.printMessage("Loading world map done.", false);
+    ServerMessage.println(false, "DONE Loading world map");
   }
 
   public void addMonsterToZ(Npc npc, int z) {

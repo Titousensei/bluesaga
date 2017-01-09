@@ -15,6 +15,7 @@ import network.Server;
 import utils.Coords;
 import utils.MathUtils;
 import utils.ServerGameInfo;
+import utils.ServerMessage;
 import utils.XPTables;
 import creature.Creature;
 import creature.Npc;
@@ -54,8 +55,10 @@ public class BattleHandler extends Handler {
 
     if ("start".equals(m.message)) {
       MonsterHandler.changeMonsterSleepState(client.playerCharacter, true);
+      ServerMessage.println(false, "Resting - ", client.playerCharacter);
     } else {
       MonsterHandler.changeMonsterSleepState(client.playerCharacter, false);
+      ServerMessage.println(false, "Awake - ", client.playerCharacter);
     }
   }
 
@@ -422,6 +425,8 @@ public class BattleHandler extends Handler {
    ****************************************/
   public static void playerKillsMonster(Client client, Npc TARGET) {
 
+    ServerMessage.println(false, "Kill - ", client.playerCharacter, ": ", TARGET);
+
     if (client.playerCharacter.getParty() != null
         && client.playerCharacter.getParty().getNrMembers() > 1) {
       // Client in Party
@@ -505,7 +510,8 @@ public class BattleHandler extends Handler {
         addOutGoingMessage(client, "level_up", levelUpData);
 
         if (!ServerSettings.DEV_MODE) {
-          System.out.println("SEND LEVEL UP INFO!");
+          ServerMessage.println(false, "Level up ", client.playerCharacter,
+            ": ", client.playerCharacter.getLevel());
           // Send level up info to website
           // DO NOT CODE BELOW
           String characterInfo =
@@ -634,6 +640,11 @@ public class BattleHandler extends Handler {
                 client.playerCharacter.getZ())
             .setSoulCharacterId(client.playerCharacter.getDBId());
 
+        ServerMessage.println(false, "DEATH: ", TARGET,
+            " @", client.playerCharacter.getX(),
+            ",", client.playerCharacter.getY(),
+            ",", client.playerCharacter.getZ());
+
         if (client.Ready) {
           addOutGoingMessage(
               client,
@@ -750,8 +761,8 @@ public class BattleHandler extends Handler {
     playerCharacter.walkTo(respawn.x, respawn.y, respawn.z);
 
     Server.WORLD_MAP.addPlayerToZ(playerCharacter, playerCharacter.getZ());
-    System.out.println("INFO - Respawning " + playerCharacter
-        + " @" + checkpointId + ": " + respawn);
+    ServerMessage.println(false, "Respawning ", playerCharacter,
+        " @", checkpointId, ": ", respawn);
 
     Server.userDB.updateDB(
         "update user_character set X = "

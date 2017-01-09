@@ -1626,9 +1626,4 @@ public class PlayerCharacter extends Creature {
   public Vector<String> getChatChannels() {
     return chatChannels;
   }
-
-  @Override
-  public String toString() {
-    return dbId + ":" + Name;
-  }
 }

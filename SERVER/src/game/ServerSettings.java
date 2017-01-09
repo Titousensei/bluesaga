@@ -32,6 +32,8 @@ public class ServerSettings {
 
   public static boolean TRACE_MODE = false;
 
+  public static String geoip_cmd = null;
+
   // Network settings
   public static int PORT = 26342;
 

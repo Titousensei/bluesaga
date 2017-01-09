@@ -1513,4 +1513,9 @@ public class Creature implements Mover {
   public HashMap<String, Integer> getCoords() {
     return coords;
   }
+
+  @Override
+  public String toString() {
+    return Name + " (" + dbId +")";
+  }
 }

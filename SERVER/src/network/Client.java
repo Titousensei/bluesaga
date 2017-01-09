@@ -75,68 +75,67 @@ public class Client implements Runnable {
       this.in = new ObjectInputStream(this.csocket.getInputStream());
       do {
         try {
-          try {
-            if (this.lostConnectionNr > 0) {
-              ServerMessage.printMessage(
-                  "Client " + this.UserMail + " lost connection: " + this.lostConnectionNr, false);
-            }
-            this.lostConnectionNr = 0;
+          if (this.lostConnectionNr > 0) {
+            ServerMessage.println(false,
+                "Client ", this.UserMail, " lost connection: ", this.lostConnectionNr);
+          }
+          this.lostConnectionNr = 0;
 
-            message = new String((byte[]) in.readObject());
+          message = new String((byte[]) in.readObject());
 
-            if (!Server.SERVER_RESTARTING) {
-              int messageIndex = message.indexOf("<");
+          if (!Server.SERVER_RESTARTING) {
+            int messageIndex = message.indexOf("<");
 
-              try {
-                String messageIdobf = message.substring(0, messageIndex);
+            String messageIdobf = message.substring(0, messageIndex);
 
-                int messageId = Obfuscator.illuminate(messageIdobf);
+            int messageId = Obfuscator.illuminate(messageIdobf);
 
-                String messageInfo[] = message.substring(messageIndex).split(">", 2);
-                String messageType = messageInfo[0].substring(1);
-                String messageText = messageInfo[1];
+            String messageInfo[] = message.substring(messageIndex).split(">", 2);
+            String messageType = messageInfo[0].substring(1);
+            String messageText = messageInfo[1];
 
-                if (game.ServerSettings.TRACE_MODE) {
-                  if (message.length() < 100) {
-                    System.out.println("|-> " + messageId + message.substring(messageIndex));
-                  } else {
-                    System.out.println(
-                        "|-> "
-                            + messageId
-                            + message.substring(messageIndex, 100)
-                            + "...("
-                            + message.length()
-                            + ")");
-                  }
-                }
-
-                if (inputPacketId == messageId) {
-                  Message newMessage = new Message(this, messageType, messageText);
-
-                  DataHandlers.addIncomingMessage(newMessage);
-
-                  inputPacketId++;
-                  if (inputPacketId > 65000) {
-                    inputPacketId = 10000;
-                  }
-                } else {
-                  ServerMessage.printMessage("WRONG PACKET ID!", false);
-                  // Disconnect client
-                  ConnectHandler.removeClient(this);
-                }
-              } catch (NumberFormatException e) {
-                if (playerCharacter != null) {
-                  ServerMessage.printMessage(
-                      "Wrong packet sent by: " + playerCharacter.getName(), false);
-                }
+            if (game.ServerSettings.TRACE_MODE) {
+              if (message.length() < 100) {
+                System.out.println("|-> " + messageId + message.substring(messageIndex));
+              } else {
+                System.out.println(
+                    "|-> "
+                    + messageId
+                    + message.substring(messageIndex, 100)
+                    + "...("
+                    + message.length()
+                    + ")");
               }
             }
-          } catch (SocketTimeoutException te) {
-            ServerMessage.printMessage("client timed out... removed it", false);
-            RemoveMe = true;
+
+            if (inputPacketId == messageId) {
+              Message newMessage = new Message(this, messageType, messageText);
+
+              DataHandlers.addIncomingMessage(newMessage);
+
+              inputPacketId++;
+              if (inputPacketId > 65000) {
+                inputPacketId = 10000;
+              }
+            } else {
+              ServerMessage.println(false, "ALERT - Wrong packet id: ", inputPacketId);
+              // Disconnect client
+              ConnectHandler.removeClient(this);
+            }
           }
+        } catch (NumberFormatException e) {
+          if (playerCharacter != null) {
+            ServerMessage.println(false,
+                "Wrong packet sent by: ", playerCharacter);
+          } else {
+            ServerMessage.println(false,
+                "Wrong packet sent by IP: ", this.csocket);
+          }
+        } catch (SocketTimeoutException te) {
+          ServerMessage.println(false, "Client timed out... removed it");
+          RemoveMe = true;
         } catch (ClassNotFoundException classnot) {
-          System.err.println("Data received in unknown format");
+          ServerMessage.println(false, "ALERT - Data received in unknown format");
           Handler.addOutGoingMessage(this, "error", "fail");
         }
       } while (message != null && !message.contains("<connection>disconnect"));
@@ -145,7 +144,7 @@ public class Client implements Runnable {
       this.in.close();
       this.out.close();
 
-      ServerMessage.printMessage("client closed properly", false);
+      ServerMessage.println(false, "Client exited: ", this);
 
       ConnectHandler.removeClient(this);
     } catch (IOException e) {
@@ -170,9 +169,6 @@ public class Client implements Runnable {
       if (!this.RemoveMe) {
         if (this.lostConnectionNr > 20) {
           this.Ready = false;
-          ServerMessage.printMessage(
-              TimeUtils.now() + ": " + "! - Client crashed, connection lost.", false);
-
           this.startLogoutTimer();
         } else {
           run();
@@ -182,7 +178,7 @@ public class Client implements Runnable {
   }
 
   public void startLogoutTimer() {
-    ServerMessage.printMessage("client closed improperly, started logout timer...", false);
+    ServerMessage.println(false, "Client closed improperly: started logout timer...");
 
     // Default logout time 20 sec
     int logoutTime = BattleHandler.playerHitTime;
@@ -190,7 +186,8 @@ public class Client implements Runnable {
     // Playerkiller logout time 2 hours
     if (playerCharacter != null) {
       if (playerCharacter.getPkMarker() > 0) {
-        ServerMessage.printMessage("client is player killer, longer logout time", false);
+        ServerMessage.println(false, playerCharacter,
+            " is PK: longer logout time");
 
         if (playerCharacter.getPkMarker() == 1) {
           logoutTime = BattleHandler.playerHitTime;
@@ -240,5 +237,14 @@ public class Client implements Runnable {
 
   public void setIndex(int index) {
     this.index = index;
+  }
+
+  @Override
+  public String toString() {
+    if (UserMail != null) {
+      return UserMail + " (" + UserId + ")";
+    } else {
+      return "[" + IP + "]";
+    }
   }
 }

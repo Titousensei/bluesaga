@@ -23,7 +23,7 @@ public class PlayerFix {
         // All items except equipped are removed
         // Bought skins are left untouched
 
-        ServerMessage.printMessage("Removing deleted characters...", false);
+        ServerMessage.println(false, "Removing deleted characters...");
 
         // Soft-deleting all characters that have been deleted three days ago or more
         String threeDaysAgo = TimeUtils.getTimeAdd(-3 * 24 * 60 * 60);
@@ -31,7 +31,7 @@ public class PlayerFix {
         Server.userDB.updateDB(
             "update user_character set Deleted = 'Yes' where Deleted < '" + threeDaysAgo + "'");
 
-        ServerMessage.printMessage("Re-indexing character items...", false);
+        ServerMessage.println(false, "Re-indexing character items...");
 
         // Re-indexing inventory items
         ResultSet items = Server.userDB.askDB("select Id from character_item");
@@ -72,7 +72,7 @@ public class PlayerFix {
    */
   public static void permDeleteChar(int charId) {
     if (charId > 0) {
-      ServerMessage.printMessage("Deleting char: " + charId, false);
+      ServerMessage.println(false, "Deleting char: ", charId);
       Server.userDB.updateDB("delete from character_ability where CharacterId = " + charId);
       Server.userDB.updateDB("delete from character_actionbar where CharacterId = " + charId);
       Server.userDB.updateDB("delete from character_class where CharacterId = " + charId);

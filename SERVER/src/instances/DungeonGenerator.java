@@ -103,7 +103,7 @@ public class DungeonGenerator {
   }
 
   public void generate(HashMap<String, Tile> MapTiles, int level) {
-    ServerMessage.printMessage("Generate instance dungeon...", true);
+    ServerMessage.println(false, "Generate instance dungeon...");
 
     int entrance1X = 0;
     int entrance1Y = 0;
@@ -510,7 +510,7 @@ public class DungeonGenerator {
         }
       }
 
-      ServerMessage.printMessage("Placing monsters...", true);
+      ServerMessage.println(false, "Placing monsters...");
 
       for (String monster : monster_to_place) {
         String monsterInfo[] = monster.split(",");

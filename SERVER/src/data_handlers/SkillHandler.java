@@ -5,6 +5,7 @@ import java.sql.SQLException;
 
 import utils.RandomUtils;
 import utils.ServerGameInfo;
+import utils.ServerMessage;
 import utils.XPTables;
 import components.JobSkill;
 import network.Client;
@@ -179,6 +180,7 @@ public class SkillHandler extends Handler {
               client,
               "sp_levelup",
               skill.getName() + ',' + skill.getLevel() + ',' + skill.getSP() + ',' + nextSP);
+          ServerMessage.println(false, "Skill Level up - ", client.playerCharacter, ": ", skill);
         } else {
           addOutGoingMessage(client, "set_sp", skill.getId() + "," + skill.getSP());
         }

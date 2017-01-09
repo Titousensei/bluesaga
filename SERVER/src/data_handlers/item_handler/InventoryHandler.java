@@ -4,6 +4,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import utils.ServerGameInfo;
+import utils.ServerMessage;
 import network.Client;
 import network.Server;
 import data_handlers.DataHandlers;
@@ -610,6 +611,7 @@ public class InventoryHandler extends Handler {
                 + ")");
         addOutGoingMessage(
             client, "message", itemToMove.getName() + " #messages.inventory.added_to_keychain");
+        ServerMessage.println(false, "Key - ", client.playerCharacter, ": ", itemToMove);
 
         Server.userDB.updateDB(
             "delete from character_item where CharacterId = "
@@ -649,6 +651,7 @@ public class InventoryHandler extends Handler {
                 + " and InventoryPos = 'Mouse'");
         client.playerCharacter.setMouseItem(null);
         addOutGoingMessage(client, "addrecipe", "");
+        ServerMessage.println(false, "Recipe - ", client.playerCharacter, ": ", itemToMove);
       }
     }
     return addSpecialItem;
@@ -794,6 +797,9 @@ public class InventoryHandler extends Handler {
         } else {
           addOutGoingMessage(
               client, "message", newItem.getName() + " #messages.inventory.added_to_inventory");
+          if (newItem.getMagicId()>0 || newItem.getModifierId()>0) {
+            ServerMessage.println(false, "NewItem - ", client.playerCharacter, ": ", newItem);
+          }
         }
 
         String itemPosInfo[] = newItemPos.split(";");

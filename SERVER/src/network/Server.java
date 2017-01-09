@@ -108,12 +108,12 @@ public abstract class Server {
     clients = new ConcurrentHashMap<Integer, Client>();
 
     if (ServerSettings.DEV_MODE) {
-      ServerMessage.printMessage("DEV_MODE", false);
+      ServerMessage.println(false, "DEV_MODE");
     }
 
-    ServerMessage.printMessage("PVP: " + ServerSettings.PVP, false);
+    ServerMessage.println(false, "PVP: " + ServerSettings.PVP);
 
-    ServerMessage.printMessage("Starting server v0." + ServerSettings.CLIENT_VERSION, false);
+    ServerMessage.println(false, "Starting server v" + ServerSettings.CLIENT_VERSION);
 
     // Initialize all databases
     try {
@@ -141,7 +141,7 @@ public abstract class Server {
     WORLD_MAP = new WorldMap();
     WORLD_MAP.loadMap();
 
-    ServerMessage.printMessage("Started server processes...", false);
+    ServerMessage.println(false, "Starting server processes...");
 
     restartTimer = new Timer();
 
@@ -162,14 +162,14 @@ public abstract class Server {
 
     // Start server connection
 
-    ServerMessage.printMessage("Initializing connection...", false);
+    ServerMessage.println(false, "Initializing connection...");
 
     connectionListener = new ConnectionListener(this, ServerSettings.PORT);
     Thread th = new Thread(connectionListener);
     th.setName("ConnectionListener");
     th.start();
 
-    ServerMessage.printMessage("Server is ready and waiting for clients!", false);
+    ServerMessage.println(false, "Server is ready and waiting for clients!");
 
     running = true;
 
@@ -296,11 +296,12 @@ public abstract class Server {
         ConnectHandler.removeClient(client.getValue());
         iterator.remove();
         removedClient = true;
+        ServerMessage.println(false, "Removed client: " + client);
       }
     }
 
     if (removedClient) {
-      ServerMessage.printMessage("Removed client, players online: " + clients.size(), false);
+      ServerMessage.println(false, "Players online: " + clients.size());
     }
   }
 
@@ -334,17 +335,14 @@ public abstract class Server {
   }
 
   public static void restartServer() {
-    ServerMessage.printMessage("Restarting server...", false);
+    ServerMessage.println(false, "Restarting server...");
 
     SERVER_RESTARTING = true;
-    ServerMessage.printMessage("Saving player data before restart...", false);
+    ServerMessage.println(false, "Saving player data before restart...");
 
     for (Map.Entry<Integer, Client> entry : clients.entrySet()) {
       Client s = entry.getValue();
       ConnectHandler.removeClient(s);
-    }
-    if (ChatHandler.chatLog!=null) {
-      ChatHandler.chatLog.close();
     }
 
     gameDB.closeDB();
@@ -366,7 +364,7 @@ public abstract class Server {
         new TimerTask() {
           @Override
           public void run() {
-            ServerMessage.printMessage("RESTART SERVER!", false);
+            ServerMessage.println(false, "Server restarting!");
             System.exit(0);
           }
         },
@@ -377,7 +375,7 @@ public abstract class Server {
 
     SERVER_RESTARTING = true;
 
-    ServerMessage.printMessage("Saving player data before stopping...", false);
+    ServerMessage.println(false, "Saving player data before stopping...");
 
     for (Map.Entry<Integer, Client> entry : clients.entrySet()) {
       Client s = entry.getValue();
@@ -385,9 +383,6 @@ public abstract class Server {
       if (s.playerCharacter != null) {
         s.playerCharacter.saveInfo();
       }
-    }
-    if (ChatHandler.chatLog!=null) {
-      ChatHandler.chatLog.close();
     }
 
     gameDB.closeDB();
@@ -403,7 +398,7 @@ public abstract class Server {
         new TimerTask() {
           @Override
           public void run() {
-            ServerMessage.printMessage("STOP SERVER!", false);
+            ServerMessage.println(false, "Server stopping!");
             System.exit(0);
           }
         },

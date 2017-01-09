@@ -34,7 +34,7 @@ public class CardHandler extends Handler {
   public static Timer restartTimer;
 
   public static void setup() {
-    ServerMessage.printMessage("Creating cards...", true);
+    ServerMessage.println(false, "Creating cards...");
     Server.gameDB.updateDB("DELETE FROM item WHERE Type = 'Collector Card'");
 
     int maxLevel = 20;
@@ -58,7 +58,7 @@ public class CardHandler extends Handler {
     } catch (SQLException e) {
       e.printStackTrace();
     }
-    ServerMessage.printMessage("Creating cards done!", true);
+    ServerMessage.println(false, "Creating cards done!");
   }
 
   public static void init() {

@@ -8,6 +8,7 @@ import java.util.Map;
 
 import creature.Creature.CreatureType;
 import utils.ServerGameInfo;
+import utils.ServerMessage;
 import data_handlers.ability_handler.StatusEffect;
 import data_handlers.ability_handler.StatusEffectHandler;
 import data_handlers.battle_handler.BattleHandler;
@@ -716,7 +717,6 @@ public class WalkHandler extends Handler {
             + areaEffectId
             + " where Id = "
             + client.playerCharacter.getDBId());
-    client.playerCharacter.setAreaEffectId(areaEffectId);
 
     if (areaEffectId > 0) {
       AreaEffect ae = ServerGameInfo.areaEffectsDef.get(areaEffectId);
@@ -729,6 +729,10 @@ public class WalkHandler extends Handler {
         TutorialHandler.updateTutorials(3, client);
       }
       addOutGoingMessage(client, "area_effect", effectData);
+      if (client.playerCharacter.getAreaEffectId() != areaEffectId) {
+        ServerMessage.println(false, "Area - ", client.playerCharacter, ": ", ae.name);
+      }
     }
+    client.playerCharacter.setAreaEffectId(areaEffectId);
   }
 }

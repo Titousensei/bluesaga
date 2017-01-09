@@ -6,6 +6,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.List;
 
 import utils.ServerGameInfo;
+import utils.ServerMessage;
 import components.Quest;
 import components.Ship;
 import components.UserQuest;
@@ -123,6 +124,9 @@ public class QuestHandler extends Handler {
             + " where Id = "
             + client.playerCharacter.getDBId());
     addOutGoingMessage(client, "message", "#messages.quest.checked_in");
+
+    ServerMessage.println(false, "Checkin - ", m.client.playerCharacter,
+        ": ", checkInId);
   }
 
   public static void handleLearnClass(Message m) {
@@ -298,6 +302,9 @@ public class QuestHandler extends Handler {
         checkQuestItem(client, questId);
         checkQuestAbility(client, questId);
 
+        ServerMessage.println(false, "AcceptQuest - ", client.playerCharacter,
+            questId, ":", checkQuest.getName());
+
         addOutGoingMessage(client, "quest", "add;" + checkQuest.getName());
         client.playerCharacter.addQuest(questId);
       }
@@ -421,6 +428,9 @@ public class QuestHandler extends Handler {
           client,
           "questinfo",
           questId + ";" + questType + ";" + questMessage + ";" + questStatus);
+
+      ServerMessage.println(false, "TalkNpc - ", client.playerCharacter,
+          questId, ": ", questInfo.getName());
     }
   }
 
@@ -445,6 +455,8 @@ public class QuestHandler extends Handler {
                 + " and CharacterId = "
                 + client.playerCharacter.getDBId());
         addOutGoingMessage(client, "quest", "complete;" + q.questRef.getName());
+        ServerMessage.println(false, "CompleteQuest Use - ", client.playerCharacter,
+            q.questRef.getId(), ":", q.questRef.getName());
         if (!q.questRef.isReturnForReward()) {
           rewardQuest(client, q.questRef.getId());
         }
@@ -500,6 +512,8 @@ public class QuestHandler extends Handler {
                     + " and CharacterId = "
                     + client.playerCharacter.getDBId());
             addOutGoingMessage(client, "quest", "complete;" + q.questRef.getName());
+            ServerMessage.println(false, "CompleteQuest Kill - ", client.playerCharacter,
+                q.questRef.getId(), ":", q.questRef.getName());
 
             // CHECK KILL PRACTICE TARGET TUTORIAL
             if (q.questRef.getId() == 36) {
@@ -531,6 +545,8 @@ public class QuestHandler extends Handler {
                 + " and CharacterId = "
                 + client.playerCharacter.getDBId());
         addOutGoingMessage(client, "quest", "complete;" + q.questRef.getName());
+        ServerMessage.println(false, "CompleteQuest Area - ", client.playerCharacter,
+            q.questRef.getId(), ":", q.questRef.getName());
         if (!q.questRef.isReturnForReward()) {
           rewardQuest(client, q.questRef.getId());
         }
@@ -553,6 +569,8 @@ public class QuestHandler extends Handler {
           rewardQuest(client, q.questRef.getId());
         }
         addOutGoingMessage(client, "quest", "complete;" + q.questRef.getName());
+        ServerMessage.println(false, "CompleteQuest Talk - ", client.playerCharacter,
+            q.questRef.getId(), ":", q.questRef.getName());
       }
     }
   }
@@ -613,6 +631,8 @@ public class QuestHandler extends Handler {
                   + " and CharacterId = "
                   + client.playerCharacter.getDBId());
           addOutGoingMessage(client, "quest", "complete;" + q.questRef.getName());
+          ServerMessage.println(false, "CompleteQuest Get - ", client.playerCharacter,
+              q.questRef.getId(), ":", q.questRef.getName());
           if (!q.questRef.isReturnForReward()) {
             rewardQuest(client, q.questRef.getId());
           }

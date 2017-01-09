@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import java.util.Map;
 
 import utils.ServerGameInfo;
+import utils.ServerMessage;
 import utils.RandomUtils;
 import components.Gathering;
 import data_handlers.item_handler.Container;
@@ -66,7 +67,7 @@ public class GatheringHandler extends Handler {
 
     Gathering g = ServerGameInfo.gatheringDef.get(objectId);
     if (g == null) {
-      System.out.println("WARNING - No such item_gathering: " + objectId);
+      ServerMessage.println(false, "WARNING - No such item_gathering: ", objectId);
       return;
     }
 
@@ -74,7 +75,6 @@ public class GatheringHandler extends Handler {
     int skillLvl = g.getSkillLevel();
     int skillId = g.getSkillId();
     int resourceId = g.getResourceId();
-    System.out.println("INFO - Found item_gathering: " + SourceName + " " + skillLvl + " " + resourceId);
 
     int charLvl = client.playerCharacter.getSkill(skillId).getLevel();
 
@@ -169,8 +169,7 @@ public class GatheringHandler extends Handler {
 
       // CHECK IF CONTAINER ALREADY IN MEMORY
       String tileCoord = TILE.getX() + "," + TILE.getY() + "," + TILE.getZ();
-      if (ContainerHandler.CONTAINERS.get(tileCoord)
-          == null) {
+      if (ContainerHandler.CONTAINERS.get(tileCoord) == null) {
         // IF NOT GENERATE HARVEST
         SkillHandler.gainSP(client, skillId, (nrGathered==0));
 
@@ -183,7 +182,7 @@ public class GatheringHandler extends Handler {
             newContainer.addItem(it);
           }
           else {
-            System.out.println("WARNING - No resourceId: "+resourceId);
+            ServerMessage.println(false, "WARNING - No resourceId: ", resourceId);
             return;
           }
         }
@@ -215,6 +214,8 @@ public class GatheringHandler extends Handler {
       // GET CONTENT IN CONTAINER
       String content = ContainerHandler.getContainerContent(TILE.getX(), TILE.getY(), TILE.getZ());
       addOutGoingMessage(client, "container_content", content);
+      ServerMessage.println(true, "Gathering - ", client.playerCharacter, ": ",
+          SourceName, " * ", nrGathered);
     } else {
       addOutGoingMessage(client, "message", "#messages.gathering.need_higher_level");
     }

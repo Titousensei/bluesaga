@@ -33,13 +33,13 @@ public class ConnectionListener implements Runnable {
   @Override
   public void run() {
 
-    ServerMessage.printMessage("ConnectionListener starting to listen on port " + port, false);
+    ServerMessage.println(false, "STARTED on port ", port);
 
     // Initialize the server socket
     try {
       socket = new ServerSocket(port);
     } catch (IOException e) {
-      ServerMessage.printMessage("ServerListener failed to start - " + e.getMessage(), false);
+      ServerMessage.println(false, "ServerListener failed to start - ", e.getMessage());
       System.exit(0);
     }
 
@@ -59,7 +59,7 @@ public class ConnectionListener implements Runnable {
         Client clientObject = new Client(clientSocket);
 
         clientObject.IP = clientSocket.getInetAddress().getHostAddress().toString();
-        ServerMessage.printMessage(clientObject.IP + " connected.", false);
+        ServerMessage.println(false, clientObject.IP, " connected.");
 
         server.addClient(clientObject);
 
@@ -69,8 +69,8 @@ public class ConnectionListener implements Runnable {
         th.start();
 
       } catch (IOException e) {
-        ServerMessage.printMessage(
-            "ServerListener failed to accept connection from client - " + e.getMessage(), false);
+        ServerMessage.println(false,
+            "ServerListener failed to accept connection from client - ", e.getMessage());
       }
     }
 
@@ -79,13 +79,13 @@ public class ConnectionListener implements Runnable {
 
     // Initialize the server socket
     try {
-    	SSLServerSocketFactory sslserversocketfactory =
+      SSLServerSocketFactory sslserversocketfactory =
                       (SSLServerSocketFactory) SSLServerSocketFactory.getDefault();
-    	socketSSL = (SSLServerSocket) sslserversocketfactory.createServerSocket(port);
+      socketSSL = (SSLServerSocket) sslserversocketfactory.createServerSocket(port);
 
     } catch (IOException e) {
-    	ServerMessage.printMessage("ServerListener failed to start - " + e.getMessage());
-    	System.exit(0);
+      ServerMessage.printMessage("ServerListener failed to start - " + e.getMessage());
+      System.exit(0);
     }
 
     // Start listening
@@ -94,22 +94,22 @@ public class ConnectionListener implements Runnable {
     // Start the loop for accepting connections
     while (listening) {
 
-    	try {
+      try {
 
-    		// Accept a client connection
-    		Socket clientSocket = socketSSL.accept();
-    		clientSocket.setSoTimeout(15000);
+        // Accept a client connection
+        Socket clientSocket = socketSSL.accept();
+        clientSocket.setSoTimeout(15000);
 
-    		// Add the client to the server
-    		Client clientObject = new Client(clientSocket);
-    		server.addClient(clientObject);
+        // Add the client to the server
+        Client clientObject = new Client(clientSocket);
+        server.addClient(clientObject);
 
-    		// Start a client listener thread
-    		new Thread(clientObject).start();
+        // Start a client listener thread
+        new Thread(clientObject).start();
 
-    	} catch (IOException e) {
-    		ServerMessage.printMessage("ServerListener failed to accept connection from client - " + e.getMessage());
-    	}
+      } catch (IOException e) {
+        ServerMessage.printMessage("ServerListener failed to accept connection from client - " + e.getMessage());
+      }
     }
     */
   }

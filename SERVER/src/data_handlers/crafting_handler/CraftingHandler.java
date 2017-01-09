@@ -16,6 +16,7 @@ import data_handlers.item_handler.Item;
 import network.Client;
 import network.Server;
 import utils.ServerGameInfo;
+import utils.ServerMessage;
 
 public class CraftingHandler extends Handler {
 
@@ -38,7 +39,7 @@ public class CraftingHandler extends Handler {
     String[] craftingStationInfo = m.message.split(",");
     CraftingStation cs = CraftingStation.find(craftingStationInfo[0]);
     if (cs == null) {
-      System.out.println("ERROR - No such CraftingStation: " + m.message);
+      ServerMessage.println(false, "ERROR - No such CraftingStation: ", m.message);
       return;
     }
     String craftingStationName = cs.toString();
@@ -112,6 +113,7 @@ public class CraftingHandler extends Handler {
         SkillHandler.gainSP(client, skillId, false);
 
         addOutGoingMessage(client, "crafting_done", "");
+        ServerMessage.println(false, "Crafting - ", client.playerCharacter, ": ", itemRecipe);
       } else {
         addOutGoingMessage(client, "nocraftitem", ingredients.toString());
       }

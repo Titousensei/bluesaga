@@ -125,7 +125,7 @@ public class DataHandlers {
       if (handle != null) {
         handle.accept(m);
       } else {
-        ServerMessage.printMessage("WARNING - Unknown message type: " + m.type, false);
+        ServerMessage.println(false, "WARNING - Unknown message type: " + m.type);
       }
       i.remove();
     }

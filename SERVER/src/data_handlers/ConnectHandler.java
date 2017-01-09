@@ -285,16 +285,7 @@ public class ConnectHandler extends Handler {
       }
 
       client.playerCharacter.saveInfo();
-      if (ChatHandler.chatLog!=null) {
-        ChatHandler.chatLog.println(
-            TimeUtils.now()
-                + ' '
-                + client.UserId
-                + " --- "
-                + client.UserMail
-                + " left as "
-                + client.playerCharacter.getName());
-      }
+      ServerMessage.println(false, client, " left as ", client.playerCharacter);
       client.playerCharacter = null;
     }
   }
@@ -402,16 +393,10 @@ public class ConnectHandler extends Handler {
           if (charInfo.getInt("AreaEffectId") > 0) {
             WalkHandler.sendAreaEffect(client, charInfo.getInt("AreaEffectId"));
           }
-          if (ChatHandler.chatLog!=null) {
-            ChatHandler.chatLog.println(
-                TimeUtils.now()
-                    + ' '
-                    + client.UserId
-                    + " --- "
-                    + client.UserMail
-                    + " joined as "
-                    + client.playerCharacter.getName());
-          }
+          ServerMessage.println(false, client, " joined as ", client.playerCharacter,
+              ": ", client.playerCharacter.getBaseClass().name,
+              " lvl ",
+              client.playerCharacter.getLevel());
         } else {
           // Error: Can't find character in DB!
         }
@@ -432,14 +417,7 @@ public class ConnectHandler extends Handler {
       client.closeSocket();
 
       if (client.playerCharacter != null) {
-        ServerMessage.printMessage(
-            TimeUtils.now()
-                + ": "
-                + client.playerCharacter.getName()
-                + "("
-                + client.playerCharacter.getDBId()
-                + ") disconnects.",
-            false);
+        ServerMessage.println(false, client, " disconnected.");
 
         // RESPAWN AT CHECKPOINT IF DEAD
         if (client.playerCharacter.isDead()) {
@@ -463,8 +441,7 @@ public class ConnectHandler extends Handler {
           }
         }
       } else {
-        ServerMessage.printMessage(
-            TimeUtils.now() + ": " + client.IP + " disconnected without joining", false);
+        ServerMessage.println(false, client, " disconnected without joining");
       }
 
       logoutCharacter(client);

@@ -3,30 +3,27 @@ package utils;
 import java.io.FileNotFoundException;
 import java.io.PrintStream;
 import java.io.UnsupportedEncodingException;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
+
+import game.ServerSettings;
 
 public class CrashLogger {
 
   public static void uncaughtException(Throwable e) {
-    System.out.println("Server crashed! ");
+    ServerMessage.println(false, "Server crashed!");
 
     Calendar cal = Calendar.getInstance();
-    SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_HHmmss");
+    String filename = ServerSettings.PATH + "crashlogs/"
+        + TimeUtils.FILENAME_DATETIME.get().format(cal.getTime())
+        + ".txt";
 
-    String filename = "crashlogs/" + sdf.format(cal.getTime()) + ".txt";
-
-    PrintStream writer;
     try {
-      writer = new PrintStream(filename, "UTF-8");
-      writer.println(e.getClass() + ": " + e.getMessage());
-      for (int i = 0; i < e.getStackTrace().length; i++) {
-        writer.println(e.getStackTrace()[i].toString());
-      }
-      System.out.println("Error written to file: " + filename);
+      PrintStream writer = new PrintStream(filename, "UTF-8");
+      e.printStackTrace(writer);
+      ServerMessage.println(false, "Exception logged to file: " + filename);
     } catch (FileNotFoundException | UnsupportedEncodingException e1) {
+      ServerMessage.println(false, "ERROR - Can't write exception to " + filename);
       e.printStackTrace();
-      System.out.println("Error writing exception to file!");
     }
   }
 }

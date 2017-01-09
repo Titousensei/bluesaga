@@ -14,6 +14,7 @@ import map.TileData;
 import network.Client;
 import network.Server;
 import game.ServerSettings;
+import utils.ServerMessage;
 
 public class MapHandler extends Handler {
 
@@ -178,6 +179,7 @@ public class MapHandler extends Handler {
 
       // Send tile data
       addOutGoingMessage(client, "screen", screenData.toString());
+      ServerMessage.println(false, "Sreen - ", client.playerCharacter, ": Z=", client.playerCharacter.getZ());
 
       // Send info about soul if found
       if (tileData.foundSoul) {

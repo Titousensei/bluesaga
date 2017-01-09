@@ -155,7 +155,6 @@ public class Database {
 
       stat.close();
     } catch (SQLException e) {
-      ServerMessage.printMessage("Error adding bug report", false);
       e.printStackTrace();
     }
 
@@ -191,7 +190,7 @@ public class Database {
    * 		CHAT LOG
    *
    ******************************************/
-  public void addChatText(String type, int fromId, int toId, String message) {
+  private void addChatText(String type, int fromId, int toId, String message) {
     if (!Server.SERVER_RESTARTING) {
       try {
         PreparedStatement stat =
@@ -205,7 +204,7 @@ public class Database {
         stat.executeUpdate();
         stat.close();
       } catch (SQLException e) {
-        ServerMessage.printMessage("Error adding chat message", false);
+        ServerMessage.println(false, "Error adding chat message");
         e.printStackTrace();
       }
     }
@@ -258,8 +257,8 @@ public class Database {
             "select Id from user_character where Id = " + characterId + " and UserId = " + userId);
 
     if (own == 0) {
-      ServerMessage.printMessage(
-          "Hack attempt? User " + userId + " does not own character " + characterId, false);
+      ServerMessage.println(false,
+          "ALERT - Hack attempt? User ", userId, " does not own character ", characterId);
     }
 
     return (own != 0);

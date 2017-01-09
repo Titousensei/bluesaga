@@ -9,22 +9,22 @@ public class Recipe {
   private List<Item> materials = new ArrayList<>();
   private Item product;
 
-  public final int npcId;
+  public final int id;
   public final String name;
   private final String origin;
 
   public String items;
   public int[] abilities;
 
-  public Recipe(int id, String n, String o) {
-    npcId = id;
+  public Recipe(int i, String n, String o) {
+    id = i;
     name = n;
     origin = o;
   }
 
   //public Recipe(int id, Item product) {
   //  this.product = product;
- // }
+  // }
 
   public void addMaterial(Item material) {
     materials.add(material);
@@ -44,5 +44,10 @@ public class Recipe {
 
   public List<Item> getMaterials() {
     return materials;
+  }
+
+  @Override
+  public String toString() {
+    return name + " (" + id +")";
   }
 }

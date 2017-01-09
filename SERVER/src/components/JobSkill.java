@@ -78,4 +78,9 @@ public class JobSkill {
   public void setType(String type) {
     Type = type;
   }
+
+  @Override
+  public String toString() {
+    return Name + " (" + Id +") Lvl" + Level;
+  }
 }

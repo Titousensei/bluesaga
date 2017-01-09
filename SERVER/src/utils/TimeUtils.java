@@ -28,6 +28,14 @@ public class TimeUtils {
         }
       };
 
+  public final static ThreadLocal<SimpleDateFormat> FILENAME_DATETIME =
+      new ThreadLocal() {
+        @Override
+        protected SimpleDateFormat initialValue() {
+          return new SimpleDateFormat("yyyyMMdd_HHmmss");
+        }
+      };
+
   /**
    * Public Methods
    */

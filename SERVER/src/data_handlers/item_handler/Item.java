@@ -555,4 +555,22 @@ public class Item {
   public void setConsumeable(boolean consumeable) {
     this.consumeable = consumeable;
   }
+
+  @Override
+  public String toString() {
+    StringBuilder sb = new StringBuilder(100);
+    sb.append(Name)
+      .append(" (")
+      .append(Id)
+      .append(")");
+    if (MagicId != 0) {
+      sb.append(' ')
+        .append(magicType);
+    }
+    if (modifier != Modifier.Regular) {
+      sb.append(' ')
+        .append(modifier);
+    }
+    return sb.toString();
+  }
 }

@@ -8,10 +8,12 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 
 public class FileCopy {
 
-  public static void copyFile(File src, File dest) throws IOException {
+  private static void copyFile(File src, File dest) throws IOException {
 
     //if file, then copy it
     //Use bytes stream to support all file types
@@ -35,22 +37,22 @@ public class FileCopy {
     String bakPath = ServerSettings.PATH + "db_backups/usersDB_"
         + TimeUtils.getDate("yyyyMMdd_HHmmss") + ".db";
 
+    ServerMessage.println(false, "DB to backup: ", dbPath);
+    ServerMessage.println(false, "Backup path: ", bakPath);
+
     if (!ServerSettings.DEV_MODE) {
       File originalDB = new File(dbPath);
       File copyDB = new File(bakPath);
 
-      ServerMessage.printMessage("Make backup of usersDB.db...", false);
+      ServerMessage.println(false, "Making backup of usersDB.db...");
 
       try {
-        FileCopy.copyFile(originalDB, copyDB);
-        ServerMessage.printMessage("Done saving backup: " + dbPath, false);
+        Files.copy(originalDB.toPath(), copyDB.toPath(), StandardCopyOption.REPLACE_EXISTING);
+        ServerMessage.println(false, "Done saving backup: ", dbPath);
       } catch (IOException e) {
-        ServerMessage.printMessage("Failed to backup db!", false);
+        ServerMessage.println(false, "Failed to backup db!");
         e.printStackTrace();
       }
-    } else {
-      System.out.println("INFO - Pretending to backup: " + dbPath);
-      System.out.println("INFO - Would save to: " + bakPath);
     }
   }
 }

@@ -41,7 +41,7 @@ public class LoginHandler extends Handler {
           if (trusted.startsWith(attempt)) {
             try {
               newUserId = Integer.parseInt(trusted.substring(attempt.length()));
-              System.out.println("Auto login matched " + trusted);
+              ServerMessage.println(false, client, " auto login matched ", trusted);
 
               client.ConfirmAccount = true;
             } catch (NumberFormatException ex) {
@@ -67,7 +67,7 @@ public class LoginHandler extends Handler {
         if (newUserId == 0) {
           Handler.addOutGoingMessage(client, "login", "wrong");
         } else if (newUserId == -1) {
-          ServerMessage.printMessage("Can't connect to bluesaga.org!", false);
+          ServerMessage.println(false, "Can't connect to bluesaga.org!");
           Handler.addOutGoingMessage(client, "login", "error,#messages.server.has_problems");
         } else if (newUserId == -2) {
           addOutGoingMessage(client, "login", "needconfirm");
@@ -124,8 +124,7 @@ public class LoginHandler extends Handler {
                 + ")");
       }
 
-      ServerMessage.printMessage(
-          TimeUtils.now() + ": " + client.UserMail + " logged in successfully from " + client.IP, false);
+      ServerMessage.println(false, client, " logged in successfully");
 
       // SKICKA NAMN, RAS, EQUIP, LEVEL
       // FOR ALLA KARAKTARER TILL SPELAREN
@@ -138,8 +137,8 @@ public class LoginHandler extends Handler {
         // IF ACCOUNT HAS PK CHAR
         // LOGIN TO PK CHAR DIRECTLY
 
-        ServerMessage.printMessage(
-            "Player has a PK char logged in already! Sending that char...", false);
+        ServerMessage.println(false,
+            "Player has a PK char logged in already! Sending that char...");
 
         if (pkCharId > 0) {
           ConnectHandler.sendPlayerCharacterInfo(client, pkCharId);
@@ -305,7 +304,8 @@ public class LoginHandler extends Handler {
       } else {
         blueSagaId = statusCode;
       }
-      System.out.println("NEW BLUESAGA ID: " + blueSagaId);
+      ServerMessage.println(false, client, " new character: ",
+        name, " creature=", creatureId, " class=", classId);
     }
 
     if (correctName) {

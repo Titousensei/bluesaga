@@ -10,6 +10,7 @@ import network.Server;
 import data_handlers.DataHandlers;
 import data_handlers.Handler;
 import data_handlers.Message;
+import utils.ServerMessage;
 
 public class EquipHandler extends Handler {
 
@@ -133,6 +134,7 @@ public class EquipHandler extends Handler {
                 + oldEquipType
                 + ";"
                 + client.playerCharacter.getAttackRange());
+        ServerMessage.println(false, "Equip - ", client.playerCharacter, ": ", equippedItem);
 
         // SEND EQUIP INFO TO OTHER CLIENTS IN AREA
         // SEND INFO ABOUT MOVE TO ALL CLIENTS IN SAME AREA
@@ -189,6 +191,7 @@ public class EquipHandler extends Handler {
               + unequippedItem.getType()
               + ";"
               + client.playerCharacter.getAttackRange());
+      ServerMessage.println(false, "Unequip - ", client.playerCharacter, ": ", unequippedItem);
 
       // Add item to mouse
       addOutGoingMessage(

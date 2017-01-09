@@ -244,7 +244,6 @@ public class AbilityHandler extends Handler {
     }
 
     if (serverData.startsWith("<statuseffect_change>")) {
-System.out.println("serverData:"+serverData);
       String info[] = serverData.substring(21).split("/");
       Creature TARGET = MapHandler.addCreatureToScreen(info[0]);
       int seId = Integer.parseInt(info[1]);

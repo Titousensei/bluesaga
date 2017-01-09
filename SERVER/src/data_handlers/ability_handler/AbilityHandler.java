@@ -259,23 +259,24 @@ public class AbilityHandler extends Handler {
 
         classId = Integer.parseInt(equipInfo[1]);
 
-        if (equipType.equals("Weapon")) {
-          if (client.playerCharacter.getEquipment(equipType) != null) {
-            int weaponClassId = client.playerCharacter.getEquipment(equipType).getClassId();
-            if (classId > 0) {
-              // TODO: Exception for fishing, make this better
-              if (classId == 101
-                  && (client.playerCharacter.getEquipment(equipType).getId() == 173
-                      || client.playerCharacter.getEquipment(equipType).getId() == 193)) {
+        if (client.playerCharacter.getEquipment(equipType) != null) {
+          int weaponClassId = client.playerCharacter.getEquipment(equipType).getClassId();
+          if (classId > 0) {
+            // TODO: Exception for fishing, make this better
+            if (classId == 101
+                && (client.playerCharacter.getEquipment(equipType).getId() == 173
+                    || client.playerCharacter.getEquipment(equipType).getId() == 193)) {
+              canUse = true;
+            } else {
+              int weaponBaseClassId = 0;
+              if (GameInfo.classDef.get(weaponClassId) != null) {
+                weaponBaseClassId = GameInfo.classDef.get(weaponClassId).baseClassId;
+              }
+              if (weaponClassId == 0
+              || weaponClassId == classId
+              || (!onlyClass && weaponBaseClassId == classId)
+              ) {
                 canUse = true;
-              } else {
-                int weaponBaseClassId = 0;
-                if (GameInfo.classDef.get(weaponClassId) != null) {
-                  weaponBaseClassId = GameInfo.classDef.get(weaponClassId).baseClassId;
-                }
-                if (weaponClassId == classId || (!onlyClass && weaponBaseClassId == classId)) {
-                  canUse = true;
-                }
               }
             }
           }

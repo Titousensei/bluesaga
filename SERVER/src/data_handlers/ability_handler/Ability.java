@@ -491,4 +491,9 @@ public class Ability {
   public void setBuffOrNot(boolean buffOrNot) {
     this.buffOrNot = buffOrNot;
   }
+
+  @Override
+  public String toString() {
+    return AbilityId + ":" + Name;
+  }
 }

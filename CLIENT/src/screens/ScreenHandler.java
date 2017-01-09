@@ -147,15 +147,15 @@ public class ScreenHandler {
     } else if (BlueSaga.playerCharacter != null) {
 
       // Draw background
-      if (BlueSaga.playerCharacter.getShip() != null && BlueSaga.playerCharacter.getZ() == 0) {
-        ImageResource.getSprite("effects/void").draw(0, 0);
-      } else if (BlueSaga.playerCharacter.getZ() < 10) {
+      if (BlueSaga.playerCharacter.getZ() < 0) {
         g.setColor(new Color(0, 0, 0));
         g.fillRect(0, 0, ClientSettings.SCREEN_WIDTH, ClientSettings.SCREEN_HEIGHT);
       } else if (BlueSaga.playerCharacter.getZ() >= 10) {
         ImageResource.getSprite("effects/clouds").draw(0, 0);
         ImageResource.getSprite("effects/clouds")
             .draw(0, 0, ScreenHandler.AREA_EFFECT.getTintColor());
+      } else {
+        ImageResource.getSprite("effects/void").draw(0, 0);
       }
 
       // Draw tiles

@@ -691,11 +691,16 @@ public class Creature {
 
   public void addStatusEffect(StatusEffect newSE) {
     newSE.setActive(true);
+    boolean exist = false;
     for (StatusEffect checkSE : StatusEffects) {
       if (checkSE.getId() == newSE.getId()) {
-        StatusEffects.add(newSE);
+        exist = true;
         break;
       }
+    }
+
+    if (!exist) {
+      StatusEffects.add(newSE);
     }
 
     if (newSE.getAnimationId() > 0) {

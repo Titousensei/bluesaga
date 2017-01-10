@@ -80,7 +80,7 @@ public class WorldMap implements TileBasedMap {
     pathMapSize = 0;
 
     // LOAD MAP FROM DB
-    System.out.print("Loading map");
+    System.out.print("[WorldMap] INFO - Loading map");
 
     // LOAD MAP FROM DB                             1 2 3 4    5    6        7        8      9
     ResultSet tileInfo = Server.mapDB.askDB("select X,Y,Z,Type,Name,Passable,ObjectId,DoorId,AreaEffectId from area_tile");
@@ -160,7 +160,7 @@ public class WorldMap implements TileBasedMap {
       e.printStackTrace();
     }
 
-    ServerMessage.println(false, "Loading traps...");
+    System.out.println("[WorldMap] INFO - Loading traps...");
 
     // LOAD TRAPS AND TRIGGERS
     ResultSet areatrapInfo = Server.mapDB.askDB("select * from area_trap");
@@ -194,7 +194,7 @@ public class WorldMap implements TileBasedMap {
       e.printStackTrace();
     }
 
-    ServerMessage.println(false, "Loading triggers...");
+    System.out.println("[WorldMap] INFO - Loading triggers...");
 
     ResultSet triggerInfo = Server.mapDB.askDB("select * from trigger");
 
@@ -216,12 +216,12 @@ public class WorldMap implements TileBasedMap {
       e.printStackTrace();
     }
 
-    ServerMessage.println(false, "Loading containers...");
+    System.out.println("[WorldMap] INFO - Loading containers...");
 
     // LOAD CONTAINERS
     ResultSet containerInfo =
-        //                         1   2     3  4  5
-        Server.mapDB.askDB("select Id, Type, X, Y, Z from area_container order by Y asc, X asc");
+        //                         1   2     3  4  5  6
+        Server.mapDB.askDB("select Id, Type, X, Y, Z, Items from area_container order by Y asc, X asc");
 
     try {
       while (containerInfo.next()) {
@@ -235,13 +235,22 @@ public class WorldMap implements TileBasedMap {
           MapTiles.get(coordStr).setObjectId(containerInfo.getString(2).intern());
           MapTiles.get(coordStr).setContainerId(containerInfo.getInt(1));
         }
+        String items = containerInfo.getString(6);
+        if (items!=null && !"".equals(items)) {
+          for (String itemid : items.split(","))
+            if (ServerGameInfo.itemDef.get(Integer.parseInt(itemid)) == null) {
+              System.out.println("[WorldMap] ERROR - Unknown itemid for container #"
+                  + containerInfo.getInt(1) + ": " + itemid);
+           }
+        }
+
       }
       containerInfo.close();
     } catch (SQLException e1) {
       e1.printStackTrace();
     }
 
-    ServerMessage.println(false, "Loading souls...");
+    System.out.println("[WorldMap] INFO - Loading souls...");
 
     // LOAD SOULS                                    1   2 3 4 5
     ResultSet soulInfo = Server.userDB.askDB("select Id, X,Y,Z,CharacterId from character_soul");
@@ -266,7 +275,7 @@ public class WorldMap implements TileBasedMap {
       pathMapSize = maxY;
     }
 
-    ServerMessage.println(false, "Loading monsters...");
+    System.out.println("[WorldMap] INFO - Loading monsters...");
 
     // LOAD NPCs FROM DATABASE
     ResultSet creatureInfo;
@@ -367,7 +376,7 @@ public class WorldMap implements TileBasedMap {
     }
 
     if (ServerSettings.RANDOM_ARCHIPELAGO) {
-      ServerMessage.println(false, "Generating random archipelago...");
+      System.out.println("[WorldMap] INFO - Generating random archipelago...");
 
       // Pirate island
       zLevels.add(-200);
@@ -379,7 +388,7 @@ public class WorldMap implements TileBasedMap {
 
 
     if (ServerSettings.RANDOM_DUNGEON) {
-      ServerMessage.println(false, "Generating random dungeons...");
+      System.out.println("[WorldMap] INFO - Generating random dungeons...");
 
       // Generate instances
       DungeonGenerator dGenerator = new DungeonGenerator();
@@ -390,7 +399,7 @@ public class WorldMap implements TileBasedMap {
       dGenerator.generate(MapTiles, 30);
     }
 
-    ServerMessage.println(false, "DONE Loading world map");
+    System.out.println("[WorldMap] INFO - Loading finished");
   }
 
   public void addMonsterToZ(Npc npc, int z) {

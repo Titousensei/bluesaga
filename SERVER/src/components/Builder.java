@@ -70,7 +70,7 @@ public abstract class Builder<T>
 
   public static <T> void load(String filename, Class<? extends Builder<T>> builder, Map<Integer, T> ret)
   {
-    System.err.println("[Builder] INFO - " + builder.getSimpleName() + ": loading " + filename);
+    System.err.println("[Builder] INFO - " + builder.getSimpleName() + " loading " + filename);
     String line = null;
     Builder<T> current = null;
     Integer currentId = null;

@@ -108,7 +108,7 @@ extends Builder<Shop>
       if (sales!=null && !"None".equals(sales)) {
         for (String it : sales.split(",")) {
           if (!items.containsKey(parseInt(it))) {
-            System.out.println("WARNING - Shop selling inexistant item " + it + ": " + sh);
+            System.out.println("[ShopBuilder] ERROR - Unknow item for shop " + sh + ": " + it);
           }
         }
       }

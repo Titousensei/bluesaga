@@ -5,6 +5,7 @@ import java.util.*;
 import components.Builder;
 import data_handlers.item_handler.Item;
 import utils.ServerGameInfo;
+import utils.ServerMessage;
 
 public class RecipeBuilder
 extends Builder<Recipe>
@@ -21,7 +22,12 @@ extends Builder<Recipe>
 
   public void material(String val) {
     Item material = ServerGameInfo.itemDef.get(parseInt(val));
-    r.addMaterial(material);
+    if (material != null) {
+      r.addMaterial(material);
+    }
+    else {
+      System.out.println("[RecipeBuilder] ERROR - Unknown material for " + r + ":" + val);
+    }
   }
 
   public void craftingStation(String val) {

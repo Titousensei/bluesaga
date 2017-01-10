@@ -45,7 +45,8 @@ extends Builder<Gathering>
   public static void verify(Map<Integer, Item> items, Map<Integer, Gathering> def) {
     for (Gathering ga : def.values()) {
       if (!items.containsKey(ga.getResourceId())) {
-        System.out.println("WARNING - Gathering inexistant item: "+ ga);
+        System.out.println("[GatheringBuilder] WARNING - ERROR - Unknow item for gathering "
+            + ga + ": " + ga.getResourceId());
       }
     }
   }

@@ -640,11 +640,6 @@ public class BattleHandler extends Handler {
                 client.playerCharacter.getZ())
             .setSoulCharacterId(client.playerCharacter.getDBId());
 
-        ServerMessage.println(false, "DEATH: ", TARGET,
-            " @", client.playerCharacter.getX(),
-            ",", client.playerCharacter.getY(),
-            ",", client.playerCharacter.getZ());
-
         if (client.Ready) {
           addOutGoingMessage(
               client,

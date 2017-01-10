@@ -18,6 +18,7 @@ import network.Client;
 import network.Server;
 import utils.RandomUtils;
 import utils.ServerGameInfo;
+import utils.ServerMessage;
 
 public class HitHandler extends Handler {
 
@@ -417,9 +418,10 @@ public class HitHandler extends Handler {
       if (ATTACKER != null) {
         if (ATTACKER.getCreatureType() == CreatureType.Player) {
           pkAttack = PlayerDeathCause.FAIR_PK;
-          if(ATTACKER.getLevel() > TARGET.getLevel()+ServerSettings.PK_WEAK_LEVEL)
-        	  // TODO: Add status effect for killing Weak character ?
-        	  pkAttack = PlayerDeathCause.UNFAIR_PK;
+          if(ATTACKER.getLevel() > TARGET.getLevel()+ServerSettings.PK_WEAK_LEVEL) {
+            // TODO: Add status effect for killing Weak character ?
+            pkAttack = PlayerDeathCause.UNFAIR_PK;
+          }
           PlayerCharacter playerAttacker = (PlayerCharacter) ATTACKER;
           PvpHandler.playerKillsPlayer(playerAttacker, playerTarget);
         }
@@ -427,6 +429,13 @@ public class HitHandler extends Handler {
 
       // PLAYER LOSE XP AND LOOT
       BattleHandler.playerDeath(playerTarget.client, pkAttack);
+
+      ServerMessage.println(false, "DEATH: ", TARGET,
+          " @", playerTarget.getX(),
+          ",", playerTarget.getY(),
+          ",", playerTarget.getZ(),
+          " killed by ", ATTACKER
+          );
 
     } else if (TARGET.getCreatureType() == CreatureType.Monster) {
       // IF TARGET IS A MONSTER

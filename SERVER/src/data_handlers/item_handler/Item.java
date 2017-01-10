@@ -244,10 +244,27 @@ public class Item {
 
   public int getRequirement(String Type) {
     Integer ret = Requirements.get(Type);
-    return (ret != null) ? ret.intValue() : 0;
+
+    if (ret == null) {
+      return 0;
+    }
+
+    if ("ReqLevel".equals(Type)) {
+      int lvl = ret.intValue();
+      if (modifier.bonus > 0) {
+        lvl += modifier.bonus;
+      }
+      else {
+        lvl += modifier.bonus * 2;
+        if (lvl<1) { lvl = 1; }
+      }
+      return lvl;
+    }
+
+    return ret.intValue();
   }
 
-  public HashMap<String, Integer> getRequirements() {
+  private HashMap<String, Integer> getRequirements() {
     return Requirements;
   }
 
@@ -358,19 +375,6 @@ public class Item {
     modifier = mod;
     if (modifier != Modifier.Regular) {
       Name = modifier.toString() + ' ' + Name;
-
-      Integer ret = Requirements.get("ReqLevel");
-      if (ret != null) {
-        int lvl = ret.intValue();
-        if (modifier.bonus > 0) {
-          lvl += modifier.bonus;
-        }
-        else {
-          lvl += modifier.bonus * 2;
-          if (lvl<1) { lvl = 1; }
-        }
-        Requirements.put("ReqLevel", Integer.valueOf(lvl));
-      }
 
       for (Map.Entry<String, Integer> stat : Stats.getHashMap().entrySet()) {
 

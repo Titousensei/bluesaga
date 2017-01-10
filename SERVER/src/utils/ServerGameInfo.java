@@ -138,6 +138,7 @@ public class ServerGameInfo {
     for (File f : new File(ServerSettings.PATH).listFiles((dir, name) -> name.startsWith("quests_"))) {
       Builder.load(f.getPath(), QuestBuilder.class, questDef);
     }
+    QuestBuilder.verify(itemDef, questDef);
     questNpc = QuestBuilder.mapNpc(questDef);
 
     // LOAD SHOP INFO

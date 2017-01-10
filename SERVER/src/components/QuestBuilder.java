@@ -124,7 +124,7 @@ extends Builder<Quest>
       else if (r.endsWith("gc")) {
         q.setRewardCopper(parseInt(r.substring(0, r.length()-2)) * 10000);
       }
-      else if (r.endsWith("it") || r.endsWith("item")) {
+      else if (r.startsWith("i") || r.endsWith("it") || r.endsWith("item")) {
         ++ num_items;
       }
       else if (r.startsWith("ship")) {
@@ -138,7 +138,11 @@ extends Builder<Quest>
       int[] items = new int[num_items];
       int i = 0;
       for(String r : val.split("\\s+")) {
-        if (r.endsWith("it")) {
+        if (r.startsWith("i")) {
+          items[i] = parseInt(r);
+          ++ i;
+        }
+        else if (r.endsWith("it")) {
           items[i] = parseInt(r.substring(0, r.length()-2));
           ++ i;
         }
@@ -238,6 +242,28 @@ extends Builder<Quest>
       l.add(q);
     }
     return ret;
+  }
+
+  public static void verify(Map<Integer, Item> items, Map<Integer, Quest> questDef) {
+    for (Quest q : questDef.values()) {
+      int[] rit = q.getRewardItems();
+      if (rit!=null) {
+        for (int it : rit) {
+          if (!items.containsKey(it)) {
+            System.out.println("[QuestBuilder] ERROR - Unknow reward item for quest " + q + ": " + it);
+          }
+        }
+      }
+
+      List<Item> qit = q.getQuestItems();
+      if (qit!=null) {
+        for (Item it : qit) {
+          if (!items.containsKey(it.getId())) {
+            System.out.println("[QuestBuilder] ERROR - Unknow quest item for quest " + q + ": " + it);
+          }
+        }
+      }
+    }
   }
 
   public static void main(String... args) {

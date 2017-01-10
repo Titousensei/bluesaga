@@ -986,27 +986,26 @@ public class Creature implements Mover {
   public int regainHealth(boolean safeZone) {
     int healthGain = 0;
 
-    if (getHealth() != getStat("MAX_HEALTH")) {
+    if (getHealth() > getStat("MAX_HEALTH")) {
+      setStat("HEALTH_REGAIN", 0);
+      changeHealth(0);
+    }
+    else if (getHealth() < getStat("MAX_HEALTH")) {
 
       if (isResting()) {
         healthGain = Math.round(regainSleepAccumulatedItr / 8.0f);
       } else {
-        if (getHealth() > getStat("MAX_HEALTH")) {
-          healthGain = -1;
-        } else {
-          healthGain = 1;
+        healthGain = getStat("MAX_HEALTH") / 100;
+        int bonus = getStat("MAX_HEALTH") % 100;
+        if (bonus > RandomUtils.getInt(0, 100)) {
+          healthGain ++;
         }
       }
-
-      if (!safeZone) {
-        if (healthGain > getStat("HEALTH_REGAIN")) {
-          healthGain = getStat("HEALTH_REGAIN");
-        }
+      if (healthGain > getStat("HEALTH_REGAIN")) {
+        healthGain = getStat("HEALTH_REGAIN");
       }
-      int newHealthRegain = getStat("HEALTH_REGAIN") - healthGain;
 
-      setStat("HEALTH_REGAIN", newHealthRegain);
-
+      setStat("HEALTH_REGAIN", getStat("HEALTH_REGAIN") - healthGain);
       changeHealth(healthGain);
     }
     return healthGain;
@@ -1094,7 +1093,6 @@ public class Creature implements Mover {
     }
 
     Health = Health - damage;
-
     if (Health <= 0) {
       Health = 0;
       die();

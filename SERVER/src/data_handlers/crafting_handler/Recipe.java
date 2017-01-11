@@ -34,6 +34,10 @@ public class Recipe {
     return product;
   }
 
+  public void setProduct(Item val) {
+    product = val;
+  }
+
   public CraftingStation getCraftingStation() {
     return craftingStation;
   }

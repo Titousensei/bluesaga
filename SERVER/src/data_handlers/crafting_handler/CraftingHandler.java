@@ -52,16 +52,17 @@ public class CraftingHandler extends Handler {
     try (ResultSet recipesInfo =
         Server.userDB.askDB(
             "select RecipeId from character_recipe where CharacterId = "
-                + client.playerCharacter.getDBId()
-                + " and RecipeId = '" + craftingStationName +"'");
+                + client.playerCharacter.getDBId());
     ) {
       while (recipesInfo.next()) {
         Recipe recipe = recipes.get(recipesInfo.getInt(1));
-        recipesToSend
-            .append(recipe.getProduct().getId())
-            .append(',')
-            .append(recipe.getProduct().getName())
-            .append(';');
+        if (recipe.getCraftingStation() == cs) {
+          recipesToSend
+              .append(recipe.getProduct().getId())
+              .append(',')
+              .append(recipe.getProduct().getName())
+              .append(';');
+        }
       }
     } catch (SQLException e) {
       e.printStackTrace();

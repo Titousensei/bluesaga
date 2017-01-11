@@ -17,7 +17,8 @@ extends Builder<Recipe>
   }
 
   public void productId(String val) {
-//    r.setProductId(parseInt(val));
+    Item it = ServerGameInfo.itemDef.get(parseInt(val));
+    r.setProduct(it);
   }
 
   public void material(String val) {

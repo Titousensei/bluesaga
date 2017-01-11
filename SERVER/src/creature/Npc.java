@@ -539,6 +539,9 @@ public class Npc extends Creature {
     if (getFamilyId() == 8 || getAggroType() == 4 || getCreatureId() == 1) {
       setStat("ATTACKSPEED", 0);
     }
+    if (getAggroType() == 4) {
+      setName("");
+    }
 
     loadEquipment();
 
@@ -898,6 +901,9 @@ public class Npc extends Creature {
 
     if (getFamilyId() == 8 || getAggroType() == 4 || getCreatureId() == 1) {
       setStat("ATTACKSPEED", 0);
+    }
+    if (getAggroType() == 4) {
+      setName("");
     }
   }
 

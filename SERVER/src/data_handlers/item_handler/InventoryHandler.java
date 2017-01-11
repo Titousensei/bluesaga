@@ -587,7 +587,7 @@ public class InventoryHandler extends Handler {
   public static boolean addSpecialItemToInventory(Client client, Item itemToMove) {
     boolean addSpecialItem = false;
 
-    if (itemToMove.getType().equals("Key")) {
+    if (itemToMove.getType().equals("Key") && !itemToMove.getSubType().equals("Part")) {
       // IF KEY, ADD TO KEYCHAIN
       addSpecialItem = true;
 

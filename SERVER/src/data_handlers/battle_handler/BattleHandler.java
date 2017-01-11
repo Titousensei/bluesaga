@@ -753,6 +753,9 @@ public class BattleHandler extends Handler {
          "select CheckpointId from user_character where Id = " + playerCharacter.getDBId());
 
     Coords respawn = ServerGameInfo.checkpointDef.get(checkpointId);
+    if (respawn == null) { // new character not checked in
+      respawn = new Coords(ServerSettings.startX, ServerSettings.startY, ServerSettings.startZ);
+    }
     playerCharacter.walkTo(respawn.x, respawn.y, respawn.z);
 
     Server.WORLD_MAP.addPlayerToZ(playerCharacter, playerCharacter.getZ());

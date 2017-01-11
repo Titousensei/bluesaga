@@ -64,14 +64,14 @@ public class XPTables {
     if (lvl > 1 && lvl <= ServerSettings.LEVEL_CAP) {
       return totalLevelXP[lvl];
     }
-    return Integer.MAX_VALUE;
+    return 0;
   }
 
   public static int getNextLevelXP(int lvl) {
     if (lvl > 1 && lvl <= ServerSettings.LEVEL_CAP) {
       return nextLevelXP[lvl];
     }
-    return Integer.MAX_VALUE;
+    return 0;
   }
 
   public static int getLevelByXP(int XP) {
@@ -89,14 +89,14 @@ public class XPTables {
     if (lvl > 1 && lvl <= ServerSettings.JOB_LEVEL_CAP) {
       return totalLevelSP[lvl];
     }
-    return Integer.MAX_VALUE;
+    return 0;
   }
 
   public static int getNextLevelSP(int lvl) {
     if (lvl > 1 && lvl <= ServerSettings.JOB_LEVEL_CAP) {
       return nextLevelSP[lvl];
     }
-    return Integer.MAX_VALUE;
+    return 0;
   }
 
   public static int getLevelBySP(int SP) {

@@ -153,6 +153,7 @@ public abstract class Server {
               Client s = entry.getValue();
               if (s.Ready) {
                 Handler.addOutGoingMessage(s, "message", "#messages.server.restart_fifteen");
+                ServerMessage.println(false, "SERVER RESTART: -15 min");
               }
             }
             sendRestartWarning();
@@ -210,6 +211,7 @@ public abstract class Server {
     Runtime.getRuntime().addShutdownHook(new Thread() {
         public void run() {
           Server.restartServer();
+          ServerMessage.println(false, "SERVER RESTART: now");
         }
     });
 
@@ -315,6 +317,7 @@ public abstract class Server {
               Client s = entry.getValue();
               if (s.Ready) {
                 Handler.addOutGoingMessage(s, "message", "#messages.server.restart_one");
+                ServerMessage.println(false, "SERVER RESTART: -1 min");
               }
             }
             sendLastRestartWarning();

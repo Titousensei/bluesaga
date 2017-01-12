@@ -91,7 +91,6 @@ public class ChatHandler extends Handler {
       String chatChannel = chatInfo[0].toLowerCase();
       String chatText = chatInfo[1];
 
-      chatText = chatText.replace("'", "");
       String chatLower = chatText.toLowerCase();
 
       if (chatText.startsWith("/")) {
@@ -222,9 +221,7 @@ public class ChatHandler extends Handler {
       if (!specialCommand && !mutedUsers.contains(client.UserId)) {
 
         // Filter bad words from chat message
-        String chatMessage = "";
-
-        chatMessage = chatText;
+        String chatMessage = chatText;
         chatLower = chatMessage.toLowerCase();
 
         for (String badword : BadWords) {

@@ -244,12 +244,10 @@ public class MonsterHandler extends Handler {
 
   public static void moveAggroMonsters() {
 
-    Vector<Npc> monsterMoved = new Vector<Npc>();
-    Vector<Npc> monsterLostAggro = new Vector<Npc>();
+    List<Npc> monsterMoved = new ArrayList<>(100);
+    List<Npc> monsterLostAggro = new ArrayList<>(100);
 
-    for (Iterator<Npc> iter = aggroMonsters.iterator(); iter.hasNext(); ) {
-      Npc aggroMonster = iter.next();
-
+    for (Npc aggroMonster : aggroMonsters) {
       if (aggroMonster.isDead() || !aggroMonster.isAggro()) {
         monsterLostAggro.add(aggroMonster);
       } else {
@@ -265,6 +263,7 @@ public class MonsterHandler extends Handler {
             ai.doAggroBehaviour();
             if (ai.takeHasMoved()) {
               monsterMoved.add(aggroMonster);
+              aggroMonster.startMoveTimer(false);
               checkMonsterMoveConsequences(aggroMonster);
             }
             if (ai.takeLoseAggro()) {
@@ -288,8 +287,6 @@ public class MonsterHandler extends Handler {
 
       if (s.Ready) {
         StringBuilder monsterInfoToSend = new StringBuilder(1000);
-        StringBuilder monsterAggroToSend = new StringBuilder(1000);
-
         for (Npc m : monsterMoved) {
           if (isVisibleForPlayer(s.playerCharacter, m.getX(), m.getY(), m.getZ())) {
             monsterInfoToSend
@@ -318,6 +315,11 @@ public class MonsterHandler extends Handler {
                 .append(';');
           }
         }
+        if (monsterInfoToSend.length() > 0) {
+          addOutGoingMessage(s, "creaturepos", monsterInfoToSend.toString());
+        }
+
+        StringBuilder monsterAggroToSend = new StringBuilder(1000);
         for (Npc m : monsterLostAggro) {
           int aggroStatus = 0;
 
@@ -331,11 +333,6 @@ public class MonsterHandler extends Handler {
               .append(m.getHealthStatus())
               .append(';');
         }
-
-        if (monsterInfoToSend.length() > 0) {
-          addOutGoingMessage(s, "creaturepos", monsterInfoToSend.toString());
-        }
-
         if (monsterAggroToSend.length() > 0) {
           addOutGoingMessage(s, "aggroinfo", monsterAggroToSend.toString());
         }
@@ -487,7 +484,7 @@ public class MonsterHandler extends Handler {
       Creature attacker, int hitX, int hitY, int hitZ, boolean changeTarget) {
     int AGGRO_RANGE = 3;
 
-    Vector<Npc> aggroMonsters = new Vector<Npc>();
+    List<Npc> aggroM = new ArrayList<>(100);
 
     int rangeTiles = 6;
 
@@ -516,7 +513,7 @@ public class MonsterHandler extends Handler {
                       AGGRO_RANGE = 40;
                       if (distToMob <= AGGRO_RANGE && !attacker.hasStatusEffect(102)) {   // Stealth
                         m.setAggro(attacker);
-                        aggroMonsters.add(m);
+                        aggroM.add(m);
                       }
                     }
                   }
@@ -587,7 +584,7 @@ public class MonsterHandler extends Handler {
 
                         if (turnAggro && !attacker.hasStatusEffect(102)) {   // Stealth
                           m.setAggro(attacker);
-                          aggroMonsters.add(m);
+                          aggroM.add(m);
                         }
                       }
                     }
@@ -605,7 +602,7 @@ public class MonsterHandler extends Handler {
       }
     }
 
-    if (aggroMonsters.size() > 0) {
+    if (aggroM.size() > 0) {
       // SEND AGGRO INFO TO PLAYERS IN THE AREA
 
       for (Entry<Integer, Client> entry : Server.clients.entrySet()) {
@@ -614,8 +611,7 @@ public class MonsterHandler extends Handler {
         if (c.Ready) {
           StringBuilder aggroData = new StringBuilder(1000);
 
-          for (Iterator<Npc> iter3 = aggroMonsters.iterator(); iter3.hasNext(); ) {
-            Npc m = iter3.next();
+          for (Npc m : aggroM) {
             if (Handler.isVisibleForPlayer(c.playerCharacter, m.getX(), m.getY(), m.getZ())) {
               int aggroStatus = 1;
               aggroData
@@ -636,6 +632,6 @@ public class MonsterHandler extends Handler {
       }
     }
 
-    return aggroMonsters.size();
+    return aggroM.size();
   }
 }

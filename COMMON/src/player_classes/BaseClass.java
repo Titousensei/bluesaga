@@ -66,7 +66,7 @@ public class BaseClass {
     startStats.reset();
     startStats.addValue("SPEED", 80);
     startStats.addValue("ATTACKSPEED", 75);
-    startStats.addValue("ACCURACY", 50);
+    startStats.addValue("ACCURACY", 64);
     startStats.addValue("EVASION", 5);
     startStats.addValue("CRITICAL_HIT", 0);
   }

@@ -438,8 +438,8 @@ public class Creature implements Mover {
     }
 
     // Adjust Secondary stats from primary stats
-    // "ACCURACY"       50 + INT/4
-    BonusStats.addValue("ACCURACY", getNewStat("INTELLIGENCE", 4.0f));
+    // "ACCURACY"       64 + INT/3.5
+    BonusStats.addValue("ACCURACY", getNewStat("INTELLIGENCE", 3.5f));
     // "EVASION"         5 + AGI/3
     BonusStats.addValue("EVASION", getNewStat("AGILITY", 3.0f));
     // "CRITICAL_HIT"    0 + INT/10

@@ -48,7 +48,10 @@ public class SkillWindow extends Window {
 
           int i = 0;
           for (Skill s : BlueSaga.playerCharacter.getSkills().values()) {
-            if (s != null && (s.getSP()>0 || s.getLevel()>1)) {
+            if (s != null
+            && !"Weapon".equals(s.getType())
+            && (s.getSP()>0 || s.getLevel()>1)
+            ) {
               ImageResource.getSprite("skills/icon" + s.getId())
                   .draw(X + 20 + moveX, Y + 65 + moveY + (i) * 30);
               ImageResource.getSprite("gui/world/meter_bg")
@@ -93,6 +96,29 @@ public class SkillWindow extends Window {
 
               g.drawString(
                   playerClass.name + " - Lvl " + playerClass.level,
+                  X + 180 + moveX,
+                  Y + 73 + moveY + (i) * 30);
+              i++;
+            }
+          }
+
+          for (Skill s : BlueSaga.playerCharacter.getSkills().values()) {
+            if (s != null
+            && "Weapon".equals(s.getType())
+            && (s.getSP()>0 || s.getLevel()>1)
+            ) {
+              ImageResource.getSprite("skills/icon" + s.getId())
+                  .draw(X + 20 + moveX, Y + 65 + moveY + (i) * 30);
+              ImageResource.getSprite("gui/world/meter_bg")
+                  .draw(X + 50 + moveX, Y + 70 + moveY + (i) * 30);
+
+              g.setWorldClip(X + 50 + moveX, Y + 70 + moveY + (i) * 30, s.getSPBarWidth(107), 20);
+              ImageResource.getSprite("gui/world/xp_small_meter")
+                  .draw(X + 55 + moveX, Y + 74 + moveY + (i) * 30);
+              g.clearWorldClip();
+
+              g.drawString(
+                  s.getName() + " - Lvl " + s.getLevel(),
                   X + 180 + moveX,
                   Y + 73 + moveY + (i) * 30);
               i++;

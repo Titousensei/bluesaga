@@ -31,12 +31,14 @@ public class SkillHandler extends Handler {
           int level = Integer.parseInt(skill_info[2]);
           int sp = Integer.parseInt(skill_info[3]);
           int spnext = Integer.parseInt(skill_info[4]);
+          String skillType = skill_info[5];
 
           Skill newSkill = new Skill(skillId);
           newSkill.setName(skillName);
           newSkill.setLevel(level);
           newSkill.setSP(sp);
           newSkill.setSPnext(spnext);
+          newSkill.setType(skillType);
 
           BlueSaga.playerCharacter.addSkill(newSkill);
         }

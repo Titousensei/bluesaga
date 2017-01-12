@@ -148,6 +148,8 @@ public class SkillHandler extends Handler {
                 .append(skillInfo.getInt(3))
                 .append(',')
                 .append(nextSP)
+                .append(',')
+                .append(skillDef.getType())
                 .append(';');
           }
         }

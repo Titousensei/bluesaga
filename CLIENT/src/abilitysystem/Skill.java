@@ -4,6 +4,7 @@ public class Skill {
 
   private int Id;
   private String Name;
+  private String Type;
 
   private int Level;
   private int SP;
@@ -26,6 +27,14 @@ public class Skill {
 
   public void setName(String name) {
     Name = name;
+  }
+
+  public String getType() {
+    return Type;
+  }
+
+  public void setType(String type) {
+    Type = type;
   }
 
   public int getLevel() {

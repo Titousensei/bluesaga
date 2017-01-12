@@ -22,7 +22,6 @@ public class FriendsHandler extends Handler {
 
     for (Map.Entry<Integer, Client> entry : Server.clients.entrySet()) {
       Client s = entry.getValue();
-
       if (s.Ready) {
         total_online++;
         if (s.playerCharacter.getDBId() != client.playerCharacter.getDBId()
@@ -32,10 +31,8 @@ public class FriendsHandler extends Handler {
       }
     }
 
-    if (playerInfo.length() > 0) {
-      String sendInfo = total_online + '/' + playerInfo.toString();
-      addOutGoingMessage(client, "playersonline", sendInfo);
-    }
+    String sendInfo = total_online + "/" + playerInfo.toString();
+    addOutGoingMessage(client, "playersonline", sendInfo);
   }
 
   public static void handleAddFriend(Message m) {

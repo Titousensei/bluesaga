@@ -82,13 +82,17 @@ public class QuestHandler extends Handler {
             //      1        2
             "select QuestId, Status from character_quest where CharacterId = "
                 + client.playerCharacter.getDBId()
-                + " and Status > 0 and Status < 3");
+                + " and Status != 0 and Status < 3");
 
     StringBuilder questData = new StringBuilder(1000);
 
     try {
       while (myQuestInfo.next()) {
         Quest questInfo = ServerGameInfo.questDef.get(myQuestInfo.getInt(1));
+        int status = myQuestInfo.getInt(1);
+        if (status < 0 ) {
+          status = 1;
+        }
 
         questData
             .append(questInfo.getId())
@@ -97,7 +101,7 @@ public class QuestHandler extends Handler {
             .append(',')
             .append(questInfo.getType())
             .append(',')
-            .append(myQuestInfo.getString(2))
+            .append(status)
             .append(',')
             .append(questInfo.getLevel())
             .append(';');
@@ -195,6 +199,7 @@ public class QuestHandler extends Handler {
 
             // NOT SHOW COMPLETED QUESTS
             // 0 = new, 1 = accepted, 2 = get reward, 3 = completed
+            // negative status (-1) is used to store the initial count of some quests, like kill
             int questStatus = Server.userDB.askInt(
                 "select Status from character_quest where QuestId = "
                     + questInfo.getId()
@@ -203,6 +208,8 @@ public class QuestHandler extends Handler {
 
             if (questStatus == 3) {
               showOk = false;
+            } else if (questStatus < 0) {
+              questStatus = 1;
             }
 
             if (showOk) {
@@ -299,21 +306,30 @@ public class QuestHandler extends Handler {
       }
       // IF ALL IS FINE, ADD QUEST
       if (addOk) {
-        checkQuestItem(client, questId);
-        checkQuestAbility(client, questId);
+        checkQuestItem(client, checkQuest);
+        checkQuestAbility(client, checkQuest);
 
         ServerMessage.println(false, "AcceptQuest - ", client.playerCharacter,
             questId, ":", checkQuest.getName());
 
         addOutGoingMessage(client, "quest", "add;" + checkQuest.getName());
-        client.playerCharacter.addQuest(questId);
+
+        if (Quest.QType.Kill.equals(checkQuest.getType())) {
+          int nrKills = Server.userDB.askInt(
+                  "select Kills from character_kills where CreatureId = "
+                      + checkQuest.getTargetId()
+                      + " and CharacterId = "
+                      + client.playerCharacter.getDBId());
+          client.playerCharacter.addQuest(questId, - nrKills - 1);
+        }
+        else {
+          client.playerCharacter.addQuest(questId, 1);
+        }
       }
     }
   }
 
-  public static void checkQuestAbility(Client client, int questId) {
-    // CHECK IF THERE IS A QUEST ITEM
-    Quest addedQuest = ServerGameInfo.questDef.get(questId);
+  private static void checkQuestAbility(Client client, Quest addedQuest) {
 
     // Check if quest gives ability
     if (addedQuest.getQuestAbilityId() != 0) {
@@ -343,9 +359,8 @@ public class QuestHandler extends Handler {
   }
 
   // Check if there is a quest item to be given before doing the quest
-  public static void checkQuestItem(Client client, int questId) {
+  private static void checkQuestItem(Client client, Quest addedQuest) {
     // CHECK IF THERE IS A QUEST ITEM
-    Quest addedQuest = ServerGameInfo.questDef.get(questId);
     if (addedQuest!=null && addedQuest.getQuestItems()!=null) {
       for (Item questItem : addedQuest.getQuestItems()) {
         InventoryHandler.addItemToInventory(client, questItem);
@@ -353,7 +368,7 @@ public class QuestHandler extends Handler {
     }
   }
 
-  public static void getQuestInfo(Client client, int questId) {
+  private static void getQuestInfo(Client client, int questId) {
 
     Quest questInfo = ServerGameInfo.questDef.get(questId);
     if (questInfo != null) {
@@ -365,37 +380,10 @@ public class QuestHandler extends Handler {
                   + " and CharacterId = "
                   + client.playerCharacter.getDBId());
 
-      /*
-              // IF GET ITEM X QUEST, REMOVE ITEM AND COMPLETE QUEST
-              if(questStatus == 1 && questInfo.getString("Type").equals("Get X item X")){
-                int itemId = questInfo.getInt("TargetId");
-                int targetNr = questInfo.getInt("TargetNr");
-
-                //CHECK IF HAS CORRECT NR OF ITEMS
-                ResultSet itemInfo = Server.userDB.askDB("select Id from character_item where CharacterId = "+client.playerCharacter.getDBId()+" and ItemId = "+itemId+" and InventoryPos <> 'None' and InventoryPos <> 'Mouse'  and InventoryPos <> 'Actionbar'");
-
-                int nrRows = 0;
-                while(itemInfo.next()){
-                  nrRows++;
-                }
-                itemInfo.close();
-
-                if(targetNr <= nrRows){
-                  itemInfo = Server.userDB.askDB("select Id from character_item where CharacterId = "+client.playerCharacter.getDBId()+" and ItemId = "+itemId+" and InventoryPos <> 'None' and InventoryPos <> 'Mouse'  and InventoryPos <> 'Actionbar'");
-                  while(targetNr > 0 && itemInfo.next()){
-                    Server.userDB.updateDB("delete from character_item where Id = "+itemInfo.getInt("Id"));
-                    targetNr--;
-                  }
-                  itemInfo.close();
-                  questStatus = 2;
-                }
-              }
-      */
-
       // COMPLETE QUESTS OF "STORY" TYPE DIRECTLY
       if (Quest.QType.Story.equals(questInfo.getType())) {
         // GIVE QUEST ITEM
-        checkQuestItem(client, questId);
+        checkQuestItem(client, questInfo);
         Server.userDB.updateDB(
             "insert into character_quest (QuestId, CharacterId, Status) values ("
                 + questId
@@ -417,6 +405,8 @@ public class QuestHandler extends Handler {
         completedQuest = rewardQuest(client, questId);
 
         questStatus = 3;
+      } else if (questStatus < 0) {
+        questStatus = 1;
       }
 
       String questType = questInfo.getType().toString();
@@ -494,15 +484,20 @@ public class QuestHandler extends Handler {
       if (q != null) {
         // CHECK IF COMPLETED ANY "KILL X CREATURE X" - QUESTS
         if (Quest.QType.Kill.equals(q.questRef.getType())
-        && q.getStatus() == 1
+        && (q.getStatus() == 1 || q.getStatus() < 0)
         && q.questRef.getTargetId() == victim.getCreatureId()
         ) {
+          int actualKills = nrKills;
+          if (q.getStatus() < 0) {
+            actualKills += q.getStatus() + 2; // +1 for encoding negative zero, +1 for this kill
+          }
+
           addOutGoingMessage(
               client,
               "quest",
-              "update;" + q.questRef.getName() + ";" + nrKills + " / " + q.questRef.getTargetNumber() + " killed");
+              "update;" + q.questRef.getName() + ";" + actualKills + " / " + q.questRef.getTargetNumber() + " killed");
 
-          if (nrKills >= q.questRef.getTargetNumber()) {
+          if (actualKills >= q.questRef.getTargetNumber()) {
             q.setStatus(2);
 
             // COMPLETED QUEST

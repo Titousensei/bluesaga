@@ -887,48 +887,17 @@ public class PlayerCharacter extends Creature {
     }
   }
 
-  public void addQuest(int QuestId) {
+  public void addQuest(int QuestId, int status) {
     Server.userDB.updateDB(
         "insert into character_quest (QuestId, CharacterId, Status) values("
             + QuestId
             + ","
             + dbId
-            + ",1)");
+            + ","
+            + status
+            + ")");
 
     loadQuests();
-  }
-
-  public ArrayList<String> checkQuests(Database gameDB) {
-    ArrayList<String> messages = new ArrayList<String>();
-
-    for (UserQuest uq : userQuests) {
-
-      if (uq.questRef.getType().equals("Kill X creature X")) {
-
-        // CHECK IF KILLED ENOUGH MONSTERS OF RIGHT KIND
-        if (uq.questRef.getTargetType().equals("Creature")) {
-          // IF UNCOMPLETED QUEST
-          if (uq.getStatus() == 0) {
-            int kills = gameDB.askInt(
-                  "select Kills from character_kills where CharacterId = "
-                      + dbId
-                      + " and CreatureId = "
-                      + uq.questRef.getTargetId());
-
-            if (kills >= uq.questRef.getTargetNumber()) {
-              messages.add("Completed Quest\n'" + uq.questRef.getName() + "'!");
-              gameDB.updateDB(
-                  "update character_quest set Completed = 1 where QuestId = "
-                      + uq.questRef.getId()
-                      + " and CharacterId = "
-                      + dbId);
-            }
-          }
-        }
-      }
-    }
-
-    return messages;
   }
 
   public List<UserQuest> getQuests() {

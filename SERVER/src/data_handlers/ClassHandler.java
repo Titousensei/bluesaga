@@ -66,7 +66,7 @@ public class ClassHandler extends Handler {
     BaseClass playerClass = client.playerCharacter.getClassById(classId);
     if (playerClass != null) {
       // Gain XP to class
-      if (xp > 0) {
+      if (playerClass.gainsXP() && xp > 0) {
         if (playerClass.addXP(xp)) {
           // classId, classLevel, classNextXP
           addOutGoingMessage(

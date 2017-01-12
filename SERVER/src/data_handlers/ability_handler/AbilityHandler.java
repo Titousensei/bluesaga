@@ -404,8 +404,6 @@ public class AbilityHandler extends Handler {
                     }
                   }
 
-
-
                   // Flash step
                   if (ABILITY.getAbilityId() == 84) {
                     StatusEffectHandler.addStatusEffect(

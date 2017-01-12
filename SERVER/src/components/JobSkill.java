@@ -14,6 +14,7 @@ public class JobSkill {
 
   private int Level;
   private int SP;
+  private boolean gainSP = true;
 
   JobSkill(int id, String name, String origin) {
     this.Id = id;
@@ -45,6 +46,14 @@ public class JobSkill {
 
   public int getId() {
     return Id;
+  }
+
+  public void setGainSP(boolean val) {
+    gainSP = val;
+  }
+
+  public boolean getGainSP() {
+    return gainSP;
   }
 
   public String getName() {

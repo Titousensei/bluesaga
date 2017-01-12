@@ -165,7 +165,7 @@ public class SkillHandler extends Handler {
     int sp = 1;
 
     JobSkill skill = client.playerCharacter.getSkill(skillId);
-    if (skill != null) {
+    if (skill != null && skill.getGainSP()) {
 
       // TODO
       if (training) {

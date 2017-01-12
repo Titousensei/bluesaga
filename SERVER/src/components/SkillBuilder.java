@@ -15,6 +15,10 @@ extends Builder<JobSkill>
     s.setType(val);
   }
 
+  public void noXP() {
+    s.setGainSP(false);
+  }
+
   public JobSkill build() {
     return s;
   }

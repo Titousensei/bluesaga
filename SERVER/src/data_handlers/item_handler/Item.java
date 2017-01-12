@@ -382,14 +382,15 @@ public class Item {
         int statValue = stat.getValue();
 
         if (statValue != 0
-        && !(getType().equals("Weapon")
-            && statName.equals("ATTACKSPEED"))
+        && !(getType().equals("Weapon") && statName.equals("ATTACKSPEED"))
         ) {
           float statBonus = modifier.bonus * Modifier.ITEM_COEF.get(getType());
           int newStat = Math.round(statValue * (1.0f + statBonus));
 
           if (newStat < 0) {
             newStat = 0;
+          } else if (Math.abs(newStat - statValue) < Math.abs(modifier.bonus)) {
+            newStat += modifier.bonus;
           }
 
           Stats.setValue(statName, newStat);

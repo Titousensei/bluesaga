@@ -190,7 +190,9 @@ extends Builder<Item>
         }
       }
       else {
-        System.out.println(m.get(parseInt(args[1])));
+        Item it = m.get(parseInt(args[1]));
+        System.out.println(it);
+        System.out.println(it.getStats().getHashMap());
       }
     }
   }

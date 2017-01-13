@@ -554,14 +554,11 @@ public class ItemHandler extends Handler {
                 || droppedItem.getType().equals("Artifact")) {
               // CREATE RARE ITEMS
 
-              int rareChance = RandomUtils.getInt(0, 10000);
-
               if (TARGET.isElite()) {
                 droppedItem.setModifier(Modifier.random(2));
               } else if (TARGET.isTitan()) {
-                droppedItem.setModifier(Modifier.random(10));
-              }
-              else {
+                droppedItem.setModifier(Modifier.random(4));
+              } else {
                 droppedItem.setModifier(Modifier.random(1));
               }
 

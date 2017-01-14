@@ -943,10 +943,11 @@ public class Creature implements Mover {
   }
 
   public boolean checkAttackTimer() {
-    attackTimerItr++;
 
     if (attackTimerItr >= attackTimerEnd) {
       ATTACK_READY = true;
+    } else {
+      attackTimerItr++;
     }
     return ATTACK_READY;
   }

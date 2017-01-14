@@ -378,9 +378,9 @@ public class BattleHandler extends Handler {
     for (Map.Entry<Integer, Client> entry : Server.clients.entrySet()) {
       Client s = entry.getValue();
       if (s.Ready) {
-        if (s.playerCharacter.isAggro()
+        if (s.playerCharacter.checkAttackTimer()
+        && s.playerCharacter.isAggro()
         && s.playerCharacter.getAggroTarget() != null
-        && s.playerCharacter.checkAttackTimer()
         ) {
           boolean attackOk = true;
 

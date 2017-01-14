@@ -256,7 +256,11 @@ public class Creature {
 
     animationColor = new Color(Color.white);
 
-    walkAnimation = BP_EDITOR.GFX.getSprite("creatures/m" + CreatureId).getAnimation();
+    if (BP_EDITOR.GFX.getSprite("creatures/m" + CreatureId) != null) {
+      walkAnimation = BP_EDITOR.GFX.getSprite("creatures/m" + CreatureId).getAnimation();
+    } else {
+      walkAnimation = BP_EDITOR.GFX.getSprite("creatures/m1").getAnimation();
+    }
     deathAnimation = BP_EDITOR.GFX.getSprite("effects/fx_spawn").getAnimation();
 
     animation = walkAnimation;

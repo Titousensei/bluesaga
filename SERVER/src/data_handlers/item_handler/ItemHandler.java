@@ -215,6 +215,7 @@ public class ItemHandler extends Handler {
       TextFormater.formatBonusInfo(sb, "STR: ", infoItem.getStatValue("STRENGTH"));
       TextFormater.formatBonusInfo(sb, "INT: ", infoItem.getStatValue("INTELLIGENCE"));
       TextFormater.formatBonusInfo(sb, "AGI: ", infoItem.getStatValue("AGILITY"));
+      TextFormater.formatBonusInfo(sb, "EVA: ", infoItem.getStatValue("EVASION"));
 
       TextFormater.formatBonusInfo(sb, "SPD: ", infoItem.getStatValue("SPEED"));
       TextFormater.formatBonusInfo(sb, "ATK SPD: ", infoItem.getStatValue("ATTACKSPEED"));

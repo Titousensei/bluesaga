@@ -962,14 +962,13 @@ public class Creature implements Mover {
 
   /****************************************
    *                                      *
-   *             ATTACK/ANIMATION			*
+   *             ATTACK/ANIMATION         *
    *                                      *
    *                                      *
    ****************************************/
-  public int regainPotionHealth(int healthTick) {
-    // Potions regain
-    int healthGain = 0;
+  public boolean regainPotionHealth(int healthTick) {
     if (potionHealthRegain > 0) {
+      int healthGain = 0;
 
       if (potionHealthRegain < healthTick) {
         healthGain = potionHealthRegain;
@@ -978,84 +977,77 @@ public class Creature implements Mover {
         potionHealthRegain -= healthTick;
         healthGain = healthTick;
       }
-      changeHealth(healthGain);
+      return gainHealth(healthGain, healthGain / 2);
     }
-    return healthGain;
+    return false;
   }
 
-  public int regainHealth(boolean safeZone) {
-    int healthGain = 0;
-
-    if (getHealth() > getStat("MAX_HEALTH")) {
-      setStat("HEALTH_REGAIN", 0);
-      changeHealth(0);
-    }
-    else if (getHealth() < getStat("MAX_HEALTH")) {
-
-      if (isResting()) {
-        healthGain = Math.round(regainSleepAccumulatedItr / 8.0f);
-      } else {
-        healthGain = getStat("MAX_HEALTH") / 100;
-        int bonus = getStat("MAX_HEALTH") % 100;
-        if (bonus > RandomUtils.getInt(0, 100)) {
-          healthGain ++;
-        }
-      }
-      if (healthGain > getStat("HEALTH_REGAIN")) {
-        healthGain = getStat("HEALTH_REGAIN");
-      }
-
-      setStat("HEALTH_REGAIN", getStat("HEALTH_REGAIN") - healthGain);
-      changeHealth(healthGain);
-    }
-    return healthGain;
-  }
-
-  public int regainPotionMana(int manaTick) {
-    // Potions regain
-    int manaGain = 0;
+  public boolean regainPotionMana(int manaTick) {
     if (potionManaRegain > 0) {
+      int manaGain = 0;
 
-      if (potionManaRegain < 10) {
+      if (potionManaRegain < manaTick) {
         manaGain = potionManaRegain;
         potionManaRegain = 0;
       } else {
-        potionManaRegain -= 10;
-        manaGain = 10;
+        potionManaRegain -= manaTick;
+        manaGain = manaTick;
       }
-      changeMana(manaGain);
+      return gainMana(manaGain, manaGain / 2);
     }
-    return manaGain;
+    return false;
   }
 
-  public int regainMana(boolean safeZone) {
-    int manaGain = 0;
+  public boolean regainHealth() {
 
-    if (getMana() != getStat("MAX_MANA")) {
+    if (Health > getStat("MAX_HEALTH")) {
+      return gainHealth(0, 0);
+    }
+    else if (Health < getStat("MAX_HEALTH")) {
+      int gain = 0;
 
       if (isResting()) {
-        manaGain = Math.round(regainSleepAccumulatedItr / 8.0f);
+        gain = Math.round(regainSleepAccumulatedItr / 8.0f);
       } else {
-        if (getMana() > getStat("MAX_MANA")) {
-          manaGain = -1;
-        } else {
-          manaGain = 1;
+        gain = getStat("MAX_HEALTH") / 100;
+        int bonus = getStat("MAX_HEALTH") % 100;
+        if (bonus > RandomUtils.getInt(0, 100)) {
+          ++ gain;
         }
       }
-
-      if (!safeZone) {
-        if (manaGain > getStat("MANA_REGAIN")) {
-          manaGain = getStat("MANA_REGAIN");
-        }
+      if (gain > getStat("HEALTH_REGAIN")) {
+        gain = getStat("HEALTH_REGAIN");
       }
 
-      int newManaRegain = getStat("MANA_REGAIN") - manaGain;
-
-      setStat("MANA_REGAIN", newManaRegain);
-
-      changeMana(manaGain);
+      return gainHealth(gain, gain);
     }
-    return manaGain;
+    return false;
+  }
+
+  public boolean regainMana() {
+
+    if (Mana > getStat("MAX_MANA")) {
+      return gainMana(0, 0);
+    }
+    else if (Mana < getStat("MAX_MANA")) {
+      int gain = 0;
+
+      if (isResting()) {
+        gain = Math.round(regainSleepAccumulatedItr / 8.0f);
+      } else {
+        gain = getStat("MAX_MANA") / 100;
+        int bonus = getStat("MAX_MANA") % 100;
+        if (bonus > RandomUtils.getInt(0, 100)) {
+          ++ gain;
+        }
+      }
+      if (gain > getStat("MANA_REGAIN")) {
+        gain = getStat("MANA_REGAIN");
+      }
+
+      return gainHealth(gain, gain);
+    }
+    return false;
   }
 
   public void restartRegainTimer() {
@@ -1077,32 +1069,18 @@ public class Creature implements Mover {
     return false;
   }
 
+  // return true if dead
   public boolean hitByAttack(int damage) {
     if (damage > mostHitDamage) {
       mostHitDamage = damage;
     }
 
     if (damage > 0 && hasManaShield()) {
-      Mana -= damage;
-      if (Mana <= 0) {
-        damage = -Mana;
-        Mana = 0;
-      } else {
-        damage = 0;
-      }
+      damage -= loseMana(damage);
     }
 
-    Health = Health - damage;
-    if (Health <= 0) {
-      Health = 0;
-      die();
-      return true;
-    }
-
-    if (Health > getStat("MAX_HEALTH")) {
-      Health = getStat("MAX_HEALTH");
-    }
-    return false;
+    restartRegainTimer();
+    return loseHealth(damage);
   }
 
   /*
@@ -1139,27 +1117,78 @@ public class Creature implements Mover {
     setGotoRotation(180.0f);
   }
 
-  public void changeHealth(int change) {
-    if (!Dead) {
-      Health += change;
-
-      if (Health > getStat("MAX_HEALTH")) {
-        Health = getStat("MAX_HEALTH");
-      } else if (Health <= 0) {
-        Health = 0;
-        die();
-      }
+  // return true if health was gained
+  public boolean gainHealth(int change, int regain) {
+    if (Dead) {
+      return false;
     }
+
+    int before = Health;
+    Health += change;
+
+    if (Health >= getStat("MAX_HEALTH")) {
+      Health = getStat("MAX_HEALTH");
+      setStat("HEALTH_REGAIN", 0);
+    } else {
+      setStat("HEALTH_REGAIN", getStat("HEALTH_REGAIN") - regain);
+    }
+    return (before != Health);
   }
 
-  public void changeMana(int changeM) {
-    Mana += changeM;
-    if (Mana < 0) {
-      Mana = 0;
+  // return true if dead
+  public boolean loseHealth(int change) {
+    if (Dead) {
+      return false;
     }
-    if (Mana > getStat("MAX_MANA")) {
+
+    Health -= change;
+
+    if (Health <= 0) {
+      Health = 0;
+      setStat("HEALTH_REGAIN", 0);
+      die();
+      return true;
+    } else {
+      int regain = change / 2;
+      int bonus = change % 2;
+      if (bonus > 0 && 0.5 > RandomUtils.getPercent()) {
+        ++ regain;
+      }
+      setStat("HEALTH_REGAIN", getStat("HEALTH_REGAIN") + regain);
+    }
+    return false;
+  }
+
+  // return true if mana was gained
+  public boolean gainMana(int change, int regain) {
+    int before = Mana;
+    Mana += change;
+
+    if (Mana >= getStat("MAX_MANA")) {
       Mana = getStat("MAX_MANA");
+      setStat("MANA_REGAIN", 0);
+    } else {
+      setStat("MANA_REGAIN", getStat("MANA_REGAIN") - regain);
     }
+    return (before != Mana);
+  }
+
+  // return how much mana was actually lost
+  public int loseMana(int change) {
+    int before = Mana;
+    Mana -= change;
+
+    if (Mana <= 0) {
+      Mana = 0;
+    } else {
+      int regain = change / 2;
+      int bonus = change % 2;
+      if (bonus > 0 && 0.5 > RandomUtils.getPercent()) {
+        ++ regain;
+      }
+      setStat("MANA_REGAIN", getStat("MANA_REGAIN") + regain);
+    }
+    return (before - Mana);
   }
 
   public int getHealthStatus() {

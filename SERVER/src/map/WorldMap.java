@@ -754,7 +754,6 @@ public class WorldMap implements TileBasedMap {
     m.setDBId(newMonsterId);
     m.setSpawned(true);
     m.setJustSpawned(true);
-    m.generateLoot();
     m.setCreatureType(CreatureType.Monster);
     m.setReadyToMove(true);
 

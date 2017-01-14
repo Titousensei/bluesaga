@@ -1222,94 +1222,73 @@ public class AbilityHandler extends Handler {
     for (Map.Entry<Integer, Client> entry : Server.clients.entrySet()) {
       Client s = entry.getValue();
 
-      if (s.Ready) {
-        if (s.playerCharacter != null) {
-          if (!s.playerCharacter.isDead()) {
+      if (s.Ready
+      && s.playerCharacter != null
+      && !s.playerCharacter.isDead()) {
 
-            // REGAIN HEALTH AND MANA
-            int oldHealthStatus = s.playerCharacter.getHealthStatus();
+        // REGAIN HEALTH AND MANA
+        int oldHealthStatus = s.playerCharacter.getHealthStatus();
+        boolean regainedHealth = false;
+        boolean regainedMana = false;
 
-            // MANA FROM POTION
-            int regainedMana =
-                s.playerCharacter.regainPotionMana(s.playerCharacter.potionRegainManaTick);
-            if (regainedMana != 0) {
-              addOutGoingMessage(s, "stat", "Mana;" + s.playerCharacter.getMana());
-            }
+        // FROM POTION
+        regainedHealth |= s.playerCharacter.regainPotionHealth(s.playerCharacter.potionRegainHealthTick);
+        regainedMana   |= s.playerCharacter.regainPotionMana(s.playerCharacter.potionRegainManaTick);
 
-            // HEALTH FROM POTION
-            int regainedHealth =
-                s.playerCharacter.regainPotionHealth(s.playerCharacter.potionRegainHealthTick);
-            if (regainedHealth != 0) {
-              addOutGoingMessage(s, "stat", "Health;" + s.playerCharacter.getHealth());
-            }
+        // FROM EATING AND RESTING
+        if (s.playerCharacter.regainItrUpdate()) {
+          s.playerCharacter.restartRegainTimer();
 
-            // FROM EATING AND RESTING
-            if (s.playerCharacter.regainItrUpdate()) {
-              s.playerCharacter.restartRegainTimer();
+          regainedHealth |= s.playerCharacter.regainHealth();
+          regainedMana   |= s.playerCharacter.regainMana();
+        }
 
-              boolean inSafeZone = false;
-              Tile playerTile =
-                  Server.WORLD_MAP.getTile(
-                      s.playerCharacter.getX(), s.playerCharacter.getY(), s.playerCharacter.getZ());
-              if (playerTile != null) {
-                if (playerTile.getType().contains("indoors")) {
-                  inSafeZone = true;
-                }
-              }
+        if (regainedHealth) {
+          addOutGoingMessage(s, "stat", "Health;" + s.playerCharacter.getHealth());
+          addOutGoingMessage(
+              s,
+              "stat",
+              "HEALTH_REGAIN;"
+                  + s.playerCharacter.getStat("HEALTH_REGAIN")
+                  + ';'
+                  + s.playerCharacter.getSatisfied());
+        }
 
-              regainedMana = s.playerCharacter.regainMana(inSafeZone);
-              if (regainedMana != 0) {
-                addOutGoingMessage(s, "stat", "Mana;" + s.playerCharacter.getMana());
-              }
+        if (regainedMana) {
+          addOutGoingMessage(s, "stat", "Mana;" + s.playerCharacter.getMana());
+          addOutGoingMessage(
+              s,
+              "stat",
+              "MANA_REGAIN;"
+                  + s.playerCharacter.getStat("MANA_REGAIN")
+                  + ';'
+                  + s.playerCharacter.getSatisfied());
+        }
 
-              regainedHealth = s.playerCharacter.regainHealth(inSafeZone);
-
+        if (s.playerCharacter.getHealthStatus() != oldHealthStatus) {
+          for (Map.Entry<Integer, Client> entry2 : Server.clients.entrySet()) {
+            Client other = entry2.getValue();
+            if (other.Ready
+            && isVisibleForPlayer(
+                  other.playerCharacter,
+                  s.playerCharacter.getX(),
+                  s.playerCharacter.getY(),
+                  s.playerCharacter.getZ())
+            ) {
               addOutGoingMessage(
-                  s,
-                  "stat",
-                  "HEALTH_REGAIN;"
-                      + s.playerCharacter.getStat("HEALTH_REGAIN")
+                  other,
+                  "changehealthstatus",
+                  s.playerCharacter.getSmallData()
                       + ';'
-                      + s.playerCharacter.getSatisfied());
-              addOutGoingMessage(
-                  s,
-                  "stat",
-                  "MANA_REGAIN;"
-                      + s.playerCharacter.getStat("MANA_REGAIN")
-                      + ';'
-                      + s.playerCharacter.getSatisfied());
+                      + s.playerCharacter.getHealthStatus());
             }
+          }
+        }
 
-            if (regainedHealth != 0) {
-              addOutGoingMessage(s, "stat", "Health;" + s.playerCharacter.getHealth());
-
-              if (s.playerCharacter.getHealthStatus() != oldHealthStatus) {
-                for (Map.Entry<Integer, Client> entry2 : Server.clients.entrySet()) {
-                  Client other = entry2.getValue();
-                  if (other.Ready) {
-                    if (isVisibleForPlayer(
-                        other.playerCharacter,
-                        s.playerCharacter.getX(),
-                        s.playerCharacter.getY(),
-                        s.playerCharacter.getZ())) {
-                      addOutGoingMessage(
-                          other,
-                          "changehealthstatus",
-                          s.playerCharacter.getSmallData()
-                              + ';'
-                              + s.playerCharacter.getHealthStatus());
-                    }
-                  }
-                }
-              }
-            }
-
-            // UPDATE COOLDOWNS
-            for (Ability a : s.playerCharacter.getAbilities()) {
-              if (a.checkReady()) {
-                addOutGoingMessage(s, "ability_ready", String.valueOf(a.getAbilityId()));
-              }
-            }
+        // UPDATE COOLDOWNS
+        for (Ability a : s.playerCharacter.getAbilities()) {
+          if (a.checkReady()) {
+            addOutGoingMessage(s, "ability_ready", String.valueOf(a.getAbilityId()));
           }
         }
       }
@@ -1325,8 +1304,8 @@ public class AbilityHandler extends Handler {
       if (m.regainItrUpdate()) {
         m.restartRegainTimer();
 
-        m.regainMana(true);
-        m.regainHealth(true);
+        m.regainMana();
+        m.regainHealth();
 
         if (m.isResting() && m.getHealth() == m.getStat("MAX_HEALTH")) {
           MonsterHandler.changeMonsterSleepState(m, false);

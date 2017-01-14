@@ -591,7 +591,7 @@ public class Creature implements Mover {
    *                                      *
    ****************************************/
   public void useAbility(Ability ability) {
-    Mana -= ability.getManaCost();
+    loseMana(ability.getManaCost());
     ability.used();
     isCastingSpellItr = ability.getCastingSpeed();
   }
@@ -1046,7 +1046,7 @@ public class Creature implements Mover {
         gain = getStat("MANA_REGAIN");
       }
 
-      return gainHealth(gain, gain);
+      return gainMana(gain, gain);
     }
     return false;
   }
@@ -1127,11 +1127,16 @@ public class Creature implements Mover {
     int before = Health;
     Health += change;
 
-    if (Health >= getStat("MAX_HEALTH")) {
+    int delta = getStat("MAX_HEALTH") - Health;
+    if (delta < 0) {
       Health = getStat("MAX_HEALTH");
       setStat("HEALTH_REGAIN", 0);
     } else {
-      setStat("HEALTH_REGAIN", getStat("HEALTH_REGAIN") - regain);
+      int adjust = getStat("HEALTH_REGAIN") - regain;
+      if (adjust > delta) {
+        adjust = delta;
+      }
+      setStat("HEALTH_REGAIN", adjust);
     }
     return (before != Health);
   }
@@ -1165,11 +1170,16 @@ public class Creature implements Mover {
     int before = Mana;
     Mana += change;
 
-    if (Mana >= getStat("MAX_MANA")) {
+    int delta = getStat("MAX_MANA") - Mana;
+    if (delta < 0) {
       Mana = getStat("MAX_MANA");
       setStat("MANA_REGAIN", 0);
     } else {
-      setStat("MANA_REGAIN", getStat("MANA_REGAIN") - regain);
+      int adjust = getStat("MANA_REGAIN") - regain;
+      if (adjust > delta) {
+        adjust = delta;
+      }
+      setStat("MANA_REGAIN", adjust);
     }
     return (before != Mana);
   }

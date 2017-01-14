@@ -343,157 +343,158 @@ public class AbilityHandler extends Handler {
               }
             }
 
-            if (attackOk) {
-              if (haveTarget) {
+          if (attackOk && haveTarget) {
 
-                int dX = goalX - client.playerCharacter.getX();
-                int dY = goalY - client.playerCharacter.getY();
+              int dX = goalX - client.playerCharacter.getX();
+              int dY = goalY - client.playerCharacter.getY();
 
-                double distToTarget = Math.floor(Math.sqrt(Math.pow(dX, 2) + Math.pow(dY, 2)));
+              double distToTarget = Math.floor(Math.sqrt(Math.pow(dX, 2) + Math.pow(dY, 2)));
 
-                int abilityRange = ABILITY.getRange();
+              int abilityRange = ABILITY.getRange();
 
-                if (ABILITY.getWeaponDamageFactor() > 0) {
-                  abilityRange = client.playerCharacter.getAttackRange();
+              if (ABILITY.getWeaponDamageFactor() > 0) {
+                abilityRange = client.playerCharacter.getAttackRange();
+              }
+
+              if (distToTarget <= abilityRange || ABILITY.isTargetSelf()) {
+
+                // Give Class XP
+                int classId = ABILITY.getClassId();
+
+                if (classId == 0) {
+                  classId = ABILITY.getJobSkillId();
                 }
 
-                if (distToTarget <= abilityRange || ABILITY.isTargetSelf()) {
+                ClassHandler.gainSubXP(client, classId, ABILITY.getManaCost());
 
-                  // Give Class XP
-                  int classId = ABILITY.getClassId();
+                // SEND USE ABILITY TO ALL CLIENTS ON SAME MAP
+                for (Map.Entry<Integer, Client> entry : Server.clients.entrySet()) {
+                  Client s = entry.getValue();
 
-                  if (classId == 0) {
-                    classId = ABILITY.getJobSkillId();
+                  if (s.Ready
+                  && isVisibleForPlayer(
+                      s.playerCharacter,
+                      client.playerCharacter.getX(),
+                      client.playerCharacter.getY(),
+                      client.playerCharacter.getZ())
+                  ) {
+                    addOutGoingMessage(
+                        s,
+                        "use_ability",
+                        client.playerCharacter.getSmallData()
+                            + ';'
+                            + ABILITY.getAbilityId()
+                            + ','
+                            + ABILITY.getColor().getRed()
+                            + ','
+                            + ABILITY.getColor().getGreen()
+                            + ','
+                            + ABILITY.getColor().getBlue()
+                            + ','
+                            + ABILITY.getGraphicsNr()
+                            + ','
+                            + ABILITY.getAnimationId()
+                            + ','
+                            + client.playerCharacter.getAttackSpeed());
                   }
+                }
 
-                  ClassHandler.gainSubXP(client, classId, ABILITY.getManaCost());
+                boolean useMana = true;
+                // Flash step
+                if (ABILITY.getAbilityId() == 84) {
+                  StatusEffectHandler.addStatusEffect(
+                      client.playerCharacter, new StatusEffect(42));
+                }
+                else if (ABILITY.getAbilityId() == 29) { // Block
+                  Item offhand = client.playerCharacter.getEquipment("OffHand");
+                  int def = offhand.getStatValue("ARMOR");
+                  StatusEffect se = new StatusEffect(11);
+                  se.setAbility(ABILITY);
+                  se.setCaster(client.playerCharacter);
+                  se.getStatsModif().setValue("ARMOR", def);
+                  StatusEffectHandler.addStatusEffect(
+                      client.playerCharacter, se);
+                }
+                else if (ABILITY.getAbilityId() == 96) { // Mana Armor
+                  int def = (int) Math.round(
+                        2 * Math.sqrt(
+                              client.playerCharacter.getBaseClass().level));
+                  StatusEffect se = new StatusEffect(47);
+                  se.setAbility(ABILITY);
+                  se.setCaster(client.playerCharacter);
+                  se.getStatsModif().setValue("ARMOR", def);
+                  se.getStatsModif().setValue("MAGIC_DEF", def);
+                  se.getStatsModif().setValue("SPEED", -5);
+                  StatusEffectHandler.addStatusEffect(
+                      client.playerCharacter, se);
+                }
+                else if (ABILITY.getAbilityId() == 27) {
+                  // TAUNT ABILITY
+                  // MAKE ALL MONSTERS ATTACK PLAYER
+                  MonsterHandler.alertNearMonsters(
+                      client.playerCharacter, goalX, goalY, goalZ, true);
 
-                  client.playerCharacter.useAbility(ABILITY);
-                  addOutGoingMessage(client, "stat", "Mana;" + client.playerCharacter.getMana());
+                } else if (ABILITY.getAbilityId() == 31
+                    && client.playerCharacter.getPkMarker() == 0) {
+                  // SOUL STONE
+                  // TELEPORT PLAYER BACK TO INN
 
-                  // SEND USE ABILITY TO ALL CLIENTS ON SAME MAP
-                  for (Map.Entry<Integer, Client> entry : Server.clients.entrySet()) {
-                    Client s = entry.getValue();
+                  Server.WORLD_MAP
+                      .getTile(
+                          client.playerCharacter.getX(),
+                          client.playerCharacter.getY(),
+                          client.playerCharacter.getZ())
+                      .setOccupant(CreatureType.None, null);
 
-                    if (s.Ready
+                  for (Entry<Integer, Client> entry : Server.clients.entrySet()) {
+                    Client other = entry.getValue();
+                    if (other.Ready
+                        && other.playerCharacter.getDBId() != client.playerCharacter.getDBId()
                         && isVisibleForPlayer(
-                            s.playerCharacter,
+                            other.playerCharacter,
                             client.playerCharacter.getX(),
                             client.playerCharacter.getY(),
                             client.playerCharacter.getZ())) {
-
                       addOutGoingMessage(
-                          s,
-                          "use_ability",
-                          client.playerCharacter.getSmallData()
-                              + ';'
-                              + ABILITY.getAbilityId()
-                              + ','
-                              + ABILITY.getColor().getRed()
-                              + ','
-                              + ABILITY.getColor().getGreen()
-                              + ','
-                              + ABILITY.getColor().getBlue()
-                              + ','
-                              + ABILITY.getGraphicsNr()
-                              + ','
-                              + ABILITY.getAnimationId()
-                              + ','
-                              + client.playerCharacter.getAttackSpeed());
+                          other, "creature_remove", client.playerCharacter.getSmallData());
                     }
                   }
 
-                  // Flash step
-                  if (ABILITY.getAbilityId() == 84) {
-                    StatusEffectHandler.addStatusEffect(
-                        client.playerCharacter, new StatusEffect(42));
-                  }
-                  else if (ABILITY.getAbilityId() == 29) { // Block
-                    Item offhand = client.playerCharacter.getEquipment("OffHand");
-                    int def = offhand.getStatValue("ARMOR");
-                    StatusEffect se = new StatusEffect(11);
-                    se.setAbility(ABILITY);
-                    se.setCaster(client.playerCharacter);
-                    se.getStatsModif().setValue("ARMOR", def);
-                    StatusEffectHandler.addStatusEffect(
-                        client.playerCharacter, se);
-                  }
-                  else if (ABILITY.getAbilityId() == 96) { // Mana Armor
-                    int def = (int) Math.round(
-                          2 * Math.sqrt(
-                                client.playerCharacter.getBaseClass().level));
-                    StatusEffect se = new StatusEffect(47);
-                    se.setAbility(ABILITY);
-                    se.setCaster(client.playerCharacter);
-                    se.getStatsModif().setValue("ARMOR", def);
-                    se.getStatsModif().setValue("MAGIC_DEF", def);
-                    se.getStatsModif().setValue("SPEED", -5);
-                    StatusEffectHandler.addStatusEffect(
-                        client.playerCharacter, se);
-                  }
-                  else if (ABILITY.getAbilityId() == 27) {
-                    // TAUNT ABILITY
-                    // MAKE ALL MONSTERS ATTACK PLAYER
-                    MonsterHandler.alertNearMonsters(
-                        client.playerCharacter, goalX, goalY, goalZ, true);
-
-                  } else if (ABILITY.getAbilityId() == 31
-                      && client.playerCharacter.getPkMarker() == 0) {
-                    // SOUL STONE
-                    // TELEPORT PLAYER BACK TO INN
-
-                    Server.WORLD_MAP
-                        .getTile(
-                            client.playerCharacter.getX(),
-                            client.playerCharacter.getY(),
-                            client.playerCharacter.getZ())
-                        .setOccupant(CreatureType.None, null);
-
-                    for (Entry<Integer, Client> entry : Server.clients.entrySet()) {
-                      Client other = entry.getValue();
-                      if (other.Ready
-                          && other.playerCharacter.getDBId() != client.playerCharacter.getDBId()
-                          && isVisibleForPlayer(
-                              other.playerCharacter,
-                              client.playerCharacter.getX(),
-                              client.playerCharacter.getY(),
-                              client.playerCharacter.getZ())) {
-                        addOutGoingMessage(
-                            other, "creature_remove", client.playerCharacter.getSmallData());
-                      }
-                    }
-
-                    BattleHandler.respawnPlayer(client.playerCharacter);
-                    if (client.playerCharacter.getShip() != null) {
-                      client.playerCharacter.getShip().setShow(false);
-                    }
-
-                    Server.WORLD_MAP
-                        .getTile(
-                            client.playerCharacter.getX(),
-                            client.playerCharacter.getY(),
-                            client.playerCharacter.getZ())
-                        .setOccupant(CreatureType.Player, client.playerCharacter);
-
-                    addOutGoingMessage(
-                        client,
-                        "respawn",
-                        client.playerCharacter.getX()
-                            + ","
-                            + client.playerCharacter.getY()
-                            + ','
-                            + client.playerCharacter.getZ());
-
-                  } else {
-
-                    int castingSpeed = ABILITY.getCastingSpeed();
-                    addAbilityEvent(
-                        ABILITY, client.playerCharacter, goalX, goalY, goalZ, castingSpeed);
+                  BattleHandler.respawnPlayer(client.playerCharacter);
+                  if (client.playerCharacter.getShip() != null) {
+                    client.playerCharacter.getShip().setShow(false);
                   }
 
-                  if (client.playerCharacter != null) {
-                    client.playerCharacter.saveInfo();
-                  }
+                  Server.WORLD_MAP
+                      .getTile(
+                          client.playerCharacter.getX(),
+                          client.playerCharacter.getY(),
+                          client.playerCharacter.getZ())
+                      .setOccupant(CreatureType.Player, client.playerCharacter);
+
+                  addOutGoingMessage(
+                      client,
+                      "respawn",
+                      client.playerCharacter.getX()
+                          + ","
+                          + client.playerCharacter.getY()
+                          + ','
+                          + client.playerCharacter.getZ());
+
+                } else {
+                  useMana = false;
+                  int castingSpeed = ABILITY.getCastingSpeed();
+                  addAbilityEvent(
+                      ABILITY, client.playerCharacter, goalX, goalY, goalZ, castingSpeed);
+                }
+
+                if (useMana) {
+                  client.playerCharacter.useAbility(ABILITY);
+                  addOutGoingMessage(client, "stat", "Mana;" + client.playerCharacter.getMana());
+                }
+
+                if (client.playerCharacter != null) {
+                  client.playerCharacter.saveInfo();
                 }
               }
             } else {
@@ -748,6 +749,7 @@ public class AbilityHandler extends Handler {
     if (ABILITY != null) {
       String AoE = ABILITY.getAoE();
       String tileData = "None";
+      boolean useMana = true;
 
       // FIND CASTER
 
@@ -1085,7 +1087,13 @@ public class AbilityHandler extends Handler {
                 }
 
                 // ADD DAMAGE, ADD STATUSEFFECTS TO TARGET
-                if (TARGET != null) {
+                if (TARGET == null) {
+                  if (ABILITY.getDamageType().equals("Healing")
+                  || ABILITY.getDamageType().startsWith("Reveal")
+                  ) {
+                    useMana = false;
+                  }
+                } else {
                   // Caster on the same tile as target? Then force ability to caster.
                   if (CASTER.getX() == TARGET.getX()
                       && CASTER.getY() == TARGET.getY()
@@ -1186,6 +1194,11 @@ public class AbilityHandler extends Handler {
             addOutGoingMessage(s, "tile_effect", tileData);
           }
         }
+      }
+
+      if (useMana) {
+        CASTER.useAbility(ABILITY);
+        addOutGoingMessage(((PlayerCharacter) CASTER).client, "stat", "Mana;" + CASTER.getMana());
       }
 
       // ALERT MONSTERS, EXCEPTIONS: SPAWN MAGIC, TRAPS, FISHING, REVEAL

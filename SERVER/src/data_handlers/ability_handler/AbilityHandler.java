@@ -241,7 +241,6 @@ public class AbilityHandler extends Handler {
     boolean canUse = false;
 
     ABILITY.setCaster(client.playerCharacter);
-
     if (!ABILITY.getEquipReq().equals("None")) {
 
       String equipRequired[] = ABILITY.getEquipReq().split(";");
@@ -753,7 +752,6 @@ public class AbilityHandler extends Handler {
       // FIND CASTER
 
       Creature CASTER = ABILITY.getCaster();
-
       boolean arena = false;
 
       if (CASTER != null) {
@@ -769,9 +767,7 @@ public class AbilityHandler extends Handler {
 
       if (AoE != null) {
 
-        // Slash
-
-        if (ABILITY.getAbilityId() == 75) {
+        if (ABILITY.getAbilityId() == 75) {  // Slash
           if (CASTER.getGotoRotation() == 45) {
             AoE = "-1,0;0,0;0,1";
           } else if (CASTER.getGotoRotation() == 90) {
@@ -787,8 +783,7 @@ public class AbilityHandler extends Handler {
           }
         }
 
-        // Thrust
-        if (ABILITY.getAbilityId() == 76) {
+        if (ABILITY.getAbilityId() == 76) {  // Thrust
 
           AoE = "";
 
@@ -927,14 +922,10 @@ public class AbilityHandler extends Handler {
             }
           }
 
-        } else if (ABILITY.getAbilityId() == 56 || ABILITY.getAbilityId() == 84) {
-          // DASH AND FLASH STEP
-
-          boolean flashStep = false;
-
-          if (ABILITY.getAbilityId() == 84) {
-            flashStep = true;
-          }
+        } else if (ABILITY.getAbilityId() == 56     // DASH
+        || ABILITY.getAbilityId() == 84             // FLASH STEP
+        ) {
+          boolean flashStep = (ABILITY.getAbilityId() == 84);
 
           AoE = "";
 
@@ -1072,12 +1063,12 @@ public class AbilityHandler extends Handler {
                             ServerGameInfo.creatureDef.get(sId), spawnTile.x, spawnTile.y, tileZ);
                     m.setAggroType(2);
 
-                    if (CASTER != null) {
-                      if (CASTER.getCreatureType() == CreatureType.Monster) {
-                        Npc monsterCaster = (Npc) CASTER;
-                        if (monsterCaster.isTitan() || monsterCaster.isElite()) {
-                          m.setElite(true);
-                        }
+                    if (CASTER != null
+                    && CASTER.getCreatureType() == CreatureType.Monster
+                    ) {
+                      Npc monsterCaster = (Npc) CASTER;
+                      if (monsterCaster.isTitan() || monsterCaster.isElite()) {
+                        m.setElite(true);
                       }
                     }
 
@@ -1115,16 +1106,16 @@ public class AbilityHandler extends Handler {
                       String msg;
                       switch (RandomUtils.getInt(0, 3)) {
                       case 0: // HP
-                        msg = "You see their HP: " + TARGET.getHealth();
+                        msg = "You see their Health: " + TARGET.getHealth();
                         break;
                       case 1: // MP
-                        msg = "You see their Mana: " + TARGET.getMana();
+                        msg = "You feel their Mana: " + TARGET.getMana();
                         break;
                       case 2: // ARMOR
-                        msg = "You see their Armor: " + TARGET.getStat("ARMOR");
+                        msg = "You notice their Armor: " + TARGET.getStat("ARMOR");
                         break;
                       default: // DMG
-                        msg = "You see the damage they can do to you: " + DamageCalculator.calculateDamage(TARGET, CASTER);
+                        msg = "You have a glimpse of the damage they can do to you: " + DamageCalculator.calculateDamage(TARGET, CASTER);
                         break;
                       }
                       addOutGoingMessage(playerCaster.client, "message", msg);
@@ -1143,7 +1134,7 @@ public class AbilityHandler extends Handler {
                       && TARGET.getDBId() == CASTER.getDBId()
                       && !ABILITY.isBuffOrNot()) {
                     // Do not hit caster with its own spell if not a buff
-                  } else {
+                  } else if (damage != 0) {
                     HitHandler.creatureGetHit(
                         TARGET,
                         CASTER,
@@ -1157,20 +1148,15 @@ public class AbilityHandler extends Handler {
               }
 
               // IF FISHING
-              if (ABILITY.getJobSkillId() == 101) {
-                // CHECK IF WATER TILE
-                if (TILE.isWater()) {
+              if (ABILITY.getJobSkillId() == 101
+              && TILE.isWater()
+              && ABILITY.getCaster().getCreatureType() == CreatureType.Player) {
+                PlayerCharacter playerFisher = (PlayerCharacter) ABILITY.getCaster();
 
-                  // Give sp to fisher and eventual catch
-                  if (ABILITY.getCaster().getCreatureType() == CreatureType.Player) {
-                    PlayerCharacter playerFisher = (PlayerCharacter) ABILITY.getCaster();
+                Client playerClient = playerFisher.client;
 
-                    Client playerClient = playerFisher.client;
-
-                    if (playerClient.Ready) {
-                      FishingHandler.generateCatch(playerClient, tileX, tileY, tileZ);
-                    }
-                  }
+                if (playerClient.Ready) {
+                  FishingHandler.generateCatch(playerClient, tileX, tileY, tileZ);
                 }
               }
             }
@@ -1202,13 +1188,14 @@ public class AbilityHandler extends Handler {
         }
       }
 
-      if (ABILITY.getCaster() != null) {
-        if (ABILITY.getCaster().getCreatureType() == CreatureType.Player) {
-          // ALERT MONSTERS, EXCEPTIONS: SPAWN MAGIC, TRAPS, FISHING
-          if (ABILITY.getSpawnIds().equals("None") && ABILITY.getAbilityId() != 45) {
-            MonsterHandler.alertNearMonsters(CASTER, goalX, goalY, goalZ, false);
-          }
-        }
+      // ALERT MONSTERS, EXCEPTIONS: SPAWN MAGIC, TRAPS, FISHING, REVEAL
+      if (ABILITY.getCaster() != null
+      && ABILITY.getCaster().getCreatureType() == CreatureType.Player
+      && ABILITY.getAbilityId() != 45
+      && ABILITY.getSpawnIds().equals("None")
+      && !ABILITY.getDamageType().startsWith("Reveal")
+      ) {
+        MonsterHandler.alertNearMonsters(CASTER, goalX, goalY, goalZ, false);
       }
     }
   }

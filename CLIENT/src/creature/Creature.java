@@ -237,7 +237,11 @@ public class Creature {
     ShowLevelDown = false;
 
     animationColor = new Color(255, 255, 255, 0);
-    frontAnimation = ImageResource.getSprite("creatures/m" + CreatureId).getAnimation();
+    if (ImageResource.getSprite("creatures/m" + CreatureId) != null) {
+      frontAnimation = ImageResource.getSprite("creatures/m" + CreatureId).getAnimation();
+    } else {
+      frontAnimation = ImageResource.getSprite("creatures/m1").getAnimation();
+    }
 
     if (ImageResource.getSprite("creatures/m" + CreatureId + "b") != null) {
       backAnimation = ImageResource.getSprite("creatures/m" + CreatureId + "b").getAnimation();
@@ -1171,7 +1175,11 @@ public class Creature {
 
   public void setCreatureId(int creatureId) {
     CreatureId = creatureId;
-    frontAnimation = ImageResource.getSprite("creatures/m" + CreatureId).getAnimation();
+    if (ImageResource.getSprite("creatures/m" + CreatureId) != null) {
+      frontAnimation = ImageResource.getSprite("creatures/m" + CreatureId).getAnimation();
+    } else {
+      frontAnimation = ImageResource.getSprite("creatures/m1").getAnimation();
+    }
 
     if (ImageResource.getSprite("creatures/m" + CreatureId + "b") != null) {
       backAnimation = ImageResource.getSprite("creatures/m" + CreatureId + "b").getAnimation();

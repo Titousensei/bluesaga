@@ -216,6 +216,7 @@ public class BP_EDITOR extends BasicGame {
     miniMapX = PLAYER_X;
     miniMapY = PLAYER_Y;
     try (ResultSet mapInfo = mapDB.askDB(
+            //      1  2  3     4          5              6
             "select X, Y, Type, max(Name), max(ObjectID), min(ObjectID) from area_tile where Z = "
                 + PLAYER_Z
                 + " AND X>" + (PLAYER_X - MINI_MAP_SIZE)
@@ -323,7 +324,11 @@ public class BP_EDITOR extends BasicGame {
         t.setZ(mapInfo.getInt("Z"));
         t.setAreaEffectId(mapInfo.getString("AreaEffectId"));
 
-        if (!mapInfo.getString("ObjectId").equals("None")) {
+        if (mapInfo.getString("ObjectId") == null) {
+          System.out.println("ERROR - Null objectid at "
+              + mapInfo.getInt("X") + "," + mapInfo.getInt("Y") + "," + mapInfo.getInt("Z"));
+        }
+        else if (!mapInfo.getString("ObjectId").equals("None")) {
           TileObject newObject = new TileObject(mapInfo.getString("ObjectId"));
           newObject.setZ(mapInfo.getInt("Z"));
           SCREEN_OBJECTS[tileX][tileY][tileZ] = newObject;

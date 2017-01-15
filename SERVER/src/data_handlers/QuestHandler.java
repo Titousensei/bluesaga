@@ -391,6 +391,9 @@ public class QuestHandler extends Handler {
                 + client.playerCharacter.getDBId()
                 + ",3)");
 
+        ServerMessage.println(false, "Story - ", client.playerCharacter,
+            questId, ": ", questInfo.getName());
+
         // CHECK IF QUEST TRIGGERS NEW QUEST
         if (questInfo.getNextQuestId() > 0) {
           addQuest(client, questInfo.getNextQuestId());
@@ -404,9 +407,15 @@ public class QuestHandler extends Handler {
         TutorialHandler.updateTutorials(6, client);
         completedQuest = rewardQuest(client, questId);
 
+        ServerMessage.println(false, "CompletedQuest - ", client.playerCharacter,
+            questId, ": ", questInfo.getName());
+
         questStatus = 3;
       } else if (questStatus < 0) {
         questStatus = 1;
+
+        ServerMessage.println(false, "TalkNpc - ", client.playerCharacter,
+            questId, ": ", questInfo.getName());
       }
 
       String questType = questInfo.getType().toString();
@@ -418,9 +427,6 @@ public class QuestHandler extends Handler {
           client,
           "questinfo",
           questId + ";" + questType + ";" + questMessage + ";" + questStatus);
-
-      ServerMessage.println(false, "TalkNpc - ", client.playerCharacter,
-          questId, ": ", questInfo.getName());
     }
   }
 

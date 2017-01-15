@@ -1198,7 +1198,9 @@ public class AbilityHandler extends Handler {
 
       if (useMana) {
         CASTER.useAbility(ABILITY);
-        addOutGoingMessage(((PlayerCharacter) CASTER).client, "stat", "Mana;" + CASTER.getMana());
+        if (CASTER instanceof PlayerCharacter) {
+          addOutGoingMessage(((PlayerCharacter) CASTER).client, "stat", "Mana;" + CASTER.getMana());
+        }
       }
 
       // ALERT MONSTERS, EXCEPTIONS: SPAWN MAGIC, TRAPS, FISHING, REVEAL

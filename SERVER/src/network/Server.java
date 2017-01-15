@@ -348,9 +348,18 @@ public abstract class Server {
       ConnectHandler.removeClient(s);
     }
 
-    gameDB.closeDB();
-    userDB.closeDB();
-    mapDB.closeDB();
+    if (gameDB != null) {
+      gameDB.closeDB();
+      gameDB = null;
+    }
+    if (userDB != null) {
+      userDB.closeDB();
+      userDB = null;
+    }
+    if (mapDB != null) {
+      mapDB.closeDB();
+      mapDB = null;
+    }
 
     // BACKUP SERVER
     FileCopy.backupDB();

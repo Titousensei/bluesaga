@@ -417,23 +417,22 @@ public class MapHandler extends Handler {
 
     boolean dayNightChange = false;
 
-    if (worldTimeItr == worldDayDuration) {
+    if (dayNightTime == 1 && worldTimeItr >= worldDayDuration) {
       // NIGHT ENDS, MORNING COMES
+      ServerMessage.println(false, "Change to -- DAY Time");
 
       dayNightTime = 2;
-
       dayNightChange = true;
-
-      worldTimeItr = 0;
-    } else if (worldTimeItr == worldNightTime) {
+    } else if (dayNightTime == 2 && worldTimeItr >= worldNightTime) {
       // NIGHT TIME
+      ServerMessage.println(false, "Change to -- NIGHT Time");
 
       dayNightTime = 1;
-
       dayNightChange = true;
     }
 
     if (dayNightChange) {
+      worldTimeItr = 0;
       // Go through monsters, remove those who don't like the time of the day
       for (Npc m : Server.WORLD_MAP.getMonsters().values()) {
         if (m.getExistDayOrNight() != 0) {

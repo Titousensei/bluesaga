@@ -1,9 +1,12 @@
 package network;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+import game.ServerSettings;
 import utils.ServerMessage;
 
 /**
@@ -59,7 +62,22 @@ public class ConnectionListener implements Runnable {
         Client clientObject = new Client(clientSocket);
 
         clientObject.IP = clientSocket.getInetAddress().getHostAddress().toString();
-        ServerMessage.println(false, clientObject.IP, " connected.");
+        ServerMessage.println(false, "CONNECTED: ", clientObject.IP);
+        if (ServerSettings.geoip_cmd != null) {
+          try {
+            Process pr = Runtime.getRuntime()
+                                .exec(ServerSettings.geoip_cmd + " " + clientObject.IP);
+            pr.waitFor();
+            BufferedReader buf = new BufferedReader(new InputStreamReader(pr.getInputStream()));
+            String line = "";
+            while ((line=buf.readLine())!=null) {
+              ServerMessage.println(false, "GEOIP: ", line);
+            }
+          }
+          catch (Exception ex) {
+            ex.printStackTrace();
+          }
+        }
 
         server.addClient(clientObject);
 

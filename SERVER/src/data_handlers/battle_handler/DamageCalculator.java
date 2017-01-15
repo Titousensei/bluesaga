@@ -255,15 +255,15 @@ public class DamageCalculator {
       }
       // 10 -> .90    50 -> .57   [100 -> .33]  150 -> .19   200 -> .11   419 -> .01
       ret = Math.exp(TARGET.getStat("ARMOR") * pierceFac / -91.);
-    }
-    if (magicType!=null) {
-      // 10% MAGICAL DEFENSE APPLIES
-      ret = 0.9 * ret  + 0.1 * Math.exp(TARGET.getStat(magicType + "_DEF") / -91.);
+
+      if (magicType!=null) {
+        // 10% MAGICAL DEFENSE APPLIES
+        ret = 0.9 * ret  + 0.1 * Math.exp(TARGET.getStat(magicType + "_DEF") / -91.);
+      }
     }
     else {
       ret = Math.exp(TARGET.getStat(damageType + "_DEF") / -91.);
     }
-
     return ret;
   }
 

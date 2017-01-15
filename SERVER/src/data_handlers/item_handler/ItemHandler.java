@@ -209,6 +209,7 @@ public class ItemHandler extends Handler {
       TextFormater.formatStatInfo(sb, "Shock DEF: ", infoItem.getStatValue("SHOCK_DEF"));
       TextFormater.formatStatInfo(sb, "Chems DEF: ", infoItem.getStatValue("CHEMS_DEF"));
       TextFormater.formatStatInfo(sb, "Mind DEF: ", infoItem.getStatValue("MIND_DEF"));
+      TextFormater.formatStatInfo(sb, "Magic DEF: ", infoItem.getStatValue("MAGIC_DEF"));
 
       sb.append("0,0,0; /");
 

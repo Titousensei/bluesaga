@@ -12,4 +12,9 @@ public class Message {
     this.type = type;
     this.message = message;
   }
+
+  @Override
+  public String toString() {
+    return "Message{" + client + " -> " + type + ": " + message + "}";
+  }
 }

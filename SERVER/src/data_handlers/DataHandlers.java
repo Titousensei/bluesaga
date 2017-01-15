@@ -123,7 +123,12 @@ public class DataHandlers {
       Message m = i.next();
       Consumer<Message> handle = dispatch.get(m.type);
       if (handle != null) {
-        handle.accept(m);
+        try {
+          handle.accept(m);
+        } catch (Exception ex) {
+          ServerMessage.println(false, "ERROR - Message Exception: " + m);
+          ex.printStackTrace();
+        }
       } else {
         ServerMessage.println(false, "WARNING - Unknown message type: " + m.type);
       }

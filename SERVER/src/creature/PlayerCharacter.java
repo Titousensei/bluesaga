@@ -1416,10 +1416,6 @@ public class PlayerCharacter extends Creature {
     return false;
   }
 
-  public void walkTo(int newX, int newY, int newZ) {
-    super.walkTo(newX, newY, newZ);
-  }
-
   public void resetRangedAttackCooldown(boolean diagonalMove) {
     if (diagonalMove) {
       float rangedAttackItrf = (float) (Math.sqrt(2) * (rangedAttackCooldown));

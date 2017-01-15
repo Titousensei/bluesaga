@@ -22,7 +22,7 @@ public class MapHandler extends Handler {
 
   public static int worldTimeItr = 0;
   public static int worldDayDuration = 5 * 3600;
-  public static int worldNightTime = 2 * 3600; // hours before it becomes night time
+  public static int worldNightDuration = 2 * 3600; // hours before it becomes night time
 
   public static void init() {
     DataHandlers.register("screen", m -> handleScreen(m));
@@ -134,15 +134,6 @@ public class MapHandler extends Handler {
     if (client.playerCharacter != null) {
 
       client.playerCharacter.setAggro(null);
-
-      if (worldTimeItr > worldNightTime) {
-        if (client.playerCharacter.getZ() == 0 || client.playerCharacter.getZ() >= 10) {
-          // Send night time
-          addOutGoingMessage(client, "night", "now");
-        } else {
-          addOutGoingMessage(client, "night", "stopnow");
-        }
-      }
 
       // Send "talk" tutorial
       TutorialHandler.updateTutorials(1, client);
@@ -417,13 +408,13 @@ public class MapHandler extends Handler {
 
     boolean dayNightChange = false;
 
-    if (dayNightTime == 1 && worldTimeItr >= worldDayDuration) {
+    if (dayNightTime == 1 && worldTimeItr >= worldNightDuration) {
       // NIGHT ENDS, MORNING COMES
       ServerMessage.println(false, "Change to -- DAY Time");
 
       dayNightTime = 2;
       dayNightChange = true;
-    } else if (dayNightTime == 2 && worldTimeItr >= worldNightTime) {
+    } else if (dayNightTime == 2 && worldTimeItr >= worldDayDuration) {
       // NIGHT TIME
       ServerMessage.println(false, "Change to -- NIGHT Time");
 
@@ -460,7 +451,7 @@ public class MapHandler extends Handler {
       for (Entry<Integer, Client> entry : Server.clients.entrySet()) {
         Client s = entry.getValue();
         if (s.Ready) {
-          if (s.playerCharacter.getZ() == 0 || s.playerCharacter.getZ() > 9) {
+          if (s.playerCharacter.getZ() >= 0) {
             if (dayNightTime == 2) {
               addOutGoingMessage(s, "night", "stop");
             } else {

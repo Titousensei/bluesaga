@@ -407,7 +407,7 @@ public class QuestHandler extends Handler {
         TutorialHandler.updateTutorials(6, client);
         completedQuest = rewardQuest(client, questId);
 
-        ServerMessage.println(false, "CompletedQuest - ", client.playerCharacter,
+        ServerMessage.println(false, "QuestReward - ", client.playerCharacter,
             questId, ": ", questInfo.getName());
 
         questStatus = 3;

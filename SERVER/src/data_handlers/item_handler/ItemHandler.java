@@ -650,12 +650,16 @@ public class ItemHandler extends Handler {
       while (lostItemsInfo.next()) {
         if (lostLoot.size() < maxLootBagSize) {
           Item lostItem = ServerGameInfo.newItem(lostItemsInfo.getInt(4));
-          lostItem.setStacked(lostItemsInfo.getInt(5));
-          lostItem.setModifierId(lostItemsInfo.getInt(2));
-          lostItem.setMagicId(lostItemsInfo.getInt(3));
-          Server.userDB.updateDB(
-              "delete from character_item where Id = " + lostItemsInfo.getInt("Id"));
-          lostLoot.add(lostItem);
+          if (!"Key".equals(lostItem.getType())
+          && !"Part".equals(lostItem.getSubType())
+          ) {
+            lostItem.setStacked(lostItemsInfo.getInt(5));
+            lostItem.setModifierId(lostItemsInfo.getInt(2));
+            lostItem.setMagicId(lostItemsInfo.getInt(3));
+            Server.userDB.updateDB(
+                "delete from character_item where Id = " + lostItemsInfo.getInt("Id"));
+            lostLoot.add(lostItem);
+          }
         } else {
           break;
         }

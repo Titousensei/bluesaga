@@ -492,6 +492,8 @@ public class AbilityHandler extends Handler {
                   client.playerCharacter.useAbility(ABILITY);
                   addOutGoingMessage(client, "stat", "Mana;" + client.playerCharacter.getMana());
                 }
+                ServerMessage.println(false, "UseAbility - ", client.playerCharacter,
+                    ": ", ABILITY);
 
                 if (client.playerCharacter != null) {
                   client.playerCharacter.saveInfo();

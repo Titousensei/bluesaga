@@ -134,6 +134,8 @@ public class Creature implements Mover {
 
   protected int Health;
   protected int Mana;
+  protected boolean changedHealth = false;
+  protected boolean changedMana = false;
 
   public Creature(int creatureId, int newX, int newY, int newZ) {
 
@@ -412,47 +414,49 @@ public class Creature implements Mover {
    *                                      *
    ****************************************/
   public void updateBonusStats() {
-    BonusStats.reset();
+    Stats newStats = new Stats();
 
     // GO THROUGH EQUIPMENT AND UPDATE BONUS STATS
     if (WeaponItem != null) {
-      BonusStats.addStats(WeaponItem.getStats());
+      newStats.addStats(WeaponItem.getStats());
     }
     if (HeadItem != null) {
-      BonusStats.addStats(HeadItem.getStats());
+      newStats.addStats(HeadItem.getStats());
     }
     if (OffHandItem != null) {
-      BonusStats.addStats(OffHandItem.getStats());
+      newStats.addStats(OffHandItem.getStats());
     }
     if (AmuletItem != null) {
-      BonusStats.addStats(AmuletItem.getStats());
+      newStats.addStats(AmuletItem.getStats());
     }
     if (ArtifactItem != null) {
-      BonusStats.addStats(ArtifactItem.getStats());
+      newStats.addStats(ArtifactItem.getStats());
     }
 
     // GO THROUGH STATUS EFFECTS AND CHANGES STATS ACCORDINGLY
     for (Iterator<StatusEffect> iter = getStatusEffects().values().iterator(); iter.hasNext(); ) {
       StatusEffect s = iter.next();
-      BonusStats.addStats(s.getStatsModif());
+      newStats.addStats(s.getStatsModif());
     }
 
     // Adjust Secondary stats from primary stats
     // "ACCURACY"       64 + INT/3.5
-    BonusStats.addValue("ACCURACY", getNewStat("INTELLIGENCE", 3.5f));
+    newStats.addValue("ACCURACY", getStatFraction("INTELLIGENCE", 3.5f));
     // "EVASION"         5 + AGI/3
-    BonusStats.addValue("EVASION", getNewStat("AGILITY", 3.0f));
+    newStats.addValue("EVASION", getStatFraction("AGILITY", 3.0f));
     // "CRITICAL_HIT"    0 + INT/10
-    BonusStats.addValue("CRITICAL_HIT", getNewStat("INTELLIGENCE", 10.0f));
+    newStats.addValue("CRITICAL_HIT", getStatFraction("INTELLIGENCE", 10.0f));
     // "ARMOR"           0 + STR/3
-    BonusStats.addValue("ARMOR", getNewStat("STRENGTH", 3.0f));
+    newStats.addValue("ARMOR", getStatFraction("STRENGTH", 3.0f));
     // "AttackSpeed"    75 + AGI
-    BonusStats.addValue("ATTACKSPEED", getNewStat("AGILITY", 1.0f));
+    newStats.addValue("ATTACKSPEED", getStatFraction("AGILITY", 1.0f));
     // "SPEED"          80 + STR/2
-    BonusStats.addValue("SPEED", getNewStat("STRENGTH", 2.0f));
+    newStats.addValue("SPEED", getStatFraction("STRENGTH", 2.0f));
+
+    BonusStats = newStats;
   }
 
-  private int getNewStat(String name, float div) {
+  private int getStatFraction(String name, float div) {
     int st = Stats.getValue(name);
     int bst = Stats.getValue(name);
     return Math.round((st + bst)/div);
@@ -591,7 +595,7 @@ public class Creature implements Mover {
    *                                      *
    ****************************************/
   public void useAbility(Ability ability) {
-    loseMana(ability.getManaCost());
+    loseMana(ability.getManaCost());  // ignore return value, cost already checked
     ability.used();
     isCastingSpellItr = ability.getCastingSpeed();
   }
@@ -967,7 +971,7 @@ public class Creature implements Mover {
    *                                      *
    *                                      *
    ****************************************/
-  public boolean regainPotionHealth(int healthTick) {
+  public void regainPotionHealth(int healthTick) {
     if (potionHealthRegain > 0) {
       int healthGain = 0;
 
@@ -978,12 +982,11 @@ public class Creature implements Mover {
         potionHealthRegain -= healthTick;
         healthGain = healthTick;
       }
-      return gainHealth(healthGain, healthGain / 2);
+      gainHealth(healthGain, healthGain / 2);
     }
-    return false;
   }
 
-  public boolean regainPotionMana(int manaTick) {
+  public void regainPotionMana(int manaTick) {
     if (potionManaRegain > 0) {
       int manaGain = 0;
 
@@ -994,15 +997,14 @@ public class Creature implements Mover {
         potionManaRegain -= manaTick;
         manaGain = manaTick;
       }
-      return gainMana(manaGain, manaGain / 2);
+      gainMana(manaGain, manaGain / 2);
     }
-    return false;
   }
 
-  public boolean regainHealth() {
+  public void regainHealth() {
 
     if (Health > getStat("MAX_HEALTH")) {
-      return gainHealth(0, 0);
+      gainHealth(0, 0);
     }
     else if (Health < getStat("MAX_HEALTH")) {
       int gain = 0;
@@ -1020,15 +1022,14 @@ public class Creature implements Mover {
         gain = getStat("HEALTH_REGAIN");
       }
 
-      return gainHealth(gain, gain);
+      gainHealth(gain, gain);
     }
-    return false;
   }
 
-  public boolean regainMana() {
+  public void regainMana() {
 
     if (Mana > getStat("MAX_MANA")) {
-      return gainMana(0, 0);
+      gainMana(0, 0);
     }
     else if (Mana < getStat("MAX_MANA")) {
       int gain = 0;
@@ -1046,9 +1047,8 @@ public class Creature implements Mover {
         gain = getStat("MANA_REGAIN");
       }
 
-      return gainMana(gain, gain);
+      gainMana(gain, gain);
     }
-    return false;
   }
 
   public void restartRegainTimer() {
@@ -1086,7 +1086,7 @@ public class Creature implements Mover {
 
   /*
    *
-   * 	DEATH / RESPAWN
+   *  DEATH / RESPAWN
    *
    */
   public void die() {
@@ -1104,24 +1104,21 @@ public class Creature implements Mover {
 
   public void revive() {
     getStatusEffects().clear();
-    updateBonusStats();
-
     Dead = false;
     mostHitDamage = 0;
     AggroTarget = null;
     RegainMode = true;
-    updateBonusStats();
     Health = getStat("MAX_HEALTH");
     Mana = getStat("MAX_MANA");
     ATTACK_READY = true;
     setRotation(180.0f);
     setGotoRotation(180.0f);
+    updateBonusStats();
   }
 
-  // return true if health was gained
-  public boolean gainHealth(int change, int regain) {
+  public void gainHealth(int change, int regain) {
     if (Dead) {
-      return false;
+      return;
     }
 
     int before = Health;
@@ -1138,16 +1135,16 @@ public class Creature implements Mover {
       }
       setStat("HEALTH_REGAIN", adjust);
     }
-    return (before != Health);
+    changedHealth = (before != Health);
   }
 
-  // return true if dead
   public boolean loseHealth(int change) {
     if (Dead) {
-      return false;
+      return true;
     }
 
     Health -= change;
+    changedHealth = true;
 
     if (Health <= 0) {
       Health = 0;
@@ -1161,15 +1158,16 @@ public class Creature implements Mover {
         ++ regain;
       }
       setStat("HEALTH_REGAIN", getStat("HEALTH_REGAIN") + regain);
+
+      return false;
     }
-    return false;
   }
 
-  // return true if mana was gained
-  public boolean gainMana(int change, int regain) {
+  public void gainMana(int change, int regain) {
     int before = Mana;
     Mana += change;
 
+    changedMana = false;
     int delta = getStat("MAX_MANA") - Mana;
     if (delta < 0) {
       Mana = getStat("MAX_MANA");
@@ -1181,7 +1179,7 @@ public class Creature implements Mover {
       }
       setStat("MANA_REGAIN", adjust);
     }
-    return (before != Mana);
+    changedMana = (before != Mana);
   }
 
   // return how much mana was actually lost
@@ -1199,7 +1197,27 @@ public class Creature implements Mover {
       }
       setStat("MANA_REGAIN", getStat("MANA_REGAIN") + regain);
     }
-    return (before - Mana);
+    if (before != Mana) {
+      changedMana = true;
+      return (before - Mana);
+    }
+    return 0;
+  }
+
+  public boolean pollChangedHealth() {
+    if (changedHealth) {
+      changedHealth = false;
+      return true;
+    }
+    return false;
+  }
+
+  public boolean pollChangedMana() {
+    if (changedMana) {
+      changedMana = false;
+      return true;
+    }
+    return false;
   }
 
   public int getHealthStatus() {

@@ -9,6 +9,7 @@ import java.util.Map.Entry;
 
 import utils.GameInfo;
 import utils.ServerGameInfo;
+import utils.ServerMessage;
 import utils.MathUtils;
 import utils.RandomUtils;
 import utils.TextFormater;
@@ -1232,22 +1233,20 @@ public class AbilityHandler extends Handler {
 
         // REGAIN HEALTH AND MANA
         int oldHealthStatus = s.playerCharacter.getHealthStatus();
-        boolean regainedHealth = false;
-        boolean regainedMana = false;
 
         // FROM POTION
-        regainedHealth |= s.playerCharacter.regainPotionHealth(s.playerCharacter.potionRegainHealthTick);
-        regainedMana   |= s.playerCharacter.regainPotionMana(s.playerCharacter.potionRegainManaTick);
+        s.playerCharacter.regainPotionHealth(s.playerCharacter.potionRegainHealthTick);
+        s.playerCharacter.regainPotionMana(s.playerCharacter.potionRegainManaTick);
 
         // FROM EATING AND RESTING
         if (s.playerCharacter.regainItrUpdate()) {
           s.playerCharacter.restartRegainTimer();
 
-          regainedHealth |= s.playerCharacter.regainHealth();
-          regainedMana   |= s.playerCharacter.regainMana();
+          s.playerCharacter.regainHealth();
+          s.playerCharacter.regainMana();
         }
 
-        if (regainedHealth) {
+        if (s.playerCharacter.pollChangedHealth()) {
           addOutGoingMessage(s, "stat", "Health;" + s.playerCharacter.getHealth());
           addOutGoingMessage(
               s,
@@ -1258,7 +1257,7 @@ public class AbilityHandler extends Handler {
                   + s.playerCharacter.getSatisfied());
         }
 
-        if (regainedMana) {
+        if (s.playerCharacter.pollChangedMana()) {
           addOutGoingMessage(s, "stat", "Mana;" + s.playerCharacter.getMana());
           addOutGoingMessage(
               s,

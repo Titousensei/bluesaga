@@ -135,7 +135,7 @@ public class Stats {
     return Stats;
   }
 
-  public void clear() {
+  private void clear() {
     Stats.clear();
   }
 }

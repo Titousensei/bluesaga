@@ -208,12 +208,14 @@ public class AdminControlsHandler extends Handler {
   private static boolean levelFourControls(Client client, String chatText) {
     String chatLower = chatText.toLowerCase();
     if (chatLower.startsWith("/night")) {
-      MapHandler.worldTimeItr = MapHandler.worldNightTime - 1;
+      MapHandler.worldTimeItr = 0;
+      MapHandler.dayNightTime = 1;
       return true;
     }
 
     if (chatLower.startsWith("/day")) {
-      MapHandler.worldTimeItr = MapHandler.worldDayDuration - 1;
+      MapHandler.worldTimeItr = 0;
+      MapHandler.dayNightTime = 2;
       return true;
     }
 

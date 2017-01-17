@@ -29,6 +29,7 @@ public class TileObject {
     graphics = BP_EDITOR.GFX.getSprite("objects/" + name);
     if (graphics==null) {
       System.out.println("ERROR - Null graphics for objects/" + name);
+      return;
     }
 
     if (graphics.isAnimated()) {

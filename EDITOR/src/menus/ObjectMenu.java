@@ -18,7 +18,7 @@ import gui.ObjectButton;
 
 public class ObjectMenu extends BaseMenu {
 
-  private final static String ROOT_DIR = "objects/";
+  private final static String ROOT_DIR = "objects" + File.separator;
 
   private Vector<ObjectButton> Buttons;
   private int X;
@@ -56,6 +56,8 @@ public class ObjectMenu extends BaseMenu {
 
     int nrPerRow = 6;
 
+    File root = new File(ROOT_DIR);
+
     for (File file : files) {
       if (file.isFile()) {
         int mid = file.getName().lastIndexOf(".");
@@ -79,8 +81,10 @@ public class ObjectMenu extends BaseMenu {
             }
 
             String parentFolder = file.getPath();
-            int cut = parentFolder.indexOf(ROOT_DIR) + ROOT_DIR.length();
-            String path = parentFolder.substring(cut, parentFolder.lastIndexOf(".") + offset);
+            int cut = parentFolder.indexOf(root.getPath()) + ROOT_DIR.length();
+
+            String path = parentFolder.substring(cut, parentFolder.lastIndexOf(".") + offset)
+                                      .replace(File.separatorChar, '/');
 
             Buttons.add(
                 new ObjectButton(

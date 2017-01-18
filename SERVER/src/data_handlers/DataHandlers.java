@@ -107,7 +107,12 @@ public class DataHandlers {
     if (tick % 1200 == 0) {
       if (!ServerSettings.DEV_MODE) {
         int nrPlayers = Server.clients.size();
-        WebsiteServerStatus.UpdateServerStatus(ServerSettings.SERVER_ID, nrPlayers);
+        try {
+          WebsiteServerStatus.UpdateServerStatus(ServerSettings.SERVER_ID, nrPlayers);
+        }
+        catch (Exception ex) {
+          ServerMessage.println(false, "WARNING - WebsiteServerStatus failed: ", ex.toString());
+        }
       }
     }
   }

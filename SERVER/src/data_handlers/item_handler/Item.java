@@ -569,8 +569,8 @@ public class Item {
       .append(Id)
       .append(")");
     if (MagicId != 0) {
-      sb.append(' ')
-        .append(magicType);
+      sb.append(" magic=")
+        .append(MagicId);
     }
     return sb.toString();
   }

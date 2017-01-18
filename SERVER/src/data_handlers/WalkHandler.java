@@ -494,15 +494,7 @@ public class WalkHandler extends Handler {
       client.playerCharacter.walkTo(PlayerX, PlayerY, PlayerZ);
     }
 
-    Server.userDB.updateDB(
-        "update user_character set X = "
-            + PlayerX
-            + ", Y = "
-            + PlayerY
-            + ", Z = "
-            + PlayerZ
-            + " where Id ="
-            + client.playerCharacter.getDBId());
+    Server.updatePlayerPosition.savePosition(client.playerCharacter, PlayerX, PlayerY, PlayerZ);
 
     if (Server.WORLD_MAP.getTile(PlayerX, PlayerY, PlayerZ) != null) {
       Server.WORLD_MAP

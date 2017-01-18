@@ -16,6 +16,7 @@ import game.ServerSettings;
 import login.WebsiteLogin;
 import network.Client;
 import network.Server;
+import network.UpdatePlayerPosition;
 
 public class LoginHandler extends Handler {
 
@@ -314,7 +315,7 @@ public class LoginHandler extends Handler {
       StringBuilder sqlStatement = new StringBuilder(1000);
       sqlStatement
           .append(
-              "insert into user_character (UserId, CreatureId, Level, XP, HEALTH, MANA, X, Y, Z, Name, PlayerKiller, Bounty, CheckpointId, CreatedOn, ShipId, AreaEffectId, Deleted, LastOnline, MouthFeatureId, AccessoriesId, SkinFeatureId, HeadSkinId, WeaponSkinId, OffHandSkinId, AmuletSkinId, ArtifactSkinId, AdminLevel, Muted, InventorySize, TutorialNr, BaseClassId, BaseCreatureId, BlueSagaId) values (")
+              "insert into user_character (UserId, CreatureId, Level, XP, HEALTH, MANA, Name, PlayerKiller, Bounty, CheckpointId, CreatedOn, ShipId, AreaEffectId, Deleted, LastOnline, MouthFeatureId, AccessoriesId, SkinFeatureId, HeadSkinId, WeaponSkinId, OffHandSkinId, AmuletSkinId, ArtifactSkinId, AdminLevel, Muted, InventorySize, TutorialNr, BaseClassId, BaseCreatureId, BlueSagaId) values (")
           .append(client.UserId)
           .append(',')
           .append(creatureId)
@@ -326,10 +327,7 @@ public class LoginHandler extends Handler {
       health = ServerGameInfo.classDef.get(classId).getStartStats().getValue("MAX_HEALTH");
       mana = ServerGameInfo.classDef.get(classId).getStartStats().getValue("MAX_MANA");
 
-      sqlStatement.append(health).append(',').append(mana).append(',')
-          .append(ServerSettings.startX).append(',')
-          .append(ServerSettings.startY).append(',')
-          .append(ServerSettings.startZ).append(',');
+      sqlStatement.append(health).append(',').append(mana).append(',');
 
       // FIX NAME SO THAT ALL LETTERS ARE LOWER CASE EXCEPT FIRST LETTER
       String firstLetter = name.substring(0, 1).toUpperCase();
@@ -359,6 +357,12 @@ public class LoginHandler extends Handler {
       Server.userDB.updateDB(sqlStatement.toString());
 
       int charId = Server.userDB.askInt("select Id from user_character order by Id desc limit 1");
+
+      UpdatePlayerPosition.createCharacterPos(
+          charId,
+          ServerSettings.startX,
+          ServerSettings.startY,
+          ServerSettings.startZ);
 
       if (classId == 1) {
         // ADD WOODEN CLUB

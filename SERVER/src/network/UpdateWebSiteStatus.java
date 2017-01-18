@@ -8,15 +8,27 @@ public class UpdateWebSiteStatus
 extends Thread
 {
   private Server server;
+  private boolean running = false;
 
   UpdateWebSiteStatus(Server server) {
     this.server = server;
   }
 
+  public void exit() {
+    try {
+      running = false;
+      join();
+    }
+    catch (InterruptedException ex) {
+      return;
+    }
+  }
+
   @Override
   public void run() {
+    running = true;
 
-    while (server.running) {
+    while (running) {
 
       try {
         int nrPlayers = Server.clients.size();

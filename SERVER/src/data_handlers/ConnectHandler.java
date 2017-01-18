@@ -12,6 +12,7 @@ import utils.TimeUtils;
 import game.ServerSettings;
 import network.Client;
 import network.Server;
+import network.UpdatePlayerPosition;
 import creature.Npc;
 import creature.PlayerCharacter;
 import creature.Creature.CreatureType;
@@ -332,78 +333,120 @@ public class ConnectHandler extends Handler {
     // CHECK IF USER OWNS CHARACTER
     if (Server.userDB.checkCharacterOwnership(characterId, client.UserId)) {
 
-      ResultSet charInfo =
-          Server.userDB.askDB(
-              //      1           2  3  4  5
-              "select CreatureId, X, Y, Z, AreaEffectId from user_character where UserId = "
+      int creatureId = Server.userDB.askInt(
+              "select CreatureId from user_character where UserId = "
                   + client.UserId
                   + " and Id = "
                   + characterId);
 
       try {
+        ResultSet charInfo =
+            Server.posDB.askDB(
+                //      2  3  4
+                "SELECT x, y, z FROM character_position WHERE id = "
+                    + characterId);
         if (charInfo.next()) {
           client.playerCharacter =
               new PlayerCharacter(
                   client,
+                  creatureId,
                   charInfo.getInt(1),
                   charInfo.getInt(2),
-                  charInfo.getInt(3),
-                  charInfo.getInt(4));
+                  charInfo.getInt(3));
           client.playerCharacter.load(characterId, client);
           client.playerCharacter.setCreatureType(CreatureType.Player);
-
-          boolean respawnAtCheckpoint = false;
-
-          // Respawn player if player position is null
-          if (Server.WORLD_MAP.getTile(
-                  client.playerCharacter.getX(),
-                  client.playerCharacter.getY(),
-                  client.playerCharacter.getZ())
-              == null) {
-            respawnAtCheckpoint = true;
-          }
-
-          /*
-          // Respawn player if in lost archipelago
-          if(!Server.DEV_MODE && client.playerCharacter.getZ() <= -200){
-            respawnAtCheckpoint = true;
-          }
-          */
-
-          if (respawnAtCheckpoint) {
-            BattleHandler.respawnPlayer(client.playerCharacter);
-          }
-
-          String info = client.playerCharacter.getInfo();
-
-          addOutGoingMessage(client, "playerinfo", info);
-          addOutGoingMessage(
-              client, "update_bonusstats", client.playerCharacter.getBonusStatsAsString());
-
-          if (client.playerCharacter.getMouseItem() != null) {
-            addOutGoingMessage(
-                client,
-                "addmouseitem",
-                ""
-                    + client.playerCharacter.getMouseItem().getId()
-                    + ";"
-                    + client.playerCharacter.getMouseItem().getType());
-          }
-
-          if (charInfo.getInt("AreaEffectId") > 0) {
-            WalkHandler.sendAreaEffect(client, charInfo.getInt("AreaEffectId"));
-          }
-          ServerMessage.println(false, client, " joined as ", client.playerCharacter,
-              ": ", client.playerCharacter.getBaseClass().name,
-              " lvl ",
-              client.playerCharacter.getLevel());
-        } else {
-          // Error: Can't find character in DB!
         }
         charInfo.close();
       } catch (SQLException e) {
         e.printStackTrace();
       }
+
+      if (client.playerCharacter == null) {
+        ServerMessage.println(false, "WARNING - posDB not found for ",
+            characterId, ", looking in userDB for ", client);
+        try {
+          ResultSet charInfo =
+              Server.userDB.askDB(
+                  //      2  3  4
+                  "SELECT x, y, z FROM user_character where UserId = "
+                    + client.UserId
+                    + " and Id = "
+                    + characterId);
+          if (charInfo.next()) {
+            client.playerCharacter =
+                new PlayerCharacter(
+                    client,
+                    creatureId,
+                    charInfo.getInt(1),
+                    charInfo.getInt(2),
+                    charInfo.getInt(3));
+            client.playerCharacter.load(characterId, client);
+            client.playerCharacter.setCreatureType(CreatureType.Player);
+
+            UpdatePlayerPosition.createCharacterPos(
+                characterId,
+                charInfo.getInt(1),
+                charInfo.getInt(2),
+                charInfo.getInt(3));
+
+          }
+          charInfo.close();
+        } catch (SQLException e) {
+          e.printStackTrace();
+          return;
+        }
+      }
+
+      boolean respawnAtCheckpoint = false;
+
+      // Respawn player if player position is null
+      if (Server.WORLD_MAP.getTile(
+              client.playerCharacter.getX(),
+              client.playerCharacter.getY(),
+              client.playerCharacter.getZ())
+          == null) {
+        respawnAtCheckpoint = true;
+      }
+
+      /*
+      // Respawn player if in lost archipelago
+      if(!Server.DEV_MODE && client.playerCharacter.getZ() <= -200){
+        respawnAtCheckpoint = true;
+      }
+      */
+
+      if (respawnAtCheckpoint) {
+        BattleHandler.respawnPlayer(client.playerCharacter);
+      }
+
+      String info = client.playerCharacter.getInfo();
+
+      addOutGoingMessage(client, "playerinfo", info);
+      addOutGoingMessage(
+          client, "update_bonusstats", client.playerCharacter.getBonusStatsAsString());
+
+      if (client.playerCharacter.getMouseItem() != null) {
+        addOutGoingMessage(
+            client,
+            "addmouseitem",
+            ""
+                + client.playerCharacter.getMouseItem().getId()
+                + ";"
+                + client.playerCharacter.getMouseItem().getType());
+      }
+
+      int areaEffectId = Server.userDB.askInt(
+              "select AreaEffectId from user_character where UserId = "
+                  + client.UserId
+                  + " and Id = "
+                  + characterId);
+      if (areaEffectId > 0) {
+        WalkHandler.sendAreaEffect(client, areaEffectId);
+      }
+      ServerMessage.println(false, client, " joined as ", client.playerCharacter,
+          ": ", client.playerCharacter.getBaseClass().name,
+          " lvl ",
+          client.playerCharacter.getLevel());
     } else {
       // Error: Player doesn't have that character!
     }

@@ -43,6 +43,15 @@ public class Database {
     }
   }
 
+  public PreparedStatement prepareStatement(String sql) throws SQLException {
+    conn.setAutoCommit(false);
+    return conn.prepareStatement(sql);
+  }
+
+  public void commit() throws SQLException {
+    conn.commit();
+  }
+
   public void updateDB(String sqlStatement) {
     try {
       if (conn != null) {
@@ -163,51 +172,6 @@ public class Database {
     // -1 = player does not exit
     // 0 = player is already in friend list
     return friendId;
-  }
-/*
-  private ThreadLocal<PreparedStatement> STMT_PLAYER_POS =
-          conn.prepareStatement(
-              "update user_character set X = ?, Y = ?, Z = ? where Id = ?");
-
-  public void savePlayerPosition(int id, int x, int y, int z) {
-    try {
-      PreparedStatement stat =
-          conn.prepareStatement(
-              "update user_character set X = ?, Y = ?, Z = ? where Id = ?");
-      stat.setInt(1, x);
-      stat.setInt(2, y);
-      stat.setInt(3, z);
-      stat.setInt(4, id);
-      stat.executeUpdate();
-      conn.commit();
-    } catch (SQLException e) {
-      e.printStackTrace();
-    }
-  }
-*/
-  /*******************************************
-   *
-   * 		CHAT LOG
-   *
-   ******************************************/
-  private void addChatText(String type, int fromId, int toId, String message) {
-    if (!Server.SERVER_RESTARTING) {
-      try {
-        PreparedStatement stat =
-            conn.prepareStatement(
-                "insert into chat (Type,FromId,ToId,Message,Date) values (?,?,?,?,?)");
-        stat.setString(1, type);
-        stat.setInt(2, fromId);
-        stat.setInt(3, toId);
-        stat.setString(4, message);
-        stat.setString(5, TimeUtils.now());
-        stat.executeUpdate();
-        stat.close();
-      } catch (SQLException e) {
-        ServerMessage.println(false, "Error adding chat message");
-        e.printStackTrace();
-      }
-    }
   }
 
   /*

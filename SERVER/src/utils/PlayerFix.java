@@ -88,6 +88,7 @@ public class PlayerFix {
       Server.userDB.updateDB("delete from character_soul where CharacterId = " + charId);
       Server.userDB.updateDB("delete from user_character where Id = " + charId);
       Server.userDB.updateDB("delete from user_friend where FriendCharacterId = " + charId);
+      Server.userDB.updateDB("delete from user_character where Id = " + charId);
     }
   }
 

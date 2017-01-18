@@ -1076,9 +1076,12 @@ public class AdminControlsHandler extends Handler {
     } else {
       String targetName = message.substring(6);
 
+      int charId = Server.userDB.askInt(
+              "SELECT Id FROM user_character WHERE LOWER(Name) LIKE '" + targetName + "'");
+
       ResultSet targetInfo =
           Server.userDB.askDB(
-              "select X, Y, Z from user_character where lower(Name) like '" + targetName + "'");
+              "SELECT x, y, z FROM character_position WHERE id = " + charId);
       try {
         if (targetInfo.next()) {
           targetX = targetInfo.getInt("X");
@@ -1177,14 +1180,14 @@ public class AdminControlsHandler extends Handler {
           .getTile(targetX, targetY, targetZ)
           .setOccupant(CreatureType.Player, client.playerCharacter);
 
-      Server.userDB.updateDB(
-          "update user_character set X = "
+      Server.posDB.updateDB(
+          "UPDATE character_position SET x = "
               + targetX
-              + ", Y = "
+              + ", y = "
               + targetY
-              + ", Z = "
+              + ", z = "
               + targetZ
-              + " where Id ="
+              + " WHERE id ="
               + client.playerCharacter.getDBId());
 
       // SEND WALK ONE TILE ANIMATION

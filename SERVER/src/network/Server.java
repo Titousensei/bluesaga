@@ -1,6 +1,7 @@
 package network;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Timer;
@@ -39,6 +40,7 @@ public abstract class Server {
   public static Database gameDB;
   public static Database mapDB;
   public static Database userDB;
+  public static Database posDB;
 
   // World map
   public static WorldMap WORLD_MAP;
@@ -78,7 +80,8 @@ public abstract class Server {
 
   private Timers mb_timers;
 
-  private Thread updateWebSiteStatus = null;
+  private static UpdateWebSiteStatus updateWebSiteStatus = null;
+  public static UpdatePlayerPosition updatePlayerPosition = null;
 
   /**
    * Constructor
@@ -122,8 +125,12 @@ public abstract class Server {
       gameDB = new Database(ServerSettings.PATH + "game");
       mapDB  = new Database(ServerSettings.PATH + "map");
       userDB = new Database(ServerSettings.PATH + "users");
+      posDB  = new Database(ServerSettings.PATH + "pos");
+      updatePlayerPosition = new UpdatePlayerPosition(posDB);
     } catch (ClassNotFoundException e) {
-      e.printStackTrace();
+      throw new RuntimeException(e);
+    } catch (SQLException e) {
+      throw new RuntimeException(e);
     }
 
     // Generate language json-file
@@ -174,12 +181,9 @@ public abstract class Server {
 
     ServerMessage.println(false, "Server is ready and waiting for clients!");
 
-    if (ServerSettings.DEV_MODE) {
-      return;
-    }
+    updatePlayerPosition.start();
 
     running = true;
-
     if (!ServerSettings.DEV_MODE) {
       updateWebSiteStatus = new UpdateWebSiteStatus(this);
       updateWebSiteStatus.start();
@@ -187,15 +191,6 @@ public abstract class Server {
 
     // Begin the loop
     serverLoop();
-  }
-
-  // Stop the server
-  private synchronized void stop() {
-    // Stop the connection listener
-    connectionListener.stop();
-
-    // Update running state
-    running = false;
   }
 
   /**
@@ -219,6 +214,7 @@ public abstract class Server {
   }
 
   private void serverLoop() {
+    ServerMessage.println(false, "Starting serverLoop: running=" + running);
     Runtime.getRuntime().addShutdownHook(new Thread() {
         public void run() {
           Server.restartServer();
@@ -297,6 +293,8 @@ public abstract class Server {
         return;
       }
     }
+
+    ServerMessage.println(false, "Exiting serverLoop: running=" + running);
   }
 
   public void removeClients() {
@@ -359,6 +357,11 @@ public abstract class Server {
       ConnectHandler.removeClient(s);
     }
 
+    if (!ServerSettings.DEV_MODE) {
+      updateWebSiteStatus.exit();
+    }
+    updatePlayerPosition.exit();
+
     if (gameDB != null) {
       gameDB.closeDB();
       gameDB = null;
@@ -370,6 +373,10 @@ public abstract class Server {
     if (mapDB != null) {
       mapDB.closeDB();
       mapDB = null;
+    }
+    if (posDB != null) {
+      posDB.closeDB();
+      posDB = null;
     }
 
     // BACKUP SERVER

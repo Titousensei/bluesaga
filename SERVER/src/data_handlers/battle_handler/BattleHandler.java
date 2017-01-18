@@ -761,13 +761,17 @@ public class BattleHandler extends Handler {
         " @", checkpointId, ": ", respawn);
 
     Server.userDB.updateDB(
-        "update user_character set X = "
+        "update user_character set AreaEffectId = 0 where Id = "
+            + playerCharacter.getDBId());
+
+    Server.posDB.updateDB(
+        "update character_position set X = "
             + respawn.x
             + ", Y = "
             + respawn.y
             + ", Z = "
             + respawn.z
-            + ", AreaEffectId = 0 where Id = "
+            + " where Id = "
             + playerCharacter.getDBId());
 
     return respawn.x + ";" + respawn.y + ";" + respawn.z;

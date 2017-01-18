@@ -409,10 +409,8 @@ public class BattleHandler extends Handler {
       }
     }
 
-    for (Iterator<Npc> iter = Server.WORLD_MAP.getMonsters().values().iterator();
-        iter.hasNext();
-        ) {
-      Npc monster = iter.next();
+    for (Map.Entry<Integer, Npc> entry : Server.WORLD_MAP.getMonsters().entrySet()) {
+      Npc monster = entry.getValue();
       if (monster.isAggro() && monster.checkAttackTimer()) {
         monster.setUsedStashItem(false);
         attack(monster, monster.getAggroTarget());

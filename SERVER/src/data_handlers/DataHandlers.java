@@ -1,9 +1,7 @@
 package data_handlers;
 
 import game.ServerSettings;
-import login.WebsiteServerStatus;
 import network.Client;
-import network.Server;
 
 import java.io.IOException;
 import java.net.SocketException;
@@ -101,19 +99,6 @@ public class DataHandlers {
     // Every 10,000 ms
     if (tick % 200 == 0) {
       ContainerHandler.checkContainerRespawn();  //= 3
-    }
-
-    // Every minute
-    if (tick % 1200 == 0) {
-      if (!ServerSettings.DEV_MODE) {
-        int nrPlayers = Server.clients.size();
-        try {
-          WebsiteServerStatus.UpdateServerStatus(ServerSettings.SERVER_ID, nrPlayers);
-        }
-        catch (Exception ex) {
-          ServerMessage.println(false, "WARNING - WebsiteServerStatus failed: ", ex.toString());
-        }
-      }
     }
   }
 

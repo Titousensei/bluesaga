@@ -66,7 +66,7 @@ public abstract class Server {
   protected static long tick = 0;
 
   // Running state
-  protected boolean running;
+  public boolean running;
 
   // Connection Listener
   private ConnectionListener connectionListener;
@@ -77,6 +77,8 @@ public abstract class Server {
   public static ConcurrentHashMap<Integer, Client> clients;
 
   private Timers mb_timers;
+
+  private Thread updateWebSiteStatus = null;
 
   /**
    * Constructor
@@ -172,14 +174,23 @@ public abstract class Server {
 
     ServerMessage.println(false, "Server is ready and waiting for clients!");
 
+    if (ServerSettings.DEV_MODE) {
+      return;
+    }
+
     running = true;
+
+    if (!ServerSettings.DEV_MODE) {
+      updateWebSiteStatus = new UpdateWebSiteStatus(this);
+      updateWebSiteStatus.start();
+    }
 
     // Begin the loop
     serverLoop();
   }
 
   // Stop the server
-  public synchronized void stop() {
+  private synchronized void stop() {
     // Stop the connection listener
     connectionListener.stop();
 

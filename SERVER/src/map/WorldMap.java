@@ -846,6 +846,10 @@ public class WorldMap implements TileBasedMap {
       return false;
     }
 
+    if (gotoTile.getAreaEffectId() > 0) {
+      return false;
+    }
+
     if (gotoTile.getTrapId() > 0) {
       return false;
     }

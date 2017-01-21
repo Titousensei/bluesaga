@@ -492,9 +492,9 @@ public class AbilityHandler extends Handler {
                 if (useMana) {
                   client.playerCharacter.useAbility(ABILITY);
                   addOutGoingMessage(client, "stat", "Mana;" + client.playerCharacter.getMana());
+                  ServerMessage.println(false, "UseAbility - ", client.playerCharacter,
+                      ": ", ABILITY);
                 }
-                ServerMessage.println(false, "UseAbility - ", client.playerCharacter,
-                    ": ", ABILITY);
 
                 if (client.playerCharacter != null) {
                   client.playerCharacter.saveInfo();
@@ -1130,7 +1130,7 @@ public class AbilityHandler extends Handler {
                         break;
                       case 4: // GiveXP
                         if (TARGET instanceof PlayerCharacter) {
-                          msg = "You sense their Level: " + ((PlayerCharacter) TARGET).getLevel()();
+                          msg = "You sense their Level: " + ((PlayerCharacter) TARGET).getLevel();
                         } else {
                           msg = "You sense the XP you can get from them: " + ((Npc) TARGET).getGiveXP();
                         }
@@ -1166,6 +1166,8 @@ public class AbilityHandler extends Handler {
                         ABILITY.getStatusEffects());
                   }
                 }
+                ServerMessage.println(false, "AbilityEffect - ", CASTER,
+                    ": ", ABILITY, " on ", TARGET);
               }
 
               // IF FISHING
@@ -1178,6 +1180,8 @@ public class AbilityHandler extends Handler {
 
                 if (playerClient.Ready) {
                   FishingHandler.generateCatch(playerClient, tileX, tileY, tileZ);
+                  ServerMessage.println(false, "AbilityFishing - ", playerFisher,
+                      ": ", ABILITY);
                 }
               }
             }
@@ -1207,10 +1211,14 @@ public class AbilityHandler extends Handler {
             addOutGoingMessage(s, "tile_effect", tileData);
           }
         }
+        ServerMessage.println(false, "AbilityEffect - ", CASTER,
+            ": ", ABILITY, " at ", goalX, ",", goalY, ",", goalZ);
       }
 
       if (useMana) {
         CASTER.useAbility(ABILITY);
+        ServerMessage.println(false, "AbilityEffect - ", CASTER,
+            ": ", ABILITY);
         if (CASTER instanceof PlayerCharacter) {
           addOutGoingMessage(((PlayerCharacter) CASTER).client, "stat", "Mana;" + CASTER.getMana());
         }

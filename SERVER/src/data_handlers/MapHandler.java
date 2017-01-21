@@ -294,8 +294,10 @@ public class MapHandler extends Handler {
         tileData.monsterLockedY = TILE.getY();
         tileData.monsterLockedZ = TILE.getZ();
       }
+    } else {
+      TILE = new Tile(tileX, tileY, tileZ);
+      TILE.setType(tileType, tileName, 0);
     }
-
     buf.append((tileX == lastX) ? "" : tileX)
        .append(',')
        .append((tileY == lastY) ? "" : tileY)

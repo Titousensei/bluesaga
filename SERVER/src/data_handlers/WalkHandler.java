@@ -119,12 +119,12 @@ public class WalkHandler extends Handler {
           // CHECK IF PLAYER IS PK,
           // THEN FORBID PLAYER TO WALK INTO ARENAS
           if (client.playerCharacter.getPkMarker() > 0) {
-            if (Server.WORLD_MAP.getTile(gotoX, gotoY, gotoZ) != null) {
-              if (Server.WORLD_MAP.getTile(gotoX, gotoY, gotoZ).getType().equals("arena")) {
+            if (gotoTile != null) {
+              if (gotoTile.getType().equals("arena")) {
                 okWalk = false;
               }
               // Check if area effect is safe
-              int areaEffectId = Server.WORLD_MAP.getTile(gotoX, gotoY, gotoZ).getAreaEffectId();
+              int areaEffectId = gotoTile.getAreaEffectId();
               if (areaEffectId > 0) {
                 if (ServerGameInfo.areaEffectsDef.get(areaEffectId).getGuardedLevel() == 0) {
                   okWalk = false;
@@ -143,8 +143,14 @@ public class WalkHandler extends Handler {
             okWalk = false;
           }
 
+          int playerX = client.playerCharacter.getX();
+          int playerY = client.playerCharacter.getY();
+
+          int dirX = gotoX - playerX;
+          int dirY = gotoY - playerY;
+
           // CHECK IF DOOR AND IF IT IS LOCKED OR REQUIRES PREMIUM
-          if (gotoTile.getDoorId() > 0) {
+          if (gotoTile.getDoorId() > 0 && gotoTile.isPassableFromDir(dirX, dirY)) {
             ResultSet doorInfo =
                 Server.mapDB.askDB(
                     //      1       2      3      4      5            6
@@ -272,12 +278,6 @@ public class WalkHandler extends Handler {
             okWalk = false;
 
             // CHECK IF NEXT TILE IN WALKING DIRECTION IS PASSABLE
-            int playerX = client.playerCharacter.getX();
-            int playerY = client.playerCharacter.getY();
-
-            int dirX = gotoX - playerX;
-            int dirY = gotoY - playerY;
-
             int nextX = gotoX + dirX;
             int nextY = gotoY + dirY;
 
@@ -347,25 +347,24 @@ public class WalkHandler extends Handler {
             client.playerCharacter.getX(),
             client.playerCharacter.getY(),
             client.playerCharacter.getZ());
+    Tile newTile = Server.WORLD_MAP.getTile(PlayerX, PlayerY, PlayerZ);
 
     // FREE OLD TILE PLAYER WAS STANDING ON
     if (oldTile != null) {
       oldTile.setOccupant(CreatureType.None, null);
     }
 
-    int dirX = 0;
-    int dirY = 0;
+    int dirX = PlayerX - client.playerCharacter.getX();
+    int dirY = PlayerY - client.playerCharacter.getY();
 
     StringBuilder rowData = new StringBuilder(2500);
 
-    int doorId = Server.WORLD_MAP.getTile(PlayerX, PlayerY, PlayerZ).getDoorId();
+    int doorId = newTile.getDoorId();
 
-    if (doorId > 0
-        || Server.WORLD_MAP.getTile(PlayerX, PlayerY, PlayerZ).getGeneratedDoor() != null) {
+    if (doorId > 0 || newTile.getGeneratedDoor() != null) {
       // GET DOOR DATA
-
-      if (Server.WORLD_MAP.getTile(PlayerX, PlayerY, PlayerZ).getGeneratedDoor() != null) {
-        Door generatedDoor = Server.WORLD_MAP.getTile(PlayerX, PlayerY, PlayerZ).getGeneratedDoor();
+      if (newTile.getGeneratedDoor() != null) {
+        Door generatedDoor = newTile.getGeneratedDoor();
         PlayerX = generatedDoor.getGotoX();
         PlayerY = generatedDoor.getGotoY();
         PlayerZ = generatedDoor.getGotoZ();
@@ -405,9 +404,6 @@ public class WalkHandler extends Handler {
           e.printStackTrace();
         }
       }
-    } else {
-      dirX = PlayerX - client.playerCharacter.getX();
-      dirY = PlayerY - client.playerCharacter.getY();
     }
 
     TileData tileData = new TileData();

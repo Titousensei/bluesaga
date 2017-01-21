@@ -18,6 +18,10 @@ public class Tile {
   private String Type;
   private String Name;
   private boolean Passable;
+  private boolean OnlyD;
+  private boolean OnlyU;
+  private boolean OnlyL;
+  private boolean OnlyR;
 
   private CreatureType OccupantType;
   private Creature Occupant;
@@ -98,6 +102,11 @@ public class Tile {
       setTransparent(false);
     }
 
+    OnlyD = name.contains("Entranced") || name.contains("Exitd") || name.contains("Onlyd");
+    OnlyU = name.contains("Entranceu") || name.contains("Exitu") || name.contains("Onlyu");
+    OnlyL = name.contains("Entrancel") || name.contains("Exitl") || name.contains("Onlyl");
+    OnlyR = name.contains("Entrancer") || name.contains("Exitr") || name.contains("Onlyr");
+
     DoorId = 0;
   }
 
@@ -169,6 +178,22 @@ public class Tile {
       return false;
     }
     return Passable;
+  }
+
+  public boolean isPassableFromDir(int dirX, int dirY) {
+    if (OnlyD) {
+      return (dirY < 0);
+    }
+    if (OnlyU) {
+      return (dirY > 0);
+    }
+    if (OnlyL) {
+      return (dirX > 0);
+    }
+    if (OnlyR) {
+      return (dirX < 0);
+    }
+    return true;
   }
 
   public boolean isPassableType() {

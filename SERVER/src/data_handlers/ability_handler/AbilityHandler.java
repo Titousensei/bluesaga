@@ -1115,7 +1115,7 @@ public class AbilityHandler extends Handler {
                     double def = TARGET.getStat("INTELLIGENCE") + CASTER.getStat("MIND_DEF");
                     if (RandomUtils.sigmoidCheck(att, def)) {
                       String msg;
-                      switch (RandomUtils.getInt(0, 3)) {
+                      switch (RandomUtils.getInt(0, 5)) {
                       case 0: // HP
                         msg = "You see their Health: " + TARGET.getHealth();
                         break;
@@ -1123,7 +1123,17 @@ public class AbilityHandler extends Handler {
                         msg = "You feel their Mana: " + TARGET.getMana();
                         break;
                       case 2: // ARMOR
-                        msg = "You notice their Armor: " + TARGET.getStat("ARMOR");
+                        msg = "You have a vision of their Armor: " + TARGET.getStat("ARMOR");
+                        break;
+                      case 3: // ARMOR
+                        msg = "You foresee their Attack Speed: " + TARGET.getStat("ATTACKSPEED");
+                        break;
+                      case 4: // GiveXP
+                        if (TARGET instanceof PlayerCharacter) {
+                          msg = "You sense their Level: " + ((PlayerCharacter) TARGET).getLevel()();
+                        } else {
+                          msg = "You sense the XP you can get from them: " + ((Npc) TARGET).getGiveXP();
+                        }
                         break;
                       default: // DMG
                         msg = "You have a glimpse of the damage they can do to you: " + DamageCalculator.calculateDamage(TARGET, CASTER);

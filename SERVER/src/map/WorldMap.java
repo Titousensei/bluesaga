@@ -847,7 +847,10 @@ public class WorldMap implements TileBasedMap {
     }
 
     if (gotoTile.getAreaEffectId() > 0) {
-      return false;
+      AreaEffect ae = ServerGameInfo.areaEffectsDef.get(gotoTile.getAreaEffectId());
+      if (ae.isImpassableForMonsters()) {
+        return false;
+      }
     }
 
     if (gotoTile.getTrapId() > 0) {

@@ -45,6 +45,10 @@ extends Builder<AreaEffect>
     ae.setAreaCopper(parseInt(val));
   }
 
+  public void impassableForMonsters() {
+    ae.setImpassableForMonsters(true);
+  }
+
   public AreaEffect build() {
     return ae;
   }

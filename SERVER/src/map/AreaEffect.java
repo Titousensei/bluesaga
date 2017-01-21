@@ -22,6 +22,8 @@ public class AreaEffect {
   private String infoDay = null;
   private String infoNight = null;
 
+  private boolean impassableForMonsters = false;
+
   public AreaEffect(int id, String name, String origin) {
     this.id = id;
     this.name = name;
@@ -106,6 +108,9 @@ public class AreaEffect {
 
   public String getAmbient() { return ambient; }
   void setAmbient(String ambient) { this.ambient = ambient; }
+
+  public boolean isImpassableForMonsters() { return impassableForMonsters; }
+  void setImpassableForMonsters(boolean val) { impassableForMonsters = val; }
 
   @Override
   public String toString() {

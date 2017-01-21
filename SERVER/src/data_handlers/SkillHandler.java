@@ -181,7 +181,7 @@ public class SkillHandler extends Handler {
           addOutGoingMessage(
               client,
               "sp_levelup",
-              skill.getName() + ',' + skill.getLevel() + ',' + skill.getSP() + ',' + nextSP);
+              skill.getId() + "," + skill.getLevel() + ',' + skill.getSP() + ',' + nextSP);
           ServerMessage.println(false, "Skill Level up - ", client.playerCharacter, ": ", skill);
         } else {
           addOutGoingMessage(client, "set_sp", skill.getId() + "," + skill.getSP());

@@ -627,12 +627,7 @@ public class Chat {
       } else if (type.equals("party")) {
         chatChannelsColor.put(type, new Color(77, 184, 255));
       } else {
-        chatChannelsColor.put(
-            type,
-            new Color(
-                RandomUtils.getInt(100, 255),
-                RandomUtils.getInt(100, 255),
-                RandomUtils.getInt(100, 255)));
+        chatChannelsColor.put(type, BlueSagaColors.getConsistentColor(type));
       }
 
       rows_count.put(type, 0);

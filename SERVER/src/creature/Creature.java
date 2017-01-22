@@ -512,23 +512,33 @@ public class Creature implements Mover {
     Stats newStats = newStatusEffect.getStatsModif();
     if (newStats != null) {
       if (newStats.getValue("MAX_HEALTH") < 0) {
-        int newMaxHealth = Stats.getValue("MAX_HEALTH") + newStats.getValue("MAX_HEALTH");
-        int newHealth = Health + newStats.getValue("MAX_HEALTH");
-        if (newHealth > 0) {
-          Health = newHealth;
-          ret |= 1;
-        } else {
+        int newMaxHealth = Stats.getValue("MAX_HEALTH")
+                           + BonusStats.getValue("MAX_HEALTH")
+                           + newStats.getValue("MAX_HEALTH");
+        if (newMaxHealth < 0) {
           return -1;
+        } else if (Health > newMaxHealth) {
+          Health = newMaxHealth;
+          ret |= 1;
+        }
+        int delta = newMaxHealth - Health;
+        if (getStat("HEALTH_REGAIN") > delta) {
+          setStat("HEALTH_REGAIN", delta);
         }
       }
       if (newStats.getValue("MAX_MANA") < 0) {
-        int newMaxMana = Stats.getValue("MAX_MANA") + newStats.getValue("MAX_MANA");
-        int newMana = Mana + newStats.getValue("MAX_MANA");
-        if (newMana > 0) {
-          Mana = newMana;
-          ret |= 2;
-        } else {
+        int newMaxMana = Stats.getValue("MAX_MANA")
+                         + BonusStats.getValue("MAX_MANA")
+                         + newStats.getValue("MAX_MANA");
+        if (newMaxMana < 0) {
           return -1;
+        } else if (Mana > newMaxMana) {
+          Mana = newMaxMana;
+          ret |= 2;
+        }
+        int delta = newMaxMana - Mana;
+        if (getStat("MANA_REGAIN") > delta) {
+          setStat("MANA_REGAIN", delta);
         }
       }
     }
@@ -542,6 +552,7 @@ public class Creature implements Mover {
       Stats myStats = mySE.getStatsModif();
       myStats.fraction(1.0f * mySE.getDuration() / newStatusEffect.getDuration());
       myStats.addStats(newStats);
+      updateBonusStats();
       mySE.start();
       ret |= 4;
     } else {

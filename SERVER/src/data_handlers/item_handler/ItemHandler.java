@@ -308,7 +308,6 @@ public class ItemHandler extends Handler {
         }
       }
     }
-System.out.println("*** " + sb.toString());
     if (sb.length() != sb_empty) {
       addOutGoingMessage(client, "item_info", sb.toString());
     }
@@ -466,26 +465,28 @@ System.out.println("*** " + sb.toString());
             hadEffect &= StatusEffectHandler.addStatusEffect(client.playerCharacter, se);
           }
           if (!hadEffect) {
-            addOutGoingMessage(client, "message", "You're too weak, herb had no effect");
+            addOutGoingMessage(client, "message", "You're too weak: you cough out the herb before it has any effect");
             return;
           }
         } else {
           useColor = new Color(202, 253, 161);
-          addOutGoingMessage(
-              client,
-              "stat",
-              "HEALTH_REGAIN;"
-                  + client.playerCharacter.getStat("HEALTH_REGAIN")
-                  + ';'
-                  + client.playerCharacter.getSatisfied());
-          addOutGoingMessage(
-              client,
-              "stat",
-              "MANA_REGAIN;"
-                  + client.playerCharacter.getStat("MANA_REGAIN")
-                  + ';'
-                  + client.playerCharacter.getSatisfied());
         }
+        addOutGoingMessage(client, "stat", "Health;" + client.playerCharacter.getHealth());
+        addOutGoingMessage(
+            client,
+            "stat",
+            "HEALTH_REGAIN;"
+                + client.playerCharacter.getStat("HEALTH_REGAIN")
+                + ';'
+                + client.playerCharacter.getSatisfied());
+        addOutGoingMessage(client, "stat", "Mana;" + client.playerCharacter.getMana());
+        addOutGoingMessage(
+            client,
+            "stat",
+            "MANA_REGAIN;"
+                + client.playerCharacter.getStat("MANA_REGAIN")
+                + ';'
+                + client.playerCharacter.getSatisfied());
       } else if (usedItem.getSubType().equals("HEALTH")) {
         useColor = new Color(255, 88, 88);
       } else if (usedItem.getSubType().equals("MANA")) {

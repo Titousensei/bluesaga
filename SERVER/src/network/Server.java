@@ -214,7 +214,6 @@ public abstract class Server {
   }
 
   private void serverLoop() {
-    ServerMessage.println(false, "Starting serverLoop: running=" + running);
     Runtime.getRuntime().addShutdownHook(new Thread() {
         public void run() {
           Server.restartServer();
@@ -293,8 +292,6 @@ public abstract class Server {
         return;
       }
     }
-
-    ServerMessage.println(false, "Exiting serverLoop: running=" + running);
   }
 
   public void removeClients() {

@@ -681,8 +681,9 @@ public class Chat {
     addTextLine("event", "", "Press ENTER to type in the chat");
     addTextLine("event", "", "Press TAB to change channel");
     addTextLine("local", "event", "#channelname to create/join channel");
-    addTextLine("local", "event", "@playername to send message");
-    addTextLine("announce", "event", "Here you can announce something (1/min)");
+    addTextLine("local", "event", "@playername to send private message");
+    addTextLine("local", "event", "/help for more commands");
+    addTextLine("announce", "event", "Here you can announce something (one per minute max)");
 
     NewChatMessage.put("local", false);
     NewChatMessage.put("announce", false);

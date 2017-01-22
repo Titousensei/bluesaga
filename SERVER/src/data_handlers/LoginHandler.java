@@ -309,7 +309,7 @@ public class LoginHandler extends Handler {
         name, " creature=", creatureId, " class=", classId);
     }
 
-    if (correctName) {
+    if (correctName && !"admin".equals(name)) {
 
       // SAVE CHARACTER INFO
       StringBuilder sqlStatement = new StringBuilder(1000);

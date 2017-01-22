@@ -21,8 +21,56 @@ import network.Server;
 
 public class ChatHandler extends Handler {
 
+  public final static String[] HELP = new String[] {
+      "--- Help ---------",
+      "> [Tab]: change channel",
+      "> @(playername): open private channel",
+      "> @admin: send message to admin (logs your position)",
+      "> #(channelname): create/join channel",
+      "> /channels: list channels with number of people",
+      "> /rolldice: roll 1d6",
+      "> /emo: list emoticon names",
+      "> /emo (name): show emoticon above your character",
+      "> /quit: quit this channel",
+      "> /r: refresh the screen",
+      "> /help: display this help"
+  };
+
+  public final static Map<String, String> emoMap = new HashMap<>();
+
+  static {
+    emoMap.put("x-(",  "angry");
+    emoMap.put("x(",   "angry");
+    emoMap.put(">:(",  "angry");
+    emoMap.put(">:-(", "angry");
+    emoMap.put(":@",   "angry");
+    emoMap.put(":-@",  "angry");
+    emoMap.put(":-o",  "fail");
+    emoMap.put("x-o",  "fail");
+    emoMap.put(":-p",  "joke");
+    emoMap.put(":p",   "joke");
+    emoMap.put("x-p",  "joke");
+    emoMap.put(";-)",  "joke");
+    emoMap.put(";)",   "joke");
+    emoMap.put(":-d",  "lol");
+    emoMap.put(":d",   "lol");
+    emoMap.put("=d",   "lol");
+    emoMap.put("x-d",  "lol");
+    emoMap.put("<3",   "love");
+    emoMap.put(":-*",  "love");
+    emoMap.put(":*",   "love");
+    emoMap.put(":-(",  "sad");
+    emoMap.put(":(",   "sad");
+    emoMap.put(":)",   "smile");
+    emoMap.put(":-)",  "smile");
+    emoMap.put(":-/",  "weird");
+    emoMap.put(":/",   "weird");
+    emoMap.put(":-\\", "weird");
+    emoMap.put(":\\",  "weird");
+  }
+
   private static Set<String> Emoticons = new TreeSet<String>();
-  private static String emoHelp = "To show emoticon type '/emo name'.";
+  private static String emoHelp = "--- Show emoticon: /emo name. Names: ";
   public static Collection<String> BadWords = new ArrayList<String>();
   public static Collection<String> BadSubWords = new ArrayList<String>();
   private static List<String> CuteWords = new ArrayList<String>();
@@ -43,7 +91,7 @@ public class ChatHandler extends Handler {
     Emoticons.add("weird");
 
     StringBuilder sb = new StringBuilder(1000);
-    sb.append(emoHelp).append(" Available emoticons are: ");
+    sb.append(emoHelp);
     for (String emo : Emoticons) {
       sb.append(emo).append(", ");
     }
@@ -122,7 +170,7 @@ public class ChatHandler extends Handler {
         specialCommand = true;
 
         if (chatLower.equals("/emo")) {
-          addOutGoingMessage(client, "message", emoHelp);
+          addOutGoingMessage(client, "newchat", chatChannel + ";event;" + emoHelp);
         } else {
           String emoticon = chatLower.substring(5);
 
@@ -173,7 +221,7 @@ public class ChatHandler extends Handler {
           }
         }
 
-        addOutGoingMessage(client, "newchat", chatChannel + ";event;channels:");
+        addOutGoingMessage(client, "newchat", chatChannel + ";event;--- Channels ---------");
 
         if (chatChannels.size() > 0) {
           Iterator it = chatChannels.entrySet().iterator();
@@ -206,6 +254,14 @@ public class ChatHandler extends Handler {
                   s, "rolldice", client.playerCharacter.getSmallData() + ";" + diceResult);
             }
           }
+        }
+      }
+
+      if (chatLower.startsWith("/help")) {
+        specialCommand = true;
+        for (int i = 0 ; i < HELP.length ; i++) {
+          addOutGoingMessage(client, "newchat",
+              chatChannel + ";event;" + HELP[i]);
         }
       }
 
@@ -251,6 +307,34 @@ public class ChatHandler extends Handler {
                 chatMessage.substring(0, found) + randomCuteWord + chatMessage.substring(end);
           }
         }
+        if (!client.playerCharacter.isResting()) {
+          int max_pos = -1;
+          String max_emo = null;
+          for (Map.Entry<String, String> emoEntry : emoMap.entrySet()) {
+            int pos = chatLower.indexOf(emoEntry.getKey());
+            if (pos > max_pos) {
+              max_pos = pos;
+              max_emo = emoEntry.getValue();
+            }
+          }
+          if (max_emo != null) {
+            // SEND EMOTICONS TO PLAYERS IN AREA
+            for (Map.Entry<Integer, Client> entry : Server.clients.entrySet()) {
+              Client s = entry.getValue();
+
+              if (s.Ready) {
+                if (isVisibleForPlayer(
+                    s.playerCharacter,
+                    client.playerCharacter.getX(),
+                    client.playerCharacter.getY(),
+                    client.playerCharacter.getZ())) {
+                  addOutGoingMessage(
+                      s, "emoticon", client.playerCharacter.getSmallData() + ";" + max_emo);
+                }
+              }
+            }
+          }
+        }
 
         // Check if user wants to create a new channel
         if (chatMessage.startsWith("@") || chatMessage.startsWith("#")) {
@@ -287,19 +371,27 @@ public class ChatHandler extends Handler {
 
           boolean playerOnline = false;
 
-          for (Map.Entry<Integer, Client> entry : Server.clients.entrySet()) {
-            Client s = entry.getValue();
+          if ("admin".equals(receiverName)) {
+            playerOnline = true;
+            chatMessage += " @" + client.playerCharacter.getX()
+                + "," + client.playerCharacter.getY()
+                + "," + client.playerCharacter.getZ()
+                + " <-- ADMIN";
+          } else {
+            for (Map.Entry<Integer, Client> entry : Server.clients.entrySet()) {
+              Client s = entry.getValue();
 
-            if (s.Ready) {
-              String playerName = s.playerCharacter.getName().toLowerCase();
+              if (s.Ready) {
+                String playerName = s.playerCharacter.getName().toLowerCase();
 
-              if (playerName.equals(receiverName)) {
-                playerOnline = true;
-                addOutGoingMessage(
-                    s,
-                    "newchat",
-                    senderNameChannel + ";" + client.playerCharacter.getName() + ";" + chatMessage);
-                break;
+                if (playerName.equals(receiverName)) {
+                  playerOnline = true;
+                  addOutGoingMessage(
+                      s,
+                      "newchat",
+                      senderNameChannel + ";" + client.playerCharacter.getName() + ";" + chatMessage);
+                  break;
+                }
               }
             }
           }

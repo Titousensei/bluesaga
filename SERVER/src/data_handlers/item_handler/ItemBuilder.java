@@ -16,6 +16,7 @@ extends Builder<Item>
       "PIERCE", "SLASH", "STRIKE"));
 
   protected Item it = null;
+  protected Map<String, Integer> info = null;
 
   public void init(int id, String name, String origin) {
     it = new Item(id, name, origin);
@@ -28,6 +29,7 @@ extends Builder<Item>
     it.setSellable(true);
     it.setValue(0);
     it.setRange(1);
+    info = new LinkedHashMap<>();
   }
 
   @Override
@@ -168,7 +170,15 @@ extends Builder<Item>
     }
   }
 
+  public void info(String val) {
+    String parts[] = val.split(":");
+    info.put(parts[0] + ": ", parseInt(parts[1]));
+  }
+
   public Item build() {
+    if (info.size() > 0) {
+      it.setInfo(info);
+    }
     return it;
   }
 

@@ -211,6 +211,13 @@ public class ItemHandler extends Handler {
       TextFormater.formatStatInfo(sb, "Mind DEF: ", infoItem.getStatValue("MIND_DEF"));
       TextFormater.formatStatInfo(sb, "Magic DEF: ", infoItem.getStatValue("MAGIC_DEF"));
 
+      Map<String, Integer> infoForItem = infoItem.getInfo();
+      if (infoForItem != null) {
+        for (Map.Entry<String, Integer> entry : infoForItem.entrySet()) {
+          TextFormater.formatStatInfo(sb, entry.getKey(), entry.getValue());
+        }
+      }
+
       sb.append("0,0,0; /");
 
       TextFormater.formatBonusInfo(sb, "STR: ", infoItem.getStatValue("STRENGTH"));
@@ -227,6 +234,9 @@ public class ItemHandler extends Handler {
         TextFormater.formatBonusInfo(sb, "Restores Health: ", infoItem.getStatValue("MAX_HEALTH"));
         TextFormater.formatBonusInfo(sb, "Restores Mana: ", infoItem.getStatValue("MAX_MANA"));
         TextFormater.formatInfo(sb, "Instant effect");
+      } else if (infoItem.getSubType().equals("Herb")) {
+        TextFormater.formatInfo(sb, "Temporary buff,");
+        TextFormater.formatInfo(sb, "cumulative");
       } else if (infoItem.getType().equals("Eatable")) {
         TextFormater.formatBonusInfo(sb, "Regain health: ", infoItem.getStatValue("MAX_HEALTH"));
         TextFormater.formatBonusInfo(sb, "Regain mana: ", infoItem.getStatValue("MAX_MANA"));
@@ -298,7 +308,7 @@ public class ItemHandler extends Handler {
         }
       }
     }
-
+System.out.println("*** " + sb.toString());
     if (sb.length() != sb_empty) {
       addOutGoingMessage(client, "item_info", sb.toString());
     }

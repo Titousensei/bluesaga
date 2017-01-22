@@ -62,6 +62,8 @@ public class Item {
 
   private Vector<StatusEffect> statusEffects;
 
+  private Map<String, Integer> info;
+
   public Item(int id, String name, String origin) {
     this.Id = id; // Id in item table
     this.Name = name;
@@ -104,6 +106,7 @@ public class Item {
     setProjectileId(copy.getProjectileId());
 
     setDescription(copy.getDescription());
+    setInfo(copy.getInfo());
     setTwoHands(copy.isTwoHands());
     setClassId(copy.getClassId());
 
@@ -481,6 +484,14 @@ public class Item {
     Description = description;
   }
 
+  public void setInfo(Map<String, Integer> val) {
+    info = val;
+  }
+
+  public Map<String, Integer> getInfo() {
+    return info;
+  }
+
   public int getClassId() {
     return ClassId;
   }
@@ -571,6 +582,10 @@ public class Item {
     if (MagicId != 0) {
       sb.append(" magic=")
         .append(MagicId);
+    }
+    if (info != null) {
+      sb.append(" info=")
+        .append(info.toString());
     }
     return sb.toString();
   }

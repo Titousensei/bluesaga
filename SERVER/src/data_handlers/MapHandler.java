@@ -412,13 +412,15 @@ public class MapHandler extends Handler {
 
     if (dayNightTime == 1 && worldTimeItr >= worldNightDuration) {
       // NIGHT ENDS, MORNING COMES
-      ServerMessage.println(false, "Change to -- DAY Time");
+      ServerMessage.println(false,
+          "--- DAY Time ------------------------------------------------------------------");
 
       dayNightTime = 2;
       dayNightChange = true;
     } else if (dayNightTime == 2 && worldTimeItr >= worldDayDuration) {
       // NIGHT TIME
-      ServerMessage.println(false, "Change to -- NIGHT Time");
+      ServerMessage.println(false,
+          "--- NIGHT Time ----------------------------------------------------------------");
 
       dayNightTime = 1;
       dayNightChange = true;

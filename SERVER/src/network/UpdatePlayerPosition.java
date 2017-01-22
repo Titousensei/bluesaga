@@ -37,7 +37,6 @@ extends Thread
     String posStatement =
         "INSERT INTO character_position (id, x, y, z) VALUES ("
         + charId + ',' + x + ',' + y + ',' + z + ')';
-System.out.println(posStatement);
     Server.posDB.updateDB(posStatement);
   }
 

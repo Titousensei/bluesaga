@@ -339,11 +339,13 @@ public class ChatHandler extends Handler {
         // Check if user wants to create a new channel
         if (chatMessage.startsWith("@") || chatMessage.startsWith("#")) {
           String newChannelInfo[] = chatMessage.split(" ", 2);
-          chatChannel = newChannelInfo[0].toLowerCase();
-          if (newChannelInfo.length > 1) {
-            chatMessage = newChannelInfo[1];
-          } else {
-            chatMessage = "";
+          if (newChannelInfo[0].length()>1) {
+            chatChannel = newChannelInfo[0].toLowerCase();
+            if (newChannelInfo.length > 1) {
+              chatMessage = newChannelInfo[1];
+            } else {
+              chatMessage = "";
+            }
           }
         }
 
@@ -373,10 +375,11 @@ public class ChatHandler extends Handler {
 
           if ("admin".equals(receiverName)) {
             playerOnline = true;
-            chatMessage += " @" + client.playerCharacter.getX()
-                + "," + client.playerCharacter.getY()
-                + "," + client.playerCharacter.getZ()
-                + " <-- ADMIN";
+            ServerMessage.println(false, "ADMIN <-- ",
+                m.client.playerCharacter,
+                " @", client.playerCharacter.getX(),
+                ",",  client.playerCharacter.getY(),
+                ",",  client.playerCharacter.getZ());
           } else {
             for (Map.Entry<Integer, Client> entry : Server.clients.entrySet()) {
               Client s = entry.getValue();

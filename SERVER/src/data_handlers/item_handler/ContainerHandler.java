@@ -687,7 +687,6 @@ public class ContainerHandler extends Handler {
           }
         }
       }
-
       if (respawnOk) {
         if (!entry.getValue().checkRespawn()) {
 

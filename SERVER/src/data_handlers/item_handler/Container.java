@@ -10,7 +10,8 @@ public class Container {
 
   private String Name = "Container";
   HashMap<String, Item> items;
-  private int respawnTimer = 0;
+  private int respawnTimer = 0;  // 10 seconds / tick
+  private boolean removeIfEmpty = false;
 
   public Container(String type) {
     setType(type);
@@ -18,7 +19,7 @@ public class Container {
     int sizeW = 3;
     int sizeH = 3;
 
-    respawnTimer = 2 * 60 * 6; // 2 timmar respawn
+    respawnTimer = 2 * 60 * 60 / 10; // 2 hours default
 
     if (type.contains("barrel")) {
       sizeW = 3;
@@ -26,16 +27,23 @@ public class Container {
     } else if (type.contains("chest")) {
       sizeW = 4;
       sizeH = 3;
-    } else if (type.contains("bag")) {
-      sizeW = 3;
-      sizeH = 3;
     } else {
       sizeW = 3;
       sizeH = 3;
     }
 
     if (type.contains("harvest")) {
-      respawnTimer = 12;
+      respawnTimer = 12;  // 2 minutes
+    } else if (type.contains("smallbag")) {
+      respawnTimer = 60;  // 10 minutes
+      removeIfEmpty = true;
+      Name = "Small Bag";
+    } else if (Type.contains("bigbag")) {
+      Name = "Big Bag";
+    } else if (Type.contains("barrel")) {
+      Name = "Barrel";
+    } else if (Type.contains("chest")) {
+      Name = "Chest";
     }
 
     setSizeW(sizeW);
@@ -105,16 +113,6 @@ public class Container {
   }
 
   public String getName() {
-    if (Type.contains("smallbag")) {
-      Name = "Small Bag";
-    } else if (Type.contains("bigbag")) {
-      Name = "Big Bag";
-    } else if (Type.contains("barrel")) {
-      Name = "Barrel";
-    } else if (Type.contains("chest")) {
-      Name = "Chest";
-    }
-
     return Name;
   }
 
@@ -131,6 +129,9 @@ public class Container {
   }
 
   public boolean checkRespawn() {
+    if (removeIfEmpty && items.isEmpty()) {
+      return true;
+    }
     if (respawnTimer == 0) {
       return false;
     } else {

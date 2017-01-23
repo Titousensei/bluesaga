@@ -326,21 +326,9 @@ public abstract class Server {
                 ServerMessage.println(false, "SERVER RESTART: -1 min");
               }
             }
-            sendLastRestartWarning();
           }
         },
         13 * 60 * 1000);
-  }
-
-  public void sendLastRestartWarning() {
-    restartTimer.schedule(
-        new TimerTask() {
-          @Override
-          public void run() {
-            restartServer();
-          }
-        },
-        60 * 1000);
   }
 
   public static void restartServer() {

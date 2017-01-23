@@ -259,7 +259,8 @@ public class Creature implements Mover {
         }
 
         attackTimerEnd = Math.round(2000.0f * (200.0f / (getAttackSpeed() + 100.0f)));
-        attackTimerItr = 0;
+        attackTimerItr = attackTimerEnd;
+        ATTACK_READY = true;
       }
 
       rs.close();
@@ -350,7 +351,8 @@ public class Creature implements Mover {
     }
 
     attackTimerEnd = Math.round(2000.0f * (200.0f / (getAttackSpeed() + 100.0f)));
-    attackTimerItr = 0;
+    attackTimerItr = attackTimerEnd;
+    ATTACK_READY = true;
   }
 
   public String getFullData() {

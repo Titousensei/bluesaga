@@ -13,16 +13,11 @@ import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ThreadLocalRandom;
 
-import org.newdawn.slick.util.pathfinding.Mover;
-import org.newdawn.slick.util.pathfinding.PathFindingContext;
-import org.newdawn.slick.util.pathfinding.TileBasedMap;
-
 import utils.ServerGameInfo;
 import utils.ServerMessage;
 import utils.Spiral;
 import creature.Creature;
 import creature.Npc;
-import creature.PathMover;
 import creature.PlayerCharacter;
 import creature.Creature.CreatureType;
 import data_handlers.Handler;
@@ -33,20 +28,13 @@ import data_handlers.item_handler.Item;
 import data_handlers.monster_handler.MonsterHandler;
 import game.ServerSettings;
 
-public class WorldMap implements TileBasedMap {
-
+public class WorldMap
+{
   private HashMap<String, Tile> MapTiles;
 
   public HashMap<Integer, Vector<Npc>> monstersByZ;
   public HashMap<Integer, Vector<PlayerCharacter>> playersByZ;
   public Vector<Integer> zLevels;
-
-  private boolean[][] visited;
-
-  private int pathMapSize;
-  private int pathZ;
-  private int pathMapStartX;
-  private int pathMapStartY;
 
   private int entranceX;
   private int entranceY;
@@ -58,10 +46,6 @@ public class WorldMap implements TileBasedMap {
   private int newMonsterId = 0;
 
   public WorldMap() {}
-
-  public int getPathMapSize() {
-    return pathMapSize;
-  }
 
   public void loadMap() {
     Monsters = new ConcurrentHashMap<>();
@@ -77,7 +61,6 @@ public class WorldMap implements TileBasedMap {
     monstersByZ = new HashMap<>();
     playersByZ = new HashMap<>();
     zLevels = new Vector<>();
-    pathMapSize = 0;
 
     // LOAD MAP FROM DB
     System.out.print("[WorldMap] INFO - Loading map");
@@ -267,12 +250,6 @@ public class WorldMap implements TileBasedMap {
       soulInfo.close();
     } catch (SQLException e1) {
       e1.printStackTrace();
-    }
-
-    if (maxX > maxY) {
-      pathMapSize = maxX;
-    } else {
-      pathMapSize = maxY;
     }
 
     System.out.println("[WorldMap] INFO - Loading monsters...");
@@ -477,71 +454,75 @@ public class WorldMap implements TileBasedMap {
                 }
               }
             } else if (MonsterHandler.movingMonsterTypes.contains(m.getAggroType())) {
-              if (m.getHealth() < m.getStat("MAX_HEALTH") && !m.isResting()) {
-                MonsterHandler.changeMonsterSleepState(m, true);
-              } else if (!m.isResting()) {
-                // MOVE RANDOM DIRECTION
+              boolean monsterMoved = false;
+              if (m.distanceFromSpawn() > 8.0) {
+                monsterMoved = m.moveTowardSpawn();
+              }
+              if (!monsterMoved) {
+                if (m.getHealth() < m.getStat("MAX_HEALTH") && !m.isResting()) {
+                  MonsterHandler.changeMonsterSleepState(m, true);
+                } else if (!m.isResting()) {
+                  // MOVE RANDOM DIRECTION
+                  int randomDir = ThreadLocalRandom.current().nextInt(8);
 
-                boolean monsterMoved = false;
+                  monsterMoved = true;
 
-                int randomDir = ThreadLocalRandom.current().nextInt(8);
+                  if (randomDir > 3) {
+                    int gotoX = m.getX();
+                    int gotoY = m.getY();
 
-                monsterMoved = true;
+                    if (m.getGotoRotation() == 0.0f) {
+                      gotoY--;
+                    } else if (m.getGotoRotation() == 90.0f) {
+                      gotoX++;
+                    } else if (m.getGotoRotation() == 180.0f) {
+                      gotoY++;
+                    } else if (m.getGotoRotation() == 270.0f) {
+                      gotoX--;
+                    }
 
-                if (randomDir > 3) {
-                  int gotoX = m.getX();
-                  int gotoY = m.getY();
+                    if (isPassableTileForMonster(m, gotoX, gotoY, m.getZ())) {
+                      // Remove monster from tile
+                      MapTiles.get(m.getX() + "," + m.getY() + "," + m.getZ())
+                          .setOccupant(CreatureType.None, null);
 
-                  if (m.getGotoRotation() == 0.0f) {
-                    gotoY--;
-                  } else if (m.getGotoRotation() == 90.0f) {
-                    gotoX++;
-                  } else if (m.getGotoRotation() == 180.0f) {
-                    gotoY++;
-                  } else if (m.getGotoRotation() == 270.0f) {
-                    gotoX--;
+                      m.walkTo(gotoX, gotoY, m.getZ());
+
+                      // Occupy tile with monster
+                      MapTiles.get(m.getX() + "," + m.getY() + "," + m.getZ())
+                          .setOccupant(CreatureType.Monster, m);
+                    }
+                  } else if (randomDir == 0) {
+                    m.setGotoRotation(0.0f);
+                  } else if (randomDir == 1) {
+                    m.setGotoRotation(90.0f);
+                  } else if (randomDir == 2) {
+                    m.setGotoRotation(180.0f);
+                  } else if (randomDir == 3) {
+                    m.setGotoRotation(270.0f);
                   }
 
-                  if (isPassableTileForMonster(m, gotoX, gotoY, m.getZ())) {
-                    // Remove monster from tile
-                    MapTiles.get(m.getX() + "," + m.getY() + "," + m.getZ())
-                        .setOccupant(CreatureType.None, null);
+                  m.startMoveTimer(false);
 
-                    m.walkTo(gotoX, gotoY, m.getZ());
+                  if (monsterMoved) {
+                    // CHECK IF TILE HAS TRIGGER
+                    if (MapTiles.get(m.getX() + "," + m.getY() + "," + m.getZ()).getTrigger()
+                        != null) {
+                      Trigger T =
+                          MapTiles.get(m.getX() + "," + m.getY() + "," + m.getZ()).getTrigger();
 
-                    // Occupy tile with monster
-                    MapTiles.get(m.getX() + "," + m.getY() + "," + m.getZ())
-                        .setOccupant(CreatureType.Monster, m);
-                  }
-                } else if (randomDir == 0) {
-                  m.setGotoRotation(0.0f);
-                } else if (randomDir == 1) {
-                  m.setGotoRotation(90.0f);
-                } else if (randomDir == 2) {
-                  m.setGotoRotation(180.0f);
-                } else if (randomDir == 3) {
-                  m.setGotoRotation(270.0f);
-                }
+                      T.setTriggered(true);
 
-                m.startMoveTimer(false);
-
-                if (monsterMoved) {
-                  // CHECK IF TILE HAS TRIGGER
-                  if (MapTiles.get(m.getX() + "," + m.getY() + "," + m.getZ()).getTrigger()
-                      != null) {
-                    Trigger T =
-                        MapTiles.get(m.getX() + "," + m.getY() + "," + m.getZ()).getTrigger();
-
-                    T.setTriggered(true);
-
-                    // IF TRIGGERS TRAP, TRAP EFFECT
-                    if (T.getTrapId() > 0) {
-                      TrapHandler.triggerTrap(T.getTrapId(), m.getX(), m.getY(), m.getZ());
+                      // IF TRIGGERS TRAP, TRAP EFFECT
+                      if (T.getTrapId() > 0) {
+                        TrapHandler.triggerTrap(T.getTrapId(), m.getX(), m.getY(), m.getZ());
+                      }
                     }
                   }
-
-                  movedMonsters.add(m);
                 }
+              }
+              if (monsterMoved) {
+                movedMonsters.add(m);
               }
             }
           } else if (!m.isDead()) {
@@ -553,39 +534,6 @@ public class WorldMap implements TileBasedMap {
     }
 
     return movedMonsters;
-  }
-
-  /*
-   *
-   * 	PATH MAP
-   *
-   *
-   */
-
-  public void createPathMap(int startX, int startY, int startZ, int goalX, int goalY, int goalZ) {
-    setPathMapStartX(startX - 10);
-    setPathMapStartY(startY - 10);
-    setPathZ(startZ);
-
-    pathMapSize = 20;
-
-    visited = new boolean[pathMapSize][pathMapSize];
-
-    int pathMapX = 0;
-    int pathMapY = 0;
-
-    MapTiles = new HashMap<String, Tile>();
-
-    for (int i = startX - 10; i < startX + 10; i++) {
-      for (int j = startY - 10; j < startY + 10; j++) {
-        pathMapX = i - (startX - 10);
-        pathMapY = j - (startY - 10);
-
-        MapTiles.put(
-            pathMapX + "," + pathMapY + "," + getPathZ(),
-            Server.WORLD_MAP.getTile(i, j, getPathZ()));
-      }
-    }
   }
 
   public List<Npc> checkRespawns() {
@@ -887,13 +835,18 @@ public class WorldMap implements TileBasedMap {
     return gotoTile.isPassableNonAggro();
   }
 
-  public boolean isPassableTileForPlayer(PlayerCharacter player, int X, int Y) {
-    boolean passable = true;
+  public boolean isPassableTileForPlayer(PlayerCharacter player, int X, int Y, int Z) {
 
-    if (passable) {
-      passable = MapTiles.get(X + "," + Y).isPassableForPlayer(player);
+    Tile gotoTile = MapTiles.get(X + "," + Y + "," + Z);
+    return (gotoTile!=null) && gotoTile.isPassableForPlayer(player);
+  }
+
+  public boolean isPassableTile(Creature cr, int x, int y, int z) {
+    if (cr.getCreatureType() == Creature.CreatureType.Player) {
+      return isPassableTileForPlayer((PlayerCharacter) cr, x, y, z);
+    } else {
+      return isPassableTileForMonster(cr, x, y, z);
     }
-    return passable;
   }
 
   public Point findClosestFreeTile(int startX, int startY, int startZ) {
@@ -921,105 +874,5 @@ public class WorldMap implements TileBasedMap {
   public boolean isType(String type, int x, int y, int z) {
     Tile tile = getTile(x, y, z);
     return (tile != null && type.equals(tile.getType()));
-  }
-
-  /****************************************
-   * * PATHFINDING * * *
-   ****************************************/
-
-  /**
-   * Clear the array marking which tiles have been visted by the path finder.
-   */
-  public void clearVisited() {
-    for (int x = 0; x < getWidthInTiles(); x++) {
-      for (int y = 0; y < getHeightInTiles(); y++) {
-        visited[x][y] = false;
-      }
-    }
-  }
-
-  /**
-   * @see TileBasedMap#visited(int, int)
-   */
-  public boolean visited(int x, int y) {
-    return visited[x][y];
-  }
-
-  /**
-   * @see TileBasedMap#blocked(Mover, int, int)
-   */
-  @Override
-  public boolean blocked(PathFindingContext pathMover, int x, int y) {
-
-    PathMover mover = (PathMover) pathMover.getMover();
-
-    if (MapTiles.get(x + "," + y + "," + getPathZ()) != null) {
-      if (MapTiles.get(x + "," + y + "," + getPathZ()).isPassableNonAggro()
-          || x == mover.getTargetX() - getPathMapStartX()
-              && y == mover.getTargetY() - getPathMapStartY()) {
-        return false;
-      }
-    } else {
-      return false;
-    }
-    return true;
-
-    //}
-  }
-
-  /**
-   * @see TileBasedMap#getCost(Mover, int, int, int, int)
-   */
-  @Override
-  public float getCost(PathFindingContext arg0, int arg1, int arg2) {
-    return 1;
-  }
-
-  /**
-   * @see TileBasedMap#getHeightInTiles()
-   */
-  @Override
-  public int getHeightInTiles() {
-    return pathMapSize;
-  }
-
-  /**
-   * @see TileBasedMap#getWidthInTiles()
-   */
-  @Override
-  public int getWidthInTiles() {
-    return pathMapSize;
-  }
-
-  /**
-   * @see TileBasedMap#pathFinderVisited(int, int)
-   */
-  @Override
-  public void pathFinderVisited(int x, int y) {
-    visited[x][y] = true;
-  }
-
-  public int getPathZ() {
-    return pathZ;
-  }
-
-  public void setPathZ(int pathZ) {
-    this.pathZ = pathZ;
-  }
-
-  public int getPathMapStartX() {
-    return pathMapStartX;
-  }
-
-  public void setPathMapStartX(int pathMapStartX) {
-    this.pathMapStartX = pathMapStartX;
-  }
-
-  public int getPathMapStartY() {
-    return pathMapStartY;
-  }
-
-  public void setPathMapStartY(int pathMapStartY) {
-    this.pathMapStartY = pathMapStartY;
   }
 }

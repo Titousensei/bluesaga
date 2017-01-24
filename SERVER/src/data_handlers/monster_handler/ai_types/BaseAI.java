@@ -9,7 +9,6 @@ import org.newdawn.slick.util.pathfinding.Path;
 import creature.Creature;
 import creature.Creature.CreatureType;
 import creature.Npc;
-import creature.PathMover;
 import data_handlers.monster_handler.MonsterHandler;
 import map.Tile;
 import map.WorldMap;
@@ -51,68 +50,48 @@ public class BaseAI {
     return false;
   }
 
-  protected void moveToward(int goalX, int goalY, int goalZ) {
+  public static boolean moveToward(Creature cr, int goalX, int goalY, int goalZ)
+  {
+    int oldX = cr.getX();
+    int oldY = cr.getY();
+    int oldZ = cr.getZ();
 
-    int monsterOldX = me.getX();
-    int monsterOldY = me.getY();
-    int monsterOldZ = me.getZ();
+    if (goalZ != oldZ) {
+      ServerMessage.println(true, "Can't moveToward across Z",
+          cr.getX(), ",", cr.getY(), ",", oldZ,
+          " and ", goalX, ",", goalY, ",", goalZ);
+      return false;
+    }
 
     // MAKE A PATHFINDING MAP
-    WorldMap pathMap = new WorldMap();
-    pathMap.createPathMap(monsterOldX, monsterOldY, monsterOldZ, goalX, goalY, goalZ);
-
+    PathFinder pathMap = new PathFinder(oldX, oldY, goalX, goalY, goalZ);
     AStarPathFinder pathfinder =
-        new AStarPathFinder(pathMap, pathMap.getPathMapSize(), MonsterHandler.diagonalWalk);
-    PathMover mover = new PathMover(CreatureType.Monster);
-    mover.setTarget(goalX, goalY, goalZ);
+        new AStarPathFinder(pathMap, pathMap.searchMax, MonsterHandler.diagonalWalk);
     Path foundPath = null;
 
     try {
-      foundPath =
-          pathfinder.findPath(
-              mover,
-              me.getX() - pathMap.getPathMapStartX(),
-              me.getY() - pathMap.getPathMapStartY(),
-              goalX - pathMap.getPathMapStartX(),
-              goalY - pathMap.getPathMapStartY());
+      foundPath = pathfinder.findPath(cr, pathMap.startX, pathMap.startY, pathMap.goalX, pathMap.goalY);
     } catch (ArrayIndexOutOfBoundsException e) {
       ServerMessage.println(true, "Can't find path between ",
-          me.getX(), ",", me.getY(), " and ", goalX, ",", goalY);
-      foundPath = null;
+          oldX, ",", oldY, " and ", goalX, ",", goalY);
     }
 
     if (foundPath != null) {
-      int stepX = foundPath.getX(1) + pathMap.getPathMapStartX();
-      int stepY = foundPath.getY(1) + pathMap.getPathMapStartY();
-      int stepZ = me.getZ();
+      int stepX = foundPath.getX(1) + pathMap.offsetX;
+      int stepY = foundPath.getY(1) + pathMap.offsetY;
 
-      if (Server.WORLD_MAP.isPassableTileForMonster(me, stepX, stepY, stepZ)) {
-        int diagonalMove = 0;
-
-        me.walkTo(stepX, stepY, stepZ);
-
-        if (stepX != me.getX()) {
-          diagonalMove++;
-        }
-        if (stepY != me.getY()) {
-          diagonalMove++;
-        }
-
-        me.startMoveTimer(diagonalMove > 1);
-        hasMoved = true;
+      if (Server.WORLD_MAP.isPassableTile(cr, stepX, stepY, goalZ)) {
+        Server.WORLD_MAP.getTile(oldX, oldY, oldZ)
+                        .setOccupant(CreatureType.None, null);
+        cr.walkTo(stepX, stepY, goalZ);
+        Server.WORLD_MAP.getTile(cr.getX(), cr.getY(), cr.getZ())
+                        .setOccupant(CreatureType.Monster, cr);
+        cr.startMoveTimer((stepX != cr.getX()) && (stepY != cr.getY()));
+        return true;
       }
     }
 
-    // FREE / OCCUPY TILES
-    if (hasMoved) {
-      Server.WORLD_MAP
-          .getTile(monsterOldX, monsterOldY, monsterOldZ)
-          .setOccupant(CreatureType.None, null);
-
-      Server.WORLD_MAP
-          .getTile(me.getX(), me.getY(), me.getZ())
-          .setOccupant(CreatureType.Monster, me);
-    }
+    return false;
   }
 
 
@@ -134,7 +113,7 @@ public class BaseAI {
         if (distToTarget >= me.getAttackRange()) {
           Tile tryTile = Server.WORLD_MAP.getTile(escapeX, escapeY, me.getZ());
           if (tryTile!= null && tryTile.isPassableNonAggro()) {
-            moveToward(escapeX, escapeY, me.getZ());
+            moveToward(me, escapeX, escapeY, me.getZ());
             return;
           }
         }
@@ -153,7 +132,7 @@ public class BaseAI {
         && distToTarget > me.getAttackRange()
         && me.getZ() == target.getZ()) {
 
-      moveToward(target.getX(), target.getY(), target.getZ());
+      hasMoved = moveToward(me, target.getX(), target.getY(), target.getZ());
     }
   }
 

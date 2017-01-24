@@ -13,6 +13,7 @@ import java.util.concurrent.ThreadLocalRandom;
 import components.Stats;
 import creature.Creature.CreatureType;
 import utils.ServerGameInfo;
+import utils.MathUtils;
 import utils.RandomUtils;
 import data_handlers.ability_handler.Ability;
 import data_handlers.ability_handler.AbilityHandler;
@@ -229,6 +230,15 @@ public class Npc extends Creature {
   public int getSpawnZ() {
     return SpawnZ;
   }
+
+  public double distanceFromSpawn() {
+    return MathUtils.distance(X - SpawnX, Y - SpawnY);
+  }
+
+  public boolean moveTowardSpawn() {
+    return BaseAI.moveToward(this, SpawnX, SpawnY, SpawnZ);
+  }
+
 
   public void startRespawnTimer() {
     respawnTimeItr = 0;

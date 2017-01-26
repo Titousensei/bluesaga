@@ -1166,8 +1166,8 @@ public class AbilityHandler extends Handler {
                         ABILITY.getStatusEffects());
                   }
                 }
-                ServerMessage.println(false, "AbilityEffect - ", CASTER,
-                    ": ", ABILITY, " on ", TARGET);
+                ServerMessage.println((CASTER.getCreatureType() != CreatureType.Player),
+                    "AbilityEffect - ", CASTER, ": ", ABILITY, " on ", TARGET);
               }
 
               // IF FISHING
@@ -1211,14 +1211,12 @@ public class AbilityHandler extends Handler {
             addOutGoingMessage(s, "tile_effect", tileData);
           }
         }
-        ServerMessage.println(false, "AbilityEffect - ", CASTER,
-            ": ", ABILITY, " at ", goalX, ",", goalY, ",", goalZ);
+        ServerMessage.println((CASTER.getCreatureType() != CreatureType.Player),
+            "AbilityEffect - ", CASTER, ": ", ABILITY, " at ", goalX, ",", goalY, ",", goalZ);
       }
 
       if (useMana) {
         CASTER.useAbility(ABILITY);
-        ServerMessage.println(false, "AbilityEffect - ", CASTER,
-            ": ", ABILITY);
         if (CASTER instanceof PlayerCharacter) {
           addOutGoingMessage(((PlayerCharacter) CASTER).client, "stat", "Mana;" + CASTER.getMana());
         }

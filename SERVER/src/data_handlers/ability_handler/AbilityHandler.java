@@ -1117,27 +1117,27 @@ public class AbilityHandler extends Handler {
                     int baseClassId = GameInfo.classDef.get(ABILITY.getClassId()).baseClassId;
                     double att = CASTER.getStat("INTELLIGENCE") + playerCaster.getClassLevel(baseClassId);
                     double def = TARGET.getStat("INTELLIGENCE") + CASTER.getStat("MIND_DEF");
-                    String msg = "Your vision fades before you understand what it means...";
+                    String msg = "@PUR Their Intelligence is too strong, your vision fades before you understand what it means...";
                     if (RandomUtils.sigmoidCheck(att, def)) {
                       int chance = RandomUtils.getInt(0, 75);
                       if (chance < 10) {
-                        msg = "You see their Health: " + TARGET.getHealth();
+                        msg = "@PUR You see their Health: " + TARGET.getHealth();
                       } else if (chance < 20) {
-                        msg = "You feel their Mana: " + TARGET.getMana();
+                        msg = "@PUR You feel their Mana: " + TARGET.getMana();
                       } else if (chance < 30) {
-                        msg = "You have a vision of their Armor: " + TARGET.getStat("ARMOR");
+                        msg = "@PUR You have a vision of their Armor: " + TARGET.getStat("ARMOR");
                       } else if (chance < 40) {
-                        msg = "You foresee their Attack Speed: " + TARGET.getStat("ATTACKSPEED");
+                        msg = "@PUR You foresee their Attack Speed: " + TARGET.getStat("ATTACKSPEED");
                       } else if (chance < 50) {
                         if (TARGET instanceof PlayerCharacter) {
-                          msg = "You sense their Level: " + ((PlayerCharacter) TARGET).getLevel();
+                          msg = "@PUR You sense their Level: " + ((PlayerCharacter) TARGET).getLevel();
                         } else {
-                          msg = "You sense the XP you can get from them: " + ((Npc) TARGET).getGiveXP();
+                          msg = "@PUR You sense the XP you can get from them: " + ((Npc) TARGET).getGiveXP();
                         }
                       } else if (chance < 60) {
                         Ability ab = RandomUtils.getAny(TARGET.getAbilities());
                         if (ab!= null) {
-                          msg = "You dream of their Ability: " + ab.getName();
+                          msg = "@PUR You dream of their Ability: " + ab.getName();
                           if (chance < 64) {
                             msg += " (" + ab.getCooldown() + "s cooldown)";
                           } else if (chance < 68) {
@@ -1145,7 +1145,7 @@ public class AbilityHandler extends Handler {
                           }
                         }
                       } else { // 70
-                        msg = "You have a glimpse of the damage they can do to you: " + DamageCalculator.calculateDamage(TARGET, CASTER);
+                        msg = "@PUR You have a glimpse of the damage they can do to you: " + DamageCalculator.calculateDamage(TARGET, CASTER);
                       }
                     }
                     addOutGoingMessage(playerCaster.client, "message", msg);

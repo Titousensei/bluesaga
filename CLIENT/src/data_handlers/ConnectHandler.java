@@ -2,6 +2,8 @@ package data_handlers;
 
 import java.util.Iterator;
 
+import org.newdawn.slick.Color;
+
 import particlesystem.EmitterManager;
 import projectile.ProjectileManager;
 import screens.CharacterCreate;
@@ -222,8 +224,17 @@ public class ConnectHandler extends Handler {
       Gui.closeAllWindows();
     }
 
+    // <message>@F00 Text of the Message
     if (serverData.startsWith("<message>")) {
-      String message = serverData.substring(9);
+      String message;
+      Color color = BlueSagaColors.RED;
+      if (serverData.charAt(9) == '@') {
+        message = serverData.substring(14);
+        color = BlueSagaColors.getColorMap(serverData.substring(9,13));
+      }
+      else {
+        message = serverData.substring(9);
+      }
 
       if (message.contains("#")) {
         String messages[] = message.split("#");
@@ -239,7 +250,7 @@ public class ConnectHandler extends Handler {
         }
       }
 
-      Gui.addMessage(message, BlueSagaColors.RED);
+      Gui.addMessage(message, color);
     }
   }
 

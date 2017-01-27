@@ -573,6 +573,9 @@ public class BattleHandler extends Handler {
    */
   public static void playerDeath(Client client, PlayerDeathCause pkAttack) {
     Creature TARGET = client.playerCharacter;
+    if (TARGET == null) {
+      ServerMessage.println(false, "ERROR playerDeath - Null playCharacter for ", client);
+    }
 
     if (!Server.WORLD_MAP.isType("arena", TARGET.getX(), TARGET.getY(), TARGET.getZ())) {
 

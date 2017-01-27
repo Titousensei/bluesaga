@@ -217,7 +217,7 @@ public class ConnectHandler extends Handler {
       }
     }
 
-    if (serverData.startsWith("<quitchar>")) {
+    else if (serverData.startsWith("<quitchar>")) {
       BlueSaga.BG_MUSIC.changeSong("title", "title");
       BlueSaga.lastPlayedDbId = 0;
       Gui.Mouse.setType("Pointer");
@@ -225,7 +225,7 @@ public class ConnectHandler extends Handler {
     }
 
     // <message>@F00 Text of the Message
-    if (serverData.startsWith("<message>")) {
+    else if (serverData.startsWith("<message>")) {
       String message;
       Color color = BlueSagaColors.RED;
       if (serverData.charAt(9) == '@') {
@@ -251,6 +251,10 @@ public class ConnectHandler extends Handler {
       }
 
       Gui.addMessage(message, color);
+    }
+
+    else if (serverData.startsWith("<keepalive>")) {
+      BlueSaga.client.stopPingTimer();
     }
   }
 

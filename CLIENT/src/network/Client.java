@@ -10,6 +10,8 @@ import game.ClientSettings;
 
 import java.io.*;
 import java.net.*;
+import java.lang.management.ManagementFactory;
+import java.lang.management.OperatingSystemMXBean;
 
 import utils.Obfuscator;
 
@@ -19,6 +21,11 @@ public class Client {
   private int USER_ID = 0;
 
   private int keepAliveSec = 0;
+
+  // decay: 90%
+  public double pingMeter = 0.0;
+  public long pingTimer = 0L;
+  public long pingLast = 0L;
 
   public boolean connected = false;
 
@@ -104,15 +111,34 @@ public class Client {
     }
   }
 
-  public int getKeepAliveSec() {
-    return keepAliveSec;
+  public void stopPingTimer() {
+    if (pingTimer != 0L) {
+      pingLast = System.currentTimeMillis() - pingTimer;
+      pingMeter = (pingMeter == 0.0) ? pingLast : pingMeter * 0.9 + pingLast * 0.1;
+      pingTimer = 0L;
+    }
+  }
+
+  private String telemetry() {
+    try {
+      com.sun.management.OperatingSystemMXBean osMbean =
+          (com.sun.management.OperatingSystemMXBean) ManagementFactory.getOperatingSystemMXBean();
+
+      return String.format("jvm_cpu=%1.5f; system_cpu=%1.5f",
+                           osMbean.getProcessCpuLoad(),
+                           osMbean.getSystemCpuLoad());
+    } catch (Throwable ex) {
+      return ex.toString();
+    }
   }
 
   public void sendKeepAlive() {
     if (!BlueSaga.HAS_QUIT) {
       keepAliveSec++;
       if (this.keepAliveSec >= 4 && !BlueSaga.reciever.lostConnection) {
-        sendMessage("keepalive", "true");
+        pingTimer = System.currentTimeMillis();
+        sendMessage("keepalive", "ping=" + pingLast + "; ping_avg=" + pingMeter
+            + "; " + telemetry() + "; FPS=" + BlueSaga.getFPS());
       }
     }
   }

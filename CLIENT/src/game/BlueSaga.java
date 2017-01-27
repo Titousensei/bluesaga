@@ -4,15 +4,9 @@ import graphics.Font;
 import graphics.ImageResource;
 import gui.Gui;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.PrintStream;
-import java.io.UnsupportedEncodingException;
+import java.io.*;
+import java.util.*;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Iterator;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import map.ScreenObject;
 import map.WorldMap;
@@ -29,6 +23,7 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.AppGameContainer;
+import org.newdawn.slick.util.Log;
 
 import abilitysystem.Ability;
 import abilitysystem.StatusEffect;
@@ -160,10 +155,75 @@ public class BlueSaga extends BasicGame {
     ScreenHandler.setActiveScreen(ScreenType.LOGIN);
   }
 
+  public static int getFPS() {
+    return app.getFPS();
+  }
+
   public static void stopClient() {
     HAS_QUIT = true;
     reciever.interrupt();
     ServerCheck = false;
+  }
+
+  private static String shell(String... command) {
+    try {
+      Process p = Runtime.getRuntime().exec(command);
+      p.waitFor();
+
+      BufferedReader reader =
+           new BufferedReader(new InputStreamReader(p.getInputStream()));
+
+      StringBuilder sb = new StringBuilder(4000);
+      String line = "";
+      while ((line = reader.readLine())!= null) {
+        sb.append(line).append('\n');
+      }
+
+      return sb.toString();
+    }
+    catch (Throwable ex) {
+      return ex.toString();
+    }
+  }
+
+  private static String getSystemInfo() {
+
+    String osName = System.getProperty("os.name").toLowerCase();
+
+    String cpuInfo = "(no info)";
+    String gpuInfo = "(no info)";
+    String osInfo  = "(no info)";
+
+    if (osName.contains("win")) {
+      cpuInfo = shell("wmic cpu get name");
+      gpuInfo = shell("wmic path win32_VideoController get name driverVersion");
+      osInfo  = shell("ver");
+    } else if (osName.contains("nix") || osName.contains("nux")) {
+      cpuInfo = shell("sh", "-c", "cat /proc/cpuinfo | grep 'model name' | uniq -c");
+      gpuInfo = shell("sh", "-c", "lspci | grep VGA");
+      osInfo  = shell("sh", "-c", "uname -a");
+    } else if (osName.contains("mac")) {
+      cpuInfo = shell("sh", "-c", "sysctl machdep.cpu.brand_string");
+      gpuInfo = shell("sh", "-c", "system_profiler SPDisplaysDataType | tr -s '\n ' ', '");
+      osInfo  = shell("sh", "-c", "uname -a");
+    }
+
+    Runtime rt = Runtime.getRuntime();
+
+    return "os.name=" + osName
+        + "; os.version=" + System.getProperty("os.version")
+        + "; os.arch=" + System.getProperty("os.arch")
+        + "; cpu.num=" + rt.availableProcessors()
+        + "; mem.free=" + rt.freeMemory()
+        + "; java.version=" + System.getProperty("java.version")
+        + "; java.vendor=" + System.getProperty("java.vendor")
+        + "; java.runtime.name=" + System.getProperty("java.runtime.name")
+        + "; java.runtime.version=" + System.getProperty("java.runtime.version")
+        + "; java.class.version=" + System.getProperty("java.class.version")
+        + "; java.vm.version=" + System.getProperty("java.vm.version")
+        + "; OS: " + osInfo.trim()
+        + "; CPU: " + cpuInfo.trim()
+        + "; GPU: " + gpuInfo.trim();
   }
 
   public static void chooseServer(String ServerName) {
@@ -181,7 +241,7 @@ public class BlueSaga extends BasicGame {
 
       ServerCheck = true;
       client.resetPacketId();
-      client.sendMessage("connection", "hello");
+      client.sendMessage("connection", "hello;" + getSystemInfo());
     }
   }
 
@@ -197,7 +257,7 @@ public class BlueSaga extends BasicGame {
 
       ServerCheck = true;
 
-      client.sendMessage("connection", "hello");
+      client.sendMessage("connection", "hello-again;" + getSystemInfo());
     }
   }
 
@@ -304,35 +364,33 @@ public class BlueSaga extends BasicGame {
       Config.configure(ClientSettings.class, args[0]);
     }
 
-    if (!ClientSettings.DEV_MODE) {
-      // CRASH REPORTS
-      Thread.setDefaultUncaughtExceptionHandler(
-          new Thread.UncaughtExceptionHandler() {
-            @Override
-            public void uncaughtException(Thread t, Throwable e) {
+    // CRASH REPORTS
+    Thread.setDefaultUncaughtExceptionHandler(
+        new Thread.UncaughtExceptionHandler() {
+          @Override
+          public void uncaughtException(Thread t, Throwable e) {
+            String msg = BlueSagaLogSystem.logException(e);
+            if (!ClientSettings.DEV_MODE) {
               Calendar cal = Calendar.getInstance();
               SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_HHmmss");
 
               String filename = "libs/crashlogs/crashlog_" + sdf.format(cal.getTime()) + ".txt";
 
-              PrintStream writer;
               try {
-                writer = new PrintStream(filename, "UTF-8");
-                writer.println(e.getClass() + ": " + e.getMessage());
-                for (int i = 0; i < e.getStackTrace().length; i++) {
-                  writer.println(e.getStackTrace()[i].toString());
-                }
-              } catch (FileNotFoundException e1) {
-                e1.printStackTrace();
-              } catch (UnsupportedEncodingException e1) {
-                e1.printStackTrace();
+                PrintStream writer = new PrintStream(filename, "UTF-8");
+                writer.println(msg);
+                writer.close();
+              } catch (Exception ex) {
+                ex.printStackTrace();
               }
             }
-          });
-    }
+          }
+        });
     if (!ClientSettings.DEV_MODE) {
       System.setProperty("org.lwjgl.librarypath", new File("libs/").getAbsolutePath());
     }
+
+    Log.setLogSystem(new BlueSagaLogSystem());
 
     try {
 

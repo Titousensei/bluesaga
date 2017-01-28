@@ -30,14 +30,21 @@ public class ConnectHandler extends Handler {
     DataHandlers.register("ready", m -> handleReady(m));
     DataHandlers.register("keepalive", m -> handleKeepAlive(m));
     DataHandlers.register("quitchar", m -> handleQuitCharacter(m));
+    DataHandlers.register("CLIENTCRASH", m -> handleClientCrash(m));
   }
 
   public static void handleConnection(Message m) {
     Client client = m.client;
-    if ("hello".equals(m.message)) {
+    if (m.message.startsWith("hello")) {
       client.sendingData = false;
       addOutGoingMessage(client, "connect", ServerSettings.CLIENT_VERSION);
+      ServerMessage.println(false, client, " CONNECT ", m.message);
     }
+  }
+
+  public static void handleClientCrash(Message m) {
+    Client client = m.client;
+    ServerMessage.println(false, "CLIENTCRASH - ", client, " ", m.message);
   }
 
   public static void handlePlayerInfo(Message m) {

@@ -1270,6 +1270,8 @@ public class PlayerCharacter extends Creature {
           levelUp = true;
           Level++;
           nextXP = XPTables.getNextLevelXP(Level + 1);
+        } else {
+          break;
         }
       }
     }

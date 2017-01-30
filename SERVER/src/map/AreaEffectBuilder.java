@@ -8,6 +8,7 @@ public class AreaEffectBuilder
 extends Builder<AreaEffect>
 {
   protected AreaEffect ae = null;
+  protected List<Integer> items = null;
 
   public void init(int id, String name, String origin) {
     ae = new AreaEffect(id, name, origin);
@@ -37,8 +38,15 @@ extends Builder<AreaEffect>
     ae.setParticles(val);
   }
 
-  public void areaItems(String val) {
-    ae.setAreaItems(val);
+  public void areaItem(String val) {
+    int id = parseInt(val);
+    if (id!=0) {
+      if (items==null) {
+        items = new ArrayList<>(4);
+      }
+      items.add(id);
+    }
+
   }
 
   public void areaCopper(String val) {
@@ -50,6 +58,15 @@ extends Builder<AreaEffect>
   }
 
   public AreaEffect build() {
+    if (items!=null) {
+      int[] it = new int[items.size()];
+      int i = 0;
+      for (Integer val : items) {
+        it[i] = val;
+        ++ i;
+      }
+      ae.setAreaItems(it);
+    }
     return ae;
   }
 

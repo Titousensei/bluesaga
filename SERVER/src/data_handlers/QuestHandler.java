@@ -698,22 +698,9 @@ public class QuestHandler extends Handler {
 
         if (rewardCopper > 0) {
           CoinConverter cc = new CoinConverter(rewardCopper);
-
-          if (cc.getGold() > 0) {
-            Item GoldItem = ServerGameInfo.newItem(34);
-            GoldItem.setStacked(cc.getGold());
-            InventoryHandler.addItemToInventory(client, GoldItem);
-          }
-          if (cc.getSilver() > 0) {
-            Item SilverItem = ServerGameInfo.newItem(35);
-            SilverItem.setStacked(cc.getSilver());
-            InventoryHandler.addItemToInventory(client, SilverItem);
-          }
-          if (cc.getCopper() > 0) {
-            Item CopperItem = ServerGameInfo.newItem(36);
-            CopperItem.setStacked(cc.getCopper());
-            InventoryHandler.addItemToInventory(client, CopperItem);
-          }
+          InventoryHandler.addItemToInventory(client, cc.getGoldItem());
+          InventoryHandler.addItemToInventory(client, cc.getSilverItem());
+          InventoryHandler.addItemToInventory(client, cc.getCopperItem());
         }
 
         if (rewardXp > 0) {

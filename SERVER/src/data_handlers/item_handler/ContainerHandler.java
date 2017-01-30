@@ -14,6 +14,7 @@ import data_handlers.DataHandlers;
 import data_handlers.Handler;
 import data_handlers.Message;
 import data_handlers.SkinHandler;
+import map.AreaEffect;
 import map.Moveable;
 import map.Tile;
 import network.Client;
@@ -418,68 +419,27 @@ public class ContainerHandler extends Handler {
 
                 // GET LOOT IN AREA
                 int areaEffectId = client.playerCharacter.getAreaEffectId();
-                String areaItems = "None";
-                int areaCopper = 0;
+                AreaEffect areaEffectInfo = ServerGameInfo.areaEffectsDef.get(areaEffectId);
+                if (areaEffectInfo != null) {
 
-                ResultSet areaEffectInfo =
-                    Server.mapDB.askDB(
-                        //      1          2
-                        "select AreaItems, AreaCopper from area_effect where Id = " + areaEffectId);
-                try {
-                  if (areaEffectInfo.next()) {
-
-                    areaItems = areaEffectInfo.getString(1);
-                    areaCopper = areaEffectInfo.getInt(2);
-
-                    if (TILE.getZ() <= -100) {
-                      //
-                    } else if (!areaItems.equals("None")) {
-                      int dropItemChance = RandomUtils.getInt(0, 100);
-
-                      if (dropItemChance < 20) {
-                        String itemIds[] = areaItems.split(",");
-                        for (String itemId : itemIds) {
-                          int id = Integer.parseInt(itemId);
-                          newContainer.addItem(ServerGameInfo.newItem(id));
-                        }
-                      }
-                    }
-
-                    int dropCopperChance = RandomUtils.getInt(0, 100);
-
-                    if (dropCopperChance < 40) {
-
-                      if (areaCopper > 0) {
-                        areaCopper = RandomUtils.getInt(0, areaCopper);
-
-                        CoinConverter cc = new CoinConverter(areaCopper);
-
-                        if (cc.getGold() > 0) {
-                          Item GoldItem = ServerGameInfo.newItem(34);
-                          GoldItem.setStacked(cc.getGold());
-                          newContainer.addItem(GoldItem);
-                        }
-                        if (cc.getSilver() > 0) {
-                          Item SilverItem = ServerGameInfo.newItem(35);
-                          SilverItem.setStacked(cc.getSilver());
-                          newContainer.addItem(SilverItem);
-                        }
-                        if (cc.getCopper() > 0) {
-                          Item CopperItem = ServerGameInfo.newItem(36);
-                          CopperItem.setStacked(cc.getCopper());
-                          newContainer.addItem(CopperItem);
-                        }
-                      }
+                  int dropItemChance = RandomUtils.getInt(0, 100);
+                  int[] areaItems = areaEffectInfo.getAreaItems();
+                  if (dropItemChance < 20 && areaItems != null) {
+                    for (int itemId : areaItems) {
+                      newContainer.addItem(ServerGameInfo.newItem(itemId));
                     }
                   }
-                  areaEffectInfo.close();
-                } catch (NumberFormatException e) {
-                  // TODO Auto-generated catch block
-                  e.printStackTrace();
-                } catch (SQLException e) {
-                  // TODO Auto-generated catch block
-                  e.printStackTrace();
+
+                  int dropCopperChance = RandomUtils.getInt(0, 100);
+                  int areaCopper = RandomUtils.getInt(0, areaEffectInfo.getAreaCopper());
+                  if (dropCopperChance < 40 && areaCopper > 0) {
+                    CoinConverter cc = new CoinConverter(areaCopper);
+                    newContainer.addItem(cc.getGoldItem());
+                    newContainer.addItem(cc.getSilverItem());
+                    newContainer.addItem(cc.getCopperItem());
+                  }
                 }
+
                 CONTAINERS.put(TILE.getX() + "," + TILE.getY() + "," + TILE.getZ(), newContainer);
               }
 
@@ -518,6 +478,9 @@ public class ContainerHandler extends Handler {
   }
 
   public static void addItemToContainer(Item newItem, int tileX, int tileY, int tileZ) {
+    if (newItem == null) {
+      return;
+    }
     if (CONTAINERS.get(tileX + "," + tileY + "," + tileZ) != null) {
       CONTAINERS.get(tileX + "," + tileY + "," + tileZ).addItem(newItem);
     } else {

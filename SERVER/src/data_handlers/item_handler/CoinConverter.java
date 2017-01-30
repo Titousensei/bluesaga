@@ -1,36 +1,47 @@
 package data_handlers.item_handler;
 
-import java.util.HashMap;
+import utils.ServerGameInfo;
 
-public class CoinConverter {
-  HashMap<String, Integer> coins = new HashMap<String, Integer>();
+public class CoinConverter
+{
+  public final int copper;
+  public final int silver;
+  public final int gold;
 
-  public CoinConverter(int copper) {
-    coins.clear();
-
-    double copperd = copper;
-    double goldd = Math.floor(copperd / 10000);
-    double silverd = Math.floor((copperd - goldd * 10000) / 100);
-    copperd = copperd - goldd * 10000 - silverd * 100;
-
-    coins.put("Copper", (int) copperd);
-    coins.put("Silver", (int) silverd);
-    coins.put("Gold", (int) goldd);
+  public CoinConverter(int value)
+  {
+    gold = value / 10000;
+    silver = (value - gold * 10000) / 100;
+    copper = value - gold * 10000 - silver * 100;
   }
 
-  public HashMap<String, Integer> getCoinValues() {
-    return coins;
+  public Item getGoldItem()
+  {
+    if (gold > 0) {
+      Item it = ServerGameInfo.newItem(34);
+      it.setStacked(gold);
+      return it;
+    }
+    return null;
   }
 
-  public int getGold() {
-    return coins.get("Gold");
+  public Item getSilverItem()
+  {
+    if (silver > 0) {
+      Item it = ServerGameInfo.newItem(35);
+      it.setStacked(silver);
+      return it;
+    }
+    return null;
   }
 
-  public int getSilver() {
-    return coins.get("Silver");
-  }
-
-  public int getCopper() {
-    return coins.get("Copper");
+  public Item getCopperItem()
+  {
+    if (copper > 0) {
+      Item it = ServerGameInfo.newItem(36);
+      it.setStacked(copper);
+      return it;
+    }
+    return null;
   }
 }

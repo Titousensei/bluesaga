@@ -16,7 +16,7 @@ public class AreaEffect {
   private String song = "None";
   private String ambient = "None";
 
-  private String areaItems = "None";
+  private int[] areaItems = null;
   private int areaCopper = 0;
 
   private String infoDay = null;
@@ -96,9 +96,8 @@ public class AreaEffect {
   public String getParticles() { return particles; }
   void setParticles(String particles) { this.particles = particles; }
 
-
-  public String getAreaItems() { return areaItems; }
-  void setAreaItems(String areaItems) { this.areaItems = areaItems; }
+  public int[] getAreaItems() { return areaItems; }
+  void setAreaItems(int[] areaItems) { this.areaItems = areaItems; }
 
   public int getAreaCopper() { return areaCopper; }
   void setAreaCopper(int areaCopper) { this.areaCopper = areaCopper; }

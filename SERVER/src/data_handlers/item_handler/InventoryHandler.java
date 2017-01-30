@@ -785,6 +785,9 @@ public class InventoryHandler extends Handler {
   }
 
   public static void addItemToInventory(Client client, Item newItem) {
+    if (newItem == null) {
+      return;
+    }
     boolean addSpecialItem = addSpecialItemToInventory(client, newItem);
 
     if (!addSpecialItem) {

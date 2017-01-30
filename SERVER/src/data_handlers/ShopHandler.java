@@ -357,23 +357,9 @@ public class ShopHandler extends Handler {
 
           // ADD GOLD TO PLAYER
           CoinConverter cc = new CoinConverter(value);
-
-          if (cc.getGold() > 0) {
-            Item GoldItem = ServerGameInfo.newItem(34);
-            GoldItem.setStacked(cc.getGold());
-            InventoryHandler.addItemToInventory(client, GoldItem);
-          }
-          if (cc.getSilver() > 0) {
-            Item SilverItem = ServerGameInfo.newItem(35);
-            SilverItem.setStacked(cc.getSilver());
-            InventoryHandler.addItemToInventory(client, SilverItem);
-          }
-          if (cc.getCopper() > 0) {
-            Item CopperItem = ServerGameInfo.newItem(36);
-            CopperItem.setStacked(cc.getCopper());
-            InventoryHandler.addItemToInventory(client, CopperItem);
-          }
-
+          InventoryHandler.addItemToInventory(client, cc.getGoldItem());
+          InventoryHandler.addItemToInventory(client, cc.getSilverItem());
+          InventoryHandler.addItemToInventory(client, cc.getCopperItem());
           ServerMessage.println(false, "Sell - ", client.playerCharacter, ": ", soldItem);
         } else {
           addOutGoingMessage(client, "shoperror", "lowlevel");

@@ -73,6 +73,9 @@ public class Container {
   }
 
   public void addItem(Item newItem) {
+    if (newItem == null) {
+      return;
+    }
     boolean placeItem = false;
     for (int j = 0; j < SizeH; j++) {
       for (int i = 0; i < SizeW; i++) {

@@ -1166,8 +1166,10 @@ public class AbilityHandler extends Handler {
                         ABILITY.getStatusEffects());
                   }
                 }
-                ServerMessage.println((CASTER.getCreatureType() != CreatureType.Player),
-                    "AbilityEffect - ", CASTER, ": ", ABILITY, " on ", TARGET);
+                if (TARGET != null) {
+                  ServerMessage.println((CASTER.getCreatureType() != CreatureType.Player),
+                      "AbilityEffect - ", CASTER, ": ", ABILITY, " on ", TARGET);
+                }
               }
 
               // IF FISHING

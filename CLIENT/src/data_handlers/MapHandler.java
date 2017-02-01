@@ -477,11 +477,14 @@ public class MapHandler extends Handler {
         // Npc attributes
         int cAggroType = Integer.parseInt(creatureInfo[24]);
         int cSpecialType = Integer.parseInt(creatureInfo[25]);
+        int cSpecialR = Integer.parseInt(creatureInfo[26]);
+        int cSpecialG = Integer.parseInt(creatureInfo[27]);
+        int cSpecialB = Integer.parseInt(creatureInfo[28]);
 
         Npc npcCreature = (Npc) newCreature;
 
         npcCreature.setAggroType(cAggroType);
-        npcCreature.setSpecialType(cSpecialType);
+        npcCreature.setSpecialColor(cSpecialType, cSpecialR, cSpecialG, cSpecialB);
 
         if (cName.contains("Titan")) {
           npcCreature.setEpic(true);

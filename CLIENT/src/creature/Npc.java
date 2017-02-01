@@ -31,8 +31,7 @@ public class Npc extends Creature {
   private boolean Aggro;
   private int aggroBubbleItr = 0; // used to show aggro bubble for a time
 
-  protected int SpecialType = 0;
-  private Color SpecialColor;
+  private Color specialColor;
 
   private boolean logout;
 
@@ -66,26 +65,18 @@ public class Npc extends Creature {
     int cornerX = Math.round(cXf);
     int cornerY = Math.round(cYf);
 
-    Color specialC = null;
-
     // Gloomy outline
-    if (getSpecialType() > 0 && !isEpic() && !Dead) {
-      specialC =
-          new Color(
-              getSpecialColor().getRed(),
-              getSpecialColor().getGreen(),
-              getSpecialColor().getBlue(),
-              150);
+    if (specialColor!=null && !isEpic() && !Dead) {
       ImageResource.getSprite("effects/fx_special_glow")
           .draw(
               cornerX - 12 - ((SizeWidth - 1) * 20),
               cornerY - 12 - ((SizeHeight - 1) * 35),
               Math.round(sizeWidthF * 75),
               Math.round(sizeHeightF * 75),
-              specialC);
+              specialColor);
     }
 
-    super.draw(g, centerX, centerY, specialC);
+    super.draw(g, centerX, centerY, specialColor);
 
     // Draw name & crewname
     if (!Dead && !hasStatusEffect(13) && isAggro()) {
@@ -131,24 +122,7 @@ public class Npc extends Creature {
     }
   }
 
-  public void generateStats(String newSpecialType) {
-
-    // HEALTH AND MANA
-    /*
-    if(SpecialType.equals("Furious")){
-      Stats.setValue("STRENGTH",getTotalStat("STRENGTH")+MobLevel);
-      Stats.setValue("MAX_HEALTH",getTotalStat("MAX_HEALTH")+MobLevel*5);
-    }else if(SpecialType.equals("Cursed")){
-      Stats.setValue("INTELLIGENCE",getTotalStat("INTELLIGENCE")+MobLevel);
-      Stats.setValue("MAX_MANA",getTotalStat("MAX_MANA")+MobLevel*5);
-      Stats.setValue("MAX_HEALTH",getTotalStat("MAX_HEALTH")+MobLevel*5);
-    }else if(SpecialType.equals("Lightning")){
-      Stats.setValue("SPEED",1);
-      Stats.setValue("MAX_HEALTH",getTotalStat("MAX_HEALTH")+MobLevel*5);
-    }else{
-
-    }
-     */
+  public void generateStats() {
     Health = getTotalStat("MAX_HEALTH");
     Mana = getTotalStat("MAX_MANA");
   }
@@ -310,40 +284,13 @@ public class Npc extends Creature {
     }
   }
 
-  public void setSpecialType(int newType) {
-    SpecialType = newType;
-    if (SpecialType == 1) {
-      // SCORCHING
-      SpecialColor = new Color(242, 35, 35);
-    } else if (SpecialType == 2) {
-      // FROSTED
-      SpecialColor = new Color(0, 150, 255);
-    } else if (SpecialType == 3) {
-      // ELECTRO
-      SpecialColor = new Color(233, 255, 43);
-    } else if (SpecialType == 4) {
-      // MIGHTY
-      SpecialColor = new Color(255, 138, 0);
-    } else if (SpecialType == 5) {
-      // TOXIC
-      SpecialColor = new Color(247, 36, 250);
-    } else if (SpecialType == 6) {
-      // FLASH
-      SpecialColor = new Color(186, 255, 96);
-    }
+  public void setSpecialColor(int type, int r, int g, int b) {
+    specialColor = (type>0) ? new Color(r, g, b, 150) : null;
   }
 
   public void die() {
     super.die();
     Aggro = false;
-  }
-
-  public int getSpecialType() {
-    return SpecialType;
-  }
-
-  public Color getSpecialColor() {
-    return SpecialColor;
   }
 
   public boolean isBoss() {

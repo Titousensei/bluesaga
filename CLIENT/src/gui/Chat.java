@@ -471,7 +471,7 @@ public class Chat {
 
   public void keyLogic(Input INPUT, Client client) {
 
-    if (INPUT.isKeyPressed(Input.KEY_ENTER)) {
+    if (INPUT.isKeyPressed(Input.KEY_ENTER) || INPUT.isKeyPressed(Input.KEY_NUMPADENTER)) {
       if (!isActive()) {
         setActive(true);
         input_field.setAcceptingInput(true);

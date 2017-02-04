@@ -297,9 +297,7 @@ public class WorldMap
         }
 
         // CHANCE OF MAKING MONSTER SPECIAL
-        if (tempNpc.getLevel() > 9 && tempNpc.getOriginalAggroType() < 3) {
-          tempNpc.turnSpecial(0);
-        }
+        tempNpc.turnSpecial(0);
 
         // SET DAY NIGHT SPAWN TIME
         tempNpc.setExistDayOrNight(creatureInfo.getInt("SpawnCriteria"));

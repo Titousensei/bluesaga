@@ -20,6 +20,7 @@ import data_handlers.ability_handler.AbilityHandler;
 import data_handlers.item_handler.Item;
 import data_handlers.monster_handler.ai_types.BaseAI;
 import data_handlers.monster_handler.MonsterHandler;
+import game.ServerSettings;
 import network.Server;
 
 /*
@@ -421,10 +422,11 @@ public class Npc extends Creature {
 
   public void turnSpecial(int gloomyNr) {
 
-    if (gloomyNr == 0) {
-      if (getAggroType() < 3 && getLevel() > 5) {
-        gloomyNr = RandomUtils.getInt(0, 140);
-      }
+    if (gloomyNr == 0
+    &&  getAggroType() < 3
+    && getLevel() >= ServerSettings.NPC_SPECIAL_MIN_LEVEL
+    ) {
+      gloomyNr = RandomUtils.getInt(0, 140);
     }
 
     if (gloomyNr > 0 && gloomyNr < 7) {

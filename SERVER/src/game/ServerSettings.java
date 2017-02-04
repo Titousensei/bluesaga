@@ -45,6 +45,8 @@ public class ServerSettings {
   public static int CLASS_LEVEL_CAP = 10;
   public static int JOB_LEVEL_CAP = 10;
 
+  public static int NPC_SPECIAL_MIN_LEVEL = 6;
+
   public static boolean RANDOM_ARCHIPELAGO = true;
   public static boolean RANDOM_DUNGEON = true;
 

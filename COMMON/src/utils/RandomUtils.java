@@ -21,8 +21,19 @@ public class RandomUtils {
   }
 
   public static <T> T getAny(List<T> things) {
+    if (things==null || things.isEmpty()) {
+      return null;
+    }
     int pick = ThreadLocalRandom.current().nextInt(things.size());
     return things.get(pick);
+  }
+
+  public static <T> T getAny(T[] things) {
+    if (things==null || things.length==0) {
+      return null;
+    }
+    int pick = ThreadLocalRandom.current().nextInt(things.length);
+    return things[pick];
   }
 
   /**

@@ -176,7 +176,10 @@ public class ItemHandler extends Handler {
           e.printStackTrace();
         }
 
-        infoToSend = magicColor + ';' + magicName + '/';
+        sb.append(magicColor)
+          .append(';')
+          .append(magicName)
+          .append('/');
       }
 
       sb.append(infoItem.getColor())

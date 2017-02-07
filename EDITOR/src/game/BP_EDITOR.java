@@ -1638,7 +1638,7 @@ public class BP_EDITOR extends BasicGame {
           int tileY = screenY + PLAYER_Y - TILE_HALF_H;
           try {
             mapDB.update(
-                "insert into area_tile (Type, Name, X, Y, Z, Passable) values ('"
+                "insert into area_tile (Type, Name, X, Y, Z, Passable, ObjectId) values ('"
                     + tileType
                     + "', '"
                     + tileName
@@ -1650,7 +1650,7 @@ public class BP_EDITOR extends BasicGame {
                     + PLAYER_Z
                     + ","
                     + passableInt
-                    + ")");
+                    + ", 'None')");
           } catch (SQLException ex) {
             mapDB.update(
                 "update area_tile set Type = '"
@@ -1767,7 +1767,7 @@ public class BP_EDITOR extends BasicGame {
 
                 try {
                   mapDB.update(
-                      "insert into area_tile (Type, Name, X, Y, Z, Passable) values ('"
+                      "insert into area_tile (Type, Name, X, Y, Z, Passable, ObjectId) values ('"
                           + tileType
                           + "', '"
                           + tileName
@@ -1779,7 +1779,7 @@ public class BP_EDITOR extends BasicGame {
                           + PLAYER_Z
                           + ","
                           + passableInt
-                          + ")");
+                          + ", 'None')");
                 } catch (SQLException ex) {
                   mapDB.update(
                       "update area_tile set Type = '"
@@ -1838,7 +1838,7 @@ public class BP_EDITOR extends BasicGame {
 
               try {
                 mapDB.update(
-                    "insert into area_tile (Type, Name, X, Y, Z, Passable) values ('"
+                    "insert into area_tile (Type, Name, X, Y, Z, Passable, ObjectId) values ('"
                         + tileType
                         + "', '"
                         + tileName
@@ -1850,7 +1850,7 @@ public class BP_EDITOR extends BasicGame {
                         + PLAYER_Z
                         + ","
                         + passableInt
-                        + ")");
+                        + ", 'None')");
               } catch (SQLException ex) {
                 mapDB.update(
                     "update area_tile set Type = '"

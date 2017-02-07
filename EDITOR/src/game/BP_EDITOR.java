@@ -104,8 +104,8 @@ public class BP_EDITOR extends BasicGame {
 
   // SCREEN DATA
 
-  public static Tile SCREEN_TILES[][][];
-  public static TileObject SCREEN_OBJECTS[][][];
+  public static Tile SCREEN_TILES[][];
+  public static TileObject SCREEN_OBJECTS[][];
   public static int TILE_HALF_W = 11;
   public static int TILE_HALF_H = 7;
 
@@ -193,15 +193,13 @@ public class BP_EDITOR extends BasicGame {
 
     MouseTile = null;
 
-    SCREEN_TILES = new Tile[TILE_HALF_W * 2][TILE_HALF_H * 2][MAX_Z];
-    SCREEN_OBJECTS = new TileObject[TILE_HALF_W * 2][TILE_HALF_H * 2][MAX_Z];
+    SCREEN_TILES = new Tile[TILE_HALF_W * 2][TILE_HALF_H * 2];
+    SCREEN_OBJECTS = new TileObject[TILE_HALF_W * 2][TILE_HALF_H * 2];
 
     for (int i = 0; i < 22; i++) {
       for (int j = 0; j < 14; j++) {
-        for (int k = 0; k < MAX_Z; k++) {
-          SCREEN_TILES[i][j][k] = new Tile(i, j, k);
-          SCREEN_OBJECTS[i][j][k] = null;
-        }
+        SCREEN_TILES[i][j] = new Tile(i, j, 0);
+        SCREEN_OBJECTS[i][j] = null;
       }
     }
 
@@ -287,10 +285,8 @@ public class BP_EDITOR extends BasicGame {
 
     for (int i = 0; i < 22; i++) {
       for (int j = 0; j < 14; j++) {
-        for (int k = 0; k < MAX_Z; k++) {
-          SCREEN_TILES[i][j][k].clear();
-          SCREEN_OBJECTS[i][j][k] = null;
-        }
+        SCREEN_TILES[i][j].clear();
+        SCREEN_OBJECTS[i][j] = null;
       }
     }
 
@@ -311,8 +307,7 @@ public class BP_EDITOR extends BasicGame {
       while (mapInfo.next()) {
         int tileX = mapInfo.getInt("X") - (PLAYER_X - TILE_HALF_W);
         int tileY = mapInfo.getInt("Y") - (PLAYER_Y - TILE_HALF_H);
-        int tileZ = mapInfo.getInt("Z") - PLAYER_Z;
-        Tile t = SCREEN_TILES[tileX][tileY][tileZ];
+        Tile t = SCREEN_TILES[tileX][tileY];
         t.setId(mapInfo.getString("Id"));
 
         boolean passable = false;
@@ -331,7 +326,7 @@ public class BP_EDITOR extends BasicGame {
         else if (!mapInfo.getString("ObjectId").equals("None")) {
           TileObject newObject = new TileObject(mapInfo.getString("ObjectId"));
           newObject.setZ(mapInfo.getInt("Z"));
-          SCREEN_OBJECTS[tileX][tileY][tileZ] = newObject;
+          SCREEN_OBJECTS[tileX][tileY] = newObject;
         }
 
         String doorId = mapInfo.getString("DoorId");
@@ -381,8 +376,8 @@ public class BP_EDITOR extends BasicGame {
             doorInfo.getInt("X"),
             doorInfo.getInt("Y"),
             doorInfo.getInt("Z"));
-        SCREEN_TILES[tileX][tileY][0].setDoorCoords(xyz);
-        SCREEN_TILES[tileX][tileY][0].setDestId(destId);
+        SCREEN_TILES[tileX][tileY].setDoorCoords(xyz);
+        SCREEN_TILES[tileX][tileY].setDestId(destId);
       }
       doorInfo.getStatement().close();
     } catch (SQLException e) {
@@ -422,7 +417,7 @@ public class BP_EDITOR extends BasicGame {
         else if (!"".equals(items)) {
           newObject.setNotes(items);
         }
-        SCREEN_OBJECTS[tileX][tileY][tileZ] = newObject;
+        SCREEN_OBJECTS[tileX][tileY] = newObject;
       }
       containerInfo.getStatement().close();
     } catch (SQLException e1) {
@@ -451,7 +446,7 @@ public class BP_EDITOR extends BasicGame {
         int npcId = monsterInfo.getInt("Id");
         int aggroType = monsterInfo.getInt("AggroType");
 
-        SCREEN_TILES[tileX][tileY][tileZ].setOccupant(new Creature(creatureId, 0, 0, npcId, aggroType));
+        SCREEN_TILES[tileX][tileY].setOccupant(new Creature(creatureId, 0, 0, npcId, aggroType));
       }
       monsterInfo.getStatement().close();
     } catch (SQLException e) {
@@ -476,7 +471,7 @@ public class BP_EDITOR extends BasicGame {
         int tileY = trapInfo.getInt("Y") - (PLAYER_Y - TILE_HALF_H);
         int tileZ = 0;
 
-        SCREEN_OBJECTS[tileX][tileY][tileZ].setTrapId(trapInfo.getString("Id"));
+        SCREEN_OBJECTS[tileX][tileY].setTrapId(trapInfo.getString("Id"));
       }
       trapInfo.getStatement().close();
     } catch (SQLException e1) {
@@ -501,8 +496,8 @@ public class BP_EDITOR extends BasicGame {
         int tileY = triggerInfo.getInt("Y") - (PLAYER_Y - TILE_HALF_H);
         int tileZ = 0;
 
-        SCREEN_TILES[tileX][tileY][tileZ].setTriggerId(triggerInfo.getString("Id"));
-        SCREEN_TILES[tileX][tileY][tileZ].setTrapId(triggerInfo.getString("TrapId"));
+        SCREEN_TILES[tileX][tileY].setTriggerId(triggerInfo.getString("Id"));
+        SCREEN_TILES[tileX][tileY].setTrapId(triggerInfo.getString("TrapId"));
       }
       triggerInfo.getStatement().close();
     } catch (SQLException e1) {
@@ -571,21 +566,21 @@ public class BP_EDITOR extends BasicGame {
 
     for (int i = 0; i < 22; i++) {
       for (int j = 0; j < 14; j++) {
-        SCREEN_TILES[i][j][0].draw(g, i * TILE_SIZE, j * TILE_SIZE);
+        SCREEN_TILES[i][j].draw(g, i * TILE_SIZE, j * TILE_SIZE);
       }
     }
 
     for (int j = 0; j < 14; j++) {
       for (int i = 0; i < 22; i++) {
-        if (SCREEN_OBJECTS[i][j][0] != null) {
-          SCREEN_OBJECTS[i][j][0].draw(g, i * TILE_SIZE, j * TILE_SIZE);
+        if (SCREEN_OBJECTS[i][j] != null) {
+          SCREEN_OBJECTS[i][j].draw(g, i * TILE_SIZE, j * TILE_SIZE);
         }
       }
     }
 
     for (int i = 0; i < 22; i++) {
       for (int j = 0; j < 14; j++) {
-        SCREEN_TILES[i][j][0].drawOverlay(g, i * TILE_SIZE, j * TILE_SIZE);
+        SCREEN_TILES[i][j].drawOverlay(g, i * TILE_SIZE, j * TILE_SIZE);
       }
     }
 
@@ -789,14 +784,14 @@ public class BP_EDITOR extends BasicGame {
 
         g.setFont(FONTS.size8);
         String coords = tileX + "," + tileY + "," + PLAYER_Z;
-        String tileStr = SCREEN_TILES[screenX][screenY][0].getType() + "/" + SCREEN_TILES[screenX][screenY][0].getName();
+        String tileStr = SCREEN_TILES[screenX][screenY].getType() + "/" + SCREEN_TILES[screenX][screenY].getName();
 
         String occStr = null;
-        if (SCREEN_TILES[screenX][screenY][0].getOccupant() != null) {
-          occStr = "Npc: " + String.valueOf(SCREEN_TILES[screenX][screenY][0].getOccupant());
+        if (SCREEN_TILES[screenX][screenY].getOccupant() != null) {
+          occStr = "Npc: " + String.valueOf(SCREEN_TILES[screenX][screenY].getOccupant());
         }
-        else if (SCREEN_OBJECTS[screenX][screenY][0] != null) {
-          occStr = "Object: " + String.valueOf(SCREEN_OBJECTS[screenX][screenY][0]);
+        else if (SCREEN_OBJECTS[screenX][screenY] != null) {
+          occStr = "Object: " + String.valueOf(SCREEN_OBJECTS[screenX][screenY]);
         }
 
         g.setColor(EditColors.BLACK);
@@ -1172,10 +1167,10 @@ public class BP_EDITOR extends BasicGame {
                 + PLAYER_Z);
         mapDB.updateDB(
             "delete from door where Id = "
-                + SCREEN_TILES[screenX][screenY][0].getDestId());
+                + SCREEN_TILES[screenX][screenY].getDestId());
         mapDB.updateDB(
             "delete from door where Id = "
-                + SCREEN_TILES[screenX][screenY][0].getDoorId());
+                + SCREEN_TILES[screenX][screenY].getDoorId());
         mapDB.updateDB(
             "update area_tile set AreaEffectId = 0 where X = "
                 + tileX
@@ -1185,10 +1180,10 @@ public class BP_EDITOR extends BasicGame {
                 + PLAYER_Z);
         mapDB.updateDB(
             "update area_tile set DoorId = 0 where DoorId = "
-                + SCREEN_TILES[screenX][screenY][0].getDestId());
+                + SCREEN_TILES[screenX][screenY].getDestId());
         mapDB.updateDB(
             "update area_tile set DoorId = 0 where DoorId = "
-                + SCREEN_TILES[screenX][screenY][0].getDoorId());
+                + SCREEN_TILES[screenX][screenY].getDoorId());
         mapDB.updateDB("END TRANSACTION");
         loadScreen();
         break;
@@ -1204,15 +1199,15 @@ public class BP_EDITOR extends BasicGame {
                 + " and Z = "
                 + PLAYER_Z);
 
-        SCREEN_TILES[screenX][screenY][0].setAreaEffectId(AREA_EFFECT_ID);
+        SCREEN_TILES[screenX][screenY].setAreaEffectId(AREA_EFFECT_ID);
         break;
 
       case DOOR:
         currentMode = Mode.DESTINATION;
-        TILE_DOOR_ID = SCREEN_TILES[screenX][screenY][0].getId();
-        TRIGGER_DOOR_ID = SCREEN_TILES[screenX][screenY][0].getDoorId();
+        TILE_DOOR_ID = SCREEN_TILES[screenX][screenY].getId();
+        TRIGGER_DOOR_ID = SCREEN_TILES[screenX][screenY].getDoorId();
         if (TRIGGER_DOOR_ID==null) {
-          SCREEN_TILES[screenX][screenY][0].setDoorId("New");
+          SCREEN_TILES[screenX][screenY].setDoorId("New");
         }
         break;
 
@@ -1225,7 +1220,7 @@ public class BP_EDITOR extends BasicGame {
         break;
 
       case PASSABLE:
-        SCREEN_TILES[screenX][screenY][0].setPassable(makePassable);
+        SCREEN_TILES[screenX][screenY].setPassable(makePassable);
         mapDB.updateDB(
             "update area_tile set Passable = "
                 + (makePassable ? 1 : 0)
@@ -1243,7 +1238,7 @@ public class BP_EDITOR extends BasicGame {
         break;
 
       case AGGRO:
-        Creature c = SCREEN_TILES[screenX][screenY][0].getOccupant();
+        Creature c = SCREEN_TILES[screenX][screenY].getOccupant();
         if (c!=null) {
           c.setAggroType(makeAggro);
           mapDB.updateDB(
@@ -1329,9 +1324,9 @@ public class BP_EDITOR extends BasicGame {
               tileX = i + PLAYER_X - TILE_HALF_W;
               tileY = j + PLAYER_Y - TILE_HALF_H;
 
-              if (SCREEN_TILES[i][j][0].getDoorId() != null) {
+              if (SCREEN_TILES[i][j].getDoorId() != null) {
                 mapDB.updateDB(
-                    "delete from door where Id = " + SCREEN_TILES[i][j][0].getDoorId());
+                    "delete from door where Id = " + SCREEN_TILES[i][j].getDoorId());
               }
 
               mapDB.updateDB(
@@ -1354,7 +1349,7 @@ public class BP_EDITOR extends BasicGame {
         if (MouseTile != null) {
           addTiles(screenX, screenY);
         } else if (MouseObject != null) {
-          if (!SCREEN_TILES[screenX][screenY][0].getType().equals("None")) {
+          if (!SCREEN_TILES[screenX][screenY].getType().equals("None")) {
 
             // PLACE CONTAINER
             if (MouseObject.getName().contains("container")) {
@@ -1377,8 +1372,8 @@ public class BP_EDITOR extends BasicGame {
                       + PLAYER_Z);
               TileObject newObject = new TileObject(MouseObject.getName());
               newObject.setZ(PLAYER_Z);
-              SCREEN_OBJECTS[screenX][screenY][0] = newObject;
-              SCREEN_TILES[screenX][screenY][0].setPassable(false);
+              SCREEN_OBJECTS[screenX][screenY] = newObject;
+              SCREEN_TILES[screenX][screenY].setPassable(false);
             } else if (MouseObject.getName().contains("moveable")) {
               mapDB.updateDB(
                   "update area_tile set ObjectId = '"
@@ -1391,7 +1386,7 @@ public class BP_EDITOR extends BasicGame {
                       + PLAYER_Z);
               TileObject newObject = new TileObject(MouseObject.getName());
               newObject.setZ(PLAYER_Z);
-              SCREEN_OBJECTS[screenX][screenY][0] = newObject;
+              SCREEN_OBJECTS[screenX][screenY] = newObject;
 
             } else {
               // PLACE OBJECT OVER AREA
@@ -1436,10 +1431,6 @@ public class BP_EDITOR extends BasicGame {
                               + " and Z = "
                               + PLAYER_Z);
                     }
-                    //TileObject newObject = new TileObject(MouseObject.getName());
-                    //newObject.setZ(PLAYER_Z);
-                    //SCREEN_OBJECTS[screenX][screenY][1] = newObject;
-                    //SCREEN_TILES[screenX][screenY][1].setPassable(false);
 
                     if (MouseObject.getName().contains("trap")) {
                       MouseObject.getName().split("_");
@@ -1521,44 +1512,44 @@ public class BP_EDITOR extends BasicGame {
       int screenX = (int) Math.floor(mouseX / TILE_SIZE);
       int screenY = (int) Math.floor(mouseY / TILE_SIZE);
 
-      if (SCREEN_TILES[screenX][screenY][0] != null) {
-        if (SCREEN_TILES[screenX][screenY][0].getDoorCoords() != null) {
-          Coords xyz = SCREEN_TILES[screenX][screenY][0].getDoorCoords();
+      if (SCREEN_TILES[screenX][screenY] != null) {
+        if (SCREEN_TILES[screenX][screenY].getDoorCoords() != null) {
+          Coords xyz = SCREEN_TILES[screenX][screenY].getDoorCoords();
           PLAYER_X = xyz.x;
           PLAYER_Y = xyz.y;
           PLAYER_Z = xyz.z;
           loadScreen();
         }
-        else if (SCREEN_TILES[screenX][screenY][0].getDestCoords() != null) {
-          Coords xyz = SCREEN_TILES[screenX][screenY][0].getDestCoords();
+        else if (SCREEN_TILES[screenX][screenY].getDestCoords() != null) {
+          Coords xyz = SCREEN_TILES[screenX][screenY].getDestCoords();
           PLAYER_X = xyz.x;
           PLAYER_Y = xyz.y;
           PLAYER_Z = xyz.z;
           loadScreen();
         }
-        else if (SCREEN_TILES[screenX][screenY][0].getOccupant() != null) {
-          int creatureId = SCREEN_TILES[screenX][screenY][0].getOccupant().getId();
+        else if (SCREEN_TILES[screenX][screenY].getOccupant() != null) {
+          int creatureId = SCREEN_TILES[screenX][screenY].getOccupant().getId();
           MouseMonster = new Monster(creatureId, 0, 0, "no");
           MouseObject = null;
           MouseTile = null;
           currentMode = Mode.BRUSH;
           System.out.println("BRUSH="+MouseMonster);
         }
-        else if (SCREEN_TILES[screenX][screenY][0].getAreaEffectId() != null) {
+        else if (SCREEN_TILES[screenX][screenY].getAreaEffectId() != null) {
           currentMode = Mode.EFFECT;
-          AREA_EFFECT_ID = SCREEN_TILES[screenX][screenY][0].getAreaEffectId();
+          AREA_EFFECT_ID = SCREEN_TILES[screenX][screenY].getAreaEffectId();
         }
-        else if (SCREEN_TILES[screenX][screenY][0].getTrapId() != null) {
+        else if (SCREEN_TILES[screenX][screenY].getTrapId() != null) {
           currentMode = Mode.TRIGGER;
-          TRIGGER_TRAP_ID = SCREEN_TILES[screenX][screenY][0].getTrapId();
+          TRIGGER_TRAP_ID = SCREEN_TILES[screenX][screenY].getTrapId();
         }
-        else if (SCREEN_OBJECTS[screenX][screenY][0] != null) {
-          if (SCREEN_OBJECTS[screenX][screenY][0].getTrapId() != null) {
+        else if (SCREEN_OBJECTS[screenX][screenY] != null) {
+          if (SCREEN_OBJECTS[screenX][screenY].getTrapId() != null) {
             currentMode = Mode.TRIGGER;
-            TRIGGER_TRAP_ID = SCREEN_OBJECTS[screenX][screenY][0].getTrapId();
+            TRIGGER_TRAP_ID = SCREEN_OBJECTS[screenX][screenY].getTrapId();
           } else {
             MouseMonster = null;
-            MouseObject = SCREEN_OBJECTS[screenX][screenY][0];
+            MouseObject = SCREEN_OBJECTS[screenX][screenY];
             MouseTile = null;
             currentMode = Mode.BRUSH;
           System.out.println("BRUSH="+MouseObject);
@@ -1567,8 +1558,8 @@ public class BP_EDITOR extends BasicGame {
         else {
           MouseTile = new Tile(0, 0, 0);
           MouseTile.setType(
-              SCREEN_TILES[screenX][screenY][0].getType(),
-              SCREEN_TILES[screenX][screenY][0].getName());
+              SCREEN_TILES[screenX][screenY].getType(),
+              SCREEN_TILES[screenX][screenY].getName());
           currentMode = Mode.BRUSH;
           System.out.println("BRUSH="+MouseTile);
         }
@@ -1585,10 +1576,10 @@ public class BP_EDITOR extends BasicGame {
   }
 
   public static boolean isEdge(int screenX, int screenY, int screenZ) {
-    if (SCREEN_TILES[screenX][screenY][0].getName().contains("D")
-        || SCREEN_TILES[screenX][screenY][0].getName().contains("U")
-        || SCREEN_TILES[screenX][screenY][0].getName().contains("L")
-        || SCREEN_TILES[screenX][screenY][0].getName().contains("R")) {
+    if (SCREEN_TILES[screenX][screenY].getName().contains("D")
+        || SCREEN_TILES[screenX][screenY].getName().contains("U")
+        || SCREEN_TILES[screenX][screenY].getName().contains("L")
+        || SCREEN_TILES[screenX][screenY].getName().contains("R")) {
       return true;
     }
     return false;
@@ -1612,7 +1603,7 @@ public class BP_EDITOR extends BasicGame {
       int lastChar = EdgeHelper.suffixPosition(tileName);
       String otherType = tileName.substring(0, lastChar);
       String suffix = tileName.substring(lastChar);
-      Tile thisTile = SCREEN_TILES[screenX][screenY][0];
+      Tile thisTile = SCREEN_TILES[screenX][screenY];
       if (thisTile != null) {
         String thisName = thisTile.getName();
         lastChar = EdgeHelper.suffixPosition(thisName);
@@ -1622,10 +1613,10 @@ public class BP_EDITOR extends BasicGame {
       String tileType = MouseTile.getType();
 
       String possible = EdgeHelper.complete(
-          SCREEN_TILES[screenX-1][screenY][0],  // onLeft
-          SCREEN_TILES[screenX+1][screenY][0],  // onRight
-          SCREEN_TILES[screenX][screenY-1][0],  // onUp
-          SCREEN_TILES[screenX][screenY+1][0]); // onDown
+          SCREEN_TILES[screenX-1][screenY],  // onLeft
+          SCREEN_TILES[screenX+1][screenY],  // onRight
+          SCREEN_TILES[screenX][screenY-1],  // onUp
+          SCREEN_TILES[screenX][screenY+1]); // onDown
       String goodSuffix = EdgeHelper.nextPossible(possible, suffix);
       tileName = otherType + goodSuffix;
       MouseTile.setName(tileName);
@@ -1633,11 +1624,11 @@ public class BP_EDITOR extends BasicGame {
         Tile checkTile = new Tile(0, 0, PLAYER_Z);
         if (checkTile.setType(tileType, tileName)) {
           boolean passable = checkTile.isTilePassable();
-          if (!SCREEN_TILES[screenX][screenY][0].isPassable()) {
+          if (!SCREEN_TILES[screenX][screenY].isPassable()) {
             passable = false;
           }
-          SCREEN_TILES[screenX][screenY][0].setType(tileType, tileName);
-          SCREEN_TILES[screenX][screenY][0].setPassable(passable);
+          SCREEN_TILES[screenX][screenY].setType(tileType, tileName);
+          SCREEN_TILES[screenX][screenY].setPassable(passable);
           int passableInt = 0;
           if (passable) {
             passableInt = 1;
@@ -1694,7 +1685,7 @@ public class BP_EDITOR extends BasicGame {
 
       for (int i = screenX; i < screenX + BrushSize; i++) {
         for (int j = screenY; j < screenY + BrushSize; j++) {
-          SCREEN_TILES[i][j][0].setType(tileType, "1");
+          SCREEN_TILES[i][j].setType(tileType, "1");
         }
       }
 
@@ -1705,58 +1696,55 @@ public class BP_EDITOR extends BasicGame {
         for (int i = screenX; i < screenX + BrushSize; i++) {
           for (int j = screenY; j < screenY + BrushSize; j++) {
             if (i > 0 && i < 21 && j > 0 && j < 13) {
-              if (SCREEN_TILES[i - 1][j][0].getType().equals(tileType)
-                  && SCREEN_TILES[i][j - 1][0].getType().equals(tileType)
-                  && !SCREEN_TILES[i - 1][j - 1][0].getType().equals(tileType)) {
+              if (SCREEN_TILES[i - 1][j].getType().equals(tileType)
+                  && SCREEN_TILES[i][j - 1].getType().equals(tileType)
+                  && !SCREEN_TILES[i - 1][j - 1].getType().equals(tileType)) {
                 // IUL
                 tileName = otherType + "IDR";
-              } else if (SCREEN_TILES[i + 1][j][0].getType().equals(tileType)
-                  && SCREEN_TILES[i][j - 1][0].getType().equals(tileType)
-                  && !SCREEN_TILES[i + 1][j - 1][0].getType().equals(tileType)) {
+              } else if (SCREEN_TILES[i + 1][j].getType().equals(tileType)
+                  && SCREEN_TILES[i][j - 1].getType().equals(tileType)
+                  && !SCREEN_TILES[i + 1][j - 1].getType().equals(tileType)) {
                 // IUR
                 tileName = otherType + "IDL";
-              } else if (SCREEN_TILES[i - 1][j][0].getType().equals(tileType)
-                  && SCREEN_TILES[i][j + 1][0].getType().equals(tileType)
-                  && !SCREEN_TILES[i - 1][j + 1][0].getType().equals(tileType)) {
+              } else if (SCREEN_TILES[i - 1][j].getType().equals(tileType)
+                  && SCREEN_TILES[i][j + 1].getType().equals(tileType)
+                  && !SCREEN_TILES[i - 1][j + 1].getType().equals(tileType)) {
                 // IDL
                 tileName = otherType + "IUR";
-              } else if (SCREEN_TILES[i + 1][j][0].getType().equals(tileType)
-                  && SCREEN_TILES[i][j + 1][0].getType().equals(tileType)
-                  && !SCREEN_TILES[i + 1][j + 1][0].getType().equals(tileType)) {
+              } else if (SCREEN_TILES[i + 1][j].getType().equals(tileType)
+                  && SCREEN_TILES[i][j + 1].getType().equals(tileType)
+                  && !SCREEN_TILES[i + 1][j + 1].getType().equals(tileType)) {
                 // IDR
                 tileName = otherType + "IUL";
-              } else if (!SCREEN_TILES[i - 1][j][0].getType().equals(tileType)
-                  && !SCREEN_TILES[i][j - 1][0].getType().equals(tileType)) {
+              } else if (!SCREEN_TILES[i - 1][j].getType().equals(tileType)
+                  && !SCREEN_TILES[i][j - 1].getType().equals(tileType)) {
                 // UL
                 tileName = otherType + "UL";
-              } else if (!SCREEN_TILES[i + 1][j][0].getType().equals(tileType)
-                  && !SCREEN_TILES[i][j - 1][0].getType().equals(tileType)) {
+              } else if (!SCREEN_TILES[i + 1][j].getType().equals(tileType)
+                  && !SCREEN_TILES[i][j - 1].getType().equals(tileType)) {
                 // UR
                 tileName = otherType + "UR";
-              } else if (!SCREEN_TILES[i + 1][j][0].getType().equals(tileType)
-                  && !SCREEN_TILES[i][j + 1][0].getType().equals(tileType)) {
+              } else if (!SCREEN_TILES[i + 1][j].getType().equals(tileType)
+                  && !SCREEN_TILES[i][j + 1].getType().equals(tileType)) {
                 // DR
                 tileName = otherType + "DR";
-              } else if (!SCREEN_TILES[i - 1][j][0].getType().equals(tileType)
-                  && !SCREEN_TILES[i][j + 1][0].getType().equals(tileType)) {
+              } else if (!SCREEN_TILES[i - 1][j].getType().equals(tileType)
+                  && !SCREEN_TILES[i][j + 1].getType().equals(tileType)) {
                 // DR
                 tileName = otherType + "DL";
-              } else if (!SCREEN_TILES[i - 1][j][0].getType().equals(tileType)) {
+              } else if (!SCREEN_TILES[i - 1][j].getType().equals(tileType)) {
                 // L
                 tileName = otherType + "L";
-              } else if (!SCREEN_TILES[i + 1][j][0].getType().equals(tileType)) {
+              } else if (!SCREEN_TILES[i + 1][j].getType().equals(tileType)) {
                 // R
                 tileName = otherType + "R";
-              } else if (!SCREEN_TILES[i][j + 1][0].getType().equals(tileType)) {
+              } else if (!SCREEN_TILES[i][j + 1].getType().equals(tileType)) {
                 // D
                 tileName = otherType + "D";
-              } else if (!SCREEN_TILES[i][j - 1][0].getType().equals(tileType)) {
+              } else if (!SCREEN_TILES[i][j - 1].getType().equals(tileType)) {
                 // U
                 tileName = otherType + "U";
               } else {
-                //tileName = SCREEN_TILES[i][j][1].getName();
-                //tileType = SCREEN_TILES[i][j][1].getType();
-
                 int randomTile = randomGenerator.nextInt(100) + 1;
                 if (BP_EDITOR.GFX.getSprite("textures/" + tileType + "/" + randomTile) == null) {
                   randomTile = 1;
@@ -1767,8 +1755,8 @@ public class BP_EDITOR extends BasicGame {
               Tile checkTile = new Tile(0, 0, PLAYER_Z);
               if (checkTile.setType(tileType, tileName)) {
                 passable = checkTile.isTilePassable();
-                SCREEN_TILES[i][j][0].setType(tileType, tileName);
-                SCREEN_TILES[i][j][0].setPassable(passable);
+                SCREEN_TILES[i][j].setType(tileType, tileName);
+                SCREEN_TILES[i][j].setPassable(passable);
                 int passableInt = 0;
                 if (passable) {
                   passableInt = 1;
@@ -1835,11 +1823,11 @@ public class BP_EDITOR extends BasicGame {
 
             if (checkTile.setType(tileType, saveName)) {
               boolean passable = checkTile.isTilePassable();
-              if (!SCREEN_TILES[i][j][0].isPassable()) {
+              if (!SCREEN_TILES[i][j].isPassable()) {
                 passable = false;
               }
-              SCREEN_TILES[i][j][0].setType(tileType, saveName);
-              SCREEN_TILES[i][j][0].setPassable(passable);
+              SCREEN_TILES[i][j].setType(tileType, saveName);
+              SCREEN_TILES[i][j].setPassable(passable);
               int passableInt = 0;
               if (passable) {
                 passableInt = 1;

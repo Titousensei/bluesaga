@@ -147,6 +147,8 @@ public class Creature {
 
   private int SizeWidth;
   private int SizeHeight;
+  private int NormalSizeWidth;
+  private int NormalSizeHeight;
   private boolean Boss;
 
   protected boolean hidden = false;
@@ -238,8 +240,16 @@ public class Creature {
 
         RespawnTime = rs.getInt("RespawnTime");
 
-        SizeWidth = rs.getInt("SizeW");
-        SizeHeight = rs.getInt("SizeH");
+        NormalSizeWidth = rs.getInt("SizeW");
+        NormalSizeHeight = rs.getInt("SizeH");
+        if (AggroType == 6 || AggroType == 7) {
+          SizeWidth = NormalSizeWidth * 2;
+          SizeHeight = NormalSizeHeight * 2;
+        }
+        else {
+          SizeWidth = NormalSizeWidth;
+          SizeHeight = NormalSizeHeight;
+        }
 
         Aggro = false;
 
@@ -1395,6 +1405,14 @@ public class Creature {
   public void setAggroType(int aggro) {
     AggroType = aggro;
     emoticon = getAggroTypeEmoticon(AggroType);
+    if (AggroType == 6 || AggroType == 7) {
+      SizeWidth = NormalSizeWidth * 2;
+      SizeHeight = NormalSizeHeight * 2;
+    }
+    else {
+      SizeWidth = NormalSizeWidth;
+      SizeHeight = NormalSizeHeight;
+    }
   }
 
   public int getAggroType() {
@@ -1404,17 +1422,21 @@ public class Creature {
   public static String getAggroTypeStr(int aggro) {
     switch (aggro) {
     case 0:
-      return "practice target";
+      return "Practice target";
     case 1:
       return "Mov";
     case 2:
-      return "mov+aggro";
+      return "Monster (mov+aggro)";
     case 3:
-      return "npc w/dialog";
+      return "Npc w/dialog";
     case 4:
-      return "follow";
+      return "Follow (pet)";
     case 5:
-      return "guardian";
+      return "Guardian";
+    case 6:
+      return "Elite Monster";
+    case 7:
+      return "Titan";
     default:
       return "???";
     }
@@ -1434,6 +1456,10 @@ public class Creature {
       return BP_EDITOR.GFX.getSprite("gui/emoticons/emo_love");
     case 5:
       return BP_EDITOR.GFX.getSprite("gui/emoticons/emo_angry");
+    case 6:
+      return BP_EDITOR.GFX.getSprite("gui/emoticons/aggroE");
+    case 7:
+      return BP_EDITOR.GFX.getSprite("gui/emoticons/aggroT");
     default:
       return null;
     }

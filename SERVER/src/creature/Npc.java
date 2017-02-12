@@ -371,9 +371,7 @@ public class Npc extends Creature {
       turnTitan(true);
     }
 
-    if (Level > 9 && getAggroType() < 3) {
-      turnSpecial(0);
-    }
+    turnSpecial(0);
 
     setAggro(null);
 
@@ -423,7 +421,7 @@ public class Npc extends Creature {
   public void turnSpecial(int gloomyNr) {
 
     if (gloomyNr == 0
-    &&  getAggroType() < 3
+    && getAggroType() == 3
     && getLevel() >= ServerSettings.NPC_SPECIAL_MIN_LEVEL
     ) {
       gloomyNr = RandomUtils.getInt(0, 140);

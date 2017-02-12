@@ -1024,7 +1024,7 @@ public class BP_EDITOR extends BasicGame {
 
         if (currentMode == Mode.AGGRO) {
           ++ makeAggro;
-          if (makeAggro == 6) {
+          if (makeAggro == 8) {
             makeAggro = 0;
           }
         }

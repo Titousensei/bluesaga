@@ -298,6 +298,13 @@ public class WorldMap
 
         // CHANCE OF MAKING MONSTER SPECIAL
         tempNpc.turnSpecial(0);
+        if (tempNpc.getAggroType() == 5) {
+          tempNpc.turnElite();
+        }
+        else if (tempNpc.getAggroType() == 6) {
+          tempNpc.turnTitan(true);
+        }
+
 
         // SET DAY NIGHT SPAWN TIME
         tempNpc.setExistDayOrNight(creatureInfo.getInt("SpawnCriteria"));

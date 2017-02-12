@@ -599,7 +599,9 @@ public class BP_EDITOR extends BasicGame {
 
       resetHelp(g);
       renderHelp(g, "F4: Edit Mode");
-      renderHelp(g, "F5: Random Dungeon");
+      renderHelp(g, "F5: Small Random Dungeon");
+      renderHelp(g, "F6: Medium Random Dungeon");
+      renderHelp(g, "F7: Large Random Dungeon");
       renderHelp(g, "F12: Quit");
 
       int playerx = (PLAYER_X - miniMapX + MINI_MAP_SIZE) / 2 - 5 + 20;
@@ -929,17 +931,29 @@ public class BP_EDITOR extends BasicGame {
         rDungeon = null;
       }
     }
-    if (INPUT.isKeyPressed(Input.KEY_F5) && PLAYER_Z<0 && currentMode == Mode.MINI_MAP) {
-      if (activeMenu != DUNGEON_MENU) {
-        rDungeon = RandomDungeon.generate(RandomUtils.getInt(256, 1024));
-        System.out.println("Positionning " + rDungeon);
-        activeMenu = DUNGEON_MENU;
-        activeMenu.clear();
-      } else {
-        PLAYER_X = ORIGIN_X;
-        PLAYER_Y = ORIGIN_Y;
-        rDungeon = null;
-        activeMenu = null;
+    if (PLAYER_Z<0 && currentMode == Mode.MINI_MAP) {
+      int sz_min = 0;
+      if (INPUT.isKeyPressed(Input.KEY_F5)) {
+        sz_min = 256;
+      }
+      else if (INPUT.isKeyPressed(Input.KEY_F6)) {
+        sz_min = 512;
+      }
+      else if (INPUT.isKeyPressed(Input.KEY_F7)) {
+        sz_min = 768;
+      }
+      if (sz_min>0) {
+        if (activeMenu != DUNGEON_MENU) {
+          rDungeon = RandomDungeon.generate(RandomUtils.getInt(sz_min, sz_min + 256));
+          System.out.println("Positionning " + rDungeon);
+          activeMenu = DUNGEON_MENU;
+          activeMenu.clear();
+        } else {
+          PLAYER_X = ORIGIN_X;
+          PLAYER_Y = ORIGIN_Y;
+          rDungeon = null;
+          activeMenu = null;
+        }
       }
     }
 

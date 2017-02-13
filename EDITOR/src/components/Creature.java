@@ -1405,7 +1405,11 @@ public class Creature {
   public void setAggroType(int aggro) {
     AggroType = aggro;
     emoticon = getAggroTypeEmoticon(AggroType);
-    if (AggroType == 6 || AggroType == 7) {
+    if (AggroType == 7) {
+      SizeWidth = NormalSizeWidth * 4;
+      SizeHeight = NormalSizeHeight * 4;
+    }
+    else if (AggroType == 6) {
       SizeWidth = NormalSizeWidth * 2;
       SizeHeight = NormalSizeHeight * 2;
     }

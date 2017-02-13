@@ -72,7 +72,7 @@ public class Npc extends Creature {
   private int AggroRange;
 
   private int SpecialType = 0;
-  private String SpecialName = "";
+  private String SpecialName = null;
 
   private int SpawnX;
   private int SpawnY;
@@ -332,7 +332,7 @@ public class Npc extends Creature {
   @Override
   public void revive() {
     SpecialType = 0;
-    SpecialName = "";
+    SpecialName = null;
 
     Npc original_monster = ServerGameInfo.creatureDef.get(CreatureId);
 
@@ -539,7 +539,11 @@ public class Npc extends Creature {
       setStat("MAX_MANA", Math.round(manaf));
       Mana = getStat("MAX_MANA");
 
-      SpecialName = SpecialName + " Titan";
+      if (SpecialName == null) {
+        SpecialName = "Titan";
+      } else {
+        SpecialName = SpecialName + " Titan";
+      }
 
       // Add healing spell
       addAbility(AbilityHandler.getAbility(86));
@@ -585,7 +589,11 @@ public class Npc extends Creature {
     setStat("MAX_MANA", Math.round(manaf));
     Mana = getStat("MAX_MANA");
 
-    SpecialName = "Elite" + SpecialName;
+    if (SpecialName == null) {
+      SpecialName = "Elite";
+    } else {
+      SpecialName = "Elite " + SpecialName;
+    }
 
     setElite(true);
 
@@ -625,7 +633,11 @@ public class Npc extends Creature {
     setStat("MAX_MANA", Math.round(manaf));
     Mana = getStat("MAX_MANA");
 
-    SpecialName = "Raging" + SpecialName;
+    if (SpecialName == null) {
+      SpecialName = "Raging";
+    } else {
+      SpecialName = "Raging " + SpecialName;
+    }
 
     setRaging(true);
 
@@ -758,13 +770,12 @@ public class Npc extends Creature {
   }
 
   public String getName() {
-    String fullName = super.getName();
     if (getFamilyId() == 8) {
-      fullName = "";
-    } else if (!SpecialName.equals("")) {
-      fullName = SpecialName + " " + super.getName();
+      return "";
+    } else if (SpecialName != null) {
+      return SpecialName + " " + super.getName();
     }
-    return fullName;
+    return super.getName();
   }
 
   public int getSpecialType() {
@@ -779,7 +790,7 @@ public class Npc extends Creature {
     if (elite) {
       SpecialName = "Elite";
     } else {
-      SpecialName = "";
+      SpecialName = null;
     }
     this.elite = elite;
   }

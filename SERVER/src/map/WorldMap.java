@@ -298,10 +298,10 @@ public class WorldMap
 
         // CHANCE OF MAKING MONSTER SPECIAL
         tempNpc.turnSpecial(0);
-        if (tempNpc.getAggroType() == 5) {
+        if (tempNpc.getAggroType() == 6) {
           tempNpc.turnElite();
         }
-        else if (tempNpc.getAggroType() == 6) {
+        else if (tempNpc.getAggroType() == 7) {
           tempNpc.turnTitan(true);
         }
 

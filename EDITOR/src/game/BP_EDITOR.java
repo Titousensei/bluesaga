@@ -40,7 +40,8 @@ public class BP_EDITOR extends BasicGame {
 
   public enum Mode {
       CLEAR, EFFECT, TRAP, TRIGGER, DOOR, DESTINATION, PASSABLE, BRUSH,
-      DELETE_TILE, DELETE_OBJECT, DELETE_MONSTER, MINI_MAP, AGGRO, KEY
+      DELETE_TILE, DELETE_OBJECT, DELETE_MONSTER, MINI_MAP, AGGRO, KEY,
+      MOVE
   };
 
   private static AppGameContainer app;

@@ -484,11 +484,20 @@ public class MapHandler extends Handler {
         npcCreature.setAggroType(cAggroType);
         npcCreature.setSpecialType(cSpecialType);
 
-        if (cName.contains(" Titan")) {
+        if (cName.contains("Titan")) {
           npcCreature.setEpic(true);
 
           int newSizeWidth = newCreature.getSizeWidth() * 4;
           int newSizeHeight = newCreature.getSizeHeight() * 4;
+
+          npcCreature.setSizeWidth(newSizeWidth);
+          npcCreature.setSizeHeight(newSizeHeight);
+        }
+        else if (cName.contains("Elite")) {
+          npcCreature.setEpic(true);
+
+          int newSizeWidth = newCreature.getSizeWidth() * 2;
+          int newSizeHeight = newCreature.getSizeHeight() * 2;
 
           npcCreature.setSizeWidth(newSizeWidth);
           npcCreature.setSizeHeight(newSizeHeight);

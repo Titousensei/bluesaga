@@ -192,7 +192,6 @@ public class Creature {
     FaceDir = "LEFT";
     STATUS = "IDLE";
     hitType = "";
-    AggroType = aggro;
 
     X = newX;
     Y = newY;
@@ -242,14 +241,6 @@ public class Creature {
 
         NormalSizeWidth = rs.getInt("SizeW");
         NormalSizeHeight = rs.getInt("SizeH");
-        if (AggroType == 6 || AggroType == 7) {
-          SizeWidth = NormalSizeWidth * 2;
-          SizeHeight = NormalSizeHeight * 2;
-        }
-        else {
-          SizeWidth = NormalSizeWidth;
-          SizeHeight = NormalSizeHeight;
-        }
 
         Aggro = false;
 
@@ -261,6 +252,7 @@ public class Creature {
     } catch (SQLException e1) {
       e1.printStackTrace();
     }
+    setAggroType(aggro);
 
     animationColor = new Color(Color.white);
 

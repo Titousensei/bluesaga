@@ -158,11 +158,11 @@ public abstract class Server {
         new TimerTask() {
           @Override
           public void run() {
+            ServerMessage.println(false, "SERVER RESTART: -15 min");
             for (Map.Entry<Integer, Client> entry : clients.entrySet()) {
               Client s = entry.getValue();
               if (s.Ready) {
                 Handler.addOutGoingMessage(s, "message", "#messages.server.restart_fifteen");
-                ServerMessage.println(false, "SERVER RESTART: -15 min");
               }
             }
             sendRestartWarning();
@@ -216,7 +216,7 @@ public abstract class Server {
   private void serverLoop() {
     Runtime.getRuntime().addShutdownHook(new Thread() {
         public void run() {
-          Server.restartServer();
+          Server.close();
           ServerMessage.println(false, "SERVER RESTART: now");
         }
     });
@@ -319,105 +319,70 @@ public abstract class Server {
           @Override
           public void run() {
             // Send server restart warning to all clients
+            ServerMessage.println(false, "SERVER RESTART: -1 min");
             for (Map.Entry<Integer, Client> entry : clients.entrySet()) {
               Client s = entry.getValue();
               if (s.Ready) {
                 Handler.addOutGoingMessage(s, "message", "#messages.server.restart_one");
-                ServerMessage.println(false, "SERVER RESTART: -1 min");
               }
             }
+            executeRestart();
           }
         },
-        13 * 60 * 1000);
+        15 * 60 * 1000);
   }
 
-  public static void restartServer() {
-    ServerMessage.println(false, "Restarting server...");
+  public void executeRestart() {
+    restartTimer.schedule(
+        new TimerTask() {
+          @Override
+          public void run() {
+            System.exit(0);
+          }
+        },
+        60 * 1000);
+  }
+
+  public static void close() {
+    ServerMessage.println(false, "Closing server...");
 
     SERVER_RESTARTING = true;
-    ServerMessage.println(false, "Saving player data before restart...");
 
+    ServerMessage.println(false, "... closing connected clients");
     for (Map.Entry<Integer, Client> entry : clients.entrySet()) {
       Client s = entry.getValue();
       ConnectHandler.removeClient(s);
     }
 
+    ServerMessage.println(false, "... closing maintenance threads");
     if (!ServerSettings.DEV_MODE) {
       updateWebSiteStatus.exit();
     }
     updatePlayerPosition.exit();
 
-    if (gameDB != null) {
-      gameDB.closeDB();
-      gameDB = null;
+    if (posDB != null) {
+      ServerMessage.println(false, "... closing posDB");
+      posDB.closeDB();
+      posDB = null;
     }
     if (userDB != null) {
+      ServerMessage.println(false, "... closing userDB");
       userDB.closeDB();
       userDB = null;
     }
+    if (gameDB != null) {
+      ServerMessage.println(false, "... closing gameDB");
+      gameDB.closeDB();
+      gameDB = null;
+    }
     if (mapDB != null) {
+      ServerMessage.println(false, "... closing mapDB");
       mapDB.closeDB();
       mapDB = null;
-    }
-    if (posDB != null) {
-      posDB.closeDB();
-      posDB = null;
     }
 
     // BACKUP SERVER
     FileCopy.backupDB();
-
-    Runtime re = Runtime.getRuntime();
-    try {
-      re.exec(ServerSettings.RESTART_COMMAND);
-    } catch (IOException ioe) {
-      CrashLogger.uncaughtException(ioe);
-    }
-
-    closeTimer = new Timer();
-    closeTimer.schedule(
-        new TimerTask() {
-          @Override
-          public void run() {
-            ServerMessage.println(false, "Server restarting!");
-            System.exit(0);
-          }
-        },
-        1000);
-  }
-
-  public static void stopServer() {
-
-    SERVER_RESTARTING = true;
-
-    ServerMessage.println(false, "Saving player data before stopping...");
-
-    for (Map.Entry<Integer, Client> entry : clients.entrySet()) {
-      Client s = entry.getValue();
-
-      if (s.playerCharacter != null) {
-        s.playerCharacter.saveInfo();
-      }
-    }
-
-    gameDB.closeDB();
-    userDB.closeDB();
-    mapDB.closeDB();
-
-    // You need to create a folder called "db_backups" in the server folder
-    // When you have done so, you can uncomment this line
-    //FileCopy.backupDB();
-
-    closeTimer = new Timer();
-    closeTimer.schedule(
-        new TimerTask() {
-          @Override
-          public void run() {
-            ServerMessage.println(false, "Server stopping!");
-            System.exit(0);
-          }
-        },
-        1000);
   }
 
   public void addClient(Client client) {

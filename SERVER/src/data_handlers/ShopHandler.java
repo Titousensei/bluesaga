@@ -325,7 +325,6 @@ public class ShopHandler extends Handler {
 
     if (soldItem != null) {
       int value = soldItem.getSoldValue();
-
       // CHECK IF ITEM IS SELLABLE
       if (soldItem.isSellable()) {
         // CHECK IF PLAYER IS AT LEAST LVL 2
@@ -354,12 +353,17 @@ public class ShopHandler extends Handler {
                       + client.playerCharacter.getDBId());
             }
           }
-
-          // ADD GOLD TO PLAYER
-          CoinConverter cc = new CoinConverter(value);
-          InventoryHandler.addItemToInventory(client, cc.getGoldItem());
-          InventoryHandler.addItemToInventory(client, cc.getSilverItem());
-          InventoryHandler.addItemToInventory(client, cc.getCopperItem());
+          if (value>0) {
+            // ADD GOLD TO PLAYER
+            CoinConverter cc = new CoinConverter(value);
+            InventoryHandler.addItemToInventory(client, cc.getGoldItem());
+            InventoryHandler.addItemToInventory(client, cc.getSilverItem());
+            InventoryHandler.addItemToInventory(client, cc.getCopperItem());
+          }
+          else {
+            client.playerCharacter.loadInventory();
+            InventoryHandler.sendInventoryInfo(client);
+          }
           ServerMessage.println(false, "Sell - ", client.playerCharacter, ": ", soldItem);
         } else {
           addOutGoingMessage(client, "shoperror", "lowlevel");

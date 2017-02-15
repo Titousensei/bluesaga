@@ -44,4 +44,9 @@ public class CoinConverter
     }
     return null;
   }
+
+  @Override
+  public String toString() {
+    return "(" + gold+"gc " + silver + "sc " + copper + "cc)";
+  }
 }

@@ -200,9 +200,13 @@ extends Builder<Item>
         }
       }
       else {
-        Item it = m.get(parseInt(args[1]));
-        System.out.println(it);
-        System.out.println(it.getStats().getHashMap());
+        int itemid = parseInt(args[1]);
+        for (Modifier mod : Modifier.values()) {
+          Item it = new Item(m.get(itemid));
+          it.setModifier(mod);
+          System.out.println("--- " + it);
+          System.out.println(it.getStats().getHashMap());
+        }
       }
     }
   }

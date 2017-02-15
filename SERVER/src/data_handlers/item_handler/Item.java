@@ -384,18 +384,21 @@ public class Item {
         String statName = stat.getKey();
         int statValue = stat.getValue();
 
-        if (statValue != 0
-        && !(getType().equals("Weapon") && statName.equals("ATTACKSPEED"))
-        ) {
+        if (statValue > 0) {
           float statBonus = modifier.bonus * Modifier.ITEM_COEF.get(getType());
-          int newStat = Math.round(statValue * (1.0f + statBonus));
-
-          if (newStat < 0) {
-            newStat = 0;
-          } else if (Math.abs(newStat - statValue) < Math.abs(modifier.bonus)) {
-            newStat += modifier.bonus;
+          int newStat = Math.max(Math.round(statValue * (1.0f + statBonus)),
+                                 statValue + modifier.bonus);
+          if (newStat < 1) {
+            newStat = 1;
           }
-
+          Stats.setValue(statName, newStat);
+        } else if (statValue < 0) {
+          float statBonus = modifier.bonus * Modifier.ITEM_COEF.get(getType());
+          int newStat = Math.min(Math.round(statValue * (1.0f - statBonus)),
+                                 statValue + modifier.bonus);
+          if (newStat > -1) {
+            newStat = -1;
+          }
           Stats.setValue(statName, newStat);
         }
       }

@@ -23,9 +23,8 @@ public class BPserver {
           public void uncaughtException(Thread t, Throwable e) {
             // Log crashes
             CrashLogger.uncaughtException(e);
-
-            // Restart server if uncaught exception occur
-            Server.restartServer();
+            e.printStackTrace();
+            System.exit(1);
           }
         });
 

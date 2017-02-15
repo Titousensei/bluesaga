@@ -83,7 +83,7 @@ public class AdminControlsHandler extends Handler {
   private static boolean levelOneControls(Client client, String chatText) {
     String chatLower = chatText.toLowerCase();
     if (chatLower.equals("/server restart")) {
-      Server.restartServer();
+      System.exit(0);
       return true;
     }
     return false;
@@ -1005,7 +1005,7 @@ public class AdminControlsHandler extends Handler {
     }
 
     if (chatLower.equals("/server stop")) {
-      Server.stopServer();
+      System.exit(0);
       return true;
     }
     return false;

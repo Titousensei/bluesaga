@@ -332,7 +332,7 @@ public class CardHandler extends Handler {
           new TimerTask() {
             @Override
             public void run() {
-              Server.restartServer();
+              System.exit(0);
             }
           },
           20 * 1000);

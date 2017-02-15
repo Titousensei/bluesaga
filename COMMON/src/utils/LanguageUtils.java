@@ -62,7 +62,7 @@ public class LanguageUtils {
         return originalResource.get(key);
       } else {
         //System.out.println("text missing: " + key);
-        return "";
+        return key;
       }
     }
     return languageResource.get(key);

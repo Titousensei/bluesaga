@@ -129,16 +129,25 @@ extends Builder<Item>
       else if (Stats.NAMES.contains(part)) {
         it.setDamageStat(part);
       }
-      else if (d1==0) {
-        d1 = parseInt(part);
-      }
       else {
-        d2 = parseInt(part);
+        int v = parseInt(part);
+        if (v==0) {
+          continue;
+        }
+        else if (d1==0) {
+          d1 = v;
+        }
+        else {
+          d2 = v;
+        }
       }
     }
     if (d2!=0) {
       it.setStats("MinDamage", (d1<d2) ? d1 : d2);
       it.setStats("MaxDamage", (d1>d2) ? d1 : d2);
+    }
+    else {
+      System.err.println("WARNING - No damage for " + it);
     }
   }
 

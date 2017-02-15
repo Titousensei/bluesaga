@@ -11,6 +11,7 @@ extends Thread
   private boolean running = false;
 
   UpdateWebSiteStatus(Server server) {
+    super("UpdateWebSiteStatus");
     this.server = server;
   }
 

@@ -19,6 +19,7 @@ extends Thread
   private boolean running = false;
 
   UpdatePlayerPosition(Database db) throws SQLException {
+    super("UpdatePlayerPosition");
     posDB = db;
 
     posDB.updateDB(

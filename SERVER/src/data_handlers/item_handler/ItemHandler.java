@@ -2,12 +2,12 @@ package data_handlers.item_handler;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Map;
-import java.util.Vector;
+import java.util.*;
 
 import org.newdawn.slick.Color;
 
 import utils.ServerGameInfo;
+import utils.ServerMessage;
 import utils.RandomUtils;
 import utils.TextFormater;
 import creature.Creature;
@@ -20,10 +20,13 @@ import data_handlers.ability_handler.AbilityHandler;
 import data_handlers.ability_handler.StatusEffect;
 import data_handlers.ability_handler.StatusEffectHandler;
 import data_handlers.card_handler.CardHandler;
+import map.Tile;
 import network.Client;
 import network.Server;
 
 public class ItemHandler extends Handler {
+
+  public final static int MAX_LOOT_BAG_SIZE = 6 * 4;
 
   public static void init() {
     DataHandlers.register("drop_item", m -> handleDropItem(m));
@@ -646,12 +649,10 @@ public class ItemHandler extends Handler {
   }
 
   public static void loseLootUponDeath(Client client) {
-    Vector<Item> lostLoot = new Vector<Item>();
+
+    List<Item> lostLoot = new ArrayList<>(MAX_LOOT_BAG_SIZE);
 
     Creature TARGET = client.playerCharacter;
-
-    int maxLootBagSize = 6 * 4;
-
     EquipHandler.checkRequirements(client);
 
     ResultSet lostItemsInfo =
@@ -662,7 +663,7 @@ public class ItemHandler extends Handler {
 
     try {
       while (lostItemsInfo.next()) {
-        if (lostLoot.size() < maxLootBagSize) {
+        if (lostLoot.size() < MAX_LOOT_BAG_SIZE) {
           Item lostItem = ServerGameInfo.newItem(lostItemsInfo.getInt(4));
           if (!"Key".equals(lostItem.getType())
           && !"Part".equals(lostItem.getSubType())
@@ -671,7 +672,7 @@ public class ItemHandler extends Handler {
             lostItem.setModifierId(lostItemsInfo.getInt(2));
             lostItem.setMagicId(lostItemsInfo.getInt(3));
             Server.userDB.updateDB(
-                "delete from character_item where Id = " + lostItemsInfo.getInt("Id"));
+                "delete from character_item where Id = " + lostItemsInfo.getInt(1));
             lostLoot.add(lostItem);
           }
         } else {
@@ -688,14 +689,13 @@ public class ItemHandler extends Handler {
     if (lostCard != null) {
       lostLoot.add(lostCard);
     }
-
     // SEND LOST ITEMS TO ALL CLIENTS ON SAME MAP
     if (lostLoot.size() > 0) {
+      Tile bagTile = Server.WORLD_MAP.findClosestEmptyTile(TARGET.getX(), TARGET.getY(), TARGET.getZ());
+      bagTile.setObjectId("container/bigbag");
+      ServerMessage.println(false, "LostLoot - ", lostLoot, " @", bagTile);
       for (Item loot : lostLoot) {
-        Server.WORLD_MAP
-            .getTile(TARGET.getX(), TARGET.getY(), TARGET.getZ())
-            .setObjectId("container/bigbag");
-        ContainerHandler.addItemToContainer(loot, TARGET.getX(), TARGET.getY(), TARGET.getZ());
+        ContainerHandler.addItemToContainer(loot, bagTile.getX(), bagTile.getY(), bagTile.getZ());
       }
       // SEND LOOT INFO TO ALL CLIENTS IN AREA
       for (Map.Entry<Integer, Client> entry : Server.clients.entrySet()) {

@@ -858,8 +858,6 @@ public class WorldMap
     Spiral s = new Spiral(8, 8);
     List<Point> l = s.spiral();
 
-    Point foundTile = null;
-
     for (Point p : l) {
       if (p.getX() != 0 || p.getY() != 0) {
         int targetX = (int) (startX + p.getX());
@@ -867,13 +865,31 @@ public class WorldMap
 
         if (getTile(targetX, targetY, startZ) != null) {
           if (getTile(targetX, targetY, startZ).isPassableNonAggro()) {
-            foundTile = new Point(targetX, targetY);
-            return foundTile;
+            return new Point(targetX, targetY);
           }
         }
       }
     }
-    return foundTile;
+    return null;
+  }
+
+  public Tile findClosestEmptyTile(int startX, int startY, int startZ) {
+    Spiral s = new Spiral(8, 8);
+    List<Point> l = s.spiral();
+
+    for (Point p : l) {
+      int targetX = (int) (startX + p.getX());
+      int targetY = (int) (startY + p.getY());
+
+      Tile ret = getTile(targetX, targetY, startZ);
+      if (ret != null
+      && !ret.hasLoot()
+      && !"None".equals(ret.getObjectId())
+      ) {
+        return ret;
+      }
+    }
+    return getTile(startX, startY, startZ);
   }
 
   public boolean isType(String type, int x, int y, int z) {

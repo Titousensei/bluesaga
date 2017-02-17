@@ -12,7 +12,7 @@ import utils.Coords;
 public class UpdatePlayerPosition
 extends Thread
 {
-  private ConcurrentHashMap<PlayerCharacter, Coords> pos;
+  private ConcurrentHashMap<Integer, Coords> pos;
   private static Database posDB;
   private PreparedStatement stat;
 
@@ -31,7 +31,7 @@ extends Thread
   }
 
   public void savePosition(PlayerCharacter pc, int x, int y, int z) {
-    pos.put(pc, new Coords(x,y,z));
+    pos.put(pc.getDBId(), new Coords(x,y,z));
   }
 
   public static void createCharacterPos(int charId, int x, int y, int z) {
@@ -59,15 +59,15 @@ extends Thread
   throws SQLException
   {
     if (!pos.isEmpty()) {
-      for (Map.Entry<PlayerCharacter, Coords> entry : pos.entrySet()) {
-        PlayerCharacter pc = entry.getKey();
+      for (Map.Entry<Integer, Coords> entry : pos.entrySet()) {
+        Integer pcId = entry.getKey();
         Coords xyz = entry.getValue();
         stat.setInt(1, xyz.x);
         stat.setInt(2, xyz.y);
         stat.setInt(3, xyz.z);
-        stat.setInt(4, pc.getDBId());
+        stat.setInt(4, pcId);
         stat.addBatch();
-        pos.remove(pc, xyz);
+        pos.remove(pcId, xyz);
       }
       stat.executeBatch();
       posDB.commit();

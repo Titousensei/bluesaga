@@ -344,7 +344,7 @@ public abstract class Server {
   }
 
   public static void close() {
-    ServerMessage.println(false, "Closing server...");
+    ServerMessage.println(false, "SERVER RESTART: Closing server...");
 
     SERVER_RESTARTING = true;
 

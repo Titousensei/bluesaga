@@ -473,4 +473,9 @@ public class Tile {
   public void setGeneratedDoor(Door generatedDoor) {
     this.generatedDoor = generatedDoor;
   }
+
+  @Override
+  public String toString() {
+    return "Tile(" + X + ',' + Y + ',' + Z + ')';
+  }
 }

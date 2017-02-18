@@ -88,9 +88,9 @@ public class Tile {
 
     /*
     if(Z < 0){
-    	new_graphics_alpha = 0;
+      new_graphics_alpha = 0;
     }else{
-    	new_graphics_alpha = 255;
+      new_graphics_alpha = 255;
     }
     */
     new_graphics_alpha = 255;

@@ -194,7 +194,9 @@ public class MonsterHandler extends Handler {
 
         if (s.Ready) {
           // CHECK IF PLAYERS IS IN MONSTER AGGRO RANGE
-          if (s.playerCharacter.getAdminLevel() < 3) {
+          if (s.playerCharacter.getAdminLevel() < 3
+          && !s.playerCharacter.hasStatusEffect(50)   // Stealth
+          ) {
             alertNearMonsters(
                 s.playerCharacter,
                 s.playerCharacter.getX(),
@@ -499,7 +501,7 @@ public class MonsterHandler extends Handler {
                           Math.sqrt(Math.pow(m.getX() - hitX, 2) + Math.pow(m.getY() - hitY, 2));
 
                       AGGRO_RANGE = 40;
-                      if (distToMob <= AGGRO_RANGE && !attacker.hasStatusEffect(102)) {   // Stealth
+                      if (distToMob <= AGGRO_RANGE && !attacker.hasStatusEffect(50)) {   // Stealth
                         m.setAggro(attacker);
                         aggroM.add(m);
                       }
@@ -570,7 +572,7 @@ public class MonsterHandler extends Handler {
                           }
                         }
 
-                        if (turnAggro && !attacker.hasStatusEffect(102)) {   // Stealth
+                        if (turnAggro && !attacker.hasStatusEffect(50)) {   // Stealth
                           m.setAggro(attacker);
                           aggroM.add(m);
                         }

@@ -106,16 +106,12 @@ public class Stats {
   }
 
   public void addStats(Stats plusStats) {
-
     for (Map.Entry<String, Integer> entry : Stats.entrySet()) {
-      String key = entry.getKey();
-      Integer value = entry.getValue();
-      Stats.put(key, value + plusStats.getValue(key));
+      addValue(entry.getKey(), entry.getValue());
     }
   }
 
   public void fraction(float ratio) {
-
     for (Map.Entry<String, Integer> entry : Stats.entrySet()) {
       String key = entry.getKey();
       Integer value = entry.getValue();
@@ -125,7 +121,13 @@ public class Stats {
 
   public void addValue(String statType, int StatValue) {
     if (Stats.containsKey(statType)) {
-      Stats.put(statType, Stats.get(statType) + StatValue);
+      int newvalue = Stats.get(statType) + StatValue;
+      if (newvalue>0) {
+        Stats.put(statType, newvalue);
+      }
+      else {
+        Stats.put(statType, Integer.valueOf(0));
+      }
     } else {
       Stats.put(statType, StatValue);
     }

@@ -343,7 +343,6 @@ public class AbilityHandler extends Handler {
                 attackOk = false;
               }
             }
-
           if (attackOk && haveTarget) {
 
               int dX = goalX - client.playerCharacter.getX();
@@ -753,7 +752,6 @@ public class AbilityHandler extends Handler {
       String AoE = ABILITY.getAoE();
       String tileData = "None";
       boolean useMana = true;
-
       // FIND CASTER
 
       Creature CASTER = ABILITY.getCaster();
@@ -788,7 +786,7 @@ public class AbilityHandler extends Handler {
           }
         }
 
-        if (ABILITY.getAbilityId() == 76) {  // Thrust
+        else if (ABILITY.getAbilityId() == 76) {  // Thrust
 
           AoE = "";
 
@@ -1154,9 +1152,16 @@ public class AbilityHandler extends Handler {
                   //String abilityHitInfo = TARGET.getSmallData()+";"+TARGET.getHealthStatus()+","+ABILITY.getAbilityId()+","+ABILITY.getDamageType()+","+damage+","+ABILITY.getColor().getRed()+","+ABILITY.getColor().getGreen()+","+ABILITY.getColor().getBlue()+","+ABILITY.getGraphicsNr();
 
                   if (TARGET.getCreatureType().equals(CASTER.getCreatureType())
-                      && TARGET.getDBId() == CASTER.getDBId()
-                      && !ABILITY.isBuffOrNot()) {
-                    // Do not hit caster with its own spell if not a buff
+                  && TARGET.getDBId() == CASTER.getDBId()
+                  && ABILITY.isBuffOrNot()
+                  ) {
+                    if (ABILITY.getStatusEffects() != null) {
+                      for (StatusEffect statusFX : ABILITY.getStatusEffects()) {
+                        StatusEffect seFX = new StatusEffect(statusFX.getId());
+                        seFX.setCaster(CASTER);
+                        StatusEffectHandler.addStatusEffect(TARGET, seFX);
+                      }
+                    }
                   } else if (damage != 0) {
                     HitHandler.creatureGetHit(
                         TARGET,

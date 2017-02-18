@@ -602,10 +602,12 @@ public class Creature {
               .drawCentered(centerX, cornerY);
         }
       }
+      int seY = centerY;
       for (int i = 0; i < StatusEffects.size(); i++) {
         StatusEffect SE = StatusEffects.get(i);
         if (SE.isActive()) {
-          SE.draw(centerX, centerY);
+          SE.draw(centerX, seY);
+          seY -= 20;
         } else {
           StatusEffects.remove(i);
         }

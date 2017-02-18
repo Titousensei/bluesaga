@@ -435,12 +435,6 @@ public class Creature implements Mover {
       newStats.addStats(ArtifactItem.getStats());
     }
 
-    // GO THROUGH STATUS EFFECTS AND CHANGES STATS ACCORDINGLY
-    for (Iterator<StatusEffect> iter = getStatusEffects().values().iterator(); iter.hasNext(); ) {
-      StatusEffect s = iter.next();
-      newStats.addStats(s.getStatsModif());
-    }
-
     // Adjust Secondary stats from primary stats
     // "ACCURACY"       64 + INT/3.5
     newStats.addValue("ACCURACY", getStatFraction("INTELLIGENCE", 3.5f));
@@ -454,6 +448,12 @@ public class Creature implements Mover {
     newStats.addValue("ATTACKSPEED", getStatFraction("AGILITY", 1.0f));
     // "SPEED"          80 + STR/2
     newStats.addValue("SPEED", getStatFraction("STRENGTH", 2.0f));
+
+    // GO THROUGH STATUS EFFECTS AND CHANGES STATS ACCORDINGLY
+    for (Iterator<StatusEffect> iter = getStatusEffects().values().iterator(); iter.hasNext(); ) {
+      StatusEffect s = iter.next();
+      newStats.addStats(s.getStatsModif());
+    }
 
     BonusStats = newStats;
   }

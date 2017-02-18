@@ -132,8 +132,8 @@ public class ChatHandler extends Handler {
 
     String chatInfo[] = m.message.split(";", 2);
 
-    ServerMessage.println(false, "CHAT - ", m.client.playerCharacter,
-        " --- ", m.message);
+    ServerMessage.println(false, "*** CHAT - ", m.client.playerCharacter,
+        " *** ", m.message);
 
     if (chatInfo.length == 2) {
       String chatChannel = chatInfo[0].toLowerCase();

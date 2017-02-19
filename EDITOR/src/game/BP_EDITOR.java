@@ -620,6 +620,8 @@ public class BP_EDITOR extends BasicGame {
         }
         g.drawRect(playerx, playery, rDungeon.width/2, rDungeon.height/2);
         g.drawRect(playerx-10, playery-7, rDungeon.width/2+20, rDungeon.height/2+14);
+
+        activeMenu.draw(g, container, INPUT.getAbsoluteMouseX(), INPUT.getAbsoluteMouseY());
       }
       else {
         g.setColor(EditColors.RED);
@@ -944,17 +946,10 @@ public class BP_EDITOR extends BasicGame {
         sz_min = 768;
       }
       if (sz_min>0) {
-        if (activeMenu != DUNGEON_MENU) {
-          rDungeon = RandomDungeon.generate(RandomUtils.getInt(sz_min, sz_min + 256));
-          System.out.println("Positionning " + rDungeon);
-          activeMenu = DUNGEON_MENU;
-          activeMenu.clear();
-        } else {
-          PLAYER_X = ORIGIN_X;
-          PLAYER_Y = ORIGIN_Y;
-          rDungeon = null;
-          activeMenu = null;
-        }
+        rDungeon = RandomDungeon.generate(RandomUtils.getInt(sz_min, sz_min + 256));
+        System.out.println("Positionning " + rDungeon);
+        activeMenu = DUNGEON_MENU;
+        activeMenu.clear();
       }
     }
 

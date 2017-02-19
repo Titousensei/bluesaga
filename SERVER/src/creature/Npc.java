@@ -2,12 +2,7 @@ package creature;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Vector;
+import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
 import components.Stats;
@@ -32,6 +27,8 @@ import network.Server;
  */
 
 public class Npc extends Creature {
+
+  public static Map<Creature, String> specialMonsters = Collections.synchronizedMap(new WeakHashMap<>());
 
   private int respawnTime;
   private int respawnTimeItr;
@@ -111,7 +108,7 @@ public class Npc extends Creature {
 
     StashItems = new ArrayList<Item>(3);
 
-    attackersDamage = new HashMap<Creature, Integer>();
+    attackersDamage = new HashMap<Creature, Integer>(10);
 
     ResultSet rs =
         Server.gameDB.askDB(
@@ -161,7 +158,7 @@ public class Npc extends Creature {
 
     StashItems = new ArrayList<Item>(3);
 
-    attackersDamage = new HashMap<Creature, Integer>();
+    attackersDamage = new HashMap<Creature, Integer>(10);
 
     setMonsterWeaponIds(copy.getMonsterWeaponIds());
     setMonsterOffHandIds(copy.getMonsterOffHandIds());
@@ -421,7 +418,7 @@ public class Npc extends Creature {
   public void turnSpecial(int gloomyNr) {
 
     if (gloomyNr == 0
-    && getAggroType() == 3
+    && getAggroType() == 2
     && getLevel() >= ServerSettings.NPC_SPECIAL_MIN_LEVEL
     ) {
       gloomyNr = RandomUtils.getInt(0, 140);
@@ -495,6 +492,7 @@ public class Npc extends Creature {
         //turnTitan(titan);
       }
       */
+      specialMonsters.put(this, "Magic-" + SpecialName);
     } else {
       gloomyNr = 0;
     }
@@ -557,6 +555,7 @@ public class Npc extends Creature {
       unequipItem("OffHand");
 
       setTitan(true);
+      specialMonsters.put(this, "Titan");
     }
   }
 
@@ -602,6 +601,8 @@ public class Npc extends Creature {
     unequipItem("Amulet");
     unequipItem("Artifact");
     unequipItem("OffHand");
+
+    specialMonsters.put(this, "Elite");
   }
 
   public void turnRaging() {

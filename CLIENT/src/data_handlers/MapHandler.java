@@ -81,7 +81,6 @@ public class MapHandler extends Handler {
         // ADD PLAYER TO MAP CREATURES
         ConnectHandler.loadDone();
 
-        BlueSaga.BG_MUSIC.stop();
         BlueSaga.client.sendMessage("ready", "ready");
       }
 

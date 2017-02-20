@@ -107,7 +107,9 @@ public class Stats {
 
   public void addStats(Stats plusStats) {
     for (Map.Entry<String, Integer> entry : Stats.entrySet()) {
-      addValue(entry.getKey(), entry.getValue());
+      String key = entry.getKey();
+      Integer value = entry.getValue();
+      Stats.put(key, value + plusStats.getValue(key));
     }
   }
 

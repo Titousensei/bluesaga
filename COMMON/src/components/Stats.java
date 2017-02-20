@@ -124,12 +124,7 @@ public class Stats {
   public void addValue(String statType, int StatValue) {
     if (Stats.containsKey(statType)) {
       int newvalue = Stats.get(statType) + StatValue;
-      if (newvalue>0) {
-        Stats.put(statType, newvalue);
-      }
-      else {
-        Stats.put(statType, Integer.valueOf(0));
-      }
+      Stats.put(statType, newvalue);
     } else {
       Stats.put(statType, StatValue);
     }

@@ -779,6 +779,9 @@ public class Creature implements Mover {
       if (newItem.getType().equals("Weapon") || newItem.getSubType().equals("Weapon")) {
         WeaponItem = newItem;
         WeaponAttackType = newItem.getAttackType();
+        if (WeaponAttackType == null) {
+          WeaponAttackType = "";
+        }
         attackWithMagic = newItem.getMagicType();
         equipOk = true;
       } else if (newItem.getType().equals("Head") || newItem.getSubType().equals("Head")) {

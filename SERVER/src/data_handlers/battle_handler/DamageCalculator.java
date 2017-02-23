@@ -239,7 +239,6 @@ public class DamageCalculator {
                         || "PIERCE".equals(damageType)
                         );
     String magicType = ATTACKER.getAttackWithMagic();
-
     if (physicalDmd) {
       // PHYSICAL DAMAGE, USE ARMOR
       float pierceFac = 1.0f;
@@ -258,7 +257,8 @@ public class DamageCalculator {
 
       if (magicType!=null) {
         // 10% MAGICAL DEFENSE APPLIES
-        ret = 0.9 * ret  + 0.1 * Math.exp(TARGET.getStat(magicType + "_DEF") / -91.);
+        double mag = Math.exp(TARGET.getStat(magicType + "_DEF") / -91.);
+        ret = 0.9 * ret  + 0.1 * mag;
       }
     }
     else {

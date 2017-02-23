@@ -411,10 +411,9 @@ public class Item {
 
   public void setMagicId(int magicId) {
     MagicId = magicId;
+    String extraBonus = Server.gameDB.askString("select ExtraBonus from item_magic where Id = " + magicId);
 
-    int extraBonus = Server.gameDB.askInt("select ExtraBonus from item_magic where Id = " + magicId);
-
-    if (extraBonus != 0) {
+    if (extraBonus != null) {
       int levelModif = 1;
 
       if (getRequirement("ReqLevel") > 0) {
@@ -523,7 +522,7 @@ public class Item {
     this.attackType = attackType;
   }
 
-  public void setMagicType(String magicType) {
+  private void setMagicType(String magicType) {
     this.magicType = magicType;
   }
 

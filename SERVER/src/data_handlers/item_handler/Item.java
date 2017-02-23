@@ -581,6 +581,10 @@ public class Item {
       .append(" (")
       .append(Id)
       .append(")");
+    if (Stacked>1) {
+      sb.append(" *")
+        .append(Stacked);
+    }
     if (MagicId != 0) {
       sb.append(" magic=")
         .append(MagicId);

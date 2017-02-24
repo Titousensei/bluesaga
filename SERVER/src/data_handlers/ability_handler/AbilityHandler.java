@@ -26,6 +26,7 @@ import data_handlers.Message;
 import data_handlers.WalkHandler;
 import data_handlers.battle_handler.BattleHandler;
 import data_handlers.battle_handler.DamageCalculator;
+import data_handlers.battle_handler.DamageCalculator.HitResult;
 import data_handlers.battle_handler.HitHandler;
 import data_handlers.item_handler.Item;
 import data_handlers.monster_handler.MonsterHandler;
@@ -1163,14 +1164,28 @@ public class AbilityHandler extends Handler {
                       }
                     }
                   } else if (damage != 0) {
-                    HitHandler.creatureGetHit(
-                        TARGET,
-                        CASTER,
-                        damage,
-                        ABILITY.getDamageType(),
-                        "false",
-                        arena,
-                        ABILITY.getStatusEffects());
+                    HitResult hit = DamageCalculator.criticalOrMiss(CASTER, TARGET);
+
+                    if (hit == HitResult.MISSED) {
+                      HitHandler.creatureGetHit(
+                          TARGET, CASTER, 0, ABILITY.getDamageType(),
+                          "miss", arena, null);
+                    }
+                    else if (hit == HitResult.EVADED) {
+                      HitHandler.creatureGetHit(
+                          TARGET, CASTER, 0, ABILITY.getDamageType(),
+                          "evade", arena, null);
+                    }
+                    else if (hit == HitResult.CRITICAL) {
+                      HitHandler.creatureGetHit(
+                        TARGET, CASTER, damage, ABILITY.getDamageType(),
+                        "true", arena, ABILITY.getStatusEffects());
+                    }
+                    else {
+                      HitHandler.creatureGetHit(
+                          TARGET, CASTER, damage, ABILITY.getDamageType(),
+                          "false", arena, ABILITY.getStatusEffects());
+                    }
                   }
                 }
                 if (TARGET != null) {

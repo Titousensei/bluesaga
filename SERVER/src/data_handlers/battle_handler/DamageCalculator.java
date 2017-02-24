@@ -13,6 +13,8 @@ public class DamageCalculator {
   public static final Damage DAMAGE_EVADED = new Damage("evade",0);
   public static final Damage DAMAGE_MISSED = new Damage("miss",0);
 
+  public enum HitResult { CRITICAL, NORMAL, EVADED, MISSED };
+
   private static boolean isCover(int x, int y, int z) {
     return Server.WORLD_MAP.getTile(x, y, z) == null
         || !Server.WORLD_MAP.getTile(x, y, z).getPassable();
@@ -101,9 +103,8 @@ public class DamageCalculator {
     return 0;
   }
 
-
   // Check if miss, evade or hit
-  public static Damage calculateAttack(Creature ATTACKER, Creature TARGET) {
+  public static HitResult criticalOrMiss(Creature ATTACKER, Creature TARGET) {
 
     // 10 -> .13   [50 -> .50]    100 -> .75   150 -> 0.875  200 -> 0.9375
     double accuracy = 1.0 - Math.exp(ATTACKER.getStat("ACCURACY") / -72.0);
@@ -116,7 +117,6 @@ public class DamageCalculator {
       double evasion = 1.0 - Math.exp((actualEvasion + cover) / -91.0);
       if (evasion < RandomUtils.getPercent()) {
 
-        int damage = calculateDamage(ATTACKER, TARGET);
         // 10 -> 0.10   50 -> 0.43   [100 -> .67]  150 -> .81   200 -> 0.89
         double critical = 1.0 - Math.exp(ATTACKER.getStat("CRITICAL_HIT") / -91.0);
 
@@ -136,17 +136,43 @@ public class DamageCalculator {
           critical += 20.0;
         }
 
-        if (damage > 0 && critical >= RandomUtils.getPercent()) {
-          return new Damage("true", damage * 2);
+        if (critical >= RandomUtils.getPercent()) {
+          return HitResult.CRITICAL;
         } else {
-          return new Damage("false", damage);
+          return HitResult.NORMAL;
         }
       } else {
-        return DAMAGE_EVADED;
+        return HitResult.EVADED;
       }
     } else {
+      return HitResult.MISSED;
+    }
+  }
+
+  // Check if miss, evade or hit
+  public static Damage calculateAttack(Creature ATTACKER, Creature TARGET) {
+
+    HitResult hit = criticalOrMiss(ATTACKER, TARGET);
+
+    if (hit == HitResult.MISSED) {
       return DAMAGE_MISSED;
     }
+
+    if (hit == HitResult.EVADED) {
+      return DAMAGE_EVADED;
+    }
+
+    int damage = calculateDamage(ATTACKER, TARGET);
+
+    if (damage <= 0) {
+      return DAMAGE_MISSED;
+    }
+
+    if (hit == HitResult.CRITICAL) {
+      return new Damage("true", damage * 2);
+    }
+
+    return new Damage("false", damage);
   }
 
   // CALCULATE DAMAGE

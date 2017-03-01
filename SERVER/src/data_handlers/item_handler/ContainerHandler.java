@@ -422,11 +422,19 @@ public class ContainerHandler extends Handler {
                 AreaEffect areaEffectInfo = ServerGameInfo.areaEffectsDef.get(areaEffectId);
                 if (areaEffectInfo != null) {
 
-                  int dropItemChance = RandomUtils.getInt(0, 100);
                   int[] areaItems = areaEffectInfo.getAreaItems();
-                  if (dropItemChance < 20 && areaItems != null) {
+                  if (areaItems != null) {
+                    double dropItemChance = 0.2 / areaItems.length;
+                    boolean isSarcophage = objectId.contains("sarcophage");
                     for (int itemId : areaItems) {
-                      newContainer.addItem(ServerGameInfo.newItem(itemId));
+                      double chance = RandomUtils.getPercent();
+                      if (chance <= dropItemChance) {
+                        Item droppedItem = ServerGameInfo.newItem(itemId);
+                        if (isSarcophage && droppedItem.isEquipable()) {
+                          droppedItem.setModifier(Modifier.random(2));
+                        }
+                        newContainer.addItem(droppedItem);
+                      }
                     }
                   }
 

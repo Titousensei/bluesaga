@@ -1,29 +1,35 @@
 package components;
 
+import java.util.Set;
+
 public class Shop
 {
   public final int npcId;
   public final String name;
   private final String origin;
 
-  private String items;
-  private int[] abilities;
+  private Set<Integer> items;
+  private String itemsStr;
+  private Set<Integer> abilities;
   private String abilitiesStr;
 
   public Shop(int id, String n, String o) {
     npcId = id;
     name = n;
     origin = o;
-    items = "None";
+    itemsStr = "None";
     abilities = null;
     abilitiesStr = "None";
   }
 
-  public String getItemsStr() { return items; }
-  void setItemsStr(String val) { items = val; }
+  void setItems(Set<Integer> val) { items = val; }
+  public boolean containsItem(Integer val) { return items.contains(val); }
 
-  public int[] getAbilities() { return abilities; }
-  void setAbilities(int[] val) { abilities = val; }
+  public String getItemsStr() { return itemsStr; }
+  void setItemsStr(String val) { itemsStr = val; }
+
+  void setAbilities(Set<Integer> val) { abilities = val; }
+  public boolean containsAbility(Integer val) { return abilities.contains(val); }
 
   public String getAbilitiesStr() { return abilitiesStr; }
   void setAbilitiesStr(String val) { abilitiesStr = val; }
@@ -38,18 +44,12 @@ public class Shop
         .append(name);
     }
     if (items!=null) {
-      sb.append(", items=[")
-        .append(items)
-        .append(']');
+      sb.append(", items=")
+        .append(items);
     }
     if (abilities!=null) {
-      sb.append(", abilities=[")
-        .append(abilities[0]);
-      for (int i = 1 ; i<abilities.length ; i++) {
-        sb.append(',')
-          .append(abilities[i]);
-      }
-      sb.append(']');
+      sb.append(", abilities=")
+        .append(abilities);
     }
     sb.append(", Origin=").append(origin)
       .append('}');

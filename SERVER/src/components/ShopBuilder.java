@@ -13,79 +13,75 @@ public class ShopBuilder
 extends Builder<Shop>
 {
   protected Shop s = null;
-  protected StringBuilder items = null;
-  protected List<Integer> abilities = null;
+  protected Collection<Integer> items = null;
+  protected Collection<Integer> abilities = null;
 
   public void init(int id, String name, String origin) {
     s = new Shop(id, name, origin);
   }
 
   public void items(String val) {
-    if (items==null) {
-      items = new StringBuilder();
+    String ids[] = val.split(",");
+    for (int i = 0 ; i<ids.length ; i++) {
+      item(ids[i]);
     }
-    else {
-      items.append(',');
-    }
-    items.append(val);
   }
 
   public void item(String val) {
+    if (items==null) {
+      items = new ArrayList<>(10);
+    }
     int id = parseInt(val);
     if (id!=0) {
-      if (items==null) {
-        items = new StringBuilder(100);
-      }
-      else {
-        items.append(',');
-      }
-      items.append(id);
+      items.add(id);
     }
   }
 
   public void abilities(String val) {
-    String abilityIds[] = val.split(",");
-    abilities = new ArrayList<>(abilityIds.length);
-    for (int i = 0 ; i<abilityIds.length ; i++) {
-      abilities.add(parseInt(abilityIds[i]));
+    String ids[] = val.split(",");
+    for (int i = 0 ; i<ids.length ; i++) {
+      abilities(ids[i]);
     }
   }
 
   public void ability(String val) {
+    if (abilities==null) {
+      abilities = new ArrayList<>(10);
+    }
     int id = parseInt(val);
     if (id!=0) {
-      if (abilities==null) {
-        abilities = new ArrayList<>(10);
-      }
       abilities.add(id);
     }
   }
 
   public Shop build() {
     if (items!=null) {
-      s.setItemsStr(items.toString());
+      s.setItems(new HashSet(items));
+      StringBuilder sb = null;
+      for (Integer id : items) {
+        if (sb == null) {
+          sb = new StringBuilder();
+        } else {
+          sb.append(',');
+        }
+        sb.append(id);
+      }
+      s.setItemsStr(sb.toString());
     }
     if (abilities!=null) {
-      int[] ab = new int[abilities.size()];
-      int i = 0;
-      for (Integer val : abilities) {
-        ab[i] = val;
-        ++ i;
-      }
-      s.setAbilities(ab);
-
+      s.setAbilities(new HashSet(abilities));
       StringBuilder sb = new StringBuilder();
-      for (int aId : ab) {
+      for (Integer id : abilities) {
         try (ResultSet abilityInfo =
                                 //      1        2
-            Server.gameDB.askDB("select ClassId, GraphicsNr from ability where Id = " + aId);
+            Server.gameDB.askDB("select ClassId, GraphicsNr from ability where Id = " + id);
         ) {
           if (abilityInfo.next()) {
             String color = "0,0,0";
             if (abilityInfo.getInt(1) > 0) {
               color = ServerGameInfo.classDef.get(abilityInfo.getInt(1)).bgColor;
             }
-            sb.append(aId)
+            sb.append(id)
               .append(',')
               .append(color)
               .append(',')

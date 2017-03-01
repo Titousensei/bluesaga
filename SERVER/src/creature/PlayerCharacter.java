@@ -29,6 +29,7 @@ import components.ActionBar;
 import components.UserQuest;
 import components.JobSkill;
 import components.Ship;
+import components.Shop;
 import creature.Creature.CreatureType;
 import components.Crew;
 import data_handlers.Handler;
@@ -81,6 +82,8 @@ public class PlayerCharacter extends Creature {
   private int tutorialNr = 0;
 
   private Party party;
+
+  private Shop lastShop = null;
 
   // Chat channels subscriptions
   private Vector<String> chatChannels;
@@ -1592,5 +1595,13 @@ public class PlayerCharacter extends Creature {
 
   public Vector<String> getChatChannels() {
     return chatChannels;
+  }
+
+  public Shop getLastShop() {
+    return lastShop;
+  }
+
+  public void setLastShop(Shop val) {
+    lastShop = val;
   }
 }

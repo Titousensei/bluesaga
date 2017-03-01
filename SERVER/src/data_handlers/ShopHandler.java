@@ -30,6 +30,7 @@ public class ShopHandler extends Handler {
     int shopId = Integer.parseInt(m.message);
     Shop shop = ServerGameInfo.shopDef.get(shopId);
     if (shop != null) {
+      m.client.playerCharacter.setLastShop(shop);
       addOutGoingMessage(
           client, "shop", shop.name + ";"
           + shop.getItemsStr() + ";"
@@ -40,6 +41,8 @@ public class ShopHandler extends Handler {
 
   public static void handleBuy(Message m) {
     if (m.client.playerCharacter == null) return;
+    Shop lastShop = m.client.playerCharacter.getLastShop();
+    if (lastShop == null) return;
     Client client = m.client;
     String buyInfo[] = m.message.split(";");
     String buyType = buyInfo[0];
@@ -48,7 +51,7 @@ public class ShopHandler extends Handler {
     client.playerCharacter.loadInventory();
     if (buyType.equals("Item")) {
       Item it = ServerGameInfo.itemDef.get(itemId);
-      if (it!=null) {
+      if (it!=null && lastShop.containsItem(itemId)) {
         if (it.getType().equals("Customization")) {
           // CHECK IF PLAYER CAN AFFORD IT
           if (client.playerCharacter.hasCopper(it.getValue())) {
@@ -179,7 +182,7 @@ public class ShopHandler extends Handler {
       } else {
         addOutGoingMessage(client, "shoperror", "noitem");
       }
-    } else if (buyType.equals("Ability")) {
+    } else if (buyType.equals("Ability") && lastShop.containsAbility(itemId)) {
       int abilityId = itemId;
       Ability shopAbility = new Ability(ServerGameInfo.abilityDef.get(abilityId));
 
@@ -285,6 +288,8 @@ public class ShopHandler extends Handler {
 
   public static void handleSell(Message m) {
     if (m.client.playerCharacter == null) return;
+    Shop lastShop = m.client.playerCharacter.getLastShop();
+    if (lastShop == null) return;
     Client client = m.client;
     int itemId = 0;
     Item soldItem = null;

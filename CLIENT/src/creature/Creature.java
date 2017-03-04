@@ -115,6 +115,8 @@ public class Creature {
 
   // NPC
   protected Sprite talkBubble;
+  protected Sprite newquestBubble;
+  protected Sprite completequestBubble;
 
   protected int aniEffectItr;
 
@@ -267,6 +269,8 @@ public class Creature {
     targetIcon = ImageResource.getSprite("gui/world/targetIcon").getAnimation();
 
     talkBubble = ImageResource.getSprite("gui/emoticons/talk");
+    newquestBubble = ImageResource.getSprite("gui/emoticons/newquest");
+    completequestBubble = ImageResource.getSprite("gui/emoticons/completequest");
   }
 
   public int compareTo(Creature OtherC) {

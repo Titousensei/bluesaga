@@ -355,7 +355,7 @@ public class Creature implements Mover {
     ATTACK_READY = true;
   }
 
-  public String getFullData() {
+  public String getFullData(Creature observer) {
 
     String creatureData =
         getSmallData()

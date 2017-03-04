@@ -116,9 +116,17 @@ public class Npc extends Creature {
       }
     }
 
-    if (!Dead) {
-      if (getAggroType() == 3 && !isAggro()) {
+    if (!Dead && !isAggro()) {
+      switch (getAggroType()) {
+      case 3:
         talkBubble.drawCentered(centerX - 20, cornerY - 26);
+        break;
+      case 13:
+        newquestBubble.drawCentered(centerX - 20, cornerY - 26);
+        break;
+      case 14:
+        completequestBubble.drawCentered(centerX - 20, cornerY - 26);
+        break;
       }
     }
   }
@@ -128,15 +136,15 @@ public class Npc extends Creature {
     // HEALTH AND MANA
     /*
     if(SpecialType.equals("Furious")){
-    	Stats.setValue("STRENGTH",getTotalStat("STRENGTH")+MobLevel);
-    	Stats.setValue("MAX_HEALTH",getTotalStat("MAX_HEALTH")+MobLevel*5);
+      Stats.setValue("STRENGTH",getTotalStat("STRENGTH")+MobLevel);
+      Stats.setValue("MAX_HEALTH",getTotalStat("MAX_HEALTH")+MobLevel*5);
     }else if(SpecialType.equals("Cursed")){
-    	Stats.setValue("INTELLIGENCE",getTotalStat("INTELLIGENCE")+MobLevel);
-    	Stats.setValue("MAX_MANA",getTotalStat("MAX_MANA")+MobLevel*5);
-    	Stats.setValue("MAX_HEALTH",getTotalStat("MAX_HEALTH")+MobLevel*5);
+      Stats.setValue("INTELLIGENCE",getTotalStat("INTELLIGENCE")+MobLevel);
+      Stats.setValue("MAX_MANA",getTotalStat("MAX_MANA")+MobLevel*5);
+      Stats.setValue("MAX_HEALTH",getTotalStat("MAX_HEALTH")+MobLevel*5);
     }else if(SpecialType.equals("Lightning")){
-    	Stats.setValue("SPEED",1);
-    	Stats.setValue("MAX_HEALTH",getTotalStat("MAX_HEALTH")+MobLevel*5);
+      Stats.setValue("SPEED",1);
+      Stats.setValue("MAX_HEALTH",getTotalStat("MAX_HEALTH")+MobLevel*5);
     }else{
 
     }
@@ -150,14 +158,14 @@ public class Npc extends Creature {
     ArrayList<AbilityOrb> ActiveAbilities = new ArrayList<AbilityOrb>();
 
     for(int i = 0; i < nrAbilities; i++){
-    	if(!Abilities.get(i).isPassive()){
-    		ActiveAbilities.add(Abilities.get(i));
-    	}
+      if(!Abilities.get(i).isPassive()){
+        ActiveAbilities.add(Abilities.get(i));
+      }
     }
 
     if(ActiveAbilities.size() > 0){
-    	int random = randomGenerator.nextInt() % ActiveAbilities.size();
-    	return ActiveAbilities.get(random);
+      int random = randomGenerator.nextInt() % ActiveAbilities.size();
+      return ActiveAbilities.get(random);
     }
      */
     return null;

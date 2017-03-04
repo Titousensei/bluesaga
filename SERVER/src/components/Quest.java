@@ -35,7 +35,7 @@ public class Quest
   private int[] RewardItems;
   private int RewardShip = 0;
   private int RewardAbilityId;
-  private int NpcId;
+  private Integer NpcId = null;
   private int EventId;
 
   private List<Item> questItems;
@@ -108,8 +108,8 @@ public class Quest
   public int getLearnClassId() { return learnClassId; }
   void setLearnClassId(int val) { learnClassId = val; }
 
-  public int getNpcId() { return NpcId; }
-  void setNpcId(int val) { NpcId = val; }
+  public Integer getNpcId() { return NpcId; }
+  void setNpcId(Integer val) { NpcId = val; }
 
   public int getRewardXp() { return RewardXp; }
   void setRewardXp(int val) { RewardXp = val; }

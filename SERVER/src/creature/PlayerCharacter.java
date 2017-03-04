@@ -12,10 +12,7 @@ import game.Database;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Vector;
+import java.util.*;
 import java.util.Map.Entry;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -33,6 +30,7 @@ import components.Shop;
 import creature.Creature.CreatureType;
 import components.Crew;
 import data_handlers.Handler;
+import data_handlers.QuestHandler;
 import data_handlers.ability_handler.Ability;
 import data_handlers.ability_handler.AbilityHandler;
 import data_handlers.battle_handler.BattleHandler;
@@ -62,6 +60,7 @@ public class PlayerCharacter extends Creature {
   private ActionBar ActionBar;
 
   private List<UserQuest> userQuests = new CopyOnWriteArrayList<>();
+  private Map<Integer, Integer> npcQuestStatus;
 
   private int Bounty;
 
@@ -260,6 +259,15 @@ public class PlayerCharacter extends Creature {
             + GameInfo.getBountyRankId(Bounty);
 
     return playerData;
+  }
+
+  public Map<Integer, Integer> getNpcQuestStatusMap() {
+    return npcQuestStatus;
+  }
+
+  public int getNpcQuestStatus(Npc npc) {
+    Integer status = npcQuestStatus.get(npc.getDBId());
+    return (status != null) ? status.intValue() : 0;
   }
 
   /****************************************
@@ -887,19 +895,8 @@ public class PlayerCharacter extends Creature {
     } catch (SQLException e) {
       e.printStackTrace();
     }
-  }
 
-  public void addQuest(int QuestId, int status) {
-    Server.userDB.updateDB(
-        "insert into character_quest (QuestId, CharacterId, Status) values("
-            + QuestId
-            + ","
-            + dbId
-            + ","
-            + status
-            + ")");
-
-    loadQuests();
+    npcQuestStatus = QuestHandler.getQuestNpcsForPlayer(dbId);
   }
 
   public List<UserQuest> getQuests() {

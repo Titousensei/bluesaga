@@ -3,7 +3,7 @@ package data_handlers;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.List;
+import java.util.*;
 
 import utils.ServerGameInfo;
 import utils.ServerMessage;
@@ -26,6 +26,10 @@ import network.Client;
 import network.Server;
 
 public class QuestHandler extends Handler {
+
+  public final static Integer STATUS_TALK = Integer.valueOf(3);
+  public final static Integer STATUS_NEWQUEST = Integer.valueOf(13);
+  public final static Integer STATUS_COMPLETEQUEST = Integer.valueOf(14);
 
   public static void init() {
     DataHandlers.register("talknpc", m -> handleTalkNpc(m));
@@ -90,7 +94,7 @@ public class QuestHandler extends Handler {
     try {
       while (myQuestInfo.next()) {
         Quest questInfo = ServerGameInfo.questDef.get(myQuestInfo.getInt(1));
-        int status = myQuestInfo.getInt(1);
+        int status = myQuestInfo.getInt(2);
         if (status < 0 ) {
           status = 1;
         }
@@ -147,6 +151,91 @@ public class QuestHandler extends Handler {
     if (ClassHandler.learnClass(client, classId, classType)) {
       EquipHandler.checkRequirements(client);
       rewardQuest(client, questId);
+    }
+  }
+
+  public static Map<Integer, Integer> getQuestNpcsForPlayer(int charId) {
+
+    Set<Quest> qComplete = new HashSet<>(100);
+    Set<Quest> qReward   = new HashSet<>(100);
+    Set<Quest> qAccepted = new HashSet<>(100);
+    Set<Quest> qNew      = new HashSet<>(100);
+
+    ResultSet myQuestInfo =
+        Server.userDB.askDB(
+            //      1        2
+            "select QuestId, Status from character_quest where CharacterId = "
+                + charId);
+
+    try {
+      while (myQuestInfo.next()) {
+        Quest q = ServerGameInfo.questDef.get(myQuestInfo.getInt(1));
+        switch (myQuestInfo.getInt(2)) {
+        case 1:  // accepted
+          qAccepted.add(q);
+          break;
+        case 2:  // get reward
+          qReward.add(q);
+          break;
+        case 3:  // completed
+          qComplete.add(q);
+          break;
+        }
+      }
+      myQuestInfo.close();
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+
+    for (Map.Entry<Integer, Quest> entry : ServerGameInfo.questDef.entrySet()) {
+      Quest q = entry.getValue();
+      if (q.getType() == Quest.QType.Instructions
+      ||  q.getType() == Quest.QType.LearnClass
+      ) {
+        continue;
+      }
+      if (qComplete.contains(q)) {
+        continue;
+      }
+      if (qAccepted.contains(q)) {
+        continue;
+      }
+      if (qReward.contains(q)) {
+        continue;
+      }
+      int parentId = q.getParentQuestId();
+      Quest parent = ServerGameInfo.questDef.get(parentId);
+      if (parent==null || qComplete.contains(parent)) {
+        qNew.add(q);
+      }
+    }
+
+    Map<Integer, Integer> npcStatus = new HashMap<>(qReward.size() + qNew.size());
+    for (Quest q : qNew) {
+      npcStatus.put(q.getNpcId(), STATUS_NEWQUEST);
+    }
+    for (Quest q : qReward) {
+      npcStatus.put(q.getNpcId(), STATUS_COMPLETEQUEST);
+    }
+
+    return npcStatus;
+  }
+
+  public static void sendNpcBubbleUpdate(Client client, Quest q) {
+    Map<Integer, Integer> oldQuestStatus = client.playerCharacter.getNpcQuestStatusMap();
+    client.playerCharacter.loadQuests();
+    Map<Integer, Integer> newQuestStatus = client.playerCharacter.getNpcQuestStatusMap();
+
+    // send the updates for the NPCs with changed status
+    for (Map.Entry<Integer, Integer> entry : newQuestStatus.entrySet()) {
+      Integer oldStatus = oldQuestStatus.remove(entry.getKey());
+      if (oldStatus==null || !oldStatus.equals(entry.getValue())) {
+        MapHandler.sendCreatureInfo(client, CreatureType.Monster, entry.getKey());
+      }
+    }
+
+    for (Map.Entry<Integer, Integer> entry : oldQuestStatus.entrySet()) {
+      MapHandler.sendCreatureInfo(client, CreatureType.Monster, entry.getKey());
     }
   }
 
@@ -321,11 +410,24 @@ public class QuestHandler extends Handler {
                       + checkQuest.getTargetId()
                       + " and CharacterId = "
                       + client.playerCharacter.getDBId());
-          client.playerCharacter.addQuest(questId, - nrKills - 1);
+          Server.userDB.updateDB(
+              "insert into character_quest (QuestId, CharacterId, Status) values("
+                  + questId
+                  + ","
+                  + client.playerCharacter.getDBId()
+                  + ","
+                  + (- nrKills - 1)
+                  + ")");
         }
         else {
-          client.playerCharacter.addQuest(questId, 1);
+          Server.userDB.updateDB(
+              "insert into character_quest (QuestId, CharacterId, Status) values("
+                  + questId
+                  + ","
+                  + client.playerCharacter.getDBId()
+                  + ",1)");
         }
+        sendNpcBubbleUpdate(client, checkQuest);
       }
     }
   }
@@ -399,6 +501,7 @@ public class QuestHandler extends Handler {
         if (questInfo.getNextQuestId() > 0) {
           addQuest(client, questInfo.getNextQuestId());
         }
+        sendNpcBubbleUpdate(client, questInfo);
       }
 
       // IF COMPLETED, FINISH QUEST, GIVE REWARD
@@ -457,6 +560,7 @@ public class QuestHandler extends Handler {
         if (!q.questRef.isReturnForReward()) {
           rewardQuest(client, q.questRef.getId());
         }
+        sendNpcBubbleUpdate(client, q.questRef);
       }
     }
   }
@@ -526,6 +630,7 @@ public class QuestHandler extends Handler {
               rewardQuest(client, q.questRef.getId());
             }
             checkQuestEvents(client, q.questRef);
+            sendNpcBubbleUpdate(client, q.questRef);
           }
         }
       }
@@ -553,6 +658,7 @@ public class QuestHandler extends Handler {
           rewardQuest(client, q.questRef.getId());
         }
         checkQuestEvents(client, q.questRef);
+        sendNpcBubbleUpdate(client, q.questRef);
       }
     }
   }
@@ -651,6 +757,7 @@ public class QuestHandler extends Handler {
         if (!q.questRef.isReturnForReward()) {
           rewardQuest(client, q.questRef.getId());
         }
+        sendNpcBubbleUpdate(client, q.questRef);
       }
     }
   }
@@ -766,6 +873,7 @@ public class QuestHandler extends Handler {
             addQuest(client, myQuest.questRef.getNextQuestId());
           }
         }
+        sendNpcBubbleUpdate(client, questInfo);
       }
     }
     return rewardOk;

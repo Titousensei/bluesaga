@@ -42,6 +42,7 @@ public class WorldMap
   private int NrPlayers;
 
   private Map<Integer, Npc> Monsters;
+  public List<Npc> dialogNpcs = new ArrayList<>(100);
 
   private int newMonsterId = 0;
 
@@ -320,6 +321,9 @@ public class WorldMap
         else if (aggrotype == 7) {
           aggrotype = 2;
           tempNpc.turnTitan(true);
+        }
+        else if (aggrotype == 3) {
+          dialogNpcs.add(tempNpc);
         }
         tempNpc.setAggroType(aggrotype);
         tempNpc.setOriginalAggroType(aggrotype);

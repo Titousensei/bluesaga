@@ -34,7 +34,7 @@ extends Builder<Quest>
   }
 
   public void npcId(String val) {
-    q.setNpcId(parseInt(val));
+    q.setNpcId(Integer.valueOf(parseInt(val)));
   }
 
   public void eventId(String val) {

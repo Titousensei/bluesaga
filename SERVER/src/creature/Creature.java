@@ -396,6 +396,10 @@ public class Creature implements Mover {
     return newCreatureData;
   }
 
+  public int getNpcQuestStatus(Npc npc) {
+    return 0;
+  }
+
   /****************************************
    *                                      *
    *          SKILLS              		*

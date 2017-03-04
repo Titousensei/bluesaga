@@ -15,6 +15,7 @@ import data_handlers.ability_handler.AbilityHandler;
 import data_handlers.item_handler.Item;
 import data_handlers.monster_handler.ai_types.BaseAI;
 import data_handlers.monster_handler.MonsterHandler;
+import data_handlers.QuestHandler;
 import game.ServerSettings;
 import network.Server;
 
@@ -195,8 +196,15 @@ public class Npc extends Creature {
   };
 
   public String getFullData(Creature observer) {
+    int visibleAggroType = getAggroType();
+    if (visibleAggroType == 3) {
+      int questStatus = observer.getNpcQuestStatus(this);
+      if (questStatus > 0) {
+        visibleAggroType = questStatus;
+      }
+    }
     int specialCompatible = (SpecialType - 1) % 6 + 1;
-    String npcData = super.getFullData(observer) + ',' + getAggroType() + ','
+    String npcData = super.getFullData(observer) + ',' + visibleAggroType + ','
         + specialCompatible + ',' + SPECIAL_COLOR[specialCompatible];
     return npcData;
   }

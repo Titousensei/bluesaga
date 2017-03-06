@@ -5,7 +5,8 @@ import java.util.Vector;
 public enum CraftingStation
 {
   Bonfire("crafting/fire", 100),
-  Stela("crafting/tablet", 103);
+  Stela("crafting/tablet", 103),
+  Forge("crafting/forge", 104);
 
   public final String id;
   public final int skillId;

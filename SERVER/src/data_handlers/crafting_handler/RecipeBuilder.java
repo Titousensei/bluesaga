@@ -22,8 +22,12 @@ extends Builder<Recipe>
   }
 
   public void material(String val) {
-    Item material = ServerGameInfo.itemDef.get(parseInt(val));
+    String[] parts = val.split("\\*");
+    Item material = ServerGameInfo.itemDef.get(parseInt(parts[0]));
     if (material != null) {
+      if (parts.length > 1) {
+        material.setStacked(parseInt(parts[1]));
+      }
       r.addMaterial(material);
     }
     else {

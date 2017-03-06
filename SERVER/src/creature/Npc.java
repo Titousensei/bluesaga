@@ -184,8 +184,20 @@ public class Npc extends Creature {
     return ai;
   }
 
+  public static final String[] SPECIAL_COLOR = new String[] {
+      "0,0,0",      // not special
+      "230,82,62",  // 1: Fire Sea, Fire Ball
+      "0,150,255",  // 2: Ice Arrow, Cold Blast
+      "233,255,43", // 3: Lightning Bolt, Thunder Ball
+      "255,138,0",  // 4: Power Strike, Power Swirl
+      "247,36,250", // 5: Slime Spit, Big Gas Cloud
+      "186,255,96"  // 6: Speed Shots, Haste
+  };
+
   public String getFullData(Creature observer) {
-    String npcData = super.getFullData(observer) + "," + getAggroType() + "," + getSpecialType();
+    int specialCompatible = (SpecialType - 1) % 6 + 1;
+    String npcData = super.getFullData(observer) + ',' + getAggroType() + ','
+        + specialCompatible + ',' + SPECIAL_COLOR[specialCompatible];
     return npcData;
   }
 

@@ -579,14 +579,33 @@ public class QuestHandler extends Handler {
   // "GET X ITEMS X" - QUESTS
   public static void updateItemQuests(Client client, int itemId) {
     Item itemToCheck = ServerGameInfo.itemDef.get(itemId);
-
+System.out.println("*** updateItemQuests " + itemToCheck);
     for (UserQuest q : client.playerCharacter.getQuests()) {
-      if (Quest.QType.GetItem.equals(q.questRef.getType())
-      && q.getStatus() == 1
+      if (q.getStatus() != 1) {
+        continue;
+      }
+      boolean questCompleted = false;
+
+      Quest.QType qt = q.questRef.getType();
+      if (Quest.QType.GetRare.equals(qt)) {
+System.out.println("*** Quest GetRare " + qt + " " + q.getStatus());
+System.out.println("*** Quest getTargetType " + q.questRef.getTargetType());
+System.out.println("*** Quest getType " + itemToCheck.getType());
+System.out.println("*** Quest getTargetSubType " + q.questRef.getTargetSubType());
+System.out.println("*** Quest getSubType " + itemToCheck.getSubType());
+System.out.println("*1* " + q.questRef.getTargetType().equals(itemToCheck.getType()));
+System.out.println("*2* " + q.questRef.getTargetSubType().equals(itemToCheck.getSubType()));
+
+        if (q.questRef.getTargetType().equals(itemToCheck.getType())
+        && q.questRef.getTargetSubType().equals(itemToCheck.getSubType())
+        ) {
+          questCompleted = true;
+        }
+System.out.println("*** questCompleted " + questCompleted);
+      }
+      else if (Quest.QType.GetItem.equals(qt)
       && q.questRef.getTargetId() == itemId
       ) {
-        boolean questCompleted = false;
-
         if (itemToCheck.getType().equals("Key")) {
           // If item is a key, check keychain
           int keyInfo = Server.userDB.askInt(
@@ -622,21 +641,22 @@ public class QuestHandler extends Handler {
                     + " collected");
           }
         }
+      }
 
-        if (questCompleted) {
-          // COMPLETE QUEST
-          q.setStatus(2);
-          Server.userDB.updateDB(
-              "update character_quest set Status = 2 where QuestId = "
-                  + q.questRef.getId()
-                  + " and CharacterId = "
-                  + client.playerCharacter.getDBId());
-          addOutGoingMessage(client, "quest", "complete;" + q.questRef.getName());
-          ServerMessage.println(false, "CompleteQuest Get - ", client.playerCharacter,
-              q.questRef.getId(), ":", q.questRef.getName());
-          if (!q.questRef.isReturnForReward()) {
-            rewardQuest(client, q.questRef.getId());
-          }
+      if (questCompleted) {
+System.out.println("*** COMPLETE ");
+        // COMPLETE QUEST
+        q.setStatus(2);
+        Server.userDB.updateDB(
+            "update character_quest set Status = 2 where QuestId = "
+                + q.questRef.getId()
+                + " and CharacterId = "
+                + client.playerCharacter.getDBId());
+        addOutGoingMessage(client, "quest", "complete;" + q.questRef.getName());
+        ServerMessage.println(false, "CompleteQuest Get - ", client.playerCharacter,
+            q.questRef.getId(), ":", q.questRef.getName());
+        if (!q.questRef.isReturnForReward()) {
+          rewardQuest(client, q.questRef.getId());
         }
       }
     }

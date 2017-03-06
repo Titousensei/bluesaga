@@ -68,6 +68,14 @@ extends Builder<Quest>
     }
   }
 
+  public void getRare(String val) {
+    q.setType(Quest.QType.GetRare);
+    String[] parts = val.split("/");
+    q.setTargetType(parts[0].trim());
+    q.setTargetSubType(parts[1].trim());
+    q.setTargetNumber(1);
+  }
+
   public void useItem(String val) {
     q.setType(Quest.QType.UseItem);
     q.setTargetType("Item");

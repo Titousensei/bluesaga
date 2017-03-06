@@ -10,7 +10,7 @@ import utils.ServerGameInfo;
 public class Quest
 {
   public enum QType {
-    Instructions, GetItem, GoTo, Kill, LearnClass, Story, TalkTo, UseItem
+    Instructions, GetItem, GoTo, Kill, LearnClass, Story, TalkTo, UseItem, GetRare
   };
 
   private final int Id;
@@ -27,6 +27,7 @@ public class Quest
   private QType Type;
   private int TargetNumber;
   private String TargetType;
+  private String TargetSubType = null;
   private int TargetId;
   private int NextQuestId;
   private int RewardXp;
@@ -70,6 +71,9 @@ public class Quest
 
   public String getTargetType() { return TargetType; }
   void setTargetType(String val) { TargetType = val; }
+
+  public String getTargetSubType() { return TargetSubType; }
+  void setTargetSubType(String val) { TargetSubType = val; }
 
   public int getTargetId() { return TargetId; }
   void setTargetId(int val) { TargetId = val; }

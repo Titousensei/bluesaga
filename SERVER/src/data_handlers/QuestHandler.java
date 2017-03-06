@@ -579,7 +579,6 @@ public class QuestHandler extends Handler {
   // "GET X ITEMS X" - QUESTS
   public static void updateItemQuests(Client client, int itemId) {
     Item itemToCheck = ServerGameInfo.itemDef.get(itemId);
-System.out.println("*** updateItemQuests " + itemToCheck);
     for (UserQuest q : client.playerCharacter.getQuests()) {
       if (q.getStatus() != 1) {
         continue;
@@ -588,20 +587,11 @@ System.out.println("*** updateItemQuests " + itemToCheck);
 
       Quest.QType qt = q.questRef.getType();
       if (Quest.QType.GetRare.equals(qt)) {
-System.out.println("*** Quest GetRare " + qt + " " + q.getStatus());
-System.out.println("*** Quest getTargetType " + q.questRef.getTargetType());
-System.out.println("*** Quest getType " + itemToCheck.getType());
-System.out.println("*** Quest getTargetSubType " + q.questRef.getTargetSubType());
-System.out.println("*** Quest getSubType " + itemToCheck.getSubType());
-System.out.println("*1* " + q.questRef.getTargetType().equals(itemToCheck.getType()));
-System.out.println("*2* " + q.questRef.getTargetSubType().equals(itemToCheck.getSubType()));
-
         if (q.questRef.getTargetType().equals(itemToCheck.getType())
         && q.questRef.getTargetSubType().equals(itemToCheck.getSubType())
         ) {
           questCompleted = true;
         }
-System.out.println("*** questCompleted " + questCompleted);
       }
       else if (Quest.QType.GetItem.equals(qt)
       && q.questRef.getTargetId() == itemId
@@ -644,7 +634,6 @@ System.out.println("*** questCompleted " + questCompleted);
       }
 
       if (questCompleted) {
-System.out.println("*** COMPLETE ");
         // COMPLETE QUEST
         q.setStatus(2);
         Server.userDB.updateDB(

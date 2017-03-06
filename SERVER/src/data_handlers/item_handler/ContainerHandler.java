@@ -405,6 +405,82 @@ public class ContainerHandler extends Handler {
             String content = SkinHandler.getCharacterSkins(client);
             addOutGoingMessage(client, "character_skins", content);
 
+          } else if (objectId.contains("sarcophage")) {
+            if (!objectId.contains("open")) {
+              // If container is closed, open it
+
+              TILE.setObjectId(objectId + "_open");
+
+              // Check if container exists in memory
+              if (CONTAINERS.get(TILE.getX() + "," + TILE.getY() + "," + TILE.getZ()) == null) {
+
+                // RANDOMIZE CONTENT IN CONTAINER
+                Container newContainer = new Container(objectId);
+
+                // GET LOOT IN AREA
+                String lootInfo =
+                    Server.mapDB.askString(
+                        "select Items from area_container where Id = " + TILE.getContainerId());
+
+                if (!"".equals(lootInfo)) {
+                  String allLoot[] = lootInfo.split(",");
+                  double dropItemChance = 0.2 / allLoot.length;
+
+                  for (String loot : allLoot) {
+                    int itemId = Integer.parseInt(loot);
+                    double chance = RandomUtils.getPercent();
+                    if (chance <= dropItemChance) {
+                      Item droppedItem = ServerGameInfo.newItem(itemId);
+                      if (droppedItem.isEquipable()) {
+                        droppedItem.setModifier(Modifier.random(2));
+                      }
+                      newContainer.addItem(droppedItem);
+                    }
+                  }
+
+                  int dropCopperChance = RandomUtils.getInt(0, 100);
+                  int copperInfo =
+                      Server.mapDB.askInt(
+                          "select Copper from area_container where Id = " + TILE.getContainerId());
+                  if (dropCopperChance < 40 && copperInfo > 0) {
+                    CoinConverter cc = new CoinConverter(copperInfo);
+                    newContainer.addItem(cc.getGoldItem());
+                    newContainer.addItem(cc.getSilverItem());
+                    newContainer.addItem(cc.getCopperItem());
+                  }
+                }
+
+                CONTAINERS.put(TILE.getX() + "," + TILE.getY() + "," + TILE.getZ(), newContainer);
+              }
+
+              for (Map.Entry<Integer, Client> entry : Server.clients.entrySet()) {
+                Client other = entry.getValue();
+
+                if (other.Ready) {
+                  if (isVisibleForPlayer(
+                      other.playerCharacter, TILE.getX(), TILE.getY(), TILE.getZ())) {
+                    addOutGoingMessage(
+                        other,
+                        "open_container",
+                        client.playerCharacter.getSmallData()
+                            + ";"
+                            + objectId
+                            + ","
+                            + TILE.getX()
+                            + ","
+                            + TILE.getY()
+                            + ","
+                            + TILE.getZ()
+                            + ","
+                            + client.playerCharacter.getAttackSpeed());
+                  }
+                }
+              }
+            }
+
+            // GET CONTENT IN CONTAINER
+            String content = getContainerContent(TILE.getX(), TILE.getY(), TILE.getZ());
+            addOutGoingMessage(client, "container_content", content);
           } else {
             if (!objectId.contains("open")) {
               // If container is closed, open it
@@ -425,14 +501,10 @@ public class ContainerHandler extends Handler {
                   int[] areaItems = areaEffectInfo.getAreaItems();
                   if (areaItems != null) {
                     double dropItemChance = 0.2 / areaItems.length;
-                    boolean isSarcophage = objectId.contains("sarcophage");
                     for (int itemId : areaItems) {
                       double chance = RandomUtils.getPercent();
                       if (chance <= dropItemChance) {
                         Item droppedItem = ServerGameInfo.newItem(itemId);
-                        if (isSarcophage && droppedItem.isEquipable()) {
-                          droppedItem.setModifier(Modifier.random(2));
-                        }
                         newContainer.addItem(droppedItem);
                       }
                     }

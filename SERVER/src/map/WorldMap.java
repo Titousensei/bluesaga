@@ -271,9 +271,6 @@ public class WorldMap
                 creatureInfo.getInt("SpawnZ"));
         tempNpc.setDBId(creatureInfo.getInt("Id"));
 
-        tempNpc.setAggroType(creatureInfo.getInt("AggroType"));
-        tempNpc.setOriginalAggroType(creatureInfo.getInt("AggroType"));
-
         if (!creatureInfo.getString("Name").isEmpty()) {
           tempNpc.setName(creatureInfo.getString("Name").intern());
         }
@@ -298,13 +295,17 @@ public class WorldMap
 
         // CHANCE OF MAKING MONSTER SPECIAL
         tempNpc.turnSpecial(0);
-        if (tempNpc.getAggroType() == 6) {
+        int aggrotype = creatureInfo.getInt("AggroType");
+        if (aggrotype == 6) {
+          aggrotype = 2;
           tempNpc.turnElite();
         }
-        else if (tempNpc.getAggroType() == 7) {
+        else if (aggrotype == 7) {
+          aggrotype = 2;
           tempNpc.turnTitan(true);
         }
-
+        tempNpc.setAggroType(aggrotype);
+        tempNpc.setOriginalAggroType(aggrotype);
 
         // SET DAY NIGHT SPAWN TIME
         tempNpc.setExistDayOrNight(creatureInfo.getInt("SpawnCriteria"));

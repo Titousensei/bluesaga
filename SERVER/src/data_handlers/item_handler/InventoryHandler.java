@@ -961,12 +961,39 @@ public class InventoryHandler extends Handler {
 
         nrItems -= removedNr;
       }
-      itemInfo.close();
 
       if (nrItems <= 0) {
         success = true;
       }
 
+      itemInfo.close();
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+
+    return success;
+  }
+
+  public static boolean removeRareItem(Client client, String type, String subType, Modifier MinModifier) {
+    boolean success = false;
+
+    ResultSet itemInfo =
+        Server.userDB.askDB(
+            //      1   2
+            "select Id, ItemId from character_item where CharacterId = "
+                + client.playerCharacter.getDBId()
+                + " and ModifierId >= "
+                + MinModifier.id
+                + " and InventoryPos <> 'Mouse' and Equipped = 0 and InventoryPos <> 'Actionbar'"
+                + " order by ModifierId");
+    try {
+      while (itemInfo.next() && !success) {
+        Item itemToCheck = ServerGameInfo.itemDef.get(itemInfo.getInt(2));
+        if (itemToCheck.isOfType(type, subType)) {
+          Server.userDB.updateDB("delete from character_item where Id = " + itemInfo.getInt(1));
+          success = true;
+        }
+      }
       itemInfo.close();
     } catch (SQLException e) {
       e.printStackTrace();

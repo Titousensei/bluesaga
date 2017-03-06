@@ -356,6 +356,11 @@ public class Item {
     Sellable = sellable;
   }
 
+  public boolean isOfType(String thatType, String thatSubType) {
+    return thatType.equals(Type)
+        && thatSubType.equals(SubType);
+  }
+
   public boolean isTwoHands() {
     return TwoHands;
   }

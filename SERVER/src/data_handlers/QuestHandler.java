@@ -19,6 +19,7 @@ import data_handlers.item_handler.CoinConverter;
 import data_handlers.item_handler.EquipHandler;
 import data_handlers.item_handler.InventoryHandler;
 import data_handlers.item_handler.Item;
+import data_handlers.item_handler.Modifier;
 import game.ServerSettings;
 import map.Tile;
 import network.Client;
@@ -587,10 +588,13 @@ public class QuestHandler extends Handler {
 
       Quest.QType qt = q.questRef.getType();
       if (Quest.QType.GetRare.equals(qt)) {
-        if (q.questRef.getTargetType().equals(itemToCheck.getType())
-        && q.questRef.getTargetSubType().equals(itemToCheck.getSubType())
-        ) {
-          questCompleted = true;
+        if (itemToCheck.isOfType(q.questRef.getTargetType(), q.questRef.getTargetSubType())) {
+          int modifierId = Server.userDB.askInt(
+                  "select ModifierId from character_item where InventoryPos <> 'Mouse' and Equipped = 0 and ItemId = "
+                      + itemId
+                      + " and CharacterId = "
+                      + client.playerCharacter.getDBId());
+          questCompleted = (modifierId >= Modifier.Good.id);
         }
       }
       else if (Quest.QType.GetItem.equals(qt)
@@ -683,6 +687,11 @@ public class QuestHandler extends Handler {
             rewardOk = false;
           }
         }
+      } else if (Quest.QType.GetRare.equals(questInfo.getType())) {
+        rewardOk = InventoryHandler.removeRareItem(client,
+                      questInfo.getTargetType(),
+                      questInfo.getTargetSubType(),
+                      Modifier.Good);
       }
 
       if (rewardOk) {

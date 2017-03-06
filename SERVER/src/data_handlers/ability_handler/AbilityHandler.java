@@ -1055,10 +1055,14 @@ public class AbilityHandler extends Handler {
 
               // SPAWN MONSTERS
               if (!ABILITY.getSpawnIds().equals("None")) {
-                String spawnIds[] = ABILITY.getSpawnIds().split(",");
+                String spawnGroup = RandomUtils.getAny(ABILITY.getSpawnIds().split(";"));
+                String spawnIds[] = spawnGroup.split(",");
 
                 for (String spawnId : spawnIds) {
                   int sId = Integer.parseInt(spawnId);
+                  if (sId == 0) {
+                    sId = CASTER.getId();
+                  }
                   // Find free spot to spawn
                   Point spawnTile = Server.WORLD_MAP.findClosestFreeTile(tileX, tileY, tileZ);
                   if (spawnTile != null) {
@@ -1066,6 +1070,7 @@ public class AbilityHandler extends Handler {
                         new Npc(
                             ServerGameInfo.creatureDef.get(sId), spawnTile.x, spawnTile.y, tileZ);
                     m.setAggroType(2);
+                    m.setAggro(CASTER.getAggroTarget());
 
                     if (CASTER != null
                     && CASTER.getCreatureType() == CreatureType.Monster

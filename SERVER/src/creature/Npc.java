@@ -184,8 +184,8 @@ public class Npc extends Creature {
     return ai;
   }
 
-  public String getFullData() {
-    String npcData = super.getFullData() + "," + getAggroType() + "," + getSpecialType();
+  public String getFullData(Creature observer) {
+    String npcData = super.getFullData(observer) + "," + getAggroType() + "," + getSpecialType();
     return npcData;
   }
 

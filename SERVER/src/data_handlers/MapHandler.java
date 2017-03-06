@@ -73,7 +73,7 @@ public class MapHandler extends Handler {
         Client s = entry.getValue();
         if (s.playerCharacter != null) {
           if (s.playerCharacter.getDBId() == cDbId) {
-            cData = s.playerCharacter.getFullData();
+            cData = s.playerCharacter.getFullData(client.playerCharacter);
 
             // get creature status effects
             int nrStatusEffects = s.playerCharacter.getStatusEffects().size();
@@ -100,7 +100,7 @@ public class MapHandler extends Handler {
     } else {
       Npc monster = Server.WORLD_MAP.getMonster(cDbId);
       if (monster != null) {
-        cData = monster.getFullData();
+        cData = monster.getFullData(client.playerCharacter);
 
         // get creature status effects
         int nrStatusEffects = monster.getStatusEffects().size();

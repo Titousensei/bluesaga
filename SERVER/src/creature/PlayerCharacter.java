@@ -233,7 +233,7 @@ public class PlayerCharacter extends Creature {
     Server.userDB.updateDB(statement.toString());
   }
 
-  public String getFullData() {
+  public String getFullData(Creature observer) {
     int ShipId = 0;
     if (getShip() != null) {
       if (getShip().isShow()) {
@@ -243,7 +243,7 @@ public class PlayerCharacter extends Creature {
     }
 
     String playerData =
-        super.getFullData()
+        super.getFullData(observer)
             + ","
             + ShipId
             + ","

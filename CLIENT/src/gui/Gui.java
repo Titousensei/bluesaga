@@ -9,13 +9,7 @@ import graphics.screeneffects.StatusScreenEffect;
 import gui.dragndrop.DragObject;
 import gui.windows.*;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Iterator;
-import java.util.Timer;
-import java.util.TimerTask;
-import java.util.Vector;
+import java.util.*;
 
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
@@ -53,7 +47,7 @@ public class Gui {
   private Image star_big;
 
   // WINDOWS
-  private static ArrayList<Window> ALL_WINDOWS;
+  private static List<Window> ALL_WINDOWS;
 
   public static MostWantedWindow mostWantedWindow;
   public static Chat Chat_Window;
@@ -84,7 +78,7 @@ public class Gui {
   public static boolean MovingWindows = false;
 
   // NOTIFICATIONS
-  private static ArrayList<Notification> Notifications;
+  private static List<Notification> Notifications;
   private static int NotificationsY;
 
   // PLAY MUSIC
@@ -130,12 +124,12 @@ public class Gui {
   public static String USE_SCROLL_LOCATION = "Inventory"; // Inventory or Actionbar
 
   public Gui() {
-    Notifications = new ArrayList<Notification>();
+    Notifications = new ArrayList<>(100);
     Notifications.clear();
     NotificationsY = 80;
-    ScreenFX = new Vector<StatusScreenEffect>();
+    ScreenFX = new Vector<StatusScreenEffect>(100);
 
-    ALL_WINDOWS = new ArrayList<Window>();
+    ALL_WINDOWS =  Collections.synchronizedList(new ArrayList<>(25));
 
     Mouse = new MouseCursor();
     MouseItem = new DragObject();

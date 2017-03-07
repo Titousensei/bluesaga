@@ -79,12 +79,15 @@ public class WorldMap
         int tileX = tileInfo.getInt(1);
         int tileY = tileInfo.getInt(2);
         int tileZ = tileInfo.getInt(3);
+        String xyz = tileX + "," + tileY + "," + tileZ;
         Tile newTile = new Tile(tileX, tileY, tileZ);
         newTile.setZ(tileZ);
-        newTile.setType(
-            tileInfo.getString(4).intern(),
-            tileInfo.getString(5).intern(),
-            tileInfo.getInt(6));
+        String tileName = tileInfo.getString(5).intern();
+        int tilePassable = tileInfo.getInt(6);
+        if (tilePassable == 0 && tileName.contains("Stairs")) {
+          System.out.println("[WorldMap] WARNING - Impassable Stairs @" + xyz);
+        }
+        newTile.setType(tileInfo.getString(4).intern(), tileName, tilePassable);
         newTile.setObjectId(tileInfo.getString(7).intern());
         newTile.setDoorId(tileInfo.getInt(8));
         newTile.setAreaEffectId(tileInfo.getInt(9));
@@ -95,9 +98,10 @@ public class WorldMap
               new Moveable(newTile.getObjectId(), newTile.getX(), newTile.getY(), newTile.getZ()));
         }
 
-        MapTiles.put(
-            tileX + "," + tileY + "," + tileZ,
-            newTile);
+        if (MapTiles.containsKey(xyz)) {
+          System.out.println("[WorldMap] WARNING - Duplicate tile @" + xyz);
+        }
+        MapTiles.put(xyz, newTile);
 
         if (tileX > maxX) {
           maxX = tileX;
@@ -205,7 +209,7 @@ public class WorldMap
     ResultSet containerInfo =
         //                         1   2     3  4  5  6
         Server.mapDB.askDB("select Id, Type, X, Y, Z, Items from area_container order by Y asc, X asc");
-
+    StringBuilder chestinstanceSb = null;
     try {
       while (containerInfo.next()) {
         String coordStr =
@@ -215,8 +219,18 @@ public class WorldMap
                 + ","
                 + containerInfo.getInt(5);
         if (MapTiles.get(coordStr) != null) {
-          MapTiles.get(coordStr).setObjectId(containerInfo.getString(2).intern());
-          MapTiles.get(coordStr).setContainerId(containerInfo.getInt(1));
+          String objectId = containerInfo.getString(2).intern();
+          int containerId = containerInfo.getInt(1);
+          if (objectId.contains("chestinstance")) {
+            if (chestinstanceSb == null) {
+              chestinstanceSb = new StringBuilder();
+            } else {
+              chestinstanceSb.append(',');
+            }
+            chestinstanceSb.append(containerId);
+          }
+          MapTiles.get(coordStr).setObjectId(objectId);
+          MapTiles.get(coordStr).setContainerId(containerId);
         }
         String items = containerInfo.getString(6);
         if (items!=null && !"".equals(items)) {
@@ -231,6 +245,9 @@ public class WorldMap
       containerInfo.close();
     } catch (SQLException e1) {
       e1.printStackTrace();
+    }
+    if (chestinstanceSb != null) {
+      ContainerHandler.initBlueChest(chestinstanceSb.toString());
     }
 
     System.out.println("[WorldMap] INFO - Loading souls...");

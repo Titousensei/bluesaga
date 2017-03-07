@@ -26,6 +26,9 @@ public class ContainerHandler extends Handler {
 
   public static HashMap<String, Moveable> MOVEABLES = new HashMap<String, Moveable>();
 
+  public static final String BLUE_CHEST_DELETE = "DELETE FROM character_container WHERE ContainerId < 0";
+  public static String BLUE_CHEST_MARK = null;
+
   public static void init() {
     CONTAINERS.clear();
     MOVEABLES.clear();
@@ -34,6 +37,10 @@ public class ContainerHandler extends Handler {
     DataHandlers.register("container_addmouseitem", m -> handleAddMouseItem(m));
     DataHandlers.register("container_placeitem", m -> handlePlaceItem(m));
     DataHandlers.register("fastloot", m -> handleFastLoot(m));
+  }
+
+  public static void initBlueChest(String listIds) {
+    BLUE_CHEST_MARK = "UPDATE character_container SET ContainerId = -ContainerId WHERE ContainerId IN (" + listIds +")";
   }
 
   public static void handleOpenContainer(Message m) {
@@ -327,7 +334,7 @@ public class ContainerHandler extends Handler {
             // CHECK PLAYER HAS OPENED CHEST BEFORE
             int chestInfo =
                 Server.userDB.askInt(
-                    "select ContainerId from character_container where ContainerId = "
+                    "select ABS(ContainerId) from character_container where ABS(ContainerId) = "
                         + TILE.getContainerId()
                         + " and CharacterId = "
                         + client.playerCharacter.getDBId());
@@ -771,6 +778,13 @@ public class ContainerHandler extends Handler {
     }
 
     CONTAINERS = newContainers;
+  }
+
+  public static void resetBlueChests() {
+    if (BLUE_CHEST_MARK != null) {
+      Server.userDB.updateDB(BLUE_CHEST_DELETE);
+      Server.userDB.updateDB(BLUE_CHEST_MARK);
+    }
   }
 
   public static HashMap<String, Container> getContainers() {

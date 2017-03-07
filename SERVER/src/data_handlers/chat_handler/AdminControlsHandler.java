@@ -23,6 +23,7 @@ import creature.Creature.CreatureType;
 import data_handlers.Handler;
 import data_handlers.MapHandler;
 import data_handlers.battle_handler.BattleHandler;
+import data_handlers.item_handler.ContainerHandler;
 import data_handlers.item_handler.InventoryHandler;
 import data_handlers.item_handler.Item;
 
@@ -216,6 +217,11 @@ public class AdminControlsHandler extends Handler {
     if (chatLower.startsWith("/day")) {
       MapHandler.worldTimeItr = 0;
       MapHandler.dayNightTime = 2;
+      return true;
+    }
+
+    if (chatLower.startsWith("/reset bluechest")) {
+      ContainerHandler.resetBlueChests();
       return true;
     }
 

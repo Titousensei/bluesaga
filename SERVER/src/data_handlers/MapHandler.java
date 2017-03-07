@@ -9,6 +9,7 @@ import java.util.Map.Entry;
 import creature.Npc;
 import creature.Creature.CreatureType;
 import data_handlers.ability_handler.StatusEffect;
+import data_handlers.item_handler.ContainerHandler;
 import map.Tile;
 import map.TileData;
 import network.Client;
@@ -251,7 +252,7 @@ public class MapHandler extends Handler {
           // CHECK IF CHEST IS OPENED FOR PLAYER
           int chestInfo =
               Server.userDB.askInt(
-                  "select ContainerId from character_container where ContainerId = "
+                  "select ABS(ContainerId) from character_container where ABS(ContainerId) = "
                       + TILE.getContainerId()
                       + " and CharacterId = "
                       + client.playerCharacter.getDBId());
@@ -414,7 +415,7 @@ public class MapHandler extends Handler {
       // NIGHT ENDS, MORNING COMES
       ServerMessage.println(false,
           "--- DAY Time ------------------------------------------------------------------");
-
+      ContainerHandler.resetBlueChests();
       dayNightTime = 2;
       dayNightChange = true;
     } else if (dayNightTime == 2 && worldTimeItr >= worldDayDuration) {

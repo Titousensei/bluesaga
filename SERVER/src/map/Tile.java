@@ -102,16 +102,16 @@ public class Tile {
       setTransparent(false);
     }
 
-    if ("cave".equals(Type)) {
-      OnlyD = name.contains("Entranceu") || name.contains("Exitu") || name.contains("Onlyd");
-      OnlyU = name.contains("Entranced") || name.contains("Exitd") || name.contains("Onlyu");
-      OnlyL = name.contains("Entrancer") || name.contains("Exitr") || name.contains("Onlyl");
-      OnlyR = name.contains("Entrancel") || name.contains("Exitl") || name.contains("Onlyr");
-    } else {
+    if ("cliff".equals(Type)) {
       OnlyD = name.contains("Entranced") || name.contains("Exitu") || name.contains("Onlyd");
       OnlyU = name.contains("Entranceu") || name.contains("Exitd") || name.contains("Onlyu");
       OnlyL = name.contains("Entrancel") || name.contains("Exitr") || name.contains("Onlyl");
       OnlyR = name.contains("Entrancer") || name.contains("Exitl") || name.contains("Onlyr");
+    } else {
+      OnlyD = name.contains("Entranceu") || name.contains("Exitu") || name.contains("Onlyd");
+      OnlyU = name.contains("Entranced") || name.contains("Exitd") || name.contains("Onlyu");
+      OnlyL = name.contains("Entrancer") || name.contains("Exitr") || name.contains("Onlyl");
+      OnlyR = name.contains("Entrancel") || name.contains("Exitl") || name.contains("Onlyr");
     }
 
     DoorId = 0;

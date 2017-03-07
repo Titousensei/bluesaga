@@ -424,7 +424,7 @@ public class ContainerHandler extends Handler {
 
                 if (!"".equals(lootInfo)) {
                   String allLoot[] = lootInfo.split(",");
-                  double dropItemChance = 0.2 / allLoot.length;
+                  double dropItemChance = 0.3 / allLoot.length;
 
                   for (String loot : allLoot) {
                     int itemId = Integer.parseInt(loot);

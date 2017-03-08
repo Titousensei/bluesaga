@@ -256,4 +256,9 @@ Id|Name                       |Color             |Sfx        |StatsModif
   public void setAbility(Ability ability) {
     this.ability = ability;
   }
+
+  @Override
+  public String toString() {
+    return "StatusEffect[" + Name + "]" + StatsModif;
+  }
 }

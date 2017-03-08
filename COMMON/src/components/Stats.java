@@ -137,4 +137,9 @@ public class Stats {
   public void clear() {
     Stats.clear();
   }
+
+  @Override
+  public String toString() {
+    return "Stats" + Stats;
+  }
 }

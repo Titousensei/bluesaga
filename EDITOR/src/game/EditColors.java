@@ -33,6 +33,7 @@ public final class EditColors
   public final static Color LOCK_TXT = new Color(228, 205, 255);
 
   public final static Color IMPASSABLE = new Color(255, 0, 0, 55);
+  public final static Color IMPASSABLE2 = new Color(0, 0, 0, 75);
   public final static Color AREA_EFFECT = new Color(255, 104, 235);
   public final static Color TRIGGER = new Color(255, 190, 30);
 

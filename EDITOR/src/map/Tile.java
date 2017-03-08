@@ -165,8 +165,12 @@ public class Tile {
       Occupant.draw(g, x, y);
     }
 
-    if (BP_EDITOR.SHOW_PASSABLE && !Passable && !Type.equals("none") && !MENU) {
+    if (BP_EDITOR.SHOW_PASSABLE==1 && !Passable && !Type.equals("none") && !MENU) {
       g.setColor(EditColors.IMPASSABLE);
+      g.fillRect(x, y, 50, 50);
+    }
+    else if (BP_EDITOR.SHOW_PASSABLE==2 && !Passable && !Type.equals("none") && !MENU) {
+      g.setColor(EditColors.IMPASSABLE2);
       g.fillRect(x, y, 50, 50);
     }
 

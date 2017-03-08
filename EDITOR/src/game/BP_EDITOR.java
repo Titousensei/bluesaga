@@ -56,7 +56,7 @@ public class BP_EDITOR extends BasicGame {
   private static final int FRAME_RATE = 60;
   public static int TILE_SIZE = 50;
 
-  public static boolean SHOW_PASSABLE = true;
+  public static int SHOW_PASSABLE = 0;
 
   public static Font FONTS;
 
@@ -911,10 +911,9 @@ public class BP_EDITOR extends BasicGame {
     }
 
     if (INPUT.isKeyPressed(Input.KEY_F1)) {
-      if (SHOW_PASSABLE) {
-        SHOW_PASSABLE = false;
-      } else {
-        SHOW_PASSABLE = true;
+      ++ SHOW_PASSABLE;
+      if (SHOW_PASSABLE>2) {
+        SHOW_PASSABLE = 0;
       }
     }
 

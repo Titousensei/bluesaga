@@ -598,7 +598,7 @@ public class ContainerHandler extends Handler {
     try {
       while (chestInfo.next()) {
         content
-            .append(chestInfo.getInt(2))
+            .append(Math.abs(chestInfo.getInt(2)))
             .append(',')
             .append(chestInfo.getInt(3))
             .append(',')

@@ -783,13 +783,12 @@ public class PlayerCharacter extends Creature {
 
     try {
       while (rs.next()) {
-        if (ServerGameInfo.itemDef.containsKey(rs.getInt(2))) {
+        if (ServerGameInfo.itemDef.containsKey(Math.abs(rs.getInt(2)))) {
           tempItem = ServerGameInfo.newItem(rs.getInt(2));
           tempItem.setUserItemId(rs.getInt(1));
           tempItem.setStacked(rs.getInt(5));
           tempItem.setModifierId(rs.getInt(6));
           tempItem.setMagicId(rs.getInt(7));
-
           if (rs.getInt(4) == 1) {
             tempItem.equip();
             equipItem(tempItem);

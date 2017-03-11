@@ -162,12 +162,11 @@ public class ShopHandler extends Handler {
           // CHECK IF PLAYER CAN AFFORD IT
           if (client.playerCharacter.hasCopper(it.getValue())) {
             // CHECK IF INVENTORY ISN'T FULL
-            if (!client.playerCharacter.isInventoryFull(
-                ServerGameInfo.newItem(itemId))) {
+            if (!client.playerCharacter.isInventoryFull(it)) {
               // ADD ITEM AND REMOVE GOLD TO PLAYER
               InventoryHandler.removeCopperFromInventory(client, it.getValue());
               InventoryHandler.addItemToInventory(
-                  client, ServerGameInfo.newItem(itemId));
+                  client, ServerGameInfo.newItem(-itemId));
 
               addOutGoingMessage(
                   client, "buy", "item/" + it.getName() + "/" + it.getValue());

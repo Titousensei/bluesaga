@@ -195,9 +195,9 @@ public class BlueSaga extends BasicGame {
     String osInfo  = "(no info)";
 
     if (osName.contains("win")) {
-      cpuInfo = shell("wmic cpu get name");
-      gpuInfo = shell("wmic path win32_VideoController get name driverVersion");
-      osInfo  = shell("ver");
+      cpuInfo = shell("cmd /c wmic cpu get name");
+      gpuInfo = shell("cmd /c wmic path win32_VideoController get name driverVersion");
+      osInfo  = shell("cmd /c ver");
     } else if (osName.contains("nix") || osName.contains("nux")) {
       cpuInfo = shell("sh", "-c", "cat /proc/cpuinfo | grep 'model name' | uniq -c");
       gpuInfo = shell("sh", "-c", "lspci | grep VGA");

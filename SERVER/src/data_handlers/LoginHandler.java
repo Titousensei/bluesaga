@@ -66,11 +66,14 @@ public class LoginHandler extends Handler {
       // If not correct
       if (newUserId <= 0) {
         if (newUserId == 0) {
+          ServerMessage.println(false, client, " LOGIN - wrong password");
           Handler.addOutGoingMessage(client, "login", "wrong");
         } else if (newUserId == -1) {
+          ServerMessage.println(false, "ERROR - Can't authenticate to bluesaga.org!");
           ServerMessage.println(false, "Can't connect to bluesaga.org!");
           Handler.addOutGoingMessage(client, "login", "error,#messages.server.has_problems");
         } else if (newUserId == -2) {
+          ServerMessage.println(false, client, " LOGIN - Need to confirm email");
           addOutGoingMessage(client, "login", "needconfirm");
         }
         client.RemoveMe = true;
@@ -96,6 +99,7 @@ public class LoginHandler extends Handler {
             }
           }
 
+          ServerMessage.println(false, client, " WARNING - Account used on another computer");
           addOutGoingMessage(s, "backtologin", "Account used on another computer");
 
           // LOGOUT OTHER USER

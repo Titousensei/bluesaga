@@ -91,8 +91,12 @@ public class ContainerHandler extends Handler {
 
         String containerXYZ = containerSize[4];
 
-        int cX = 150;
-        int cY = 300 - sizeH * 50 + 100;
+        int cX = Gui.ContainerWindow.X;
+        int cY = Gui.ContainerWindow.Y;
+        if (!Gui.ContainerWindow.isOpen()) {
+          cX = 150;
+          cY = 300 - sizeH * 50 + 100;
+        }
 
         if (name.equals("Personal Chest")) {
           cX = 20;

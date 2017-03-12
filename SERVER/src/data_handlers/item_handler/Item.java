@@ -237,7 +237,8 @@ public class Item {
   }
 
   public int getValue() {
-    return Value;
+    int sp = (MagicId > 0) ? modifier.sp_magic : modifier.sp;
+    return (sp > 0) ? Value * sp : Value;
   }
 
   public void setValue(int newvalue) {
@@ -491,7 +492,7 @@ public class Item {
   }
 
   public int getSoldValue() {
-    return (int) Math.floor(getValue() * modifier.priceCoef / 2.0f);
+    return (int) Math.floor(Value * modifier.priceCoef / 2.0f);
   }
 
   public String getDescription() {

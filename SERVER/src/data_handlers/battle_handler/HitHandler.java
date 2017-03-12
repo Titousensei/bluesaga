@@ -445,7 +445,8 @@ public class HitHandler extends Handler {
       npcTarget.startRespawnTimer();
 
       // DROP LOOT
-      MonsterHandler.monsterDropLoot(npcTarget);
+      int charLvl = ATTACKER.getSkill(106).getLevel(); // TODO: abstract 106
+      MonsterHandler.monsterDropLoot(npcTarget, charLvl);
     }
 
     // MONSTERS HAVING AGGRO ON TARGET LOSES AGGRO

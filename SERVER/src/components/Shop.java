@@ -1,35 +1,48 @@
 package components;
 
-import java.util.Set;
+import java.util.Collection;
+
+import data_handlers.item_handler.Item;
 
 public class Shop
 {
   public final int npcId;
   public final String name;
-  private final String origin;
+  protected final String origin;
 
-  private Set<Integer> items;
-  private String itemsStr;
-  private Set<Integer> abilities;
-  private String abilitiesStr;
+  protected Collection<Integer> itemIds;
+  protected String itemsStr;
+  protected Collection<Integer> abilityIds;
+  protected String abilitiesStr;
 
   public Shop(int id, String n, String o) {
     npcId = id;
     name = n;
     origin = o;
+    itemIds = null;
     itemsStr = "None";
-    abilities = null;
+    abilityIds = null;
     abilitiesStr = "None";
   }
 
-  void setItems(Set<Integer> val) { items = val; }
-  public boolean containsItem(Integer val) { return items.contains(val); }
+  public void init() {}
+
+  public boolean addItem(Item it, int characterId) { return true; }
+
+  public boolean removeItem(Item it, int characterId) { return true; }
+
+  public int getSkillId() { return 0; }
+
+  void setItems(Collection<Integer> val) { itemIds = val; }
+  public boolean containsItem(Item it) {
+    return itemIds.contains(it.getId());
+  }
 
   public String getItemsStr() { return itemsStr; }
   void setItemsStr(String val) { itemsStr = val; }
 
-  void setAbilities(Set<Integer> val) { abilities = val; }
-  public boolean containsAbility(Integer val) { return abilities.contains(val); }
+  void setAbilities(Collection<Integer> val) { abilityIds = val; }
+  public boolean containsAbility(Integer val) { return abilityIds.contains(val); }
 
   public String getAbilitiesStr() { return abilitiesStr; }
   void setAbilitiesStr(String val) { abilitiesStr = val; }
@@ -37,19 +50,19 @@ public class Shop
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder(1000);
-    sb.append("Show{")
+    sb.append("Shop{")
       .append(npcId);
     if (name!=null && !"".equals(name)) {
       sb.append(" / ")
         .append(name);
     }
-    if (items!=null) {
+    if (itemIds!=null) {
       sb.append(", items=")
-        .append(items);
+        .append(itemIds);
     }
-    if (abilities!=null) {
+    if (abilityIds!=null) {
       sb.append(", abilities=")
-        .append(abilities);
+        .append(abilityIds);
     }
     sb.append(", Origin=").append(origin)
       .append('}');

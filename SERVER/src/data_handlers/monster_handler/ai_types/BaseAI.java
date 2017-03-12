@@ -138,7 +138,7 @@ public class BaseAI {
 
   public static BaseAI newAi(Npc me) {
     if (me.getAttackRange() > 2) {
-      return new RangedShy(me);
+      return new Ranged(me);
     } else if (me.getCreatureId() == 63 || me.getCreatureId() == 77) {
       return new Shy(me);
     } else {

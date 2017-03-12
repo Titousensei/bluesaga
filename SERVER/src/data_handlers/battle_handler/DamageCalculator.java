@@ -167,7 +167,6 @@ public class DamageCalculator {
     if (damage <= 0) {
       return DAMAGE_MISSED;
     }
-
     if (hit == HitResult.CRITICAL) {
       return new Damage("true", damage * 2);
     }

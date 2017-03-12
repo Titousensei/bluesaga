@@ -12,12 +12,22 @@ import utils.ServerGameInfo;
 public class ShopBuilder
 extends Builder<Shop>
 {
-  protected Shop s = null;
   protected Collection<Integer> items = null;
   protected Collection<Integer> abilities = null;
+  protected int skillId = 0;
+
+  protected int id = 0;
+  protected String name = null;
+  protected String origin = null;
 
   public void init(int id, String name, String origin) {
-    s = new Shop(id, name, origin);
+    this.id = id;
+    this.name = name;
+    this.origin = origin;
+  }
+
+  public void skill(String val) {
+    skillId = parseInt(val);
   }
 
   public void items(String val) {
@@ -55,12 +65,16 @@ extends Builder<Shop>
   }
 
   public Shop build() {
+    Shop s = (skillId == 0)
+             ? new Shop(id, name, origin)
+             : new ExplorerShop(id, name, origin, skillId);
+
     if (items!=null) {
-      s.setItems(new HashSet(items));
+      s.setItems(new HashSet<>(items));
       StringBuilder sb = null;
       for (Integer id : items) {
         if (sb == null) {
-          sb = new StringBuilder();
+          sb = new StringBuilder(1000);
         } else {
           sb.append(',');
         }
@@ -69,7 +83,7 @@ extends Builder<Shop>
       s.setItemsStr(sb.toString());
     }
     if (abilities!=null) {
-      s.setAbilities(new HashSet(abilities));
+      s.setAbilities(new HashSet<>(abilities));
       StringBuilder sb = new StringBuilder();
       for (Integer id : abilities) {
         try (ResultSet abilityInfo =
@@ -94,6 +108,8 @@ extends Builder<Shop>
       }
       s.setAbilitiesStr(sb.toString());
     }
+
+    s.init();
 
     return s;
   }

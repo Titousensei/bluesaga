@@ -78,7 +78,7 @@ public class Item {
     Stats.reset();
     statusEffects = new Vector<StatusEffect>();
 
-    setId(copy.getId());
+    setId(copy.getRawId());
     setName(copy.getName());
     setType(copy.getType());
     setSubType(copy.getSubType());
@@ -221,12 +221,24 @@ public class Item {
     Id = id;
   }
 
+  public void setStoreBought(boolean yes) {
+    Id = Math.abs(Id);
+    if (yes) {
+      Id = -Id;
+    }
+  }
+
   public int getId() {
+    return Math.abs(Id);
+  }
+
+  public int getRawId() {
     return Id;
   }
 
   public int getValue() {
-    return Value;
+    int sp = (MagicId > 0) ? modifier.sp_magic : modifier.sp;
+    return (sp > 0) ? Value * sp : Value;
   }
 
   public void setValue(int newvalue) {
@@ -480,7 +492,7 @@ public class Item {
   }
 
   public int getSoldValue() {
-    return (int) Math.floor(getValue() * modifier.priceCoef / 2.0f);
+    return (int) Math.floor(Value * modifier.priceCoef / 2.0f);
   }
 
   public String getDescription() {
@@ -505,14 +517,6 @@ public class Item {
 
   public void setClassId(int classId) {
     ClassId = classId;
-  }
-
-  public int getDbId() {
-    return dbId;
-  }
-
-  public void setDbId(int dbId) {
-    this.dbId = dbId;
   }
 
   public void setEquipped(boolean equipped) {

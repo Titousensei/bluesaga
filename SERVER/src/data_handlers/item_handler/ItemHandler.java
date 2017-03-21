@@ -70,6 +70,10 @@ public class ItemHandler extends Handler {
     if (infoType.equals("shop")) {
       int itemId = Integer.parseInt(info[1]);
       infoItem = ServerGameInfo.newItem(itemId);
+      if (info.length > 3) {
+        infoItem.setModifierId(Integer.parseInt(info[2]));
+        infoItem.setMagicId(Integer.parseInt(info[3]));
+      }
     } else if (infoType.equals("closet")) {
       int itemId = Integer.parseInt(info[1]);
       if (itemId == 214) {
@@ -133,7 +137,6 @@ public class ItemHandler extends Handler {
 
     } else {
       // INVENTORY ITEM
-
       userItemId = Integer.parseInt(info[1]);
 
       ResultSet userItemInfo =
@@ -291,9 +294,10 @@ public class ItemHandler extends Handler {
 
       if (infoType.equals("shop")) {
         sb.append("0,0,0; /");
-        boolean canAfford = client.playerCharacter.hasCopper(infoItem.getValue());
-        if (infoItem.getValue() > 0) {
-          TextFormater.formatPriceInfo(sb, "Price: ", infoItem.getValue(), canAfford);
+        int price = infoItem.getValue();
+        boolean canAfford = client.playerCharacter.hasCopper(price);
+        if (price > 0) {
+          TextFormater.formatPriceInfo(sb, "Price: ", price, canAfford);
         } else {
           TextFormater.formatInfo(sb, "Free");
         }
@@ -533,7 +537,7 @@ public class ItemHandler extends Handler {
     }
   }
 
-  public static Vector<Item> dropLoot(Npc TARGET) {
+  public static Vector<Item> dropLoot(Npc TARGET, int charLvl) {
 
     Vector<Item> droppedItems = new Vector<Item>();
 
@@ -574,11 +578,11 @@ public class ItemHandler extends Handler {
               // CREATE RARE ITEMS
 
               if (TARGET.isElite()) {
-                droppedItem.setModifier(Modifier.random(2));
+                droppedItem.setModifier(Modifier.random(charLvl + 1));
               } else if (TARGET.isTitan()) {
-                droppedItem.setModifier(Modifier.random(4));
+                droppedItem.setModifier(Modifier.random(charLvl + 3));
               } else {
-                droppedItem.setModifier(Modifier.random(1));
+                droppedItem.setModifier(Modifier.random(charLvl));
               }
 
               if (TARGET.getSpecialType() > 0) {

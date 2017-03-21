@@ -377,7 +377,7 @@ public class MonsterHandler extends Handler {
     Server.WORLD_MAP.addMonsterSpawn(m, posX, posY, posZ);
   }
 
-  public static void monsterDropLoot(Npc TARGET) {
+  public static void monsterDropLoot(Npc TARGET, int charLvl) {
     // CHECK IF MONSTER HAS DEATH ABILITY
     if (TARGET.getDeathAbilityId() > 0) {
       Ability deathAbility = new Ability(ServerGameInfo.abilityDef.get(TARGET.getDeathAbilityId()));
@@ -386,7 +386,7 @@ public class MonsterHandler extends Handler {
     }
 
     // MONSTER DROP LOOT
-    Vector<Item> droppedLoot = ItemHandler.dropLoot(TARGET);
+    Vector<Item> droppedLoot = ItemHandler.dropLoot(TARGET, charLvl);
     int droppedMoney = ItemHandler.dropMoney(TARGET);
 
     Item dropCard = null;

@@ -439,7 +439,8 @@ public class ContainerHandler extends Handler {
                     if (chance <= dropItemChance) {
                       Item droppedItem = ServerGameInfo.newItem(itemId);
                       if (droppedItem.isEquipable()) {
-                        droppedItem.setModifier(Modifier.random(2));
+                        int charLvl = client.playerCharacter.getSkill(106).getLevel(); // TODO: abstract 106
+                        droppedItem.setModifier(Modifier.random(charLvl + 1));
                       }
                       newContainer.addItem(droppedItem);
                     }
@@ -598,7 +599,7 @@ public class ContainerHandler extends Handler {
     try {
       while (chestInfo.next()) {
         content
-            .append(chestInfo.getInt(2))
+            .append(Math.abs(chestInfo.getInt(2)))
             .append(',')
             .append(chestInfo.getInt(3))
             .append(',')

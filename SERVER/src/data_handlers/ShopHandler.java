@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Map;
 
+import components.ExplorerShop;
 import components.Shop;
 import utils.ServerGameInfo;
 import utils.ServerMessage;
@@ -14,6 +15,7 @@ import data_handlers.ability_handler.Ability;
 import data_handlers.item_handler.CoinConverter;
 import data_handlers.item_handler.InventoryHandler;
 import data_handlers.item_handler.Item;
+import data_handlers.item_handler.Modifier;
 import player_classes.BaseClass;
 
 public class ShopHandler extends Handler {
@@ -50,8 +52,12 @@ public class ShopHandler extends Handler {
 
     client.playerCharacter.loadInventory();
     if (buyType.equals("Item")) {
-      Item it = ServerGameInfo.itemDef.get(itemId);
-      if (it!=null && lastShop.containsItem(itemId)) {
+      Item it = ServerGameInfo.newItem(-itemId);
+      if (it!=null) {
+        it.setModifierId(Integer.parseInt(buyInfo[2]));
+        it.setMagicId(Integer.parseInt(buyInfo[3]));
+      }
+      if (it!=null && lastShop.containsItem(it)) {
         if (it.getType().equals("Customization")) {
           // CHECK IF PLAYER CAN AFFORD IT
           if (client.playerCharacter.hasCopper(it.getValue())) {
@@ -162,13 +168,11 @@ public class ShopHandler extends Handler {
           // CHECK IF PLAYER CAN AFFORD IT
           if (client.playerCharacter.hasCopper(it.getValue())) {
             // CHECK IF INVENTORY ISN'T FULL
-            if (!client.playerCharacter.isInventoryFull(
-                ServerGameInfo.newItem(itemId))) {
+            if (!client.playerCharacter.isInventoryFull(it)) {
               // ADD ITEM AND REMOVE GOLD TO PLAYER
               InventoryHandler.removeCopperFromInventory(client, it.getValue());
-              InventoryHandler.addItemToInventory(
-                  client, ServerGameInfo.newItem(itemId));
-
+              InventoryHandler.addItemToInventory(client, it);
+              lastShop.removeItem(it, client.playerCharacter.getDBId());
               addOutGoingMessage(
                   client, "buy", "item/" + it.getName() + "/" + it.getValue());
               ServerMessage.println(false, "Buy item - ", client.playerCharacter, ": ", it);
@@ -335,6 +339,31 @@ public class ShopHandler extends Handler {
         // CHECK IF PLAYER IS AT LEAST LVL 2
         if (client.playerCharacter.getLevel() > 1) {
 
+          if (lastShop instanceof ExplorerShop) {
+            if (lastShop.containsItem(soldItem)) {
+              addOutGoingMessage(client, "shoperror", "We don't want this item. We already have one like this.");
+              return;
+            }
+            if (soldItem.getRawId() < 0) {
+              addOutGoingMessage(client, "shoperror", "We don't want this item. This is not a new item.");
+              return;
+            }
+            Modifier mod = Modifier.get(soldItem.getModifierId());
+            int sp = (soldItem.getMagicId() > 0) ? mod.sp_magic : mod.sp;
+            if (sp == 0) {
+              addOutGoingMessage(client, "shoperror", "We don't want this item. We only accept rare or magic items.");
+              return;
+            }
+            SkillHandler.addSP(client, lastShop.getSkillId(), sp);
+            lastShop.addItem(soldItem, client.playerCharacter.getDBId());
+            value = 0;
+            addOutGoingMessage(
+                client, "shop", lastShop.name + ";"
+                + lastShop.getItemsStr() + ";"
+                + lastShop.getAbilitiesStr());
+            addOutGoingMessage(client, "message", soldItem.getName() + " removed from your inventory!");
+          }
+
           // REMOVE ITEM
           if (sellFromMouse) {
             Server.userDB.updateDB(
@@ -358,6 +387,7 @@ public class ShopHandler extends Handler {
                       + client.playerCharacter.getDBId());
             }
           }
+
           if (value>0) {
             // ADD GOLD TO PLAYER
             CoinConverter cc = new CoinConverter(value);

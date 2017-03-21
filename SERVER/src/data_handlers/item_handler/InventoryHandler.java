@@ -55,7 +55,8 @@ public class InventoryHandler extends Handler {
           Server.userDB.updateDB(
               "update character_item set InventoryPos = 'Mouse' where Id = " + rs.getInt("Id"));
 
-          if (ServerGameInfo.itemDef.containsKey(rs.getInt(2))) {
+          int itemId = Math.abs(rs.getInt(2));
+          if (ServerGameInfo.itemDef.containsKey(itemId)) {
             Item mouseItem = ServerGameInfo.newItem(rs.getInt(2));
             mouseItem.setUserItemId(rs.getInt(1));
             mouseItem.setStacked(rs.getInt(3));
@@ -65,7 +66,7 @@ public class InventoryHandler extends Handler {
             client.playerCharacter.setMouseItem(mouseItem);
 
             addOutGoingMessage(
-                client, "addmouseitem", rs.getInt(2) + ";" + mouseItem.getType());
+                client, "addmouseitem", itemId + ";" + mouseItem.getType());
 
             if (containerType == 0) {
               // SEND INVENTORY INFO
@@ -100,7 +101,8 @@ public class InventoryHandler extends Handler {
 
           // PLAYER HAS ITEM AT THAT POSITION
 
-          if (ServerGameInfo.itemDef.containsKey(rs.getInt(2))) {
+          int itemId = Math.abs(rs.getInt(2));
+          if (ServerGameInfo.itemDef.containsKey(itemId)) {
             Item mouseItem = ServerGameInfo.newItem(rs.getInt(2));
             mouseItem.setUserItemId(rs.getInt(1));
             mouseItem.setStacked(rs.getInt(3));
@@ -112,7 +114,7 @@ public class InventoryHandler extends Handler {
                 "insert into character_item (CharacterId, ItemId, Equipped, InventoryPos, Nr, ModifierId, MagicId) values("
                     + client.playerCharacter.getDBId()
                     + ","
-                    + mouseItem.getId()
+                    + mouseItem.getRawId()
                     + ",0,'Mouse',"
                     + mouseItem.getStacked()
                     + ","
@@ -128,7 +130,7 @@ public class InventoryHandler extends Handler {
                 "delete from user_chest where Id = " + mouseItem.getUserItemId());
 
             addOutGoingMessage(
-                client, "addmouseitem", rs.getInt("ItemId") + ";" + mouseItem.getType());
+                client, "addmouseitem", itemId + ";" + mouseItem.getType());
 
             if (containerType == 0) {
               // SEND INVENTORY INFO
@@ -201,14 +203,15 @@ public class InventoryHandler extends Handler {
               okToSplit = true;
             }
             if (okToSplit) {
-              if (ServerGameInfo.itemDef.containsKey(itemCheck.getInt(2))) {
+              int itemId = Math.abs(itemCheck.getInt(2));
+              if (ServerGameInfo.itemDef.containsKey(itemId)) {
                 Item mouseItem = ServerGameInfo.newItem(itemCheck.getInt(2));
                 mouseItem.setStacked(number);
                 client.playerCharacter.setMouseItem(mouseItem);
                 client.playerCharacter.loadInventory();
                 sendInventoryInfo(client);
                 addOutGoingMessage(
-                    client, "addmouseitem", mouseItem.getId() + ";" + mouseItem.getType());
+                    client, "addmouseitem", itemId + ";" + mouseItem.getType());
               }
             }
           }
@@ -317,7 +320,7 @@ public class InventoryHandler extends Handler {
                           + client.playerCharacter.getDBId());
                   client.playerCharacter.getMouseItem().setStacked(nrItemsLeft);
                   addOutGoingMessage(
-                      client, "addmouseitem", oldInvItemId + ";" + oldInvItem.getType());
+                      client, "addmouseitem", Math.abs(oldInvItemId) + ";" + oldInvItem.getType());
                 } else {
                   Server.userDB.updateDB(
                       "delete from character_item where ItemId = "
@@ -341,7 +344,7 @@ public class InventoryHandler extends Handler {
 
                 // PUT EXISTING ITEM TO MOUSE
                 addOutGoingMessage(
-                    client, "addmouseitem", oldInvItemId + ";" + oldInvItem.getType());
+                    client, "addmouseitem", Math.abs(oldInvItemId) + ";" + oldInvItem.getType());
 
                 Server.userDB.updateDB(
                     "update character_item set InventoryPos = 'Mouse' where Id = "
@@ -455,7 +458,7 @@ public class InventoryHandler extends Handler {
               // MOVE NEW ITEM TO POSITION
               Server.userDB.updateDB(
                   "update user_chest set ItemId = "
-                      + itemToMove.getId()
+                      + itemToMove.getRawId()
                       + ", Nr = "
                       + nrItems
                       + ", ModifierId = "
@@ -475,7 +478,7 @@ public class InventoryHandler extends Handler {
                   "insert into character_item (CharacterId, ItemId, Nr, Equipped, InventoryPos, ModifierId, MagicId) values ("
                       + client.playerCharacter.getDBId()
                       + ","
-                      + oldInvItem.getId()
+                      + oldInvItem.getRawId()
                       + ","
                       + oldInvItem.getStacked()
                       + ",0,'Mouse',"
@@ -493,7 +496,7 @@ public class InventoryHandler extends Handler {
                 "insert into user_chest (UserId, ItemId, Nr, Pos, ModifierId, MagicId) values ("
                     + client.UserId
                     + ","
-                    + itemToMove.getId()
+                    + itemToMove.getRawId()
                     + ","
                     + nrItems
                     + ",'"
@@ -564,11 +567,12 @@ public class InventoryHandler extends Handler {
 
     try {
       while (invInfo.next()) {
-        if (ServerGameInfo.itemDef.containsKey(invInfo.getInt(2))) {
+        int itemId = Math.abs(invInfo.getInt(2));
+        if (ServerGameInfo.itemDef.containsKey(itemId)) {
           inventoryInfo
               .append(invInfo.getInt(1))
               .append(',')
-              .append(invInfo.getInt(2))
+              .append(itemId)
               .append(',')
               .append(invInfo.getInt(4))
               .append(',')
@@ -580,7 +584,6 @@ public class InventoryHandler extends Handler {
     } catch (SQLException e) {
       e.printStackTrace();
     }
-
     addOutGoingMessage(client, "inventory", inventoryInfo.toString());
   }
 
@@ -815,7 +818,7 @@ public class InventoryHandler extends Handler {
               "insert into character_item (CharacterId, ItemId, Equipped, Nr, InventoryPos, ModifierId, MagicId) values("
                   + client.playerCharacter.getDBId()
                   + ","
-                  + newItem.getId()
+                  + newItem.getRawId()
                   + ",0,"
                   + totalItems
                   + ",'"
@@ -830,7 +833,7 @@ public class InventoryHandler extends Handler {
               "update character_item set Nr = "
                   + totalItems
                   + " where ItemId = "
-                  + newItem.getId()
+                  + newItem.getRawId()
                   + " and CharacterId = "
                   + client.playerCharacter.getDBId()
                   + " and InventoryPos = '"
@@ -856,7 +859,7 @@ public class InventoryHandler extends Handler {
         Server.userDB.askDB(
             //      1   2       3   4
             "select Id, ItemId, Nr, InventoryPos from character_item where ItemId = "
-                + usedItem.getId()
+                + usedItem.getRawId()
                 + " and InventoryPos = '"
                 + posX
                 + ","
@@ -1009,14 +1012,13 @@ public class InventoryHandler extends Handler {
     int inventorySize = client.playerCharacter.getInventorySize();
 
     client.playerCharacter.loadInventory();
-
     if (newItem.getStacked() <= newItem.getStackable()) {
       if (newItem.getStackable() > 1) {
         for (int i = 0; i < inventorySize; i++) {
           for (int j = 0; j < inventorySize; j++) {
             Item invItem = client.playerCharacter.getInventoryItem(i, j);
             if (invItem != null) {
-              if (invItem.getId() == newItem.getId()
+              if (invItem.getRawId() == newItem.getRawId()
                   && invItem.getStacked() + newItem.getStacked() <= invItem.getStackable()) {
                 int totalItems = invItem.getStacked() + newItem.getStacked();
                 return "stacked;" + i + "," + j + ";" + totalItems;

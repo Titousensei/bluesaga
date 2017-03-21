@@ -51,11 +51,13 @@ public class ServerGameInfo {
   public static Map<Integer, Npc> creatureDef;
 
   public static Item newItem(int id) {
-    Item it = itemDef.get(id);
+    Item it = itemDef.get(Math.abs(id));
     if (it==null) {
       throw new RuntimeException("Item not found: " + id);
     }
-    return new Item(it);
+    Item ret = new Item(it);
+    ret.setStoreBought(id<0);
+    return ret;
   }
 
   public static int getSkillId(String subType) {

@@ -67,6 +67,8 @@ public class ShopHandler extends Handler {
         Gui.addMessage("#messages.shop.no_sell", BlueSagaColors.RED);
       } else if (errorMessage.equals("lowlevel")) {
         Gui.addMessage("#messages.shop.need_level_sell", BlueSagaColors.RED);
+      } else {
+        Gui.addMessage(errorMessage, BlueSagaColors.RED);
       }
     } else if (serverData.startsWith("<newcustomize>")) {
       String creatureCustomizeInfo[] = serverData.substring(14).split(";");

@@ -60,8 +60,13 @@ public class ShopWindow extends Window {
     if (!shop_info[1].equals("None")) {
       String items[] = shop_info[1].split(",");
       for (String itemInfo : items) {
-        int itemId = Integer.parseInt(itemInfo);
+        String[] ids = itemInfo.split("_");
+        int itemId = Integer.parseInt(ids[0]);
         Item shopItem = new Item(itemId);
+        if (ids.length > 2) {
+          shopItem.setModifierId(Integer.parseInt(ids[1]));
+          shopItem.setMagicId(Integer.parseInt(ids[2]));
+        }
         Boxes[boxX][boxY].setItem(shopItem);
         boxX++;
         if (boxX == nrBoxW) {
@@ -139,9 +144,11 @@ public class ShopWindow extends Window {
             clickedBox = true;
 
             // BUY ITEM OR ABILITY
-            if (Boxes[i][j].getItem() != null) {
+            Item it = Boxes[i][j].getItem();
+            if (it != null) {
               BlueSaga.client.sendMessage(
-                  "buy", Boxes[i][j].getContentType() + ";" + Boxes[i][j].getItem().getId());
+                  "buy", Boxes[i][j].getContentType() + ";" + it.getId()
+                         + ";" + it.getModifierId() + ";" + it.getMagicId());
               BlueSaga.actionServerWait = true;
             } else if (Boxes[i][j].getAbility() != null) {
               BlueSaga.client.sendMessage(
@@ -199,7 +206,10 @@ public class ShopWindow extends Window {
                   }
 
                   SelectedInfoBox = new ItemInfoBox(infoBoxX, Y + j * 50 + moveY, 1, 1);
-                  BlueSaga.client.sendMessage("item_info", "shop;" + selectedItemForInfo.getId());
+                  BlueSaga.client.sendMessage("item_info", "shop;"
+                      + selectedItemForInfo.getId() + ';'
+                      + selectedItemForInfo.getModifierId() + ';'
+                      + selectedItemForInfo.getMagicId());
                 }
               } else if (Boxes[i][j].getAbility() != null) {
                 if (selectedAbilityForInfo != null) {

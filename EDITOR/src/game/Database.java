@@ -58,7 +58,8 @@ public class Database {
     updateDB("CREATE TABLE IF NOT EXISTS quest (Id INTEGER PRIMARY KEY, Name VARCHAR, RewardMessage VARCHAR, QuestMessage VARCHAR, Level INTEGER, Type VARCHAR, TargetNumber INTEGER, TargetType VARCHAR, TargetId INTEGER, NpcId INTEGER, OrderNr INTEGER, RewardXp INTEGER, RewardItemId INTEGER, RewardCopper INTEGER, ParentQuestId INTEGER, Description TEXT, EventId INTEGER, NextQuestId INTEGER, ReturnForReward INTEGER, QuestItems VARCHAR, RewardAbilityId INTEGER DEFAULT 0, LearnClassId INTEGER DEFAULT 0, QuestAbilityId INTEGER DEFAULT 0, CategoryId INTEGER DEFAULT 0);");
     updateDB("CREATE TABLE IF NOT EXISTS quest_category (Id INTEGER PRIMARY KEY  AUTOINCREMENT  NOT NULL  UNIQUE , Name VARCHAR);");
     updateDB("CREATE INDEX IF NOT EXISTS tile_door on area_tile (DoorId);");
-    updateDB("CREATE INDEX IF NOT EXISTS tile_pos ON area_tile (z,x,y);");
+    updateDB("DROP INDEX IF EXISTS tile_pos;");
+    updateDB("CREATE UNIQUE INDEX IF NOT EXISTS tile_pos_uniq ON area_tile (z,x,y);");
 
     boolean isEmpty = true;
     try (ResultSet rs = askDB("SELECT count(*) FROM area_effect")) {

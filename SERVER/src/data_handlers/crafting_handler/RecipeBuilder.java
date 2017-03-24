@@ -44,6 +44,19 @@ extends Builder<Recipe>
   }
 
   public Recipe build() {
+    StringBuilder sb = null;
+    for (Item ingredient : r.getMaterials()) {
+      if (sb == null) {
+        sb = new StringBuilder(1000);
+      } else {
+        sb.append(", ");
+      }
+      sb.append(ingredient.getStacked())
+        .append(' ')
+        .append(ingredient.getName());
+    }
+    r.setIngredientStr(sb.toString());
+
     return r;
   }
 

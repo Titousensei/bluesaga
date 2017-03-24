@@ -13,9 +13,9 @@ public class Recipe {
   public final String name;
   private final String origin;
 
-  public String items;
   public int[] abilities;
   public int skillLevel = 1;
+  public String ingredientStr;
 
   public Recipe(int i, String n, String o) {
     id = i;
@@ -37,6 +37,10 @@ public class Recipe {
 
   public void setProduct(Item val) {
     product = val;
+  }
+
+  public void setIngredientStr(String val) {
+    ingredientStr = val;
   }
 
   public CraftingStation getCraftingStation() {

@@ -97,23 +97,11 @@ public class CraftingHandler extends Handler {
     }
 
     // Check if player has ingredients for recipe
-    boolean hasIngredients = true;
-    StringBuilder ingredients = new StringBuilder(1000);
-    int nrIngredients = 0;
     for (Item ingredient : itemRecipe.getMaterials()) {
-      if (nrIngredients > 0) {
-        ingredients.append(", ");
-      }
-      ingredients.append(ingredient.getStacked()).append(' ').append(ingredient.getName());
       if (!client.playerCharacter.hasItem(ingredient.getId(), ingredient.getStacked())) {
-        hasIngredients = false;
+        addOutGoingMessage(client, "nocraftitem", itemRecipe.ingredientStr);
+        return;
       }
-      nrIngredients++;
-    }
-
-    if (!hasIngredients) {
-      addOutGoingMessage(client, "nocraftitem", ingredients.toString());
-      return;
     }
 
     // Remove ingredients from inventory

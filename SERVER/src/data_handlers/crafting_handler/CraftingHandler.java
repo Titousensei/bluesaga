@@ -84,40 +84,49 @@ public class CraftingHandler extends Handler {
       }
     }
 
-    if (itemRecipe != null) {
-      // Check if player has ingredients for recipe
-      boolean hasIngredients = true;
-      StringBuilder ingredients = new StringBuilder(1000);
-      int nrIngredients = 0;
-      for (Item ingredient : itemRecipe.getMaterials()) {
-        if (nrIngredients > 0) {
-          ingredients.append(", ");
-        }
-        ingredients.append(ingredient.getStacked()).append(' ').append(ingredient.getName());
-        if (!client.playerCharacter.hasItem(ingredient.getId(), ingredient.getStacked())) {
-          hasIngredients = false;
-        }
-        nrIngredients++;
-      }
-
-      if (hasIngredients) {
-        // Remove ingredients from inventory
-        for (Item ingredient : itemRecipe.getMaterials()) {
-          InventoryHandler.removeNumberOfItems(client, ingredient.getId(), ingredient.getStacked());
-        }
-        // Add crafted product in inventory
-        InventoryHandler.addItemToInventory(client, itemRecipe.getProduct());
-
-        // Give sp to crafting skill
-        int skillId = itemRecipe.getCraftingStation().skillId;
-
-        SkillHandler.gainSP(client, skillId, false);
-
-        addOutGoingMessage(client, "crafting_done", "");
-        ServerMessage.println(false, "Crafting - ", client.playerCharacter, ": ", itemRecipe);
-      } else {
-        addOutGoingMessage(client, "nocraftitem", ingredients.toString());
-      }
+    if (itemRecipe == null) {
+      return;
     }
+
+    int skillId = itemRecipe.getCraftingStation().skillId;
+    int charLvl = client.playerCharacter.getSkill(skillId).getLevel();
+    if (charLvl < itemRecipe.skillLevel) {
+      addOutGoingMessage(client, "nocraft", "You need to have crafting level "
+          + itemRecipe.skillLevel + " for this recipe.");
+      return;
+    }
+
+    // Check if player has ingredients for recipe
+    boolean hasIngredients = true;
+    StringBuilder ingredients = new StringBuilder(1000);
+    int nrIngredients = 0;
+    for (Item ingredient : itemRecipe.getMaterials()) {
+      if (nrIngredients > 0) {
+        ingredients.append(", ");
+      }
+      ingredients.append(ingredient.getStacked()).append(' ').append(ingredient.getName());
+      if (!client.playerCharacter.hasItem(ingredient.getId(), ingredient.getStacked())) {
+        hasIngredients = false;
+      }
+      nrIngredients++;
+    }
+
+    if (!hasIngredients) {
+      addOutGoingMessage(client, "nocraftitem", ingredients.toString());
+      return;
+    }
+
+    // Remove ingredients from inventory
+    for (Item ingredient : itemRecipe.getMaterials()) {
+      InventoryHandler.removeNumberOfItems(client, ingredient.getId(), ingredient.getStacked());
+    }
+    // Add crafted product in inventory
+    InventoryHandler.addItemToInventory(client, itemRecipe.getProduct());
+
+    // Give sp to crafting skill
+    SkillHandler.gainSP(client, skillId, false);
+
+    addOutGoingMessage(client, "crafting_done", "");
+    ServerMessage.println(false, "Crafting - ", client.playerCharacter, ": ", itemRecipe);
   }
 }

@@ -40,7 +40,7 @@ extends Builder<Recipe>
   }
 
   public void skillLevel(String val) {
-//    s.setSkillLevel(parseInt(val));
+    r.setSkillLevel(parseInt(val));
   }
 
   public Recipe build() {

@@ -21,6 +21,10 @@ public class CraftingHandler extends Handler {
       String ingredients = serverData.substring(13);
       BlueSaga.actionServerWait = false;
       Gui.addMessage("#messages.crafting.missing_need# " + ingredients, BlueSagaColors.RED);
+    } else if (serverData.startsWith("<nocraft>")) {
+      String reason = serverData.substring(9);
+      BlueSaga.actionServerWait = false;
+      Gui.addMessage(reason, BlueSagaColors.RED);
     } else if (serverData.startsWith("<crafting_done>")) {
       Gui.addMessage("#messages.crafting.successful", BlueSagaColors.RED);
       BlueSaga.actionServerWait = false;

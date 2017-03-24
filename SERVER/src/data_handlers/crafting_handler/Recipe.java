@@ -15,6 +15,7 @@ public class Recipe {
 
   public String items;
   public int[] abilities;
+  public int skillLevel = 1;
 
   public Recipe(int i, String n, String o) {
     id = i;
@@ -22,12 +23,12 @@ public class Recipe {
     origin = o;
   }
 
-  //public Recipe(int id, Item product) {
-  //  this.product = product;
-  // }
-
   public void addMaterial(Item material) {
     materials.add(material);
+  }
+
+  public void setSkillLevel(int val) {
+    skillLevel = val;
   }
 
   public Item getProduct() {

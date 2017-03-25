@@ -174,8 +174,12 @@ public class ShopHandler extends Handler {
               InventoryHandler.addItemToInventory(client, it);
               lastShop.removeItem(it, client.playerCharacter.getDBId());
               addOutGoingMessage(
+                  client, "shop", lastShop.name + ";"
+                  + lastShop.getItemsStr() + ";"
+                  + lastShop.getAbilitiesStr());
+              addOutGoingMessage(
                   client, "buy", "item/" + it.getName() + "/" + it.getValue());
-              ServerMessage.println(false, "Buy item - ", client.playerCharacter, ": ", it);
+              ServerMessage.println(false, "Buy item - ", client.playerCharacter, ": ", it + " @" + lastShop.name);
             } else {
               addOutGoingMessage(client, "shoperror", "inventoryfull");
             }
@@ -399,7 +403,7 @@ public class ShopHandler extends Handler {
             client.playerCharacter.loadInventory();
             InventoryHandler.sendInventoryInfo(client);
           }
-          ServerMessage.println(false, "Sell - ", client.playerCharacter, ": ", soldItem);
+          ServerMessage.println(false, "Sell - ", client.playerCharacter, ": ", soldItem + " @" + lastShop.name);
         } else {
           addOutGoingMessage(client, "shoperror", "lowlevel");
         }

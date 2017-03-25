@@ -4,6 +4,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Vector;
 
+import components.JobSkill;
 import creature.Creature;
 import creature.Creature.CreatureType;
 import creature.Npc;
@@ -445,7 +446,11 @@ public class HitHandler extends Handler {
       npcTarget.startRespawnTimer();
 
       // DROP LOOT
-      int charLvl = ATTACKER.getSkill(106).getLevel(); // TODO: abstract 106
+      int charLvl = 1;
+      JobSkill skill = ATTACKER.getSkill(106); // TODO: abstract 106
+      if (skill != null) {
+        charLvl = skill.getLevel();
+      }
       MonsterHandler.monsterDropLoot(npcTarget, charLvl);
     }
 

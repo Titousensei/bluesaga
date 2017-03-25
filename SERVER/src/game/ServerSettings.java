@@ -22,7 +22,7 @@ public class ServerSettings {
    * be sure to set the same number in your server settings on the website
    * http://www.bluesaga.org/myservers
    */
-  public static String CLIENT_VERSION = "803";
+  public static String CLIENT_VERSION = "805";
 
   /**
    * If you want to test the server locally while developing, use DEV_MODE = true

@@ -129,7 +129,7 @@ public class Gui {
     NotificationsY = 80;
     ScreenFX = new Vector<StatusScreenEffect>(100);
 
-    ALL_WINDOWS =  Collections.synchronizedList(new ArrayList<>(25));
+    ALL_WINDOWS =  new ArrayList<>(25);
 
     Mouse = new MouseCursor();
     MouseItem = new DragObject();
@@ -705,15 +705,6 @@ public class Gui {
         }
       }
 
-      ALL_WINDOWS.iterator();
-
-      /*
-      while(windowIterator.hasNext()){
-        Window w = windowIterator.next();
-        w.keyLogic(INPUT);
-      }
-      */
-
       QUEST_DIALOG.keyLogic(INPUT);
       InventoryWindow.keyLogic(INPUT);
       StatusWindow.keyLogic(INPUT);
@@ -891,9 +882,10 @@ public class Gui {
 
     // WINDOWS
     if (!clickedGUI) {
-      Collections.reverse(ALL_WINDOWS);
+      List<Window> rev = new ArrayList(ALL_WINDOWS);
+      Collections.reverse(rev);
 
-      for (Window w : ALL_WINDOWS) {
+      for (Window w : rev) {
         if (w.clickedOn(mouseX, mouseY)) {
           clickedGUI = true;
           if (DoAction) {
@@ -902,8 +894,6 @@ public class Gui {
           break;
         }
       }
-
-      sortWindows();
     }
 
     if (!clickedGUI) {
@@ -998,8 +988,6 @@ public class Gui {
       cancelUseAbility();
       clickedGUI = true;
     } else {
-      //Collections.reverse(ALL_WINDOWS);
-
       for (Window w : ALL_WINDOWS) {
         if (w.clickedOn(mouseX, mouseY)) {
           clickedGUI = true;
@@ -1093,8 +1081,10 @@ public class Gui {
     }
   }
 
-  public static synchronized void sortWindows() {
-    Collections.sort(ALL_WINDOWS, new WindowsDepthComparator());
+  public static void sortWindows() {
+    List<Window> win = new ArrayList(ALL_WINDOWS);
+    Collections.sort(win, new WindowsDepthComparator());
+    ALL_WINDOWS = win;
   }
 
   /*

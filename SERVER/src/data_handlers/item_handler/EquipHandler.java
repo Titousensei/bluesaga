@@ -36,7 +36,7 @@ public class EquipHandler extends Handler {
           Server.userDB.askInt(
               "select Id from character_item where CharacterId = "
                   + client.playerCharacter.getDBId()
-                  + " and InventoryPos = 'Mouse' and ItemId = "
+                  + " and InventoryPos = 'Mouse' and abs(ItemId) = "
                   + itemId);
 
       if (itemInfo != 0) {

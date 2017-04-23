@@ -190,7 +190,7 @@ public class WalkHandler extends Handler {
                     // CHECK IF PLAYER HAS KEY
                     int checkKeys =
                         Server.userDB.askInt(
-                            "select KeyId from character_key where KeyId = "
+                            "select Id from character_key where KeyId = "
                                 + keyId
                                 + " and CharacterId = "
                                 + client.playerCharacter.getDBId());
@@ -205,14 +205,8 @@ public class WalkHandler extends Handler {
 
                       if (keyItem.getSubType().equals("Destroyable")) {
                         Server.userDB.updateDB(
-                            "delete from character_key where KeyId = "
-                                + keyId
-                                + " and CharacterId = "
-                                + client.playerCharacter.getDBId());
-                        addOutGoingMessage(
-                            client,
-                            "message",
-                            "#messages.walking.you_lost" + " " + keyItem.getName());
+                            "delete from character_key where Id = "
+                                + checkKeys);
                       }
                     } else {
                       addOutGoingMessage(client, "message", "#messages.walking.need_key");

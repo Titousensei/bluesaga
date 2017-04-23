@@ -90,7 +90,6 @@ public class MapHandler extends Handler {
       ScreenHandler.FADE_SCREEN = false;
 
     } else if (serverData.startsWith("<cinfo>")) {
-System.out.println("*** " + serverData);
       String cInfo = serverData.substring(7);
       updateCreatureOnScreen(cInfo);
     }

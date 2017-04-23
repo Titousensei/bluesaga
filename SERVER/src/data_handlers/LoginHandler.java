@@ -513,7 +513,7 @@ public class LoginHandler extends Handler {
             ResultSet equipRS =
                 Server.userDB.askDB(
                     //      1
-                    "select ItemId from character_item where CharacterId = "
+                    "select abs(ItemId) from character_item where CharacterId = "
                         + characterRS.getInt("Id")
                         + " and Equipped = 1");
 
@@ -526,7 +526,9 @@ public class LoginHandler extends Handler {
 
             while (equipRS.next()) {
               checkItem = ServerGameInfo.itemDef.get(equipRS.getInt(1));
-              if (checkItem.getType().equals("Head") && headItemId == 0) {
+              if (checkItem==null || checkItem.getType()==null) {
+                System.out.println("ERROR - Null item " + equipRS.getInt(1));
+              } else if (checkItem.getType().equals("Head") && headItemId == 0) {
                 headItemId = checkItem.getId();
               } else if (checkItem.getType().equals("Weapon") && weaponItemId == 0) {
                 weaponItemId = checkItem.getId();

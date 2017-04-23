@@ -594,16 +594,18 @@ public class InventoryHandler extends Handler {
       // IF KEY, ADD TO KEYCHAIN
       addSpecialItem = true;
 
-      int keyInfo =
-          Server.userDB.askInt(
-              "select KeyId from character_key where KeyId = "
-                  + itemToMove.getId()
-                  + " and CharacterId = "
-                  + client.playerCharacter.getDBId());
+      if (!itemToMove.getSubType().equals("Destroyable")) {
+        int keyInfo =
+            Server.userDB.askInt(
+                "select KeyId from character_key where KeyId = "
+                    + itemToMove.getId()
+                    + " and CharacterId = "
+                    + client.playerCharacter.getDBId());
 
-      if (keyInfo != 0) {
-        addSpecialItem = false;
-        addOutGoingMessage(client, "message", "#messages.inventory.have_key");
+        if (keyInfo != 0) {
+          addSpecialItem = false;
+          addOutGoingMessage(client, "message", "#messages.inventory.have_key");
+        }
       }
       if (addSpecialItem) {
         Server.userDB.updateDB(

@@ -572,9 +572,10 @@ public class BattleHandler extends Handler {
    * @param client
    */
   public static void playerDeath(Client client, PlayerDeathCause pkAttack) {
-    Creature TARGET = client.playerCharacter;
+    PlayerCharacter TARGET = client.playerCharacter;
     if (TARGET == null) {
       ServerMessage.println(false, "ERROR playerDeath - Null playCharacter for ", client);
+      TARGET = client.lastCharacter;
     }
 
     if (!Server.WORLD_MAP.isType("arena", TARGET.getX(), TARGET.getY(), TARGET.getZ())) {
@@ -588,7 +589,7 @@ public class BattleHandler extends Handler {
 
         int lostXP = (int) Math.ceil(totalXP * 0.02f);
 
-        if (client.playerCharacter.loseXP(lostXP, client)) {
+        if (TARGET.loseXP(lostXP, client)) {
           // Player loses a level
         }
 
@@ -599,7 +600,7 @@ public class BattleHandler extends Handler {
             Server.userDB.askDB(
                 //      1 2 3
                 "select X,Y,Z from character_soul where CharacterId = "
-                    + client.playerCharacter.getDBId());
+                    + TARGET.getDBId());
         try {
           if (soulInfo.next()) {
             int soulX = soulInfo.getInt(1);
@@ -610,7 +611,7 @@ public class BattleHandler extends Handler {
 
             Server.userDB.updateDB(
                 "delete from character_soul where CharacterId = "
-                    + client.playerCharacter.getDBId());
+                    + TARGET.getDBId());
 
             if (client.Ready) {
               addOutGoingMessage(client, "removesoul", soulX + "," + soulY + "," + soulZ);
@@ -624,38 +625,38 @@ public class BattleHandler extends Handler {
         // CREATE NEW SOUL ON GROUND
         Server.userDB.updateDB(
             "insert into character_soul (CharacterId, X, Y, Z, XP) values ("
-                + client.playerCharacter.getDBId()
+                + TARGET.getDBId()
                 + ","
-                + client.playerCharacter.getX()
+                + TARGET.getX()
                 + ","
-                + client.playerCharacter.getY()
+                + TARGET.getY()
                 + ","
-                + client.playerCharacter.getZ()
+                + TARGET.getZ()
                 + ","
                 + retrieveXP
                 + ")");
         Server.WORLD_MAP
             .getTile(
-                client.playerCharacter.getX(),
-                client.playerCharacter.getY(),
-                client.playerCharacter.getZ())
-            .setSoulCharacterId(client.playerCharacter.getDBId());
+                TARGET.getX(),
+                TARGET.getY(),
+                TARGET.getZ())
+            .setSoulCharacterId(TARGET.getDBId());
 
         if (client.Ready) {
           addOutGoingMessage(
               client,
               "soul",
-              client.playerCharacter.getX()
+              TARGET.getX()
                   + ","
-                  + client.playerCharacter.getY()
+                  + TARGET.getY()
                   + ","
-                  + client.playerCharacter.getZ());
+                  + TARGET.getZ());
         }
       }
 
       // REMOVE PK STATUS
-      if (client.playerCharacter.getPkMarker() > 0) {
-        PvpHandler.setPlayerKillerMark(client.playerCharacter, 0);
+      if (TARGET.getPkMarker() > 0) {
+        PvpHandler.setPlayerKillerMark(TARGET, 0);
       }
 
       // CHECK IF PLAYER CAN WEAR EQUIP, OTHERWISE DROP IT ON GROUND
@@ -663,12 +664,12 @@ public class BattleHandler extends Handler {
         ItemHandler.loseLootUponDeath(client);
     }
 
-    client.playerCharacter.saveInfo();
+    TARGET.saveInfo();
 
     // IF CLIENT CRASHED, RESPAWN CLIENT
     if (!client.Ready) {
-      client.playerCharacter.revive();
-      respawnPlayer(client.playerCharacter);
+      TARGET.revive();
+      respawnPlayer(TARGET);
     }
   }
 

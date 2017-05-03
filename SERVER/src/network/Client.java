@@ -44,6 +44,7 @@ public class Client implements Runnable {
   public int chestSize;
 
   public PlayerCharacter playerCharacter;
+  public PlayerCharacter lastCharacter;
 
   public String Muted = "No";
 

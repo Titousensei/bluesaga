@@ -362,6 +362,7 @@ public class ConnectHandler extends Handler {
                   charInfo.getInt(3));
           client.playerCharacter.load(characterId, client);
           client.playerCharacter.setCreatureType(CreatureType.Player);
+          client.lastCharacter = client.playerCharacter;
         }
         charInfo.close();
       } catch (SQLException e) {

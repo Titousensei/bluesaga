@@ -10,6 +10,7 @@ import java.util.Map.Entry;
 import utils.ServerGameInfo;
 import utils.MathUtils;
 import utils.RandomUtils;
+import components.JobSkill;
 import data_handlers.DataHandlers;
 import data_handlers.Handler;
 import data_handlers.Message;
@@ -431,7 +432,15 @@ public class ContainerHandler extends Handler {
 
                 if (!"".equals(lootInfo)) {
                   String allLoot[] = lootInfo.split(",");
-                  double dropItemChance = 0.3 / allLoot.length;
+
+                  int explorerLvl = 1;
+                  JobSkill skill = client.playerCharacter.getSkill(106); // TODO: abstract 106
+                  if (skill != null) {
+                    explorerLvl = skill.getLevel();
+                  }
+                  // 30 34 37 40 43 46 48 50
+                  double dropBase = 1.1 - 16.7 / (explorerLvl + 20);
+                  double dropItemChance = dropBase / allLoot.length;
 
                   for (String loot : allLoot) {
                     int itemId = Integer.parseInt(loot);

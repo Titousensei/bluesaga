@@ -2,7 +2,7 @@
 ManaCost: 30
 Cooldown: 30
 AoE: cross3
-StatusEffects: 8
+StatusEffects: s8 / Rooted
 ClassLevel: 1
 Description: Lower speed of target by entangling them in roots
 GraphicsNr: 11
@@ -17,7 +17,7 @@ Cooldown: 30
 Range: 0 creature
 Instant
 Price: 3600
-StatusEffects: 40
+StatusEffects: s40 / Nature Blend
 ClassLevel: 3
 Description: Blends caster into the nature
 GraphicsNr: 54
@@ -41,7 +41,7 @@ CastingSpeed: 100
 ManaCost: 30
 Cooldown: 60
 Price: 700
-StatusEffects: 41
+StatusEffects: s41 / Wooden Stub
 ClassLevel: 8
 Description: Summons a stub from the ground that hinders the path of your targets
 GraphicsNr: 56

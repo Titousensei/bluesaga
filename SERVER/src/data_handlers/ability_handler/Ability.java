@@ -78,7 +78,6 @@ public class Ability {
     this.origin = origin;
   }
 
-
   public Ability(Ability copy) {
     id = copy.id;
     name = copy.name;

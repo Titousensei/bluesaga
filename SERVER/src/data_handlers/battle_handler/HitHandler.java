@@ -176,7 +176,7 @@ public class HitHandler extends Handler {
         // Add attack statuseffects
         if (statusEffects != null) {
           for (StatusEffect statusFX : statusEffects) {
-            StatusEffect seFX = new StatusEffect(statusFX.getId());
+            StatusEffect seFX = ServerGameInfo.newStatusEffect(statusFX.id);
             seFX.setCaster(ATTACKER);
             StatusEffectHandler.addStatusEffect(TARGET, seFX);
           }
@@ -188,7 +188,7 @@ public class HitHandler extends Handler {
             for (StatusEffect statusFX : ATTACKER.getWeapon().getStatusEffects()) {
               int weaponSEchance = RandomUtils.getInt(0, 3);
               if (weaponSEchance == 0) {
-                StatusEffect weaponSE = new StatusEffect(statusFX.getId());
+                StatusEffect weaponSE = ServerGameInfo.newStatusEffect(statusFX.id);
                 weaponSE.setCaster(ATTACKER);
                 StatusEffectHandler.addStatusEffect(TARGET, weaponSE);
               }
@@ -354,12 +354,12 @@ public class HitHandler extends Handler {
       if (Math.floor(distToTarget) == 1) {
         if (TARGET.hasStatusEffect(33)) {
           // Flame shield
-          StatusEffect SE = new StatusEffect(1);
+          StatusEffect SE = ServerGameInfo.newStatusEffect(1);
           SE.setAbility(ServerGameInfo.abilityDef.get(57));
           SE.setCaster(TARGET);
           StatusEffectHandler.addStatusEffect(ATTACKER, SE);
         } else if (TARGET.hasStatusEffect(34)) {
-          StatusEffect SE = new StatusEffect(6);
+          StatusEffect SE = ServerGameInfo.newStatusEffect(6);
           SE.setAbility(ServerGameInfo.abilityDef.get(58));
           SE.setCaster(TARGET);
           StatusEffectHandler.addStatusEffect(ATTACKER, SE);

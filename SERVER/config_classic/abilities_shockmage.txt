@@ -5,7 +5,7 @@ AoE: square3
 Damage: 30 SHOCK
 Price: 60
 Range: 0 creature
-StatusEffects: 7
+StatusEffects: s7 / Shocked
 ClassLevel: 3
 ProjectileId: 3
 Description: Deals shock dmg on several targets
@@ -20,7 +20,7 @@ AoE: square3
 Damage: 50 SHOCK
 Range: 12 creature
 Price: 600
-StatusEffects: 23
+StatusEffects: s23 / Shocked
 ClassLevel: 5
 ProjectileId: 3
 Description: Deals shock dmg on several targets
@@ -35,7 +35,7 @@ AoE: square3
 Damage: 70 SHOCK
 Price: 1000
 Range: 0 creature
-StatusEffects: 24
+StatusEffects: s24 / Shocked
 ClassLevel: 8
 ProjectileId: 3
 Description: Deals shock dmg on several targets

@@ -167,7 +167,7 @@ public class AbilityHandler extends Handler {
 
         TextFormater.formatInfo(infoToSend, "Status Effects: ");
         for (StatusEffect se : abilityInfo.getStatusEffects()) {
-          TextFormater.formatInfo(infoToSend, se.getName());
+          TextFormater.formatInfo(infoToSend, se.name);
         }
       }
 
@@ -404,12 +404,12 @@ public class AbilityHandler extends Handler {
             // Flash step
             if (ABILITY.id == 84) {
               StatusEffectHandler.addStatusEffect(
-                  client.playerCharacter, new StatusEffect(42));
+                  client.playerCharacter, ServerGameInfo.newStatusEffect(42));
             }
             else if (ABILITY.id == 29) { // Block
               Item offhand = client.playerCharacter.getEquipment("OffHand");
               int def = offhand.getStatValue("ARMOR");
-              StatusEffect se = new StatusEffect(11);
+              StatusEffect se = ServerGameInfo.newStatusEffect(11);
               se.setAbility(ABILITY);
               se.setCaster(client.playerCharacter);
               se.getStatsModif().setValue("ARMOR", def);
@@ -420,7 +420,7 @@ public class AbilityHandler extends Handler {
               int def = (int) Math.round(
                     2 * Math.sqrt(
                           client.playerCharacter.getBaseClass().level));
-              StatusEffect se = new StatusEffect(47);
+              StatusEffect se = ServerGameInfo.newStatusEffect(47);
               se.setAbility(ABILITY);
               se.setCaster(client.playerCharacter);
               se.getStatsModif().setValue("ARMOR", def);
@@ -1155,7 +1155,7 @@ public class AbilityHandler extends Handler {
                   ) {
                     if (ABILITY.getStatusEffects() != null) {
                       for (StatusEffect statusFX : ABILITY.getStatusEffects()) {
-                        StatusEffect seFX = new StatusEffect(statusFX.getId());
+                        StatusEffect seFX = ServerGameInfo.newStatusEffect(statusFX.id);
                         seFX.setCaster(CASTER);
                         StatusEffectHandler.addStatusEffect(TARGET, seFX);
                       }
@@ -1212,18 +1212,22 @@ public class AbilityHandler extends Handler {
 
       if (!tileData.equals("None")) {
         tileData += "/";
-        String seInfo = "";
-        for (Iterator<StatusEffect> iter = ABILITY.getStatusEffects().iterator();
-            iter.hasNext();
-            ) {
-          StatusEffect SE = iter.next();
-          seInfo += SE.getId() + "," + SE.getGraphicsNr() + "," + SE.getSfx() + ";";
+        StringBuilder seInfo = new StringBuilder();
+        for (StatusEffect se : ABILITY.getStatusEffects()) {
+          seInfo.append(se.id)
+                .append(',')
+                .append(se.getGraphicsNr())
+                .append(',')
+                .append(se.getSfx())
+                .append(';');
         }
 
-        if (seInfo.equals("")) {
-          seInfo = "None";
+        if (seInfo.length() == 0) {
+          tileData += "None";
         }
-        tileData += seInfo;
+        else {
+          tileData += seInfo;
+        }
 
         // SEND TILE STATUSEFFECT HIT DATA
         for (Map.Entry<Integer, Client> entry : Server.clients.entrySet()) {

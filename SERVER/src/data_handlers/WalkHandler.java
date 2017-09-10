@@ -610,7 +610,7 @@ public class WalkHandler extends Handler {
 
       // CHECK IF TILE HAS STATUS EFFECT
       for (StatusEffect statusFX : playerTile.getStatusEffects()) {
-        StatusEffect seFX = new StatusEffect(statusFX.getId());
+        StatusEffect seFX = ServerGameInfo.newStatusEffect(statusFX.id);
         seFX.setCaster(statusFX.getCaster());
         seFX.setAbility(statusFX.getAbility());
         StatusEffectHandler.addStatusEffect(client.playerCharacter, seFX);

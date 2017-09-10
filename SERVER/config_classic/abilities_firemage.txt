@@ -4,7 +4,7 @@ Cooldown: 10
 AoE: square3
 Damage: 35 FIRE
 Price: 60
-StatusEffects: 1
+StatusEffects: s1 / Burning
 ClassLevel: 3
 ProjectileId: 1
 Description: Deals fire dmg on single target
@@ -17,7 +17,7 @@ Cooldown: 20
 AoE: square3
 Damage: 52 FIRE
 Price: 600
-StatusEffects: 22
+StatusEffects: s22 / Burning
 ClassLevel: 5
 ProjectileId: 1
 Description: Deals fire dmg on a large area
@@ -30,7 +30,7 @@ Cooldown: 40
 AoE: cross5
 Damage: 70 FIRE
 Price: 1000
-StatusEffects: 22
+StatusEffects: s22 / Burning
 ClassLevel: 8
 ProjectileId: 1
 Description: Deals fire dmg in the form of a big cross
@@ -57,7 +57,7 @@ Cooldown: 30
 Range: 0 creature
 Instant
 Price: 2500
-StatusEffects: 33
+StatusEffects: s33 / Fire Shield
 ClassLevel: 12
 Description: Increases armor and gives fire dmg to attacker
 GraphicsNr: 45

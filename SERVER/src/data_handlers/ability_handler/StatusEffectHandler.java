@@ -30,25 +30,21 @@ public class StatusEffectHandler extends Handler {
       return false;
     }
 
-    String statusEffectsInfo =
-        se.getId()
-            + ","
+    String statusEffectsInfo = ""
+            + se.id
+            + ','
             + se.getGraphicsNr()
-            + ","
+            + ','
             + se.getDuration()
-            + ","
-            + se.getName()
-            + ","
-            + se.getColor().getRed()
-            + ","
-            + se.getColor().getGreen()
-            + ","
-            + se.getColor().getBlue()
-            + ","
+            + ','
+            + se.name
+            + ','
+            + se.getColor()
+            + ','
             + se.getAnimationId()
-            + ","
+            + ','
             + se.getSfx()
-            + ";";
+            + ';';
 
     PlayerCharacter targetPlayer = null;
     if (target.getCreatureType() == CreatureType.Player) {
@@ -72,7 +68,7 @@ public class StatusEffectHandler extends Handler {
         if (isVisibleForPlayer(s.playerCharacter, target.getX(), target.getY(), target.getZ())) {
           if ((actualEffect & 4) != 0) { // stacked effect
             addOutGoingMessage(s, "statuseffect_change",
-                target.getSmallData() + "/" + se.getId() + "/" + se.getDuration());
+                target.getSmallData() + '/' + se.id + '/' + se.getDuration());
           }
           else {
             addOutGoingMessage(
@@ -177,7 +173,7 @@ public class StatusEffectHandler extends Handler {
                     addOutGoingMessage(
                         other,
                         "statuseffect_remove",
-                        s.playerCharacter.getSmallData() + ";" + SE.getId());
+                        s.playerCharacter.getSmallData() + ";" + SE.id);
                     if (other.playerCharacter.getDBId() == s.playerCharacter.getDBId()) {
                       addOutGoingMessage(
                           other,
@@ -229,7 +225,7 @@ public class StatusEffectHandler extends Handler {
             Client other = entry.getValue();
             if (other.Ready
                 && isVisibleForPlayer(other.playerCharacter, m.getX(), m.getY(), m.getZ())) {
-              addOutGoingMessage(other, "statuseffect_remove", m.getSmallData() + ";" + SE.getId());
+              addOutGoingMessage(other, "statuseffect_remove", m.getSmallData() + ";" + SE.id);
             }
           }
         }

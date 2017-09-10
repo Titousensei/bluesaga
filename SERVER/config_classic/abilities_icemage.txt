@@ -5,7 +5,7 @@ Cooldown: 10
 AoE: square3
 Damage: 30 COLD
 Price: 60
-StatusEffects: 6
+StatusEffects: s6 / Frozen
 ClassLevel: 3
 ProjectileId: 2
 Description: Deals small cold dmg and freezes target
@@ -19,7 +19,7 @@ Cooldown: 20
 AoE: square3
 Damage: 50 COLD
 Price: 600
-StatusEffects: 20
+StatusEffects: s20 / Frozen
 ClassLevel: 5
 ProjectileId: 2
 Description: Deals cold dmg and freezes target
@@ -34,7 +34,7 @@ Damage: 70 COLD
 Range: 0 tile
 Instant
 Price: 1000
-StatusEffects: 21
+StatusEffects: s21 / Frozen
 ClassLevel: 8
 ProjectileId: 2
 Description: Deals cold dmg and freezes all targets around user
@@ -48,7 +48,7 @@ Cooldown: 30
 Range: 0 creature
 Instant
 Price: 3000
-StatusEffects: 34
+StatusEffects: s34 / Ice Shield
 ClassLevel: 12
 Description: Increases armor and slows down melee attackers with ice
 GraphicsNr: 46
@@ -63,7 +63,7 @@ Cooldown: 10
 AoE: square3
 Damage: 20 COLD
 Price: 60
-StatusEffects: 6
+StatusEffects: s6 / Frozen
 ClassLevel: 3
 ProjectileId: 2
 Description: Deals small cold dmg and freezes target

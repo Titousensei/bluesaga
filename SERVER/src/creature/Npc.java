@@ -273,8 +273,8 @@ public class Npc extends Creature {
     X = SpawnX;
     Y = SpawnY;
 
-    Stats.setValue("HEALTH", getStat("MAX_HEALTH"));
-    Stats.setValue("MANA", getStat("MAX_MANA"));
+    stats_.setValue("HEALTH", getStat("MAX_HEALTH"));
+    stats_.setValue("MANA", getStat("MAX_MANA"));
   }
 
   public void restartRespawn() {
@@ -353,18 +353,18 @@ public class Npc extends Creature {
 
     Npc original_monster = ServerGameInfo.creatureDef.get(CreatureId);
 
-    Stats = new Stats();
+    stats_ = new Stats();
 
     for (Iterator<String> iter = original_monster.getStats().getHashMap().keySet().iterator();
         iter.hasNext();
         ) {
       String key = iter.next().toString();
       int value = original_monster.getStats().getHashMap().get(key);
-      Stats.setValue(key, value);
+      stats_.setValue(key, value);
     }
 
-    Health = Stats.getValue("MAX_HEALTH");
-    Mana = Stats.getValue("MAX_MANA");
+    Health = stats_.getValue("MAX_HEALTH");
+    Mana = stats_.getValue("MAX_MANA");
 
     if (original_monster.getAbilities() != null) {
       for (Ability a : original_monster.getAbilities()) {

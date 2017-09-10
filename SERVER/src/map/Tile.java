@@ -7,6 +7,7 @@ import creature.Creature.CreatureType;
 import creature.PlayerCharacter;
 import data_handlers.ability_handler.StatusEffect;
 import data_handlers.item_handler.Item;
+import utils.ServerGameInfo;
 
 public class Tile {
 
@@ -68,7 +69,7 @@ public class Tile {
     setZ(z);
 
     LootBag = new Vector<Item>();
-    //	healTimer = new Timer();
+    //  healTimer = new Timer();
     setMonsterLocked(false);
   }
 
@@ -213,7 +214,7 @@ public class Tile {
 
   /****************************************
    *                                      *
-   *         LOOT BAG			            *
+   *         LOOT BAG                 *
    *                                      *
    *                                      *
    ****************************************/
@@ -255,7 +256,7 @@ public class Tile {
 
   /****************************************
    *                                      *
-   *         STATUS EFFECT				*
+   *         STATUS EFFECT        *
    *                                      *
    *                                      *
    ****************************************/
@@ -275,14 +276,14 @@ public class Tile {
   public synchronized void addStatusEffects(List<StatusEffect> newStatusEffects) {
     for (Iterator<StatusEffect> iter = newStatusEffects.iterator(); iter.hasNext(); ) {
       StatusEffect s = iter.next();
-      StatusEffect mySE = getStatusEffect(s.getId());
+      StatusEffect mySE = getStatusEffect(s.id);
 
       if (mySE != null) {
         mySE.setCaster(s.getCaster());
         mySE.setAbility(s.getAbility());
         mySE.start();
       } else {
-        StatusEffect newSE = new StatusEffect(s.getId());
+        StatusEffect newSE = ServerGameInfo.newStatusEffect(s.id);
         newSE.setCaster(s.getCaster());
         newSE.setAbility(s.getAbility());
         newSE.start();
@@ -299,7 +300,7 @@ public class Tile {
 
     for (Iterator<StatusEffect> iter = getStatusEffects().iterator(); iter.hasNext(); ) {
       StatusEffect s = iter.next();
-      if (s.getId() == sId) {
+      if (s.id == sId) {
         return s;
       }
     }
@@ -316,7 +317,7 @@ public class Tile {
       StatusEffect s = iter.next();
 
       if (!s.isActive()) {
-        sToRemove.append(s.getId()).append(',');
+        sToRemove.append(s.id).append(',');
         iter.remove();
       }
     }
@@ -337,7 +338,7 @@ public class Tile {
 
   /****************************************
    *                                      *
-   *         GETTER / SETTER				*
+   *         GETTER / SETTER        *
    *                                      *
    *                                      *
    ****************************************/

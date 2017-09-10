@@ -135,10 +135,11 @@ public abstract class Builder<T>
               set(current, lastSetter, lastValue);
             }
             catch (InvocationTargetException ex) {
-              System.err.println("[Builder] ERROR - Value exception in "
+              System.err.println("[Builder] ERROR - Value exception in +"
                   + lastOrigin
+                  + " -> " + lastSetter + ": " + lastValue
                   + " - " + ex.getCause());
-              //ex.printStackTrace();
+              ex.printStackTrace();
             }
             lastSetter = null;
           }

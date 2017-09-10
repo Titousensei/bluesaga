@@ -15,6 +15,7 @@ import map.TileData;
 import network.Client;
 import network.Server;
 import game.ServerSettings;
+import utils.ServerGameInfo;
 import utils.ServerMessage;
 
 public class MapHandler extends Handler {
@@ -87,7 +88,7 @@ public class MapHandler extends Handler {
                   iter.hasNext();
                   ) {
                 StatusEffect se = iter.next();
-                cSE.append(se.getId())
+                cSE.append(se.id)
                    .append(',')
                    .append(se.getGraphicsNr())
                    .append(';');
@@ -113,7 +114,7 @@ public class MapHandler extends Handler {
               iter.hasNext();
               ) {
             StatusEffect se = iter.next();
-            cSE.append(se.getId())
+            cSE.append(se.id)
                .append(',')
                .append(se.getGraphicsNr())
                .append(';');
@@ -272,7 +273,7 @@ public class MapHandler extends Handler {
       if (TILE.getStatusEffects().size() > 0) {
         statusEffects.setLength(0);
         for (StatusEffect se : TILE.getStatusEffects()) {
-          statusEffects.append(se.getId())
+          statusEffects.append(se.id)
                        .append('/')
                        .append(se.getGraphicsNr())
                        .append('-');

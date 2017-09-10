@@ -301,41 +301,41 @@ public class PlayerCharacter extends Creature {
         .append(',')
         .append(XP)
         .append(',')
-        .append(Stats.getValue("STRENGTH"))
+        .append(stats_.getValue("STRENGTH"))
         .append(',')
-        .append(Stats.getValue("INTELLIGENCE"))
+        .append(stats_.getValue("INTELLIGENCE"))
         .append(',')
-        .append(Stats.getValue("AGILITY"))
+        .append(stats_.getValue("AGILITY"))
         .append(',')
-        .append(Stats.getValue("SPEED"))
+        .append(stats_.getValue("SPEED"))
         .append(',')
-        .append(Stats.getValue("CRITICAL_HIT"))
+        .append(stats_.getValue("CRITICAL_HIT"))
         .append(',')
-        .append(Stats.getValue("EVASION"))
+        .append(stats_.getValue("EVASION"))
         .append(',')
-        .append(Stats.getValue("ACCURACY"))
+        .append(stats_.getValue("ACCURACY"))
         .append(',')
-        .append(Stats.getValue("MAX_HEALTH"))
+        .append(stats_.getValue("MAX_HEALTH"))
         .append(',')
         .append(Health)
         .append(',')
-        .append(Stats.getValue("MAX_MANA"))
+        .append(stats_.getValue("MAX_MANA"))
         .append(',')
         .append(Mana)
         .append(',')
-        .append(Stats.getValue("FIRE_DEF"))
+        .append(stats_.getValue("FIRE_DEF"))
         .append(',')
-        .append(Stats.getValue("COLD_DEF"))
+        .append(stats_.getValue("COLD_DEF"))
         .append(',')
-        .append(Stats.getValue("SHOCK_DEF"))
+        .append(stats_.getValue("SHOCK_DEF"))
         .append(',')
-        .append(Stats.getValue("CHEMS_DEF"))
+        .append(stats_.getValue("CHEMS_DEF"))
         .append(',')
-        .append(Stats.getValue("MIND_DEF"))
+        .append(stats_.getValue("MIND_DEF"))
         .append(',')
-        .append(Stats.getValue("MAGIC_DEF"))
+        .append(stats_.getValue("MAGIC_DEF"))
         .append(',')
-        .append(Stats.getValue("ARMOR"))
+        .append(stats_.getValue("ARMOR"))
         .append(',')
         .append(nextXP)
         .append(',')
@@ -1008,13 +1008,13 @@ public class PlayerCharacter extends Creature {
           XP = 0;
         }
 
-        Stats.reset();
+        stats_.reset();
 
         for (Entry<String, Integer> entry : baseClass.getStartStats().getHashMap().entrySet()) {
           String key = entry.getKey();
           int value = entry.getValue();
 
-          Stats.setValue(key, value + (Level - 1) * baseClass.getLevelStats().getValue(key));
+          stats_.setValue(key, value + (Level - 1) * baseClass.getLevelStats().getValue(key));
         }
 
         Name = rs.getString("Name");
@@ -1291,7 +1291,7 @@ public class PlayerCharacter extends Creature {
       String key = entry.getKey();
       int value = entry.getValue();
 
-      Stats.setValue(key, getRawStat(key) - value);
+      stats_.setValue(key, getRawStat(key) - value);
     }
 
     updateBonusStats();
@@ -1333,7 +1333,7 @@ public class PlayerCharacter extends Creature {
       int value = entry.getValue();
       int startValue = ServerGameInfo.classDef.get(baseClass.id).getStartStats().getValue(key);
 
-      Stats.setValue(key, startValue + (Level - 1) * value);
+      stats_.setValue(key, startValue + (Level - 1) * value);
     }
 
     Health = getRawStat("MAX_HEALTH");

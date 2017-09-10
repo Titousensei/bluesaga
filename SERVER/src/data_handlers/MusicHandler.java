@@ -5,6 +5,7 @@ import java.util.Map;
 import data_handlers.ability_handler.StatusEffect;
 import network.Client;
 import network.Server;
+import utils.ServerGameInfo;
 
 public class MusicHandler extends Handler {
 
@@ -22,7 +23,7 @@ public class MusicHandler extends Handler {
 
         int instrumentId = client.playerCharacter.getWeapon().getId();
 
-        client.playerCharacter.addStatusEffect(new StatusEffect(14));
+        client.playerCharacter.addStatusEffect(ServerGameInfo.newStatusEffect(14));
 
         // SEND NOTE TO ALL PLAYERS IN VICINITY
         for (Map.Entry<Integer, Client> entry : Server.clients.entrySet()) {

@@ -8,6 +8,7 @@ import java.util.Vector;
 import components.Stats;
 
 import data_handlers.ability_handler.StatusEffect;
+import utils.ServerGameInfo;
 import network.Server;
 
 public class Item {
@@ -120,7 +121,7 @@ public class Item {
     setScrollUseId(copy.getScrollUseId());
 
     for (StatusEffect se : copy.getStatusEffects()) {
-      statusEffects.add(new StatusEffect(se.getId()));
+      statusEffects.add(ServerGameInfo.newStatusEffect(se.id));
     }
 
     if (getType().equals("Eatable")
@@ -442,7 +443,7 @@ public class Item {
 
       if (magicId == 1) {
         if (getType().equals("Weapon")) {
-          StatusEffect seEffect = new StatusEffect(1);
+          StatusEffect seEffect = ServerGameInfo.newStatusEffect(1);
           seEffect.setRepeatDamage(statBonusInt);
           statusEffects.add(seEffect);
         } else {
@@ -451,7 +452,7 @@ public class Item {
         magicType = "FIRE";
       } else if (magicId == 2) {
         if (getType().equals("Weapon")) {
-          StatusEffect seEffect = new StatusEffect(6);
+          StatusEffect seEffect = ServerGameInfo.newStatusEffect(6);
           seEffect.setRepeatDamage(Math.round(statBonusInt * 0.75f));
           statusEffects.add(seEffect);
         } else {
@@ -460,7 +461,7 @@ public class Item {
         magicType = "COLD";
       } else if (magicId == 3) {
         if (getType().equals("Weapon")) {
-          StatusEffect seEffect = new StatusEffect(7);
+          StatusEffect seEffect = ServerGameInfo.newStatusEffect(7);
           seEffect.setRepeatDamage(statBonusInt);
           statusEffects.add(seEffect);
         } else {
@@ -471,7 +472,7 @@ public class Item {
         Stats.setValue("STRENGTH", Stats.getValue("STRENGTH") + statBonusInt);
       } else if (magicId == 5) {
         if (getType().equals("Weapon")) {
-          statusEffects.add(new StatusEffect(4));
+          statusEffects.add(ServerGameInfo.newStatusEffect(4));
         } else {
           Stats.setValue("CHEMS_DEF", Stats.getValue("CHEMS_DEF") + statBonusInt);
         }

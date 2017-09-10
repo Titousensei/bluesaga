@@ -17,7 +17,7 @@ ManaCost: 15
 Cooldown: 30
 Range: 0 creature
 Instant
-StatusEffects: 11
+StatusEffects: s11 / Block
 ClassLevel: 1
 Description: Blocks attacks (up to 20% of damage) for a short period of time
 GraphicsNr: 24
@@ -31,7 +31,7 @@ Cooldown: 10
 Range: 0 creature
 Instant
 Price: 500
-StatusEffects: 38
+StatusEffects: s38 / Protector
 ClassLevel: 3
 Description: Caster takes damage instead of party members
 GraphicsNr: 52
@@ -46,7 +46,7 @@ Cooldown: 30
 Range: 0 creature
 Instant
 Price: 800
-StatusEffects: 39
+StatusEffects: s39 / Lockdown
 ClassLevel: 5
 Description: Completly locks caster down, absorbing collosal amout of damage but makes caster immobile during that time.
 GraphicsNr: 53

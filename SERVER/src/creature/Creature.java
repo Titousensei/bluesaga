@@ -127,7 +127,7 @@ public class Creature implements Mover {
   protected List<Ability> abilities = null;
   private int DeathAbilityId = 0;
 
-  protected Stats Stats = new Stats();
+  protected Stats stats_ = new Stats();
   private ConcurrentHashMap<Integer, StatusEffect> StatusEffects =
       new ConcurrentHashMap<Integer, StatusEffect>();
   private Stats BonusStats = new Stats();
@@ -189,11 +189,11 @@ public class Creature implements Mover {
 
         AttackType = rs.getString("AttackType");
 
-        Stats.setValues(rs);
+        stats_.setValues(rs);
         BonusStats = new Stats();
 
-        Health = Stats.getValue("MAX_HEALTH");
-        Mana = Stats.getValue("MAX_MANA");
+        Health = stats_.getValue("MAX_HEALTH");
+        Mana = stats_.getValue("MAX_MANA");
 
         coords.put("HeadX", rs.getInt("HeadX"));
         coords.put("HeadY", rs.getInt("HeadY"));
@@ -250,7 +250,7 @@ public class Creature implements Mover {
           addAbility(newAbility);
         }
 
-        moveTimerEnd = Stats.getValue("SPEED") * 10;
+        moveTimerEnd = stats_.getValue("SPEED") * 10;
 
         if (moveTimerEnd > 0) {
           moveTimerItr = RandomUtils.getInt(0, moveTimerEnd);
@@ -313,13 +313,13 @@ public class Creature implements Mover {
     AttackType = copy.getAttackType();
 
     // Add stats
-    Stats = new Stats();
+    stats_ = new Stats();
     for (Iterator<String> iter = copy.getStats().getHashMap().keySet().iterator();
         iter.hasNext();
         ) {
       String key = iter.next().toString();
       int value = copy.getStats().getHashMap().get(key);
-      Stats.setValue(key, value);
+      stats_.setValue(key, value);
     }
 
     // Add abilities
@@ -331,8 +331,8 @@ public class Creature implements Mover {
       }
     }
 
-    Health = Stats.getValue("MAX_HEALTH");
-    Mana = Stats.getValue("MAX_MANA");
+    Health = stats_.getValue("MAX_HEALTH");
+    Mana = stats_.getValue("MAX_MANA");
 
     BonusStats = new Stats();
 
@@ -342,7 +342,7 @@ public class Creature implements Mover {
 
     setDeathAbilityId(copy.getDeathAbilityId());
 
-    moveTimerEnd = Stats.getValue("SPEED") * 10;
+    moveTimerEnd = stats_.getValue("SPEED") * 10;
 
     if (moveTimerEnd > 0) {
       moveTimerItr = RandomUtils.getInt(0, moveTimerEnd);
@@ -463,8 +463,8 @@ public class Creature implements Mover {
   }
 
   private int getStatFraction(String name, float div) {
-    int st = Stats.getValue(name);
-    int bst = Stats.getValue(name);
+    int st = stats_.getValue(name);
+    int bst = stats_.getValue(name);
     return Math.round((st + bst)/div);
   }
 
@@ -518,7 +518,7 @@ public class Creature implements Mover {
     Stats newStats = newStatusEffect.getStatsModif();
     if (newStats != null) {
       if (newStats.getValue("MAX_HEALTH") < 0) {
-        int newMaxHealth = Stats.getValue("MAX_HEALTH")
+        int newMaxHealth = stats_.getValue("MAX_HEALTH")
                            + BonusStats.getValue("MAX_HEALTH")
                            + newStats.getValue("MAX_HEALTH");
         if (newMaxHealth < 0) {
@@ -533,7 +533,7 @@ public class Creature implements Mover {
         }
       }
       if (newStats.getValue("MAX_MANA") < 0) {
-        int newMaxMana = Stats.getValue("MAX_MANA")
+        int newMaxMana = stats_.getValue("MAX_MANA")
                          + BonusStats.getValue("MAX_MANA")
                          + newStats.getValue("MAX_MANA");
         if (newMaxMana < 0) {
@@ -549,12 +549,12 @@ public class Creature implements Mover {
       }
     }
 
-    StatusEffect mySE = getStatusEffects().get(newStatusEffect.getId());
+    StatusEffect mySE = getStatusEffects().get(newStatusEffect.id);
 
     if (mySE == null) {
-      getStatusEffects().put(newStatusEffect.getId(), newStatusEffect);
+      getStatusEffects().put(newStatusEffect.id, newStatusEffect);
       updateBonusStats();
-    } else if ("stackable".equals(newStatusEffect.getRepeatDamageType())) {
+    } else if (newStatusEffect.isStackable()) {
       Stats myStats = mySE.getStatsModif();
       myStats.fraction(1.0f * mySE.getDuration() / newStatusEffect.getDuration());
       myStats.addStats(newStats);
@@ -575,7 +575,7 @@ public class Creature implements Mover {
   public synchronized void removeStatusEffect(int statusEffectId) {
     for (Iterator<StatusEffect> iter = StatusEffects.values().iterator(); iter.hasNext(); ) {
       StatusEffect s = iter.next();
-      if (s.getId() == statusEffectId) {
+      if (s.id == statusEffectId) {
         iter.remove();
         break;
       }
@@ -1383,19 +1383,19 @@ public class Creature implements Mover {
   }
 
   public void setStat(String StatType, int value) {
-    Stats.setValue(StatType, value);
+    stats_.setValue(StatType, value);
   }
 
   public int getRawStat(String StatType) {
-    return Stats.getValue(StatType);
+    return stats_.getValue(StatType);
   }
 
   public Stats getStats() {
-    return Stats;
+    return stats_;
   }
 
   public int getStat(String StatType) {
-    int totalStat = Stats.getValue(StatType);
+    int totalStat = stats_.getValue(StatType);
     totalStat += BonusStats.getValue(StatType);
     if (totalStat < 0) {
       totalStat = 0;

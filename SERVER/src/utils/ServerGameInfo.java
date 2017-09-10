@@ -25,6 +25,7 @@ import creature.Npc;
 import data_handlers.ability_handler.Ability;
 import data_handlers.ability_handler.AbilityBuilder;
 import data_handlers.ability_handler.StatusEffect;
+import data_handlers.ability_handler.StatusEffectBuilder;
 import data_handlers.item_handler.Item;
 import data_handlers.item_handler.ItemBuilder;
 
@@ -38,6 +39,8 @@ public class ServerGameInfo {
   public static Map<Integer, Coords> checkpointDef;
 
   public static Map<Integer, Ability> abilityDef;
+  public static Map<Integer, StatusEffect> statusEffectDef;
+
   public static Map<Integer, JobSkill> skillDef;
   public static Map<String, JobSkill> skillNameDef;
 
@@ -61,12 +64,28 @@ public class ServerGameInfo {
     return ret;
   }
 
+  public static StatusEffect newStatusEffect(int id) {
+    StatusEffect se = statusEffectDef.get(id);
+    if (se==null) {
+      throw new RuntimeException("StatusEffect not found: " + id);
+    }
+    return new StatusEffect(se);
+  }
+
   public static int getSkillId(String subType) {
     JobSkill sk = skillNameDef.get(subType);
     return (sk != null) ? sk.getId() : 0;
   }
 
   public static void load() {
+    System.out.println("[ServerGameInfo] Loading game files");
+
+    // LOAD STATUS EFFECT
+    statusEffectDef = new HashMap<>();
+    for (File f : new File(ServerSettings.PATH).listFiles((dir, name) -> name.startsWith("statuseffects"))) {
+      Builder.load(f.getPath(), StatusEffectBuilder.class, statusEffectDef);
+    }
+
     // LOAD ITEMS
     itemDef = new HashMap<>();
     for (File f : new File(ServerSettings.PATH).listFiles((dir, name) -> name.startsWith("items_"))) {
@@ -92,10 +111,11 @@ public class ServerGameInfo {
     classDef.put(14, new WhiteMageClass());
 
     // LOAD ABILITIES
-    abilityDef = new HashMap<Integer, Ability>();
+    abilityDef = new HashMap<>();
     for (File f : new File(ServerSettings.PATH).listFiles((dir, name) -> name.startsWith("abilities"))) {
       Builder.load(f.getPath(), AbilityBuilder.class, abilityDef);
     }
+    AbilityBuilder.verify(statusEffectDef, abilityDef);
 
     // LOAD SKILLS INFO
     skillDef = new HashMap<>();

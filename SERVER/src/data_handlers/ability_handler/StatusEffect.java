@@ -1,23 +1,32 @@
 package data_handlers.ability_handler;
 
+import java.util.*;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-
-import org.newdawn.slick.Color;
 
 import components.Stats;
 
 import creature.Creature;
 import network.Server;
 
-public class StatusEffect {
+public class StatusEffect
+{
+  public final static Set<String> VALID_STATS = new HashSet<>(Arrays.asList(
+     "ACCURACY", "AGILITY" ,"ARMOR", "ATTACKSPEED", "CRITICAL_HIT", "EVASION",
+     "INTELLIGENCE", "SPEED", "STRENGTH",
+     "CHEMS_DEF", "COLD_DEF", "FIRE_DEF", "MAGIC_DEF", "MIND_DEF", "SHOCK_DEF",
+     "MAX_HEALTH", "MAX_MANA"
+  ));
 
-  private int Id;
-  private String Name;
-  private Stats StatsModif;
+  public final int id;
+  public final String name;
+  public final String origin;
+
+  private Stats statsModif;
   private int Duration; // Duration in seconds
   private int RepeatDamage;
   private String RepeatDamageType;
+  private boolean isStackable_ = false;
 
   private int GraphicsNr;
   private int AnimationId;
@@ -28,133 +37,44 @@ public class StatusEffect {
 
   private Creature Caster;
 
-  private Color SEColor;
+  private String SEColor;
   private int classId;
 
   private int ActiveTimeEnd;
 
-/*
-CREATE TABLE "ability_statuseffect" (
-  "Id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL UNIQUE,
-  "Name" VARCHAR,
-  "StatsModif" VARCHAR DEFAULT None,
-  "Duration" INTEGER DEFAULT 0,
-  "RepeatDamage" INTEGER DEFAULT 0,
-  "RepeatDamageType" VARCHAR DEFAULT None,
-  "Color" VARCHAR DEFAULT '0,0,0',
-  "ClassId" INTEGER DEFAULT 0,
-  "GraphicsNr" INTEGER DEFAULT 0,
-  "AnimationId" INTEGER DEFAULT 0,
-  "Sfx" VARCHAR DEFAULT None
-);
+  StatusEffect(int id, String name, String origin) {
+    this.id = id;
+    this.name = name;
+    this.origin = origin;
+  }
 
-               |Duration                  |ClassId
-                  |RepeatDamage             |GraphicsNr
-                     |RepeatDamageType         |AnimationId
-Id|Name                       |Color             |Sfx        |StatsModif
- 1|Burning     |4 |2 |FIRE    |246,71,53  |0|1 |0|fire       |None
- 2|Acid        |6 |1 |CHEMS   |65,245,65  |0|2 |0|acid       |None
- 3|Charmed     |15|0 |None    |255,124,223|0|3 |0|None       |STRENGTH:-2
- 4|Poisoned    |4 |2 |CHEMS   |230,128,250|0|4 |0|gas        |None
- 5|Poisoned    |8 |2 |CHEMS   |230,128,250|0|4 |0|gas        |None
- 6|Frozen      |4 |2 |COLD    |164,201,255|0|6 |0|frozen     |SPEED:-25
- 7|Shocked     |4 |2 |SHOCK   |255,250,111|0|7 |0|electric   |SPEED:-20
- 8|Rooted      |3 |0 |STRIKE  |168,149,94 |0|8 |0|plants     |SPEED:-200
- 9|Attack Speed Boost|6|0|None|168,149,94 |0|9 |0|time1      |ATTACKSPEED:200
-10|Haste       |15|0 |None    |195,90,234 |0|10|0|time1      |SPEED:200
-11|Block       |10|0 |None    |195,90,234 |0|11|0|lock       |ARMOR:100
-12|Faded       |20|0 |None    |93,94,91   |0|0 |0|None       |EVASION:40
-13|Invisibility|60|0 |None    |93,94,91   |0|0 |0|None       |None
-14|Play Music  |1 |0 |None    |0,0,0      |0|17|0|None       |None
-15|Fishing     |2 |0 |None    |255,255,255|0|18|0|None       |None
-16|Spikes      |4 |20|PIERCE  |114,195,135|0|20|0|None       |None
-20|Frozen      |4 |5 |COLD    |164,201,255|0|6 |0|frozen     |SPEED:-35
-21|Frozen      |4 |4 |COLD    |164,201,255|0|6 |0|frozen     |SPEED:-60
-22|Burning     |4 |4 |FIRE    |246,71,53  |0|1 |0|fire       |None
-23|Shocked     |2 |7 |SHOCK   |255,250,111|0|7 |0|electric   |SPEED:-30
-24|Shocked     |2 |7 |SHOCK   |255,250,111|0|7 |0|electric   |SPEED:-30
-25|Mana Shield |90|0 |None    |126,181,255|0|12|0|None       |None
-26|Ink Splatter|18|0 |None    |183,228,104|0|13|0|slime      |None
-27|Dizzy       |20|0 |None    |183,228,104|0|14|0|stopdizzy  |None
-28|Fishing     |2 |0 |None    |255,255,255|0|18|0|drop       |None
-29|Snow        |8 |0 |None    |255,255,255|0|19|0|slime      |None
-30|Explosion   |2 |0 |None    |246,71,53  |0|21|0|explosion  |None
-31|Necro Fire  |8 |6 |CHEMS   |59,158,134 |0|5 |0|fire       |None
-32|Pierce Armor|10|0 |None    |129,172,79 |0|22|0|lock       |None
-33|Fire Shield |20|0 |None    |230,82,62  |0|23|0|fire       |ARMOR:50
-34|Ice Shield  |20|0 |None    |164,201,255|0|24|0|frozen     |ARMOR:80
-35|Rage        |6 |0 |None    |200,0,0    |0|0 |9|rage       |ATTACKSPEED:50;STRENGTH:40
-36|Rage Oozemaw|6 |0 |None    |200,0,0    |0|0 |9|rage       |ARMOR:200;STRENGTH:300
-37|Oozemaw Powerstrike|2|0|Non|246,71,53  |0|26|0|powerstrike|None
-38|Protector   |20|0 |None    |0,0,0      |0|27|0|None       |None
-39|Lockdown    |20|0 |None    |195,90,234 |0|11|0|lock       |ARMOR:1000;SPEED:-999;ATTACKSPEED:-50
-40|Nature Blend|60|0 |None    |201,255,182|0|0 |0|None       |None
-41|Wooden Stub |20|0 |None    |201,255,182|0|28|0|plants     |None
-42|Flash Step  |1 |0 |None    |255,250,111|0|0 |0|None       |None
-43|Ice Spikes  |4 |30|PIERCE  |114,195,135|0|25|0|icespikes  |None
-
-100|Nimt       |60|0 |None    |195,234,90 |0|17|0|time1      |STRENGTH:+2;MAX_HEALTH:-20
-
-*/
-
-  public StatusEffect(int newId) {
-    setId(newId);
+  public StatusEffect(StatusEffect copy) {
+    id = copy.id;
+    name = copy.name;
+    origin = copy.origin;
 
     ability = null;
-
     Caster = null;
-    // Only for testing with ItemBuilder
-    if (Server.gameDB==null) { return; }
-    ResultSet rs = Server.gameDB.askDB("select * from ability_statuseffect where Id = " + newId);
 
-    try {
-      if (rs.next()) {
-        setName(rs.getString("Name").intern());
-        StatsModif = new Stats();
-        StatsModif.reset();
-        if (!rs.getString("StatsModif").equals("None")) {
-          String allStatsModifInfo[] = rs.getString("StatsModif").split(";");
-          for (String statsModifInfo : allStatsModifInfo) {
-            String statsModifSplit[] = statsModifInfo.split(":");
-            String statsType = statsModifSplit[0];
-            int statsEffect = Integer.parseInt(statsModifSplit[1]);
-            StatsModif.setValue(statsType, statsEffect);
-          }
-        }
-
-        setGraphicsNr(rs.getInt("GraphicsNr"));
-        setAnimationId(rs.getInt("AnimationId"));
-
-        setDuration(rs.getInt("Duration"));
-        setRepeatDamage(rs.getInt("RepeatDamage"));
-        setRepeatDamageType(rs.getString("RepeatDamageType").intern());
-        String colorInfo[] = rs.getString("Color").split(",");
-        SEColor =
-            new Color(
-                Integer.parseInt(colorInfo[0]),
-                Integer.parseInt(colorInfo[1]),
-                Integer.parseInt(colorInfo[2]));
-        setClassId(rs.getInt("ClassId"));
-        setSfx(rs.getString("Sfx"));
-      }
-      rs.close();
-    } catch (SQLException e) {
-      e.printStackTrace();
+    if (copy.getStatsModif() != null) {
+      setStatsModif(new Stats(copy.getStatsModif().getHashMap()));
     }
+    setGraphicsNr(copy.getGraphicsNr());
+    setAnimationId(copy.getAnimationId());
+
+    setDuration(copy.getDuration());
+    setRepeatDamage(copy.getRepeatDamage());
+    setStackable(copy.isStackable());
+    setRepeatDamageType(copy.getRepeatDamageType());
+    SEColor = copy.getColor();
+    setClassId(copy.getClassId());
+    setSfx(copy.getSfx());
 
     ActiveTimeEnd = Duration;
   }
 
   public void start() {
     ActiveTimeEnd = Duration;
-  }
-
-  public String getName() {
-    return Name;
-  }
-
-  public void setName(String name) {
-    Name = name;
   }
 
   public int getDuration() {
@@ -182,15 +102,11 @@ Id|Name                       |Color             |Sfx        |StatsModif
   }
 
   public Stats getStatsModif() {
-    return StatsModif;
+    return statsModif;
   }
 
-  public int getId() {
-    return Id;
-  }
-
-  public void setId(int id) {
-    Id = id;
+  void setStatsModif(Stats s) {
+    statsModif = s;
   }
 
   public boolean isActive() {
@@ -200,6 +116,9 @@ Id|Name                       |Color             |Sfx        |StatsModif
     }
     return false;
   }
+
+  public boolean isStackable() { return isStackable_; }
+  public void setStackable(boolean value) { isStackable_ = value; }
 
   public void deactivate() {
     ActiveTimeEnd = 0;
@@ -213,11 +132,15 @@ Id|Name                       |Color             |Sfx        |StatsModif
     Caster = caster;
   }
 
-  public Color getColor() {
+  public String getColor() {
     return SEColor;
   }
 
-  public int getSkillId() {
+  void setColor(String col) {
+    SEColor = col;
+  }
+
+  public int getClassId() {
     return classId;
   }
 
@@ -259,6 +182,11 @@ Id|Name                       |Color             |Sfx        |StatsModif
 
   @Override
   public String toString() {
-    return "StatusEffect[" + Name + "]" + StatsModif;
+    if (statsModif!=null) {
+      return "StatusEffect[" + name + "]->" + statsModif;
+    }
+    else {
+      return "StatusEffect[" + name + "]";
+    }
   }
 }

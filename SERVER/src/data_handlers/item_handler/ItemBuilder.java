@@ -7,6 +7,7 @@ import components.Builder;
 import components.Stats;
 import data_handlers.ability_handler.StatusEffect;
 import data_handlers.item_handler.Item;
+import utils.ServerGameInfo;
 
 public class ItemBuilder
 extends Builder<Item>
@@ -176,11 +177,11 @@ extends Builder<Item>
     it.setContainerId(parseInt(val));
   }
 
-  public void StatusEffects(String val) {
+  public void statusEffects(String val) {
     String statusEffectIds[] = val.split(",");
     for (String statusEffectId : statusEffectIds) {
-      int statusEffectIdInt = Integer.parseInt(statusEffectId);
-      it.addStatusEffects(new StatusEffect(statusEffectIdInt));
+      int id = parseInt(statusEffectId);
+      it.addStatusEffects(ServerGameInfo.newStatusEffect(id));
     }
   }
 
@@ -194,6 +195,19 @@ extends Builder<Item>
       it.setInfo(info);
     }
     return it;
+  }
+
+  public static void verify(Map<Integer, StatusEffect> statuseffects, Map<Integer, Item> items) {
+    for (Item it : items.values()) {
+      Vector<StatusEffect> effects = it.getStatusEffects();
+      if (effects!=null) {
+        for (StatusEffect se : effects) {
+          if (!statuseffects.containsKey(se.id)) {
+            System.out.println("[AbilityBuilder] ERROR - Unknow statuseffects for " + it + ": " + se);
+          }
+        }
+      }
+    }
   }
 
   public static void main(String... args) {

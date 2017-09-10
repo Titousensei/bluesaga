@@ -4,7 +4,7 @@ ManaCost: 15
 Cooldown: 20
 Range: 0 creature
 Instant
-StatusEffects: 9
+StatusEffects: s9 / Attack Speed Boost
 ClassLevel: 1
 EquipReq: Weapon:3
 Description: Boosts attack speed during short period of time. Enables shooting while running.
@@ -20,7 +20,7 @@ Cooldown: 40
 Range: 0 creature
 Instant
 Price: 1800
-StatusEffects: 10
+StatusEffects: s10 / Haste
 ClassLevel: 8
 Description: Boosts movement speed during a short period of time
 GraphicsNr: 23
@@ -35,7 +35,7 @@ Cooldown: 20
 Range: 0 creature
 Instant
 Price: 600
-StatusEffects: 32
+StatusEffects: s32 / Pierce Armor
 ClassLevel: 3
 Description: Armor on targets is nullified during period of time
 GraphicsNr: 39

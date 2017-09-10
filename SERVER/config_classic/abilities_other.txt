@@ -6,7 +6,7 @@ Cooldown: 20
 AoE: cross3
 Damage: 8 CHEMS
 Price: 200
-StatusEffects: 2
+StatusEffects: s2 / Acid
 ProjectileId: 6
 GraphicsNr: 2
 AnimationId: 1
@@ -18,7 +18,7 @@ ManaCost: 3
 Cooldown: 10
 Instant
 Range: 0 creature
-StatusEffects: 3
+StatusEffects: s3 / Charmed
 CastingSpeed: 100
 
 ### a4 / Gas Cloud
@@ -28,7 +28,7 @@ Cooldown: 10
 AoE: square3
 Damage: 2 CHEMS
 Instant
-StatusEffects: 4
+StatusEffects: s4 / Poisoned
 AnimationId: 2
 CastingSpeed: 100
 
@@ -38,7 +38,7 @@ ManaCost: 4
 Cooldown: 10
 Damage: 1 CHEMS
 Instant
-StatusEffects: 4
+StatusEffects: s4 / Poisoned
 AnimationId: 2
 CastingSpeed: 100
 
@@ -53,7 +53,7 @@ AoE: 0,0;-1,0;1,0;2,0;0,-1;1,-1;-1,1;0,1;1,1;2,1;0,2;1,2
 - ..xx.
 Damage: 10 CHEMS
 Instant
-StatusEffects: 5
+StatusEffects: s5 / Poisoned
 AnimationId: 2
 CastingSpeed: 100
 
@@ -63,7 +63,7 @@ Cooldown: 10
 AoE: 7x3hollow
 Damage: 10 FIRE
 Instant
-StatusEffects: 1
+StatusEffects: s1 / Burning
 EquipReq: Weapon:6
 CastingSpeed: 700
 
@@ -75,7 +75,7 @@ Cooldown: 20
 AoE: 0,0;-1,0;1,0;2,0;0,-1;1,-1;-1,1;0,1;1,1;2,1;0,2;1,2
 Damage: 5 CHEMS
 Instant
-StatusEffects: 5
+StatusEffects: s5 / Poisoned
 AnimationId: 2
 CastingSpeed: 100
 
@@ -109,7 +109,7 @@ Cooldown: 10
 AoE: cross3
 Damage: 6 CHEMS
 Range: 0 creature
-StatusEffects: 26
+StatusEffects: s26 / Ink Splatter
 ProjectileId: 7
 Description: Sticky ink will cover the targets vision
 GraphicsNr: 20
@@ -142,7 +142,6 @@ ManaCost: 0
 Cooldown: 10
 Range: 0 tile
 Instant
-StatusEffects: 0
 Description: Splits itself into 5 moss blobs
 SpawnIds: 25,25,25,25,25
 CastingSpeed: 100
@@ -152,7 +151,7 @@ Color: 255,0,255
 ManaCost: 8
 Cooldown: 60
 Range: 0 creature
-StatusEffects: 27
+StatusEffects: s27 / Dizzy
 ProjectileId: 2
 Description: Makes Target dizzy for a period of time
 GraphicsNr: 27
@@ -165,7 +164,6 @@ ManaCost: 0
 Cooldown: 10
 Range: 0 tile
 Instant
-StatusEffects: 0
 Description: Splits itself into 1 spear and 1 dart elf
 SpawnIds: 44,45
 CastingSpeed: 100
@@ -176,7 +174,6 @@ ManaCost: 50
 Cooldown: 30
 Range: 0 tile
 Instant
-StatusEffects: 0
 Description: Summons spear Elf
 SpawnIds: 44
 AnimationId: 2
@@ -188,7 +185,6 @@ ManaCost: 50
 Cooldown: 30
 Range: 0 tile
 Instant
-StatusEffects: 0
 Description: Summons dart Elf
 SpawnIds: 45
 AnimationId: 2
@@ -200,7 +196,7 @@ ManaCost: 10
 Cooldown: 10
 Damage: 50 FIRE
 Range: 20 tile
-StatusEffects: 1
+StatusEffects: s1 / Burning
 ClassLevel: 3
 ProjectileId: 1
 Description: Deals fire dmg on single target
@@ -214,7 +210,7 @@ Cooldown: 10
 Range: 0 creature
 Instant
 Price: 800
-StatusEffects: 12
+StatusEffects: s12 / Faded
 Description: Makes the user hard to hit
 GraphicsNr: 28
 CastingSpeed: 100
@@ -227,7 +223,7 @@ Cooldown: 10
 Range: 0 creature
 Instant
 Price: 800
-StatusEffects: 13
+StatusEffects: s13 / Invisibility
 Description: Makes the user invisible, effect will be canceled if engaged in combat
 GraphicsNr: 29
 CastingSpeed: 100
@@ -250,7 +246,7 @@ ManaCost: 0
 Cooldown: 2
 Range: 7 tile
 Price: 50
-StatusEffects: 28
+StatusEffects: s28 / Fishing
 ClassLevel: 1
 ProjectileId: 9
 EquipReq: Weapon:101
@@ -265,7 +261,7 @@ Color: 164,201,255
 ManaCost: 220
 Cooldown: 20
 Range: 0 creature
-StatusEffects: 29
+StatusEffects: s29 / Snow
 ClassLevel: 1
 ProjectileId: 2
 Description: Snow ball that covers the vision of the target with snow
@@ -280,7 +276,7 @@ Cooldown: 30
 AoE: 7x3
 Damage: 180 PIERCE
 Instant
-StatusEffects: 16
+StatusEffects: s16 / Spikes
 ClassLevel: 1
 GraphicsNr: 37
 AnimationId: 1
@@ -304,7 +300,7 @@ Cooldown: 7
 AoE: diamond5
 Damage: 20 STRIKE
 Range: 10 tile
-StatusEffects: 30
+StatusEffects: s30 / Explosion
 ClassLevel: 1
 ProjectileId: 11
 Description: Bomb that expodes after a short delay.
@@ -320,7 +316,7 @@ Cooldown: 20
 AoE: square3
 Damage: 40 CHEMS
 Price: 600
-StatusEffects: 31
+StatusEffects: s31 / Necro Fire
 ProjectileId: 12
 Description: Deals CHEM damage
 AnimationId: 1
@@ -332,7 +328,6 @@ ManaCost: 50
 Cooldown: 80
 Range: 0 tile
 Instant
-StatusEffects: 0
 Description: Summons necro spawn
 SpawnIds: 72,72
 CastingSpeed: 100
@@ -343,7 +338,7 @@ ManaCost: 40
 Cooldown: 20
 AoE: 0,0;-1,0;1,0;2,0;0,-1;1,-1;-1,1;0,1;1,1;2,1;0,2;1,2
 Damage: 80 CHEMS
-StatusEffects: 31
+StatusEffects: s31 / Necro Fire
 ProjectileId: 13
 AnimationId: 1
 CastingSpeed: 100
@@ -354,7 +349,6 @@ ManaCost: 50
 Cooldown: 120
 Range: 0 tile
 Instant
-StatusEffects: 0
 Description: Summons necro spawn
 SpawnIds: 72,72,72,72,72
 CastingSpeed: 100
@@ -364,7 +358,7 @@ ManaCost: 8
 Cooldown: 10
 Damage: 100 CHEMS
 Range: 0 creature
-StatusEffects: 26
+StatusEffects: s26 / Ink Splatter
 ProjectileId: 7
 Description: Sticky ink will cover the targets vision
 GraphicsNr: 20
@@ -388,7 +382,7 @@ ManaCost: 5
 Cooldown: 20
 Range: 0 creature
 Instant
-StatusEffects: 9
+StatusEffects: s9 / Attack Speed Boost
 Description: Double attack
 AnimationId: 5
 CastingSpeed: 100
@@ -411,7 +405,7 @@ ManaCost: 20
 Cooldown: 60
 Range: 0 creature
 Instant
-StatusEffects: 35
+StatusEffects: s35 / Rage
 Description: Enrage caster, giving a speed and strength bonus
 GraphicsNr: 51
 CastingSpeed: 100
@@ -423,7 +417,7 @@ ManaCost: 20
 Cooldown: 60
 Range: 0 creature
 Instant
-StatusEffects: 35
+StatusEffects: s35 / Rage
 Description: Enrage caster, giving a speed and strength bonus
 GraphicsNr: 51
 CastingSpeed: 100
@@ -436,7 +430,7 @@ Cooldown: 12
 AoE: diamond5hollow
 Range: 0 tile
 Instant
-StatusEffects: 37
+StatusEffects: s37 / Oozemaw Powerstrike
 Damage: x2.0 STRIKE
 Description: Deals 2x regular damage on single target
 AnimationId: 3
@@ -448,7 +442,6 @@ ManaCost: 10
 Cooldown: 30
 Range: 0 tile
 Instant
-StatusEffects: 0
 Description: Summons necro spawn
 SpawnIds: 11,14
 CastingSpeed: 100
@@ -472,7 +465,6 @@ ManaCost: 10
 Cooldown: 30
 Range: 0 tile
 Instant
-StatusEffects: 0
 Description: Summons tentacles
 SpawnIds: 80,80
 CastingSpeed: 100
@@ -496,7 +488,6 @@ ManaCost: 10
 Cooldown: 20
 Range: 0 tile
 Instant
-StatusEffects: 0
 Description: Summons toxic shrooms
 SpawnIds: 22
 CastingSpeed: 100
@@ -507,7 +498,6 @@ ManaCost: 10
 Cooldown: 30
 Range: 0 tile
 Instant
-StatusEffects: 0
 Description: Summons frost blob
 SpawnIds: 84
 CastingSpeed: 100
@@ -543,7 +533,7 @@ Cooldown: 10
 AoE: square3
 Damage: 10 FIRE
 Instant
-StatusEffects: 1
+StatusEffects: s1 / Burning
 EquipReq: Weapon:6
 CastingSpeed: 100
 
@@ -579,7 +569,6 @@ ManaCost: 10
 Cooldown: 20
 Range: 0 tile
 Instant
-StatusEffects: 0
 Description: Summons moss blobs
 SpawnIds: 25,25
 CastingSpeed: 100
@@ -589,7 +578,7 @@ ManaCost: 6
 Cooldown: 10
 Damage: 6 FIRE
 Price: 60
-StatusEffects: 1
+StatusEffects: s1 / Burning
 ClassLevel: 1
 ProjectileId: 1
 Description: Deals fire dmg on single target
@@ -613,7 +602,6 @@ ManaCost: 20
 Cooldown: 60
 Range: 0 tile
 Instant
-StatusEffects: 0
 Description: Summons necro spawn
 SpawnIds: 28,28
 CastingSpeed: 100
@@ -647,7 +635,7 @@ Cooldown: 10
 AoE: 7x3
 Damage: 50 COLD
 Instant
-StatusEffects: 43
+StatusEffects: s43 / Ice Spikes
 ClassLevel: 1
 GraphicsNr: 37
 Delay: 10

@@ -62,7 +62,7 @@ Cooldown: 300
 Range: 0 creature
 Instant
 Price: 1000
-StatusEffects: 25
+StatusEffects: s25 / Mana Shield
 ClassLevel: 3
 Description: Surrounds the caster with a protective coat, damage is taken from casters mana instead of health.
 GraphicsNr: 25

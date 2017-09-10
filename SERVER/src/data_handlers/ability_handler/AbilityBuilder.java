@@ -5,6 +5,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import components.Builder;
+import utils.ServerGameInfo;
 
 public class AbilityBuilder
 extends Builder<Ability>
@@ -16,7 +17,7 @@ extends Builder<Ability>
   ));
 
   public final static Set<String> VALID_DMG_TYPES = new HashSet<>(Arrays.asList(
-      "Healing", "SLASH", "STRIKE", "PIERCE", "CHEMS", "FIRE", "COLD", "SHOCK"
+      "Healing", "SLASH", "STRIKE", "PIERCE", "CHEMS", "FIRE", "COLD", "SHOCK", "MAGIC"
   ));
 
   protected Ability s = null;
@@ -137,7 +138,6 @@ extends Builder<Ability>
     } else {
       s.setDamage(parseInt(parts[0]));
     }
-    s.setDamageType(parts[1]);
     if (VALID_DMG_TYPES.contains(parts[1])) {
       s.setDamageType(parts[1]);
     }
@@ -163,11 +163,11 @@ extends Builder<Ability>
     if (se == null) {
       se = new Vector<>();
     }
-    String StatusEffectsId[] = val.split(";");
+    String statusEffectsId[] = val.split(";");
 
-    for (String statusEffectInfo : StatusEffectsId) {
-      int statusEffectId = parseInt(statusEffectInfo);
-      StatusEffect newSE = new StatusEffect(statusEffectId);
+    for (String statusEffectInfo : statusEffectsId) {
+      int id = parseInt(statusEffectInfo);
+      StatusEffect newSE = ServerGameInfo.newStatusEffect(id);
       se.add(newSE);
     }
   }
@@ -213,6 +213,19 @@ extends Builder<Ability>
       s.setStatusEffects(se);
     }
     return s;
+  }
+
+  public static void verify(Map<Integer, StatusEffect> statuseffects, Map<Integer, Ability> abilities) {
+    for (Ability ab : abilities.values()) {
+      Vector<StatusEffect> effects = ab.getStatusEffects();
+      if (effects!=null) {
+        for (StatusEffect se : effects) {
+          if (!statuseffects.containsKey(se.id)) {
+            System.out.println("[AbilityBuilder] ERROR - Unknow statuseffects for " + ab + ": " + se);
+          }
+        }
+      }
+    }
   }
 
   public static void main(String... args) {

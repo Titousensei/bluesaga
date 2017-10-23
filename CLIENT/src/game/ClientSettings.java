@@ -29,14 +29,14 @@ public class ClientSettings {
   public static int PK_WEAK_LEVEL = 5;
 
   // VIDEO
-  public static short SCREEN_WIDTH = 1024; // 1024
-  public static short SCREEN_HEIGHT = 640; // 640
+  public static short SCREEN_WIDTH = 1024;
+  public static short SCREEN_HEIGHT = 640;
 
-  public static short WINDOW_WIDTH = 1024;
-  public static short WINDOW_HEIGHT = 640;
-
-  public static short FULLSCREEN_WIDTH = 1024;
-  public static short FULLSCREEN_HEIGHT = 768;
+  public static float scale = 1.0f;
+  public static short offset_x = 0;
+  public static short offset_y = 0;
+  public static short actual_w = 0;
+  public static short actual_h = 0;
 
   public static boolean FULL_SCREEN = false;
   public static short FRAME_RATE = 60;
@@ -54,18 +54,6 @@ public class ClientSettings {
   public static float soundVolume = 1.0f;
 
   public static boolean enableCardBook = true;
-
-  public static void toggleFullScreen() {
-    if (FULL_SCREEN) {
-      FULL_SCREEN = false;
-      SCREEN_WIDTH = WINDOW_WIDTH;
-      SCREEN_HEIGHT = WINDOW_HEIGHT;
-    } else {
-      FULL_SCREEN = true;
-      SCREEN_WIDTH = FULLSCREEN_WIDTH;
-      SCREEN_HEIGHT = FULLSCREEN_HEIGHT;
-    }
-  }
 
   public static JSONObject loadTranslationLanguageFile(String path) {
 

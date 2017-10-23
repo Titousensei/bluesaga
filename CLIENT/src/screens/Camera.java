@@ -25,14 +25,10 @@ public class Camera {
     myCameraMoveSpeed = 400.0f;
   }
 
-  public void setScreenDimentionsY(int newValue) {
-    myScreenDimentionsY = newValue;
-  }
-
   public void Update(float aElapsedTime) {
     /*
     if(myMouseEffectIsActive){
-    	HandleMouseEffect();
+      HandleMouseEffect();
     }
     */
     if (shakeItr > 0) {
@@ -100,26 +96,26 @@ public class Camera {
 
   /*
   private void CheckBoundaries(){
-  	float temp = -(BlueSaga.WORLD_MAP.getMapSize()*Settings.TILE_SIZE);
+    float temp = -(BlueSaga.WORLD_MAP.getMapSize()*Settings.TILE_SIZE);
 
-  	if(x > 0) {
-  		x = 0;
-  	}
-  	if(x < temp+myScreenDimentionsX) {
-  		x = temp+myScreenDimentionsX;
-  	}
+    if(x > 0) {
+      x = 0;
+    }
+    if(x < temp+myScreenDimentionsX) {
+      x = temp+myScreenDimentionsX;
+    }
 
-  	if(y < 0 + myScreenDimentionsY - Settings.TILE_SIZE) {
-  		y = 0 + myScreenDimentionsY - Settings.TILE_SIZE;
-  	}
-  	if(y > -temp - Settings.TILE_SIZE) {
-  		y = -temp - Settings.TILE_SIZE;
-  	}
+    if(y < 0 + myScreenDimentionsY - Settings.TILE_SIZE) {
+      y = 0 + myScreenDimentionsY - Settings.TILE_SIZE;
+    }
+    if(y > -temp - Settings.TILE_SIZE) {
+      y = -temp - Settings.TILE_SIZE;
+    }
   }
 
   private void HandleMouseEffect(){
-  	x += myMouseOffsetFromCenterX/myMouseEffectImpact;
-  	y += myMouseOffsetFromCenterY/myMouseEffectImpact;
+    x += myMouseOffsetFromCenterX/myMouseEffectImpact;
+    y += myMouseOffsetFromCenterY/myMouseEffectImpact;
   }
   */
 }

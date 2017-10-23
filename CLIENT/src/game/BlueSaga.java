@@ -420,7 +420,7 @@ public class BlueSaga extends BasicGame {
 
   /*
    *
-   * 	KEYBOARD & MOUSE
+   *  KEYBOARD & MOUSE
    *
    */
 
@@ -450,10 +450,33 @@ public class BlueSaga extends BasicGame {
   }
 
   public static void toggleFullscreen(AppGameContainer app) {
-    ClientSettings.toggleFullScreen();
     try {
+      if (ClientSettings.FULL_SCREEN) {
+        ClientSettings.actual_w = ClientSettings.SCREEN_WIDTH;
+        ClientSettings.actual_h = ClientSettings.SCREEN_HEIGHT;
+        ClientSettings.scale = 1.0f;
+        ClientSettings.offset_x = 0;
+        ClientSettings.offset_y = 0;
+        ClientSettings.FULL_SCREEN = false;
+      }
+      else {
+        ClientSettings.actual_w = (short) app.getScreenWidth();
+        ClientSettings.actual_h = (short) app.getScreenHeight();
+        ClientSettings.scale = Math.min(
+            1.0f * ClientSettings.actual_w / ClientSettings.SCREEN_WIDTH,
+            1.0f * ClientSettings.actual_h / ClientSettings.SCREEN_HEIGHT);
+        ClientSettings.offset_x = (short) Math.round(
+            (ClientSettings.actual_w - ClientSettings.SCREEN_WIDTH * ClientSettings.scale) / 2);
+        ClientSettings.offset_y = (short) Math.round(
+            (ClientSettings.actual_h - ClientSettings.SCREEN_HEIGHT * ClientSettings.scale) / 2);
+        ClientSettings.FULL_SCREEN = true;
+      }
+
+      System.out.println("[toggleFullscreen] scale=" + ClientSettings.scale
+           + " width=" + ClientSettings.actual_w
+           + " height=" + ClientSettings.actual_h);
       app.setDisplayMode(
-          ClientSettings.SCREEN_WIDTH, ClientSettings.SCREEN_HEIGHT, ClientSettings.FULL_SCREEN);
+          ClientSettings.actual_w, ClientSettings.actual_h, ClientSettings.FULL_SCREEN);
     } catch (SlickException e) {
       // TODO Auto-generated catch block
       e.printStackTrace();

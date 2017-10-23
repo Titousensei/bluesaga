@@ -115,6 +115,15 @@ public class ScreenHandler {
 
   public static void draw(Graphics g, GameContainer app) {
 
+    if (ClientSettings.FULL_SCREEN) {
+      g.translate(ClientSettings.offset_x, ClientSettings.offset_y);
+      g.scale(ClientSettings.scale, ClientSettings.scale);
+      g.setWorldClip(0, 0, ClientSettings.SCREEN_WIDTH, ClientSettings.SCREEN_HEIGHT);
+    }
+    else {
+      g.setClip(null);
+    }
+
     int mouseX = app.getInput().getAbsoluteMouseX();
     int mouseY = app.getInput().getAbsoluteMouseY();
 
@@ -385,7 +394,7 @@ public class ScreenHandler {
 
         /*
          *
-         * 		RIGHT MOUSE CLICK
+         *    RIGHT MOUSE CLICK
          *
          */
 

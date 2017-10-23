@@ -1,8 +1,6 @@
 package network;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.io.*;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
 import java.util.Timer;
@@ -70,9 +68,9 @@ public class Client implements Runnable {
   @Override
   public void run() {
     try {
+      this.in = new ObjectInputStream(this.csocket.getInputStream());
       this.out = new ObjectOutputStream(this.csocket.getOutputStream());
       this.out.flush();
-      this.in = new ObjectInputStream(this.csocket.getInputStream());
       do {
         try {
           if (this.lostConnectionNr > 0) {
@@ -82,7 +80,6 @@ public class Client implements Runnable {
           this.lostConnectionNr = 0;
 
           message = new String((byte[]) in.readObject());
-
           if (!Server.SERVER_RESTARTING) {
             int messageIndex = message.indexOf("<");
 
@@ -147,6 +144,26 @@ public class Client implements Runnable {
       ServerMessage.println(false, "Client exited: ", this);
 
       ConnectHandler.removeClient(this);
+    } catch (StreamCorruptedException e) {
+      ServerMessage.println(false, "/-------------------- NOT_A_CLIENT: " + IP);
+      try {
+        BufferedReader br = new BufferedReader(
+            new InputStreamReader(this.csocket.getInputStream()));
+        String line;
+        while ((line = br.readLine()) != null && !line.isEmpty()) {
+          ServerMessage.println(false, "| ", line);
+        }
+        ServerMessage.println(false, "\\--------------------");
+        PrintWriter pw = new PrintWriter(this.csocket.getOutputStream(), true);
+        pw.print("HTTP/1.x 200 OK\r\nContent-Type: text/html\r\n\r\n<html><body>Connection OK</body></html>\r\n\r\n");
+        pw.flush();
+        pw.close();
+        this.csocket.close();
+        quit();
+      } catch (Exception ex) {
+        ex.printStackTrace();
+      }
+      this.Ready = false;
     } catch (IOException e) {
       this.lostConnectionNr++;
 
@@ -154,7 +171,7 @@ public class Client implements Runnable {
       this.Ready = false;
       // CAN CAUSE ERRORS!!!
 
-      //e.printStackTrace();
+      // e.printStackTrace();
 
       // RESPAWN AT CHECKPOINT IF DEAD
       if (this.playerCharacter != null) {

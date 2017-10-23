@@ -62,7 +62,7 @@ public class ConnectionListener implements Runnable {
         Client clientObject = new Client(clientSocket);
 
         clientObject.IP = clientSocket.getInetAddress().getHostAddress().toString();
-        ServerMessage.println(false, "CONNECTED: ", clientObject.IP);
+        ServerMessage.println(false, "===================== NEW CONNECTION: ", clientObject.IP);
         if (ServerSettings.geoip_cmd != null) {
           try {
             Process pr = Runtime.getRuntime()

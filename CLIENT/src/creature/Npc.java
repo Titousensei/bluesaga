@@ -90,14 +90,14 @@ public class Npc extends Creature {
         int nameWidth = Font.size10.getWidth(Name);
         int nameX = centerX - nameWidth / 2;
 
-        g.setColor(new Color(0, 0, 0, 150));
+        g.setColor(BlueSagaColors.GRAY_TRANS);
 
         g.drawString(Name, nameX, cornerY - 25);
 
         if (getHealthStatus() == 4) {
           g.setColor(BlueSagaColors.WHITE);
         } else if (getHealthStatus() == 3) {
-          g.setColor(new Color(255, 249, 75));
+          g.setColor(BlueSagaColors.YELLOW2);
         } else if (getHealthStatus() == 2) {
           g.setColor(BlueSagaColors.ORANGE);
         } else {

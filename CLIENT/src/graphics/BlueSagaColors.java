@@ -8,15 +8,20 @@ public class BlueSagaColors {
 
   public final static Color RED = new Color(222, 67, 67);
   public final static Color WHITE = new Color(255, 255, 255, 255);
+  public final static Color BLACKER = new Color(0, 0, 0, 255);
   public final static Color BLACK = new Color(21, 21, 21, 255);
   public final static Color YELLOW = new Color(255, 234, 116, 255);
+  public final static Color YELLOW2 = new Color(255, 249, 75);
   public final static Color GREEN = new Color(0, 180, 0, 255);
   public final static Color BLUE = new Color(0, 165, 255, 255);
   public final static Color ORANGE = new Color(227, 144, 0, 255);
   public final static Color PURPLE = new Color(188, 104, 215, 255);
+  public final static Color LIME = new Color(200, 255, 111)
 
   public final static Color STANCE_DEF_COLOR = new Color(169, 255, 122);
   public final static Color STANCE_ATK_COLOR = new Color(249, 144, 144);
+
+  public final static Color GRAY_TRANS = new Color(0, 0, 0, 150);
 
   private final static Map<String, Color> COLOR_MAP = new HashMap<>(8);
 

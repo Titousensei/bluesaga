@@ -1,7 +1,7 @@
 /************************************
- * 									*
- *		CLIENT / CREWMEMBER			*
- *									*
+ *                  *
+ *    CLIENT / CREWMEMBER     *
+ *                  *
  ************************************/
 package creature;
 
@@ -189,7 +189,7 @@ public class PlayerCharacter extends Creature {
         int nameWidth = Font.size10.getWidth(Name);
         int nameX = centerX - nameWidth / 2;
 
-        g.setColor(new Color(0, 0, 0, 150));
+        g.setColor(BlueSagaColors.GRAY_TRANS);
 
         g.drawString(Name, nameX, cornerY - 25);
 
@@ -202,7 +202,7 @@ public class PlayerCharacter extends Creature {
           if (getHealthStatus() == 4) {
             g.setColor(BlueSagaColors.WHITE);
           } else if (getHealthStatus() == 3) {
-            g.setColor(new Color(255, 249, 75));
+            g.setColor(BlueSagaColors.YELLOW2);
           } else if (getHealthStatus() == 2) {
             g.setColor(BlueSagaColors.ORANGE);
           } else {
@@ -225,7 +225,7 @@ public class PlayerCharacter extends Creature {
           int bountyRankWidth = Font.size9.getWidth(GameInfo.bountyRanks.get(getBountyRank()).name);
           g.setFont(Font.size9);
 
-          g.setColor(new Color(0,0,0,150));
+          g.setColor(BlueSagaColors.GRAY_TRANS);
 
           int bountyRankX = centerX - bountyRankWidth/2;
           g.drawString(GameInfo.bountyRanks.get(getBountyRank()).name, bountyRankX, cornerY - 12);
@@ -240,12 +240,12 @@ public class PlayerCharacter extends Creature {
           nameWidth = Font.size9.getWidth(Crew.getName());
           g.setFont(Font.size9);
 
-          g.setColor(new Color(0, 0, 0, 150));
+          g.setColor(BlueSagaColors.GRAY_TRANS);
 
           nameX = centerX - nameWidth / 2;
           g.drawString(Crew.getName(), nameX, cornerY - 12);
 
-          g.setColor(new Color(200, 255, 111));
+          g.setColor(BlueSagaColors.LIME);
           g.drawString(Crew.getName(), nameX, cornerY - 13);
         }
       }
@@ -287,7 +287,7 @@ public class PlayerCharacter extends Creature {
 
   /****************************************
    *                                      *
-   *             BATTLE	  	            *
+   *             BATTLE                 *
    *                                      *
    *                                      *
    ****************************************/
@@ -359,7 +359,7 @@ public class PlayerCharacter extends Creature {
 
   /****************************************
    *                                      *
-   *             MOVEMENT  	            *
+   *             MOVEMENT               *
    *                                      *
    *                                      *
    ****************************************/
@@ -586,7 +586,7 @@ public class PlayerCharacter extends Creature {
 
   /****************************************
    *                                      *
-   *             QUEST		            *
+   *             QUEST                *
    *                                      *
    *                                      *
    ****************************************/

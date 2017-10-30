@@ -489,7 +489,7 @@ public class Creature {
         int shadowY = centerY - 15 - walkY;
         Shadow.getAnimation()
             .getImage(framenr)
-            .draw(cornerX, shadowY, sizeWidthF * 50, 50, new Color(255, 255, 255, 255));
+            .draw(cornerX, shadowY, sizeWidthF * 50, 50, BlueSagaColors.WHITE);
       }
 
       if (!Dead && ATTACKED) {

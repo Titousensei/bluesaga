@@ -3,7 +3,7 @@ package gui;
 import graphics.BlueSagaColors;
 import graphics.Font;
 
-import java.util.Vector;
+import java.util.*;
 
 import org.newdawn.slick.Graphics;
 
@@ -11,10 +11,10 @@ import creature.Creature;
 
 public class CreatureSelector {
 
-  private Vector<Creature> creatures;
+  private List<Creature> creatures;
   private int selected = 0;
 
-  public CreatureSelector(Vector<Creature> newCreatures) {
+  public CreatureSelector(List<Creature> newCreatures) {
     creatures = newCreatures;
   }
 

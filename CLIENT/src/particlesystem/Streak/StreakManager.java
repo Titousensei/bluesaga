@@ -1,6 +1,6 @@
 package particlesystem.Streak;
 
-import java.util.Vector;
+import java.util.*;
 
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Vector2f;
@@ -10,10 +10,10 @@ import screens.ScreenHandler;
 
 public class StreakManager {
 
-  private Vector<Streak> myStreaks;
+  private List<Streak> myStreaks;
 
   public StreakManager() {
-    myStreaks = new Vector<Streak>();
+    myStreaks = new ArrayList<>(10);
   }
 
   public void Update(float aElapsedTime) {
@@ -23,9 +23,11 @@ public class StreakManager {
     }
 
     // Remove Streaks
-    for (int index = 0; index < myStreaks.size(); ++index) {
-      if (myStreaks.elementAt(index).ShouldBeRemoved()) {
-        myStreaks.remove(index);
+    Iterator<Streak> it = myStreaks.iterator();
+    while(it.hasNext()) {
+      Streak st = it.next();
+      if (st.ShouldBeRemoved()) {
+        it.remove();
       }
     }
   }
@@ -56,6 +58,6 @@ public class StreakManager {
   }
 
   public void RemoveAllStreaks() {
-    myStreaks.removeAllElements();
+    myStreaks.clear();
   }
 }

@@ -8,9 +8,7 @@ import screens.ScreenHandler.ScreenType;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.net.SocketTimeoutException;
-import java.util.Timer;
-import java.util.TimerTask;
-import java.util.Vector;
+import java.util.*;
 
 /**
  * Fetches messages from Server.
@@ -22,7 +20,7 @@ public class ClientReceiverThread extends Thread {
 
   private ObjectInputStream in;
 
-  private Vector<String> info = new Vector<String>();
+  private List<String> info = new ArrayList<String>(100);
 
   private int info_itr = 0;
 

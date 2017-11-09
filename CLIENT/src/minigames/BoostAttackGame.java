@@ -35,7 +35,7 @@ public class BoostAttackGame {
 
   public void draw(Graphics g, int x, int y) {
     if (isActive()) {
-      g.setColor(new Color(255, 255, 255));
+      g.setColor(BlueSagaColors.WHITE);
       g.drawRect(x, y, 51, 5);
 
       g.setColor(BlueSagaColors.RED);

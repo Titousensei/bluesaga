@@ -14,11 +14,7 @@ import graphics.screeneffects.StatusScreenEffect;
 import gui.DamageLabel;
 import screens.ScreenHandler;
 
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Timer;
-import java.util.TimerTask;
-import java.util.Vector;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.newdawn.slick.Animation;
@@ -111,7 +107,7 @@ public class Creature {
   private Color abilityColor;
   private int useAbilityGraphicsNr;
 
-  protected Vector<CreatureAnimation> creatureAnimations = new Vector<CreatureAnimation>();
+  protected List<CreatureAnimation> creatureAnimations = new ArrayList<CreatureAnimation>(4);
 
   // NPC
   protected Sprite talkBubble;
@@ -162,8 +158,8 @@ public class Creature {
   protected Sprite directionRing;
 
   // ABILTIY VARIABLES
-  protected Vector<Ability> Abilities = new Vector<Ability>();
-  private HashMap<String, Skill> Skills = new HashMap<String, Skill>();
+  protected List<Ability> Abilities = new ArrayList<>(4);
+  private HashMap<String, Skill> Skills = new HashMap<>();
 
   private Color hitColor2;
   private Color hitColor1;
@@ -190,7 +186,7 @@ public class Creature {
   protected Stats Stats = new Stats();
   protected Stats BonusStats = new Stats();
 
-  private Vector<StatusEffect> StatusEffects = new Vector<StatusEffect>();
+  private List<StatusEffect> StatusEffects = new ArrayList<>(4);
 
   protected String STATUS;
 
@@ -238,7 +234,7 @@ public class Creature {
     ShowLevelUp = false;
     ShowLevelDown = false;
 
-    animationColor = new Color(255, 255, 255, 0);
+    animationColor = BlueSagaColors.WHITE_TRANS0;
     if (ImageResource.getSprite("creatures/m" + CreatureId) != null) {
       frontAnimation = ImageResource.getSprite("creatures/m" + CreatureId).getAnimation();
     } else {
@@ -465,7 +461,7 @@ public class Creature {
           animationUseAbility.draw(
               cornerX,
               cornerY - sizeHeightF * 25.0f - (sizeWidthF - 1) * 50.0f - 5,
-              new Color(255, 255, 135, 200));
+              BlueSagaColors.YELLOW_ABILITY);
         }
       } else if (useAbilityAnimate) {
         animationUseAbility.updateNoDraw();
@@ -518,7 +514,7 @@ public class Creature {
 
         // Half transparent if using fade ability
         if (hasStatusEffect(12)) {
-          cColor = new Color(255, 255, 255, 50);
+          cColor = BlueSagaColors.WHITE_TRANS50;
         }
 
         int transformFixY =
@@ -799,7 +795,7 @@ public class Creature {
     return true;
   }
 
-  public synchronized Vector<StatusEffect> getStatusEffects() {
+  public synchronized List<StatusEffect> getStatusEffects() {
     return StatusEffects;
   }
 
@@ -825,7 +821,7 @@ public class Creature {
     return hasStat;
   }
 
-  public synchronized Vector<Ability> getAbilities() {
+  public synchronized List<Ability> getAbilities() {
     return Abilities;
   }
 
@@ -951,7 +947,7 @@ public class Creature {
       AnimationHitItr++;
 
       if (AnimationHitItr >= 36) {
-        animationColor = new Color(255, 255, 255, 0);
+        animationColor = BlueSagaColors.WHITE_TRANS0;
         animationHit = false;
       }
     }
@@ -1503,7 +1499,7 @@ public class Creature {
     directionRing.getImage().setRotation(rotation);
   }
 
-  public Vector<CreatureAnimation> getAnimations() {
+  public List<CreatureAnimation> getAnimations() {
     return creatureAnimations;
   }
 

@@ -29,7 +29,7 @@ public class Ship {
   }
 
   public void draw(int x, int y) {
-    if (isShow()) {
+    if (Show) {
       ImageResource.getSprite("ships/splash").getAnimation().updateNoDraw();
       ImageResource.getSprite("ships/splash")
           .getAnimation()

@@ -192,7 +192,7 @@ public class StatusWindow extends Window {
             textX + 150,
             textY + 2);
 
-        g.setColor(new Color(0, 0, 0, 255));
+        g.setColor(BlueSagaColors.BLACK);
         textY += 40;
 
         // HEALTH
@@ -237,14 +237,14 @@ public class StatusWindow extends Window {
         textX = startX + 170;
         textY = startY + 45;
 
-        g.setColor(new Color(0, 0, 0));
+        g.setColor(BlueSagaColors.BLACK);
         g.setFont(Font.size12);
         g.drawString("STR:", textX, textY);
         g.setFont(Font.size12bold);
         setBonusStatColor(g, "STRENGTH");
         g.drawString("" + BlueSaga.playerCharacter.getTotalStat("STRENGTH"), textX + 50, textY);
 
-        g.setColor(new Color(0, 0, 0));
+        g.setColor(BlueSagaColors.BLACK);
         g.setFont(Font.size12);
         g.drawString("ACC:", textX + 100, textY);
         g.setFont(Font.size12bold);
@@ -253,14 +253,14 @@ public class StatusWindow extends Window {
 
         textY += 22;
 
-        g.setColor(new Color(0, 0, 0));
+        g.setColor(BlueSagaColors.BLACK);
         g.setFont(Font.size12);
         g.drawString("INT:", textX, textY);
         g.setFont(Font.size12bold);
         setBonusStatColor(g, "INTELLIGENCE");
         g.drawString("" + BlueSaga.playerCharacter.getTotalStat("INTELLIGENCE"), textX + 50, textY);
 
-        g.setColor(new Color(0, 0, 0));
+        g.setColor(BlueSagaColors.BLACK);
         g.setFont(Font.size12);
         g.drawString("EVA:", textX + 100, textY);
         g.setFont(Font.size12bold);
@@ -269,14 +269,14 @@ public class StatusWindow extends Window {
 
         textY += 22;
 
-        g.setColor(new Color(0, 0, 0));
+        g.setColor(BlueSagaColors.BLACK);
         g.setFont(Font.size12);
         g.drawString("AGI:", textX, textY);
         g.setFont(Font.size12bold);
         setBonusStatColor(g, "AGILITY");
         g.drawString("" + BlueSaga.playerCharacter.getTotalStat("AGILITY"), textX + 50, textY);
 
-        g.setColor(new Color(0, 0, 0));
+        g.setColor(BlueSagaColors.BLACK);
         g.setFont(Font.size12);
         g.drawString("CRIT:", textX + 100, textY);
         g.setFont(Font.size12bold);
@@ -288,7 +288,7 @@ public class StatusWindow extends Window {
 
         textY += 22;
 
-        g.setColor(new Color(0, 0, 0));
+        g.setColor(BlueSagaColors.BLACK);
         g.setFont(Font.size12);
         g.drawString("SPD (ATK):", textX, textY);
         g.setFont(Font.size12bold);
@@ -306,8 +306,8 @@ public class StatusWindow extends Window {
 
         textY = startY + 160;
 
-        Color baseClassColor = new Color(255, 234, 116);
-        Color baseClassTextColor = new Color(20, 20, 20);
+        Color baseClassColor = BlueSagaColors.YELLOW;
+        Color baseClassTextColor = BlueSagaColors.GRAY27;
         String baseLabel = "No Base Class";
         int baseClassXpWidth = 0;
 
@@ -344,14 +344,14 @@ public class StatusWindow extends Window {
         // Draw xp progress on class
         g.setWorldClip(startX, textY + moveY, baseClassXpWidth, 40);
         ImageResource.getSprite("gui/menu/class_bg")
-            .draw(startX, textY, new Color(255, 255, 255, 100));
+            .draw(startX, textY, BlueSagaColors.WHITE_TRANS);
         g.clearWorldClip();
 
         // Draw Primary Class
         textY += 45;
 
-        Color primaryClassColor = new Color(255, 234, 116);
-        Color primaryClassTextColor = new Color(20, 20, 20);
+        Color primaryClassColor = BlueSagaColors.YELLOW;
+        Color primaryClassTextColor = BlueSagaColors.GRAY27;
         String primaryLabel = LanguageUtils.getString("ui.classes.no_primary_class");
         int primaryClassXpWidth = 0;
 
@@ -386,15 +386,15 @@ public class StatusWindow extends Window {
         // Draw xp progress on class
         g.setWorldClip(startX, textY + moveY, primaryClassXpWidth, 40);
         ImageResource.getSprite("gui/menu/class_bg")
-            .draw(startX, textY, new Color(255, 255, 255, 100));
+            .draw(startX, textY, BlueSagaColors.WHITE_TRANS);
         g.clearWorldClip();
 
         // Draw Secondary Class
 
         textY += 45;
 
-        Color secondaryClassColor = new Color(255, 234, 116);
-        Color secondaryClassTextColor = new Color(20, 20, 20);
+        Color secondaryClassColor = BlueSagaColors.YELLOW;
+        Color secondaryClassTextColor = BlueSagaColors.GRAY27;
         String secondaryLabel = LanguageUtils.getString("ui.classes.no_secondary_class");
         int secondaryClassXpWidth = 0;
 
@@ -426,7 +426,7 @@ public class StatusWindow extends Window {
         // Draw xp progress on class
         g.setWorldClip(startX, textY + moveY, secondaryClassXpWidth, 40);
         ImageResource.getSprite("gui/menu/class_bg")
-            .draw(startX, textY, new Color(255, 255, 255, 100));
+            .draw(startX, textY, BlueSagaColors.WHITE_TRANS);
         g.clearWorldClip();
 
         // DRAW DEF STATS

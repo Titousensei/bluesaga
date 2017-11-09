@@ -23,12 +23,16 @@ public class ChatHandler extends Handler {
 
   public final static String[] HELP = new String[] {
       "--- Help ---------",
+      "[Enter] type in the chat",
+      "[Tab] cycle channel",
+      "> #channelname: create/join channel",
+      "> @playername: send private message",
       "> /rolldice: roll 1d6",
       "> /emo: list emoticon names",
       "> /emo (name): show emoticon above your character",
       "> /channels: list channels with number of people",
       "> /quit: quit this channel",
-      "> @@admin: send private message to admin (logs your position)",
+      "> @@admin: send private message to game admin (logs your position)",
       "> /r: refresh the screen",
   };
 

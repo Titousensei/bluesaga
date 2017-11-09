@@ -109,7 +109,7 @@ public class Gui {
   private Image arrow_up;
   private static int bountyAniCounter;
 
-  private Vector<StatusScreenEffect> ScreenFX;
+  private List<StatusScreenEffect> ScreenFX;
 
   // MOUSE
   public static MouseCursor Mouse;
@@ -130,7 +130,7 @@ public class Gui {
     Notifications = new ArrayList<>(100);
     Notifications.clear();
     NotificationsY = 80;
-    ScreenFX = new Vector<StatusScreenEffect>(100);
+    ScreenFX = new ArrayList<>(100);
 
     ALL_WINDOWS =  new ArrayList<>(25);
 
@@ -336,7 +336,7 @@ public class Gui {
       }
 
       if (MenuWindow.isVisible() || OptionsWindow.isVisible()) {
-        g.setColor(new Color(0, 0, 0, 50));
+        g.setColor(BlueSagaColors.BLACK_TRANS50);
         g.fillRect(0, 0, 1024, 768);
       }
 
@@ -514,11 +514,12 @@ public class Gui {
     int levelWidth = 0;
     levelWidth = Font.size20.getWidth("" + BlueSaga.playerCharacter.getLevel());
 
+    String lvlStr = String.valueOf(BlueSaga.playerCharacter.getLevel());
     g.setFont(Font.size20);
-    g.setColor(new Color(0, 0, 0, 150));
-    g.drawString("" + BlueSaga.playerCharacter.getLevel(), x + 27 - levelWidth / 2, y + 14);
-    g.setColor(new Color(255, 255, 255, 255));
-    g.drawString("" + BlueSaga.playerCharacter.getLevel(), x + 25 - levelWidth / 2, y + 12);
+    g.setColor(BlueSagaColors.BLACK_TRANS);
+    g.drawString(lvlStr, x + 27 - levelWidth / 2, y + 14);
+    g.setColor(BlueSagaColors.WHITE);
+    g.drawString(lvlStr, x + 25 - levelWidth / 2, y + 12);
 
     meter_bg.draw(x + 70, y + 4);
     meter_bg.draw(x + 70, y + 29);
@@ -534,7 +535,7 @@ public class Gui {
     int healthRegainWidth = healthWidth + BlueSaga.playerCharacter.getHealthRegainBarWidth(107);
 
     g.setWorldClip(x + 75, y + 8, healthRegainWidth, 20);
-    hp_meter.draw(x + 75, y + 8, new Color(255, 255, 255, 100));
+    hp_meter.draw(x + 75, y + 8, BlueSagaColors.WHITE_TRANS);
     g.clearWorldClip();
 
     // MANA
@@ -547,24 +548,20 @@ public class Gui {
     int manaRegainWidth = manaWidth + BlueSaga.playerCharacter.getManaRegainBarWidth(107);
 
     g.setWorldClip(x + 75, y + 33, manaRegainWidth, 20);
-    mana_meter.draw(x + 75, y + 33, new Color(255, 255, 255, 100));
+    mana_meter.draw(x + 75, y + 33, BlueSagaColors.WHITE_TRANS);
     g.clearWorldClip();
 
-    g.setColor(new Color(255, 255, 255, 200));
+    g.setColor(BlueSagaColors.WHITE_TRANS200);
     g.setFont(Font.size8);
 
-    int textX =
-        x
-            + 75
-            + Math.round(
+    int textX = x + 75
+              + Math.round(
                 54 - Font.size8.getWidth(BlueSaga.playerCharacter.getHealthAsString()) / 2.0f);
     g.drawString(BlueSaga.playerCharacter.getHealthAsString(), textX, y + 8);
 
-    textX =
-        x
-            + 75
-            + Math.round(
-                54 - Font.size8.getWidth(BlueSaga.playerCharacter.getManaAsString()) / 2.0f);
+    textX = x + 75
+          + Math.round(
+            54 - Font.size8.getWidth(BlueSaga.playerCharacter.getManaAsString()) / 2.0f);
     g.drawString(BlueSaga.playerCharacter.getManaAsString(), textX, y + 33);
 
     heart_big.draw(x + 60, y + 1);
@@ -575,15 +572,13 @@ public class Gui {
       int seX = x + i * 40;
       int seY = y + 60;
 
-      g.setColor(new Color(255, 255, 255, 200));
+      g.setColor(BlueSagaColors.WHITE_TRANS200);
       float angle = 360.0f * ((float) SE.getDurationItr() / (float) SE.getDuration());
 
       g.fillArc(seX - 4, seY - 4, 38, 38, angle - 90, 270);
       //ImageResource.getSprite("gui/world/statuseffect_badge").draw(seX, seY);
 
-      g.setColor(
-          new Color(
-              SE.getColor().getRed(), SE.getColor().getGreen(), SE.getColor().getBlue(), 150));
+      g.setColor(BlueSagaColors.RED_TRANS);
       g.fillOval(seX, seY, 30, 30);
 
       ImageResource.getSprite("statuseffects/" + SE.getGraphicsNr())
@@ -598,14 +593,9 @@ public class Gui {
           int TextWidth = Font.size10.getWidth(SE.getName()) + 20;
           int TextHeight = Font.size10.getHeight(SE.getName()) + 20;
 
-          g.setColor(
-              new Color(
-                  BlueSagaColors.RED.getRed(),
-                  BlueSagaColors.RED.getGreen(),
-                  BlueSagaColors.RED.getBlue(),
-                  150));
+          g.setColor(BlueSagaColors.RED_TRANS);
           g.fillRoundRect(seX, seY + 40, TextWidth, TextHeight, 10);
-          g.setColor(new Color(255, 255, 255));
+          g.setColor(BlueSagaColors.WHITE);
           g.setFont(Font.size10);
           g.drawString(SE.getName(), seX + 10, seY + 50);
         }
@@ -615,7 +605,7 @@ public class Gui {
 
   public void drawGameOver(Graphics g) {
     Die_Label.draw(415, 300);
-    g.setColor(new Color(255, 255, 255, 255));
+    g.setColor(BlueSagaColors.WHITE);
     g.setFont(Font.size12);
     String gameOverString = "Press SPACE to respawn at your last checkpoint";
     g.drawString(gameOverString, 512 - Font.size12.getWidth(gameOverString) / 2, 360);
@@ -1140,7 +1130,7 @@ public class Gui {
         g.setColor(new Color(0, 0, 0, bountyOpacity));
       } else {
         if (bountyChange > 0) {
-          g.setColor(new Color(128, 215, 97, 255));
+          g.setColor(BlueSagaColors.BOUNTY_UP);
           if (bountyAniCounter % 20 < 10) {
             arrow_up.draw(x + 20, y + 18 + 5);
             arrow_up.draw(x + 236, y + 18 + 5);
@@ -1149,7 +1139,7 @@ public class Gui {
             arrow_up.draw(x + 236, y + 18);
           }
         } else if (bountyChange < 0) {
-          g.setColor(new Color(236, 86, 86, 255));
+          g.setColor(BlueSagaColors.BOUNTY_DOWN);
           if (bountyAniCounter % 20 < 10) {
             arrow_down.draw(x + 20, y + 18 + 5);
             arrow_down.draw(x + 236, y + 18 + 5);

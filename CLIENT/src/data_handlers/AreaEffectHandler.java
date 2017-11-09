@@ -3,6 +3,7 @@ package data_handlers;
 import org.newdawn.slick.Color;
 
 import game.BlueSaga;
+import graphics.BlueSagaColors;
 import screens.ScreenHandler;
 
 public class AreaEffectHandler extends Handler {
@@ -68,7 +69,7 @@ public class AreaEffectHandler extends Handler {
     } else if (serverData.startsWith("<night>start")) {
       nightTime = true;
       BlueSaga.BG_MUSIC.changeSong("night", "night");
-      ScreenHandler.AREA_EFFECT.setTintColor(new Color(185, 150, 255));
+      ScreenHandler.AREA_EFFECT.setTintColor(BlueSagaColors.NIGHT);
       ScreenHandler.AREA_EFFECT.setParticleType("firefly");
     } else if (serverData.equals("<night>stop")) {
       nightTime = false;
@@ -77,7 +78,7 @@ public class AreaEffectHandler extends Handler {
     } else if (serverData.startsWith("<night>now")) {
       nightTime = true;
       BlueSaga.BG_MUSIC.changeSong("night", "night");
-      ScreenHandler.AREA_EFFECT.setTintColorNow(new Color(185, 150, 255));
+      ScreenHandler.AREA_EFFECT.setTintColorNow(BlueSagaColors.NIGHT);
       ScreenHandler.AREA_EFFECT.setParticleType("firefly");
     } else if (serverData.equals("<night>stopnow")) {
       ScreenHandler.AREA_EFFECT.removeTintColorNow();

@@ -1,35 +1,34 @@
 package map;
 
-import java.util.Iterator;
-import java.util.Vector;
+import java.util.*;
 
 import org.newdawn.slick.Color;
 
 public class Fog {
-  private Vector<FogCloud> FogClouds;
+  private List<FogCloud> FogClouds;
 
-  public Fog(int cameraStartX, int cameraStartY) {
-    FogClouds = new Vector<FogCloud>();
+  public Fog(int cameraStartX, int cameraStartY, Color aColor) {
+    FogClouds = new ArrayList<FogCloud>(10);
     for (int i = 1; i < 5; i++) {
-      FogCloud f = new FogCloud(i, cameraStartX, cameraStartY);
+      FogCloud f = new FogCloud(i, cameraStartX, cameraStartY, aColor);
       FogClouds.add(f);
     }
   }
 
-  public void draw(int cameraX, int cameraY, Color aColor) {
+  public void draw(int cameraX, int cameraY) {
 
     Iterator<FogCloud> cloudIterator = FogClouds.iterator();
 
     while (cloudIterator.hasNext()) {
       FogCloud cloud = cloudIterator.next();
-      cloud.draw(cameraX, cameraY, aColor);
+      cloud.draw(cameraX, cameraY);
       if (cloud.opacity == 0) {
         cloudIterator.remove();
       }
     }
   }
 
-  public void appear(int cameraStartX, int cameraStartY) {
+  public void appear(int cameraStartX, int cameraStartY, Color aColor) {
     int nrClouds = 0;
     for (FogCloud f : FogClouds) {
       f.appear();
@@ -37,7 +36,7 @@ public class Fog {
     }
 
     for (int i = nrClouds + 1; i < 5; i++) {
-      FogCloud f = new FogCloud(i, cameraStartX, cameraStartY);
+      FogCloud f = new FogCloud(i, cameraStartX, cameraStartY, aColor);
       FogClouds.add(f);
     }
   }

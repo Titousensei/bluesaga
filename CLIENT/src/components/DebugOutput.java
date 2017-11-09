@@ -1,22 +1,22 @@
 package components;
 
 public class DebugOutput {
-  private boolean ON;
+  private boolean on_;
 
   public DebugOutput(boolean on) {
-    setON(on);
+    on_ = on;
   }
 
   public boolean isON() {
-    return ON;
+    return on_;
   }
 
-  public void setON(boolean oN) {
-    ON = oN;
+  public void setON(boolean on) {
+    on_ = on;
   }
 
   public void print(String msg) {
-    if (isON()) {
+    if (on_) {
       System.out.println(msg);
     }
   }

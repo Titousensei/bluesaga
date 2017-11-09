@@ -47,7 +47,7 @@ public class AggressiveGame {
 
   public void draw(Graphics g, int x, int y) {
     if (isActive()) {
-      g.setColor(new Color(255, 255, 255));
+      g.setColor(BlueSagaColors.WHITE);
       g.drawRect(x, y, 50, 5);
 
       if (isHitSpace()) {
@@ -64,7 +64,7 @@ public class AggressiveGame {
 
       g.fillRect(x + 1, y + 1, attackXitr - 1, 4);
 
-      g.setColor(new Color(255, 0, 0));
+      g.setColor(BlueSagaColors.BRIGHT_RED);
       g.drawLine(x + attackX, y, x + attackX, y + 5);
 
       boolean done = false;

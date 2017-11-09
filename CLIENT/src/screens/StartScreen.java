@@ -3,6 +3,7 @@ package screens;
 import org.newdawn.slick.Color;
 
 import utils.RandomUtils;
+import graphics.BlueSagaColors;
 import graphics.ImageResource;
 import screens.ScreenHandler.ScreenType;
 
@@ -52,19 +53,19 @@ public class StartScreen {
     ImageResource.getSprite("startscreen/bg_clouds1")
         .getImage()
         .getFlippedCopy(false, true)
-        .draw(bgClouds1X, posY + 450, new Color(255, 255, 255, 50));
+        .draw(bgClouds1X, posY + 450, BlueSagaColors.WHITE_TRANS50);
     ImageResource.getSprite("startscreen/bg_clouds1")
         .getImage()
         .getFlippedCopy(true, true)
-        .draw(bgClouds1X + 512, posY + 450, new Color(255, 255, 255, 50));
+        .draw(bgClouds1X + 512, posY + 450, BlueSagaColors.WHITE_TRANS50);
     ImageResource.getSprite("startscreen/bg_clouds1")
         .getImage()
         .getFlippedCopy(false, true)
-        .draw(bgClouds1X + 1024, posY + 450, new Color(255, 255, 255, 50));
+        .draw(bgClouds1X + 1024, posY + 450, BlueSagaColors.WHITE_TRANS50);
     ImageResource.getSprite("startscreen/bg_clouds1")
         .getImage()
         .getFlippedCopy(true, true)
-        .draw(bgClouds1X + 1536, posY + 450, new Color(255, 255, 255, 50));
+        .draw(bgClouds1X + 1536, posY + 450, BlueSagaColors.WHITE_TRANS50);
 
     ImageResource.getSprite("startscreen/island1").draw(460, posY + 405);
 
@@ -112,13 +113,13 @@ public class StartScreen {
     float cloud1_mirror_y = horizonY + (100 - (((float) cloud1_y - 80) / 100) * 50);
     ImageResource.getSprite("startscreen/cloud1")
         .getImage()
-        .draw((int) cloud1_x, (int) cloud1_mirror_y, 140, -70, new Color(255, 255, 255, 20));
+        .draw((int) cloud1_x, (int) cloud1_mirror_y, 140, -70, BlueSagaColors.WHITE_TRANS20);
 
     ImageResource.getSprite("startscreen/cloud2").draw((int) cloud2_x, cloud2_y + posY);
     float cloud2_mirror_y = horizonY + (50 - (((float) cloud2_y - 80) / 100) * 50);
     ImageResource.getSprite("startscreen/cloud2")
         .getImage()
-        .draw((int) cloud2_x, (int) cloud2_mirror_y, 155, -60, new Color(255, 255, 255, 20));
+        .draw((int) cloud2_x, (int) cloud2_mirror_y, 155, -60, BlueSagaColors.WHITE_TRANS20);
   }
 
   private static void resetCloud1() {

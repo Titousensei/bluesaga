@@ -1,9 +1,10 @@
 package movies;
 
-import java.util.Vector;
+import java.util.*;
 
 import game.BlueSaga;
 import game.ClientSettings;
+import graphics.BlueSagaColors;
 import graphics.Font;
 import graphics.ImageResource;
 import screens.ScreenHandler;
@@ -25,7 +26,7 @@ public class CardMovie extends AbstractMovie {
 
   private float fade = 0.0f;
 
-  private Vector<Integer> cards = new Vector<Integer>();
+  private List<Integer> cards = new ArrayList<>(20);
 
   public CardMovie(Creature newPlayer) {
     player = newPlayer;
@@ -84,7 +85,7 @@ public class CardMovie extends AbstractMovie {
 
       // Text
       if (getTimeItr() > 50 && getTimeItr() < 1100) {
-        g.setColor(new Color(255, 255, 255));
+        g.setColor(BlueSagaColors.WHITE);
         g.setFont(Font.size30);
 
         String text =
@@ -122,7 +123,7 @@ public class CardMovie extends AbstractMovie {
   public void update() {
     super.update();
     if (!isActive()) {
-      player.setAnimationColor(new Color(255, 255, 255));
+      player.setAnimationColor(BlueSagaColors.WHITE);
       BlueSaga.BG_MUSIC.stop();
     }
   }

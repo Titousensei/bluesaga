@@ -256,7 +256,7 @@ public class WalkHandler extends Handler {
       int soulZ = Integer.parseInt(soulInfo[2]);
 
       ScreenHandler.SCREEN_TILES.get(soulX + "," + soulY + "," + soulZ).setSoul(false);
-      BlueSaga.playerCharacter.useAbilityAnimate(0, new Color(136, 255, 203));
+      BlueSaga.playerCharacter.useAbilityAnimate(0, BlueSagaColors.AQUA);
     }
   }
 

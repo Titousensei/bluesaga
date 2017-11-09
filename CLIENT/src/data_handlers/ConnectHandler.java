@@ -4,7 +4,7 @@ import java.util.Iterator;
 
 import org.newdawn.slick.Color;
 
-import particlesystem.EmitterManager;
+import particlesystem.Emitter.EmitterManager;
 import projectile.ProjectileManager;
 import screens.CharacterCreate;
 import screens.LoginScreen;

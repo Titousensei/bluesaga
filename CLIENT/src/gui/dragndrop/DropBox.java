@@ -4,6 +4,7 @@ import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 
 import abilitysystem.Ability;
+import graphics.BlueSagaColors;
 import graphics.Font;
 import graphics.ImageResource;
 import components.Item;
@@ -40,7 +41,7 @@ public class DropBox {
     ImageResource.getSprite("gui/menu/dropbox_bg").draw(X + moveX, Y + moveY);
 
     if (useTimerItr > 0) {
-      g.setColor(new Color(255, 0, 0, 150));
+      g.setColor(BlueSagaColors.RED_TRANS);
       float useTimerHeight = (Size * ((float) useTimerItr / (float) useTimer));
       g.fillRect(X + moveX, Y + moveY + (Size - useTimerHeight), Size, useTimerHeight);
       useTimerItr--;
@@ -52,17 +53,17 @@ public class DropBox {
         || getType().equals("Amulet")
         || getType().equals("Artifact")) {
       ImageResource.getSprite("gui/menu/equip_" + getType())
-          .draw(X + moveX - 25, Y + moveY - 25, new Color(255, 255, 255, 50));
+          .draw(X + moveX - 25, Y + moveY - 25, BlueSagaColors.WHITE_TRANS50);
     } else if (getType().equals("Card")) {
       ImageResource.getSprite("gui/menu/card_slot").draw(X + moveX, Y + moveY);
-      g.setColor(new Color(100, 100, 100));
+      g.setColor(BlueSagaColors.GRAY100);
       g.setFont(Font.size8);
       int labelX = X + moveX + 25 - Math.round((Font.size8.getWidth("#" + cardNumber) / 2.0f));
       g.drawString("#" + cardNumber, labelX, Y + moveY + 28);
     }
 
     if (isSelected(mouseX, mouseY, moveX, moveY)) {
-      g.setColor(new Color(255, 255, 255, 50));
+      g.setColor(BlueSagaColors.WHITE_TRANS50);
       g.fillRect(X + moveX, Y + moveY, Size, Size);
     }
 
@@ -75,7 +76,7 @@ public class DropBox {
       */
       ImageResource.getSprite("items/item" + myItem.getId()).draw(X + moveX - 25, Y + moveY - 25);
       if (Number > 1) {
-        g.setColor(new Color(255, 255, 255));
+        g.setColor(BlueSagaColors.WHITE);
         g.setFont(Font.size10);
         float textWidth = Font.size10.getWidth("" + Number);
         g.drawString("" + Number, X + moveX + 45 - textWidth, Y + moveY + 35);
@@ -85,12 +86,12 @@ public class DropBox {
       myAbility.drawIcon(g, X + moveX, Y + moveY);
 
       if (!canUse && !getType().equals("Shop")) {
-        g.setColor(new Color(0, 0, 0, 100));
+        g.setColor(BlueSagaColors.BLACK_TRANS100);
         g.fillRect(X + moveX, Y + moveY, 50, 50);
       }
 
       if (isSelected(mouseX, mouseY, moveX, moveY)) {
-        g.setColor(new Color(255, 255, 255, 50));
+        g.setColor(BlueSagaColors.WHITE_TRANS50);
         g.fillRect(X + moveX, Y + moveY, Size, Size);
       }
     }

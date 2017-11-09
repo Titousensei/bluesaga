@@ -3,8 +3,7 @@ package components;
 import game.BlueSaga;
 
 import java.awt.Point;
-import java.util.List;
-import java.util.Vector;
+import java.util.*;
 
 import creature.Creature.CreatureType;
 import map.ScreenObject;
@@ -13,7 +12,7 @@ import utils.MySpiral;
 
 public class TargetingSystem {
 
-  private static Vector<String> closestTargets = new Vector<String>();
+  private static List<String> closestTargets = new ArrayList<>(10);
 
   /**
    * Loop in a spiral around player, find all monsters that are not guardians
@@ -42,7 +41,7 @@ public class TargetingSystem {
                   foundTarget = true;
                   closestTargets.add(
                       c.getCreature().getCreatureType().toString() + c.getCreature().getDBId());
-                  BlueSaga.client.sendMessage("settarget", targetX + ";" + targetY);
+                  BlueSaga.client.sendMessage("settarget", String.valueOf(targetX), ";", String.valueOf(targetY));
                   break;
                 }
               }

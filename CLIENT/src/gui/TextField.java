@@ -16,6 +16,8 @@ import org.newdawn.slick.gui.AbstractComponent;
 import org.newdawn.slick.gui.ComponentListener;
 import org.newdawn.slick.gui.GUIContext;
 
+import graphics.BlueSagaColors;
+
 /**
  * A single text field supporting text entry
  *
@@ -55,7 +57,7 @@ public class TextField extends AbstractComponent {
   private Color text = Color.white;
 
   /** The background color - null if no background */
-  private Color background = new Color(0, 0, 0, 0.5f);
+  private Color background = BlueSagaColors.BLACK_TRANS;
 
   /** The current cursor position */
   private int cursorPos;

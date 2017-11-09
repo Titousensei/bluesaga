@@ -1,6 +1,7 @@
 package gui.windows;
 
 import game.BlueSaga;
+import graphics.BlueSagaColors;
 import graphics.Font;
 import gui.Button;
 import gui.Gui;
@@ -39,7 +40,7 @@ public class MenuWindow extends Window {
       if (isFullyOpened()) {
         g.setFont(Font.size10);
         if (BlueSaga.logoutTimeItr > 0) {
-          g.setColor(new Color(255, 255, 255));
+          g.setColor(BlueSagaColors.WHITE);
           String logoutText = "You can log out in " + BlueSaga.logoutTimeItr + " sec";
           int textWidth = Font.size12.getWidth(logoutText);
           g.drawString(logoutText, X + 140 - textWidth / 2, Y + 17);

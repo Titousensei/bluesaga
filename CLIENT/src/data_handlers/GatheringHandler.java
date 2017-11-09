@@ -33,14 +33,14 @@ public class GatheringHandler extends Handler {
       int renderPosY = gatherY * ClientSettings.TILE_SIZE + cameraY - 70;
 
       // DARK BORDER
-      g.setColor(new Color(164, 42, 42, 255));
+      g.setColor(BlueSagaColors.BURGUNDY);
       g.fillRoundRect(renderPosX, renderPosY, 120, 42, 10);
 
       // LIGHTER COLOR
-      g.setColor(new Color(236, 86, 86, 255));
+      g.setColor(BlueSagaColors.WINE);
       g.fillRoundRect(renderPosX + 4, renderPosY + 4, 112, 34, 5);
 
-      g.setColor(new Color(255, 255, 255));
+      g.setColor(BlueSagaColors.WHITE);
       g.setFont(Font.size10);
       g.drawString("Gathering...", renderPosX + 25, renderPosY + 10);
 

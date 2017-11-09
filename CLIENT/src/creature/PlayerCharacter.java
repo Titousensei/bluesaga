@@ -189,7 +189,7 @@ public class PlayerCharacter extends Creature {
         int nameWidth = Font.size10.getWidth(Name);
         int nameX = centerX - nameWidth / 2;
 
-        g.setColor(BlueSagaColors.GRAY_TRANS);
+        g.setColor(BlueSagaColors.BLACK_TRANS);
 
         g.drawString(Name, nameX, cornerY - 25);
 
@@ -225,7 +225,7 @@ public class PlayerCharacter extends Creature {
           int bountyRankWidth = Font.size9.getWidth(GameInfo.bountyRanks.get(getBountyRank()).name);
           g.setFont(Font.size9);
 
-          g.setColor(BlueSagaColors.GRAY_TRANS);
+          g.setColor(BlueSagaColors.BLACK_TRANS);
 
           int bountyRankX = centerX - bountyRankWidth/2;
           g.drawString(GameInfo.bountyRanks.get(getBountyRank()).name, bountyRankX, cornerY - 12);
@@ -240,7 +240,7 @@ public class PlayerCharacter extends Creature {
           nameWidth = Font.size9.getWidth(Crew.getName());
           g.setFont(Font.size9);
 
-          g.setColor(BlueSagaColors.GRAY_TRANS);
+          g.setColor(BlueSagaColors.BLACK_TRANS);
 
           nameX = centerX - nameWidth / 2;
           g.drawString(Crew.getName(), nameX, cornerY - 12);

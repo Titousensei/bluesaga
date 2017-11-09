@@ -29,6 +29,36 @@ import utils.LanguageUtils;
 
 public class MapWindow extends Window {
 
+  public final static Color COL_TREE = new Color(126, 176, 97);
+  public final static Color COL_GATHERING = new Color(255, 198, 0);
+  public final static Color COL_ROCK = new Color(100, 100, 100);
+  public final static Color COL_BLACK = new Color(0, 0, 0);
+  public final static Color COL_DOOR = new Color(255, 255, 255);
+  public final static Color COL_PATH = new Color(180, 180, 180);
+  public final static Color COL_GRASS = new Color(166, 217, 124);
+  public final static Color COL_TREE2 = new Color(76, 161, 82);
+  public final static Color COL_WATER = new Color(65, 105, 160);
+  public final static Color COL_SHALLOW = new Color(79, 128, 195);
+  public final static Color COL_DIRTCAVE = new Color(150, 105, 57);
+  public final static Color COL_CAVE = new Color(102, 125, 119);
+  public final static Color COL_DUNGEON = new Color(154, 178, 141);
+  public final static Color COL_GRASSPATCH = new Color(180, 229, 139);
+  public final static Color COL_INDOORS = new Color(187, 136, 69);
+  public final static Color COL_MOUNTAIN = new Color(218, 178, 99);
+  public final static Color COL_MOUNTAINPATCH = new Color(203, 161, 90);
+  public final static Color COL_BEACH = new Color(253, 252, 184);
+  public final static Color COL_ARENA = new Color(173, 142, 82);
+  public final static Color COL_CASTLE = new Color(211, 211, 211);
+  public final static Color COL_CLIFF = new Color(205, 148, 73);
+  public final static Color COL_SEWERS = new Color(103, 86, 56);
+  public final static Color COL_ICE = new Color(170, 232, 255);
+  public final static Color COL_SNOW = new Color(255, 255, 255);
+  public final static Color COL_ICECAVE = new Color(170, 232, 255);
+  public final static Color COL_WOODDUNGEON = new Color(244, 182, 93);
+  public final static Color COL_OCEANTOWN = new Color(169, 122, 76);
+  public final static Color COL_WATERCAVE1 = new Color(65, 105, 160);
+  public final static Color COL_WATERCAVE2 = new Color(100, 100, 100);
+
   private HashMap<String, MiniMapTile> MiniMap;
 
   private boolean Loading = false;
@@ -124,7 +154,7 @@ public class MapWindow extends Window {
 
       if (isFullyOpened()) {
         g.setFont(Font.size12);
-        g.setColor(new Color(255, 255, 255, 255));
+        g.setColor(BlueSagaColors.WHITE);
         g.drawString(
             LanguageUtils.getString("ui.mini_map.mini_map"), X + 15 + moveX, Y + 15 + moveY);
 
@@ -140,7 +170,7 @@ public class MapWindow extends Window {
               if (MiniMap.containsKey(tileX + "," + tileY + "," + z)) {
                 g.setColor(MiniMap.get(tileX + "," + tileY + "," + z).getColor());
               } else {
-                g.setColor(new Color(0, 0, 0));
+                g.setColor(BlueSagaColors.BLACK);
               }
               g.fillRect(
                   X + 10 + x * miniMapSquareSize + moveX,
@@ -224,15 +254,15 @@ public class MapWindow extends Window {
     MiniMapTile t = null;
 
     if (tileObject.contains("tree") || tileObject.contains("bush")) {
-      t = new MiniMapTile(new Color(126, 176, 97));
+      t = new MiniMapTile(COL_TREE);
     } else if (tileObject.contains("gathering")) {
-      t = new MiniMapTile(new Color(255, 198, 0));
+      t = new MiniMapTile(COL_GATHERING);
     } else if (tileObject.contains("rock")) {
-      t = new MiniMapTile(new Color(100, 100, 100));
+      t = new MiniMapTile(COL_ROCK);
     } else if (tileObject.contains("moveable")) {
-      t = new MiniMapTile(new Color(100, 100, 100));
+      t = new MiniMapTile(COL_ROCK);
     } else if (tileObject.contains("cellardoor")) {
-      t = new MiniMapTile(new Color(255, 255, 255));
+      t = new MiniMapTile(COL_DOOR);
     }
 
     if (t != null) {
@@ -254,61 +284,61 @@ public class MapWindow extends Window {
 
   public void updateTile(int x, int y, int z, String type, String name) {
 
-    Color newColor = new Color(0, 0, 0);
+    Color newColor = COL_BLACK;
     if (name.toLowerCase().contains("exit")
         || name.toLowerCase().contains("entrance")
         || name.toLowerCase().contains("hole")
         || name.toLowerCase().contains("stairs")) {
-      newColor = new Color(255, 255, 255);
+      newColor = COL_DOOR;
     } else if (name.contains("path")) {
-      newColor = new Color(180, 180, 180);
+      newColor = COL_PATH;
     } else if (type.equals("grass")) {
-      newColor = new Color(166, 217, 124);
+      newColor = COL_GRASS;
     } else if (type.equals("tree")) {
-      newColor = new Color(76, 161, 82);
+      newColor = COL_TREE2;
     } else if (type.equals("water")) {
-      newColor = new Color(65, 105, 160);
+      newColor = COL_WATER;
     } else if (type.equals("shallow")) {
-      newColor = new Color(79, 128, 195);
+      newColor = COL_SHALLOW;
     } else if (type.equals("dirtcave")) {
-      newColor = new Color(150, 105, 57);
+      newColor = COL_DIRTCAVE;
     } else if (type.equals("cave")) {
-      newColor = new Color(102, 125, 119);
+      newColor = COL_CAVE;
     } else if (type.equals("dungeon")) {
-      newColor = new Color(154, 178, 141);
+      newColor = COL_DUNGEON;
     } else if (type.equals("grasspatch")) {
-      newColor = new Color(180, 229, 139);
+      newColor = COL_GRASSPATCH;
     } else if (type.equals("indoors")) {
-      newColor = new Color(187, 136, 69);
+      newColor = COL_INDOORS;
     } else if (type.equals("mountain")) {
-      newColor = new Color(218, 178, 99);
+      newColor = COL_MOUNTAIN;
     } else if (type.equals("mountainpatch")) {
-      newColor = new Color(203, 161, 90);
+      newColor = COL_MOUNTAINPATCH;
     } else if (type.equals("beach") || type.equals("sand")) {
-      newColor = new Color(253, 252, 184);
+      newColor = COL_BEACH;
     } else if (type.equals("arena")) {
-      newColor = new Color(173, 142, 82);
+      newColor = COL_ARENA;
     } else if (type.equals("castle")) {
-      newColor = new Color(211, 211, 211);
+      newColor = COL_CASTLE;
     } else if (type.equals("cliff") || type.equals("grasscliff")) {
-      newColor = new Color(205, 148, 73);
+      newColor = COL_CLIFF;
     } else if (type.equals("sewers")) {
-      newColor = new Color(103, 86, 56);
+      newColor = COL_SEWERS;
     } else if (type.equals("ice")) {
-      newColor = new Color(170, 232, 255);
+      newColor = COL_ICE;
     } else if (type.equals("snow")) {
-      newColor = new Color(255, 255, 255);
+      newColor = COL_SNOW;
     } else if (type.equals("icecave")) {
-      newColor = new Color(170, 232, 255);
+      newColor = COL_ICECAVE;
     } else if (type.equals("wooddungeon")) {
-      newColor = new Color(244, 182, 93);
+      newColor = COL_WOODDUNGEON;
     } else if (type.equals("oceantown")) {
-      newColor = new Color(169, 122, 76);
+      newColor = COL_OCEANTOWN;
     } else if (type.equals("watercave")) {
       if (name.equals("1")) {
-        newColor = new Color(65, 105, 160);
+        newColor = COL_WATERCAVE1;
       } else {
-        newColor = new Color(100, 100, 100);
+        newColor = COL_WATERCAVE2;
       }
     }
 

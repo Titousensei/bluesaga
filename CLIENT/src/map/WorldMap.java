@@ -4,11 +4,7 @@ import game.BlueSaga;
 import game.ClientSettings;
 import screens.ScreenHandler;
 
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.Timer;
-import java.util.Vector;
+import java.util.*;
 
 import org.newdawn.slick.util.pathfinding.Mover;
 import org.newdawn.slick.util.pathfinding.PathFindingContext;
@@ -20,8 +16,10 @@ import creature.Npc;
 import creature.PathMover;
 import data_handlers.MapHandler;
 
-public class WorldMap implements TileBasedMap {
-  private HashMap<String, Tile> MapTiles;
+public class WorldMap
+implements TileBasedMap
+{
+  private Map<String, Tile> MapTiles;
 
   private int MapSize;
   private int MapId;
@@ -37,42 +35,32 @@ public class WorldMap implements TileBasedMap {
 
   private String MapType;
 
-  HashMap<Integer, Npc> Npcs = new HashMap<Integer, Npc>();
-  HashMap<Integer, Npc> OtherPlayers = new HashMap<Integer, Npc>();
+  Map<Integer, Npc> Npcs = new HashMap<>();
+  Map<Integer, Npc> OtherPlayers = new HashMap<>();
 
-  Vector<Creature> MapCreatures = new Vector<Creature>();
+  List<Creature> MapCreatures = new ArrayList<>(300);
 
   static Timer removePlayerTimer = new Timer(); // checking if Players should be removed
 
   /****************************************
-   *                                       *
-   *           INIT/LOAD INFO		        *
-   *                                       *
-   *                                       *
+   *                                      *
+   *           INIT/LOAD INFO             *
+   *                                      *
    ****************************************/
-  public class MonsterComparator implements Comparator<Creature> {
+  public class MonsterComparator
+  implements Comparator<Creature>
+  {
     @Override
     public int compare(Creature m1, Creature m2) {
       return m2.getY() - m1.getY();
     }
   }
 
-  public WorldMap() {
-    /*
-    try {
-    	TILE_MAP = new TiledMap("maps/forest.tmx");
-    } catch (SlickException e) {
-    	e.printStackTrace();
-    }
-    */
-
-  }
-
   public void createPathMap() {
 
     visited = new boolean[ClientSettings.TILE_HALF_W * 2][ClientSettings.TILE_HALF_H * 2];
 
-    MapTiles = new HashMap<String, Tile>();
+    MapTiles = new HashMap<>();
 
     pathMapStartX = BlueSaga.playerCharacter.getX() - ClientSettings.TILE_HALF_W;
     pathMapStartY = BlueSaga.playerCharacter.getY() - ClientSettings.TILE_HALF_H;
@@ -129,12 +117,12 @@ public class WorldMap implements TileBasedMap {
   }
 
   /****************************************
-   *                                       *
-   *           PROJECTILES			        *
-   *                                       *
-   *                                       *
+   *                                      *
+   *           PROJECTILES                *
+   *                                      *
    ****************************************/
-  public void updateMapCreatures(boolean rebuild) {
+  public void updateMapCreatures(boolean rebuild)
+  {
     if (rebuild) {
       MapCreatures.clear();
       for (Creature c : Npcs.values()) {
@@ -152,16 +140,15 @@ public class WorldMap implements TileBasedMap {
   }
 
   /****************************************
-   *                                       *
-   *           GETTER/SETTER		        *
-   *                                       *
-   *                                       *
+   *                                      *
+   *           GETTER/SETTER              *
+   *                                      *
    ****************************************/
   public Npc getOtherPlayer(int playerId) {
     return OtherPlayers.get(playerId);
   }
 
-  public HashMap<Integer, Npc> getOtherPlayers() {
+  public Map<Integer, Npc> getOtherPlayers() {
     return OtherPlayers;
   }
 
@@ -180,15 +167,15 @@ public class WorldMap implements TileBasedMap {
     return mouseInfo;
   }
 
-  public HashMap<String, Tile> getMapTiles() {
+  public Map<String, Tile> getMapTiles() {
     return MapTiles;
   }
 
-  public Vector<Creature> getMapCreatures() {
+  public List<Creature> getMapCreatures() {
     return MapCreatures;
   }
 
-  public HashMap<Integer, Npc> getMonsters() {
+  public Map<Integer, Npc> getMonsters() {
     return Npcs;
   }
 

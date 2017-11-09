@@ -34,7 +34,7 @@ public class StringUtils {
       // No more spaces.
       if (newEnd == -1) newEnd = text.length();
 
-    } while (textWidth(text.substring(0, newEnd) + "...") < max);
+    } while (textWidth(text.substring(0, newEnd)) < max);
 
     return text.substring(0, end) + "...";
   }

@@ -7,8 +7,7 @@ import screens.Camera;
 import screens.ScreenHandler;
 import utils.RandomUtils;
 
-import java.util.Random;
-import java.util.Vector;
+import java.util.*;
 
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Vector2f;
@@ -24,7 +23,7 @@ public class Emitter {
   private boolean myIsPaused;
   private float myRotation;
 
-  private Vector<Particle> myParticles = new Vector<Particle>();
+  private List<Particle> myParticles = new ArrayList<>(10);
 
   private EmitterType myType = new EmitterType();
   private ParticleType myParticleType = new ParticleType();
@@ -98,9 +97,11 @@ public class Emitter {
     }
 
     // Remove particle
-    for (int index = 0; index < myParticles.size(); ++index) {
-      if (myParticles.elementAt(index).ShouldBeRemoved()) {
-        myParticles.remove(index);
+    Iterator<Particle> it = myParticles.iterator();
+    while(it.hasNext()) {
+      Particle pa = it.next();
+      if (pa.ShouldBeRemoved()) {
+        it.remove();
       }
     }
   }

@@ -88,8 +88,8 @@ public class EnvParticle {
 
         float changeD = 0.1f;
 
-        float distance = (float) Math.sqrt(Math.pow(dfX, 2) + Math.pow(dfY, 2));
-        if (distance < 100.0f) {
+        double distance2 = dfX * dfX + dfY * dfY;
+        if (distance2 < 100.0 * 100.0) {
           int evade = RandomUtils.getInt(0, 10);
           if (!dissappear) {
             alphaGoal = 255;
@@ -145,7 +145,7 @@ public class EnvParticle {
         }
       } else if (Type.equals("snow")) {
 
-        // FIX THIS: SNOW APPEARS ON OTHER SIDE IF WALKING
+        // FIXME: SNOW APPEARS ON OTHER SIDE IF WALKING
         if (realX < -100) {
           cameraStartX = ScreenHandler.myCamera.getX();
           x = ClientSettings.SCREEN_WIDTH + 50;

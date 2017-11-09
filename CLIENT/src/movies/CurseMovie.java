@@ -1,6 +1,6 @@
 package movies;
 
-import java.util.Vector;
+import java.util.*;
 
 import game.BlueSaga;
 import game.ClientSettings;
@@ -25,7 +25,7 @@ public class CurseMovie extends AbstractMovie {
 
   // Boss
   private Image boss;
-  Vector<Image> bossPieces;
+  List<Image> bossPieces;
 
   private int splitX = 0;
 
@@ -47,7 +47,7 @@ public class CurseMovie extends AbstractMovie {
     player = newPlayer;
 
     boss = ImageResource.getSprite("creatures/m8").getAnimation().getImage(0);
-    bossPieces = new Vector<Image>();
+    bossPieces = new ArrayList<>(10);
 
     for (int i = 0; i < 10; i++) {
       Image bossPiece = boss.getSubImage(0, i * 10, 100, 10);

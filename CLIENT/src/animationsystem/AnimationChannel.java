@@ -1,14 +1,14 @@
 package animationsystem;
 
-import java.util.Vector;
+import java.util.*;
 
 public class AnimationChannel {
 
-  private Vector<PartAnimation> animations;
+  private List<PartAnimation> animations;
   private float waitItr = 0.0f;
 
   public AnimationChannel() {
-    animations = new Vector<PartAnimation>();
+    animations = new ArrayList<>(8);
   }
 
   /**
@@ -16,7 +16,7 @@ public class AnimationChannel {
    * @param wait frames to wait till start
    */
   public AnimationChannel(float waitItr) {
-    animations = new Vector<PartAnimation>();
+    animations = new ArrayList<>(8);
     setWaitItr(waitItr);
   }
 

@@ -13,8 +13,9 @@ import graphics.ImageResource;
 import gui.Button;
 import gui.TextField;
 
-public class BountyWindow extends Window {
-
+public class BountyWindow
+extends Window
+{
   private TextField bounty_field;
   private TextField target_name;
 
@@ -26,15 +27,15 @@ public class BountyWindow extends Window {
     super("BountyW", x, y, width, height, true);
 
     bounty_field = new TextField(app, Font.size12, 525, 260, 80, 30);
-    bounty_field.setBackgroundColor(new Color(0, 0, 0, 0));
-    bounty_field.setBorderColor(new Color(0, 0, 0, 0));
-    bounty_field.setTextColor(new Color(255, 255, 255, 255));
+    bounty_field.setBackgroundColor(BlueSagaColors.NOTHING);
+    bounty_field.setBorderColor(BlueSagaColors.NOTHING);
+    bounty_field.setTextColor(BlueSagaColors.WHITE);
     bounty_field.setMaxLength(6);
 
     target_name = new TextField(app, Font.size12, 525, 300, 80, 30);
-    target_name.setBackgroundColor(new Color(0, 0, 0, 0));
-    target_name.setBorderColor(new Color(0, 0, 0, 0));
-    target_name.setTextColor(new Color(255, 255, 255, 255));
+    target_name.setBackgroundColor(BlueSagaColors.NOTHING);
+    target_name.setBorderColor(BlueSagaColors.NOTHING);
+    target_name.setTextColor(BlueSagaColors.WHITE);
     target_name.setMaxLength(15);
 
     ConfirmButton =

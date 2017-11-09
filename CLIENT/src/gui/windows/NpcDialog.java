@@ -2,6 +2,7 @@
 package gui.windows;
 
 import game.BlueSaga;
+import graphics.BlueSagaColors;
 import graphics.Font;
 import graphics.ImageResource;
 import gui.Button;
@@ -245,7 +246,7 @@ public class NpcDialog extends Window {
 
       if (isFullyOpened()) {
         g.setFont(Font.size18);
-        g.setColor(new Color(0, 0, 0, 150));
+        g.setColor(BlueSagaColors.BLACK_TRANS);
         g.drawString(NpcName, X + 20, Y - 20);
         g.setColor(Color.white);
         g.drawString(NpcName, X + 18, Y - 22);

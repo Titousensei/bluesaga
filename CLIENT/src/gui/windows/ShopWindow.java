@@ -1,6 +1,7 @@
 package gui.windows;
 
 import game.BlueSaga;
+import graphics.BlueSagaColors;
 import graphics.Font;
 import gui.Gui;
 import gui.dragndrop.DropBox;
@@ -172,7 +173,7 @@ public class ShopWindow extends Window {
       super.draw(app, g, mouseX, mouseY);
 
       g.setFont(Font.size12);
-      g.setColor(new Color(255, 255, 255, 255));
+      g.setColor(BlueSagaColors.WHITE);
       g.drawString(ShopName, X + 20 + moveX, Y + 15 + moveY);
 
       boolean mouseOnItem = false;

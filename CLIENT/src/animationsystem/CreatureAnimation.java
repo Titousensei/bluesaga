@@ -1,6 +1,6 @@
 package animationsystem;
 
-import java.util.Vector;
+import java.util.*;
 
 public abstract class CreatureAnimation {
 
@@ -34,12 +34,12 @@ public abstract class CreatureAnimation {
   private float scaleX = 1.0f;
   private float scaleY = 1.0f;
 
-  protected Vector<AnimationChannel> animationChannels;
+  protected List<AnimationChannel> animationChannels;
 
   private boolean active = true;
 
   public CreatureAnimation(float speed) {
-    animationChannels = new Vector<AnimationChannel>();
+    animationChannels = new ArrayList<>(8);
   }
 
   public void update() {

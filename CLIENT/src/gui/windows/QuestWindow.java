@@ -86,7 +86,7 @@ public class QuestWindow extends Window {
           g.drawString(
               LanguageUtils.getString("ui.status.loading"), X + 20 + moveX, Y + 20 + moveY);
         } else if (State.equals("ShowQuest")) {
-          g.setColor(new Color(255, 255, 255, 255));
+          g.setColor(BlueSagaColors.WHITE);
           g.drawString(Quests.get(selectedQuest).getName(), X + 20 + moveX, Y + 20 + moveY);
 
           g.drawString(

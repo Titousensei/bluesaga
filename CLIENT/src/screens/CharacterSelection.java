@@ -72,26 +72,26 @@ public class CharacterSelection {
     int Y = 250;
 
     old_password = new TextField(app, Font.size12, X + 80, Y, 180, 30);
-    old_password.setBackgroundColor(new Color(0, 0, 0, 0));
-    old_password.setBorderColor(new Color(0, 0, 0, 0));
-    old_password.setTextColor(new Color(255, 255, 255, 255));
+    old_password.setBackgroundColor(BlueSagaColors.NOTHING);
+    old_password.setBorderColor(BlueSagaColors.NOTHING);
+    old_password.setTextColor(BlueSagaColors.WHITE);
     old_password.setFocus(false);
     old_password.setMaskCharacter('*');
     old_password.setMaskEnabled(true);
 
     new_password = new TextField(app, Font.size12, X + 80, Y + 60, 180, 30);
-    new_password.setBackgroundColor(new Color(0, 0, 0, 0));
-    new_password.setBorderColor(new Color(0, 0, 0, 0));
-    new_password.setTextColor(new Color(255, 255, 255, 255));
+    new_password.setBackgroundColor(BlueSagaColors.NOTHING);
+    new_password.setBorderColor(BlueSagaColors.NOTHING);
+    new_password.setTextColor(BlueSagaColors.WHITE);
     new_password.setMaxLength(20);
     new_password.setFocus(false);
     new_password.setMaskCharacter('*');
     new_password.setMaskEnabled(true);
 
     new_password_repeat = new TextField(app, Font.size12, X + 80, Y + 120, 180, 30);
-    new_password_repeat.setBackgroundColor(new Color(0, 0, 0, 0));
-    new_password_repeat.setBorderColor(new Color(0, 0, 0, 0));
-    new_password_repeat.setTextColor(new Color(255, 255, 255, 255));
+    new_password_repeat.setBackgroundColor(BlueSagaColors.NOTHING);
+    new_password_repeat.setBorderColor(BlueSagaColors.NOTHING);
+    new_password_repeat.setTextColor(BlueSagaColors.WHITE);
     new_password.setMaxLength(20);
     new_password_repeat.setFocus(false);
     new_password_repeat.setMaskCharacter('*');
@@ -99,14 +99,14 @@ public class CharacterSelection {
 
     ColorPicker = new ColorPicker(347, 340);
 
-    ColorPicker.addColor(new Color(71, 178, 218)); // BLUE
-    ColorPicker.addColor(new Color(225, 91, 91)); // RED
-    ColorPicker.addColor(new Color(255, 176, 23)); // ORANGE
-    ColorPicker.addColor(new Color(246, 255, 101)); // YELLOW
-    ColorPicker.addColor(new Color(127, 191, 146)); // GREEN
-    ColorPicker.addColor(new Color(255, 173, 238)); // PINK
-    ColorPicker.addColor(new Color(75, 80, 82)); // DARK GRAY
-    ColorPicker.addColor(new Color(219, 128, 255)); // PURPLE
+    ColorPicker.addColor(BlueSagaColors.CHAR_BLUE);
+    ColorPicker.addColor(BlueSagaColors.CHAR_RED);
+    ColorPicker.addColor(BlueSagaColors.CHAR_ORANGE);
+    ColorPicker.addColor(BlueSagaColors.CHAR_YELLOW);
+    ColorPicker.addColor(BlueSagaColors.CHAR_GREEN);
+    ColorPicker.addColor(BlueSagaColors.CHAR_PINK);
+    ColorPicker.addColor(BlueSagaColors.CHAR_DARK_GRAY);
+    ColorPicker.addColor(BlueSagaColors.CHAR_PURPLE);
   }
 
   public static void load(String characterInfo) {
@@ -285,12 +285,13 @@ public class CharacterSelection {
                 startX + i % 4 * buttonSpace + 60 - Font.size12.getWidth(Names.get(i)) / 2,
                 (int) (startY + buttonSpace * Math.floor(i / 4)) + 85);
             g.setColor(BlueSagaColors.WHITE);
+            String txt = "LVL " + Levels.get(i);
             g.drawString(
-                "LVL " + Levels.get(i),
+                txt,
                 startX
                     + i % 4 * buttonSpace
                     + 60
-                    - Font.size12.getWidth("LVL " + Levels.get(i)) / 2,
+                    - Font.size12.getWidth(txt) / 2,
                 (int) (startY + buttonSpace * Math.floor(i / 4)) + 165);
 
             if (Deleted[i] > -1) {
@@ -333,13 +334,13 @@ public class CharacterSelection {
                       .draw(
                           startX + i % 4 * buttonSpace + 13,
                           (int) (startY + buttonSpace * Math.floor(i / 4)) + 80,
-                          new Color(255, 255, 255, 200));
+                          BlueSagaColors.WHITE_TRANS200);
                 } else {
                   ImageResource.getSprite("gui/menu/delete_character")
                       .draw(
                           startX + i % 4 * buttonSpace + 13,
                           (int) (startY + buttonSpace * Math.floor(i / 4)) + 80,
-                          new Color(255, 255, 255, 100));
+                          BlueSagaColors.WHITE_TRANS);
                 }
               } else {
                 if (Buttons.get(i).isClicked(mouseX, mouseY)) {
@@ -401,7 +402,7 @@ public class CharacterSelection {
 
       Characters.get(CharacterSelectedIndex).draw(g, charX, charY + 20, null);
 
-      g.setColor(new Color(0, 0, 0, 100));
+      g.setColor(BlueSagaColors.BLACK_TRANS100);
       g.drawString(
           Names.get(CharacterSelectedIndex),
           charX + 27 - Font.size12.getWidth(Names.get(CharacterSelectedIndex)) / 2,
@@ -412,18 +413,19 @@ public class CharacterSelection {
           charX + 25 - Font.size12.getWidth(Names.get(CharacterSelectedIndex)) / 2,
           charY - 20);
 
-      g.setColor(new Color(0, 0, 0, 100));
+      g.setColor(BlueSagaColors.BLACK_TRANS100);
+      String txt = "LVL " + Levels.get(CharacterSelectedIndex);
       g.drawString(
-          "LVL " + Levels.get(CharacterSelectedIndex),
-          charX + 27 - Font.size12.getWidth("LVL " + Levels.get(CharacterSelectedIndex)) / 2,
+          txt,
+          charX + 27 - Font.size12.getWidth(txt) / 2,
           charY + 72);
       g.setColor(BlueSagaColors.WHITE);
       g.drawString(
-          "LVL " + Levels.get(CharacterSelectedIndex),
-          charX + 25 - Font.size12.getWidth("LVL " + Levels.get(CharacterSelectedIndex)) / 2,
+          txt,
+          charX + 25 - Font.size12.getWidth(txt) / 2,
           charY + 70);
 
-      g.setColor(new Color(0, 0, 0, 200));
+      g.setColor(BlueSagaColors.BLACK_TRANS200);
       g.drawString("Customize character: ", 350, 320);
       ColorPicker.draw(g, mouseX, mouseY);
 
@@ -434,9 +436,9 @@ public class CharacterSelection {
 
       g.setFont(Font.size12);
 
-      g.setColor(new Color(255, 255, 255, 100));
+      g.setColor(BlueSagaColors.WHITE_TRANS);
       g.fillRoundRect(X + 170, Y + 38, 200, 40, 10);
-      g.setColor(new Color(0, 0, 0, 150));
+      g.setColor(BlueSagaColors.BLACK_TRANS);
       g.fillRoundRect(X + 170 + 5, Y + 38 + 5, 190, 30, 8);
       g.setColor(BlueSagaColors.BLACK);
       g.drawString(LanguageUtils.getString("ui.character_selection.old_password"), X, Y + 50);
@@ -445,9 +447,9 @@ public class CharacterSelection {
 
       Y += 60;
 
-      g.setColor(new Color(255, 255, 255, 100));
+      g.setColor(BlueSagaColors.WHITE_TRANS);
       g.fillRoundRect(X + 170, Y + 38, 200, 40, 10);
-      g.setColor(new Color(0, 0, 0, 150));
+      g.setColor(BlueSagaColors.BLACK_TRANS);
       g.fillRoundRect(X + 170 + 5, Y + 38 + 5, 190, 30, 8);
       g.setColor(BlueSagaColors.BLACK);
       g.drawString(LanguageUtils.getString("ui.character_selection.new_password"), X, Y + 50);
@@ -456,9 +458,9 @@ public class CharacterSelection {
 
       Y += 60;
 
-      g.setColor(new Color(255, 255, 255, 100));
+      g.setColor(BlueSagaColors.WHITE_TRANS);
       g.fillRoundRect(X + 170, Y + 38, 200, 40, 10);
-      g.setColor(new Color(0, 0, 0, 150));
+      g.setColor(BlueSagaColors.BLACK_TRANS);
       g.fillRoundRect(X + 170 + 5, Y + 38 + 5, 190, 30, 8);
       g.setColor(BlueSagaColors.BLACK);
       g.drawString(LanguageUtils.getString("ui.character_selection.repeat"), X, Y + 50);
@@ -476,7 +478,7 @@ public class CharacterSelection {
       ChangePasswordButton.draw(g, mouseX, mouseY);
     }
 
-    g.setColor(new Color(255, 255, 255, 255));
+    g.setColor(BlueSagaColors.BLACK);
     g.drawString("v 0." + ClientSettings.VERSION_NR, 950, 610);
   }
 

@@ -53,15 +53,15 @@ public class LoginScreen {
     statusMessage = LanguageUtils.getString("ui.login.instructions");
 
     mail_field = new TextField(app, Font.size12, X + 5, Y, 180, 30);
-    mail_field.setBackgroundColor(new Color(0, 0, 0, 0));
-    mail_field.setBorderColor(new Color(0, 0, 0, 0));
-    mail_field.setTextColor(new Color(255, 255, 255, 255));
+    mail_field.setBackgroundColor(BlueSagaColors.NOTHING);
+    mail_field.setBorderColor(BlueSagaColors.NOTHING);
+    mail_field.setTextColor(BlueSagaColors.WHITE);
     mail_field.setFocus(true);
 
     password_field = new TextField(app, Font.size12, X + 215, Y, 180, 30);
-    password_field.setBackgroundColor(new Color(0, 0, 0, 0));
-    password_field.setBorderColor(new Color(0, 0, 0, 0));
-    password_field.setTextColor(new Color(255, 255, 255, 255));
+    password_field.setBackgroundColor(BlueSagaColors.NOTHING);
+    password_field.setBorderColor(BlueSagaColors.NOTHING);
+    password_field.setTextColor(BlueSagaColors.WHITE);
     password_field.setFocus(false);
     password_field.setMaskCharacter('*');
     password_field.setMaskEnabled(true);
@@ -193,19 +193,19 @@ public class LoginScreen {
       g.setFont(Font.size12);
 
       // LOGIN FIELDS
-      g.setColor(new Color(255, 255, 255, 100));
+      g.setColor(BlueSagaColors.WHITE_TRANS);
       g.fillRoundRect(X - 10, Y - 12, 200, 40, 10);
-      g.setColor(new Color(0, 0, 0, 150));
+      g.setColor(BlueSagaColors.BLACK_TRANS);
       g.fillRoundRect(X - 5, Y - 7, 190, 30, 8);
-      g.setColor(new Color(255, 255, 255, 255));
+      g.setColor(BlueSagaColors.WHITE);
       g.drawString(LanguageUtils.getString("ui.login.mail"), X, Y - 30);
       mail_field.render(app, g);
 
-      g.setColor(new Color(255, 255, 255, 100));
+      g.setColor(BlueSagaColors.WHITE_TRANS);
       g.fillRoundRect(X + 200, Y - 12, 200, 40, 10);
-      g.setColor(new Color(0, 0, 0, 150));
+      g.setColor(BlueSagaColors.BLACK_TRANS);
       g.fillRoundRect(X + 205, Y - 7, 190, 30, 8);
-      g.setColor(new Color(255, 255, 255, 255));
+      g.setColor(BlueSagaColors.WHITE);
       g.drawString(LanguageUtils.getString("ui.login.password"), X + 210, Y - 30);
       password_field.render(app, g);
 
@@ -239,7 +239,7 @@ public class LoginScreen {
       ForgotButton.draw(g, mouseX, mouseY);
     }
 
-    g.setColor(new Color(255, 255, 255, 255));
+    g.setColor(BlueSagaColors.WHITE);
     g.drawString("v 0." + ClientSettings.VERSION_NR, 930, 610);
   }
 

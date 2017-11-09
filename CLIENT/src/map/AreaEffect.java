@@ -1,9 +1,9 @@
 package map;
 
-import java.util.Iterator;
-import java.util.Vector;
+import java.util.*;
 
 import game.BlueSaga;
+import graphics.BlueSagaColors;
 import graphics.Font;
 import graphics.ImageResource;
 import screens.ScreenHandler;
@@ -27,24 +27,31 @@ public class AreaEffect {
   private int guardLevel = 0;
 
   private boolean Tint = false;
-  private Color TintColorInit = new Color(255, 255, 255);
-  private Color TintColor = new Color(255, 255, 255);
+  private Color TintColorInit = BlueSagaColors.WHITE;
+  private Color TintColor = BlueSagaColors.WHITE;
   private int TintAlpha = 0;
 
   private boolean Fog = false;
   private Fog FogEffect;
-  private Color FogColor = new Color(255, 255, 255);
 
   private String ParticleType = "None";
-  private Vector<EnvParticle> Particles = new Vector<EnvParticle>();
+  private List<EnvParticle> Particles = new ArrayList<EnvParticle>(100);
 
-  public AreaEffect() {}
+  private final int widthUnguarded;
+  private final int widthSafe;
+
+
+  public AreaEffect()
+  {
+    widthUnguarded = Font.size18.getWidth(LanguageUtils.getString("ui.area_effect.unguarded_zone"));
+    widthSafe = Font.size18.getWidth(LanguageUtils.getString("ui.area_effect.safe_zone"));
+  }
 
   public Color updatedTintColor(float alpha) {
     if (alpha > 1.0f) {
       return TintColorInit;
     } else if (alpha < 0.0f) {
-      return new Color(255, 255, 255);
+      return BlueSagaColors.WHITE;
     }
     int r = Math.round(255 * (1.0f - alpha) + TintColorInit.getRed() * alpha);
     int g = Math.round(255 * (1.0f - alpha) + TintColorInit.getGreen() * alpha);
@@ -66,7 +73,7 @@ public class AreaEffect {
     }
 
     if (FogEffect != null) {
-      FogEffect.draw(ScreenHandler.myCamera.getX(), ScreenHandler.myCamera.getY(), FogColor);
+      FogEffect.draw(ScreenHandler.myCamera.getX(), ScreenHandler.myCamera.getY());
     }
 
     if (SHOW_AREA_NAME) {
@@ -119,37 +126,28 @@ public class AreaEffect {
       if (guardLevel == 0) {
         g.setColor(new Color(0, 0, 0, AreaNameAlpha - 170));
         g.fillRoundRect(
-            512
-                - Font.size18.getWidth(LanguageUtils.getString("ui.area_effect.unguarded_zone")) / 2
-                - 13,
+            512 - widthUnguarded / 2 - 13,
             zoneStatusY - 4,
-            Font.size18.getWidth(LanguageUtils.getString("ui.area_effect.unguarded_zone")) + 26,
+            widthUnguarded + 26,
             38,
             5);
         g.setColor(new Color(238, 76, 76, AreaNameAlpha));
         g.fillRoundRect(
-            512
-                - Font.size18.getWidth(LanguageUtils.getString("ui.area_effect.unguarded_zone")) / 2
-                - 9,
+            512 - widthUnguarded / 2 - 9,
             zoneStatusY,
-            Font.size18.getWidth(LanguageUtils.getString("ui.area_effect.unguarded_zone")) + 18,
+            widthUnguarded + 18,
             30,
             5);
 
         g.setColor(new Color(22, 22, 22, AreaNameAlpha));
         g.drawString(
             LanguageUtils.getString("ui.area_effect.unguarded_zone"),
-            512
-                - Font.size18.getWidth(LanguageUtils.getString("ui.area_effect.unguarded_zone"))
-                    / 2,
+            512 - widthUnguarded / 2,
             zoneStatusY + 5);
         ImageResource.getSprite("gui/skulls/silver")
             .getImage()
             .draw(
-                512
-                    - Font.size18.getWidth(LanguageUtils.getString("ui.area_effect.unguarded_zone"))
-                        / 2
-                    - 40,
+                512 - widthUnguarded / 2 - 40,
                 zoneStatusY - 5,
                 40,
                 40,
@@ -157,9 +155,7 @@ public class AreaEffect {
         ImageResource.getSprite("gui/skulls/silver")
             .getImage()
             .draw(
-                512
-                    + Font.size18.getWidth(LanguageUtils.getString("ui.area_effect.unguarded_zone"))
-                        / 2,
+                512 + widthUnguarded / 2,
                 zoneStatusY - 5,
                 40,
                 40,
@@ -167,31 +163,27 @@ public class AreaEffect {
       } else {
         g.setColor(new Color(0, 0, 0, AreaNameAlpha - 170));
         g.fillRoundRect(
-            512
-                - Font.size18.getWidth(LanguageUtils.getString("ui.area_effect.safe_zone")) / 2
-                - 13,
+            512 - widthSafe / 2 - 13,
             zoneStatusY - 4,
-            Font.size18.getWidth(LanguageUtils.getString("ui.area_effect.safe_zone")) + 26,
+            widthSafe + 26,
             38,
             5);
         g.setColor(new Color(196, 233, 125, AreaNameAlpha));
         g.fillRoundRect(
-            512 - Font.size18.getWidth(LanguageUtils.getString("ui.area_effect.safe_zone")) / 2 - 9,
+            512 - widthSafe / 2 - 9,
             zoneStatusY,
-            Font.size18.getWidth(LanguageUtils.getString("ui.area_effect.safe_zone")) + 18,
+            widthSafe + 18,
             30,
             5);
         g.setColor(new Color(22, 22, 22, AreaNameAlpha));
         g.drawString(
             LanguageUtils.getString("ui.area_effect.safe_zone"),
-            512 - Font.size18.getWidth(LanguageUtils.getString("ui.area_effect.safe_zone")) / 2,
+            512 - widthSafe / 2,
             zoneStatusY + 5);
         ImageResource.getSprite("gui/skulls/silver")
             .getImage()
             .draw(
-                512
-                    - Font.size18.getWidth(LanguageUtils.getString("ui.area_effect.safe_zone")) / 2
-                    - 40,
+                512 - widthSafe / 2 - 40,
                 zoneStatusY - 5,
                 40,
                 40,
@@ -199,7 +191,7 @@ public class AreaEffect {
         ImageResource.getSprite("gui/skulls/silver")
             .getImage()
             .draw(
-                512 + Font.size18.getWidth(LanguageUtils.getString("ui.area_effect.safe_zone")) / 2,
+                512 + widthSafe / 2,
                 zoneStatusY - 5,
                 40,
                 40,
@@ -260,11 +252,10 @@ public class AreaEffect {
         }
       } else {
         if (FogEffect == null) {
-          FogEffect = new Fog(ScreenHandler.myCamera.getX(), ScreenHandler.myCamera.getY());
+          FogEffect = new Fog(ScreenHandler.myCamera.getX(), ScreenHandler.myCamera.getY(), newFogColor);
         } else {
-          FogEffect.appear(ScreenHandler.myCamera.getX(), ScreenHandler.myCamera.getY());
+          FogEffect.appear(ScreenHandler.myCamera.getX(), ScreenHandler.myCamera.getY(), newFogColor);
         }
-        FogColor = newFogColor;
       }
 
       Fog = fog;
@@ -279,7 +270,7 @@ public class AreaEffect {
 
       if (AreaEffectHandler.nightTime && BlueSaga.playerCharacter.getZ() == 0) {
         Tint = true;
-        setTintColor(new Color(185, 150, 255));
+        setTintColor(BlueSagaColors.NIGHT);
       }
 
       setParticleType(particleType);

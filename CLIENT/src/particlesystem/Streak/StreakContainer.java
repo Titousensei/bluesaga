@@ -4,41 +4,32 @@ import game.Database;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.HashMap;
+import java.util.*;
 
 import org.newdawn.slick.Color;
 
 public class StreakContainer {
 
-  private HashMap<Integer, StreakType> myStreakTypes;
+  private Map<Integer, StreakType> myStreakTypes;
 
   public StreakContainer(Database aGameDB) {
-    CreateStreakFromDB(aGameDB);
-  }
-
-  private void CreateStreakFromDB(Database aGameDB) {
-
-    myStreakTypes = new HashMap<Integer, StreakType>();
+    myStreakTypes = new HashMap<>();
 
     ResultSet result = aGameDB.askDB("select * from Streak");
 
     try {
-
       while (result.next()) {
-
         StreakType newStreakType = new StreakType();
-        GetStreakTypeFromDB(newStreakType, result);
+        getStreakTypeFromDB(newStreakType, result);
         myStreakTypes.put(newStreakType.myID, newStreakType);
       }
       result.close();
-
     } catch (SQLException e) {
-      // TODO Auto-generated catch block
       e.printStackTrace();
     }
   }
 
-  public void GetStreakTypeFromDB(StreakType aStreakType, ResultSet aStreakResult)
+  private static void getStreakTypeFromDB(StreakType aStreakType, ResultSet aStreakResult)
       throws SQLException {
 
     aStreakType.myID = aStreakResult.getInt("Id");

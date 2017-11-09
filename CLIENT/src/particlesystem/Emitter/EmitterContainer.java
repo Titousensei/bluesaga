@@ -4,21 +4,17 @@ import game.Database;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.HashMap;
+import java.util.*;
 
 import org.newdawn.slick.geom.Vector2f;
 
 public class EmitterContainer {
 
-  HashMap<String, EmitterType> myEmitterTypes;
+  Map<String, EmitterType> myEmitterTypes;
 
-  public EmitterContainer(Database aGameDB) {
-    CreateEmittersFromDB(aGameDB);
-  }
-
-  private void CreateEmittersFromDB(Database aGameDB) {
-
-    myEmitterTypes = new HashMap<String, EmitterType>();
+  public EmitterContainer(Database aGameDB)
+  {
+    myEmitterTypes = new HashMap<>();
 
     ResultSet result = aGameDB.askDB("select * from Emitter");
 
@@ -27,7 +23,7 @@ public class EmitterContainer {
       while (result.next()) {
 
         EmitterType newEmitterType = new EmitterType();
-        GetEmitterTypeFromDB(newEmitterType, result);
+        getEmitterTypeFromDB(newEmitterType, result);
         myEmitterTypes.put(newEmitterType.myName, newEmitterType);
       }
       result.close();
@@ -42,7 +38,7 @@ public class EmitterContainer {
     return myEmitterTypes.get(aEmitterName);
   }
 
-  public void GetEmitterTypeFromDB(EmitterType aEmitterType, ResultSet aEmitterResult)
+  private static void getEmitterTypeFromDB(EmitterType aEmitterType, ResultSet aEmitterResult)
       throws SQLException {
 
     aEmitterType.myID = aEmitterResult.getInt("Id");

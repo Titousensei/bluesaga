@@ -16,6 +16,7 @@ public class Button {
   private int Width;
   private int Height;
   private String Label;
+  private int labelWidth;
   protected int X;
   protected int Y;
   private boolean hover;
@@ -24,6 +25,7 @@ public class Button {
   private Image imageButtonActive;
   private boolean isImage;
   protected Window ParentWindow;
+  private boolean isFixedWidth;
 
   private Color idleColor = BlueSagaColors.RED;
   private Color hoverColor = BlueSagaColors.YELLOW;
@@ -35,12 +37,14 @@ public class Button {
   public Button(String label, int x, int y, int width, int height, Window parent) {
     ParentWindow = parent;
     Label = label;
+    labelWidth = Font.size12.getWidth(Label);
     X = x;
     Y = y;
     Width = width;
     Height = height;
     hover = false;
     isImage = false;
+    isFixedWidth = true;
 
     setVisible(true);
     setToolTip(new ToolTip());
@@ -49,12 +53,14 @@ public class Button {
   public Button(String label, int x, int y, Window parent) {
     ParentWindow = parent;
     Label = label;
+    labelWidth = Font.size12.getWidth(Label);
     X = x;
     Y = y;
-    Width = Font.size12.getWidth(Label) + 30;
+    Width = labelWidth + 30;
     Height = 35;
     hover = false;
     isImage = false;
+    isFixedWidth = false;
 
     setVisible(true);
     setToolTip(new ToolTip());
@@ -103,28 +109,17 @@ public class Button {
         }
         g.fillRoundRect(X + 5 + moveX, Y + 5 + moveY, Width - 10, Height - 10, 8);
 
-        if (!Label.equals("")) {
+        if (!"".equals(Label)) {
           g.setFont(Font.size12);
 
           if (isClicked(mouseX, mouseY) || selected) {
-            g.setColor(new Color(0, 0, 0, 255));
+            g.setColor(BlueSagaColors.BLACK);
           } else {
-            g.setColor(new Color(255, 255, 255, 255));
+            g.setColor(BlueSagaColors.WHITE);
           }
-
-          int labelWidth = Font.size12.getWidth(Label);
 
           g.drawString(Label, X + Width / 2 - labelWidth / 2 + moveX, Y + 10 + moveY);
         }
-
-        // Shine
-        /*
-        g.setWorldClip(X+moveX, Y+moveY, Width, Height/2);
-        g.setColor(new Color(255,255,255,60));
-        g.fillRoundRect(X+moveX, Y+moveY, Width, Height,10);
-        g.clearWorldClip();
-        */
-
       }
     }
 
@@ -164,11 +159,7 @@ public class Button {
   }
 
   public void toggle() {
-    if (selected) {
-      selected = false;
-    } else {
-      selected = true;
-    }
+    selected= !selected;
   }
 
   public void click() {
@@ -209,6 +200,10 @@ public class Button {
 
   public void setLabel(String newLabel) {
     Label = newLabel;
+    labelWidth = Font.size12.getWidth(Label);
+    if (!isFixedWidth) {
+      Width = labelWidth + 30;
+    }
   }
 
   public boolean isVisible() {

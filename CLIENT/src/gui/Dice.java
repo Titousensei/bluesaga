@@ -4,13 +4,12 @@ import graphics.BlueSagaColors;
 import graphics.Font;
 import graphics.ImageResource;
 
-import java.util.Collections;
-import java.util.Vector;
+import java.util.*;
 
 import org.newdawn.slick.Graphics;
 
 public class Dice {
-  private Vector<Integer> faces;
+  private List<Integer> faces;
   private int aniItr = 0;
   private int aniDuration = 10;
   private int faceNr = 0;
@@ -24,7 +23,7 @@ public class Dice {
 
   public Dice() {
     active = false;
-    faces = new Vector<Integer>();
+    faces = new ArrayList<>(6);
     faces.add(1);
     faces.add(2);
     faces.add(3);

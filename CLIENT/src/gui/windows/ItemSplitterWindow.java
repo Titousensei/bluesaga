@@ -22,9 +22,9 @@ public class ItemSplitterWindow extends Window {
     // TODO Auto-generated constructor stub
 
     number_field = new TextField(app, Font.size12, x + 20, y + 55, 80, 30);
-    number_field.setBackgroundColor(new Color(0, 0, 0, 0));
-    number_field.setBorderColor(new Color(0, 0, 0, 0));
-    number_field.setTextColor(new Color(255, 255, 255, 255));
+    number_field.setBackgroundColor(BlueSagaColors.NOTHING);
+    number_field.setBorderColor(BlueSagaColors.NOTHING);
+    number_field.setTextColor(BlueSagaColors.WHITE);
     number_field.setMaxLength(6);
   }
 

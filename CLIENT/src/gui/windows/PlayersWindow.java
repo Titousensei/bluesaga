@@ -95,9 +95,9 @@ public class PlayersWindow extends Window {
             this);
 
     new_friend_text = new TextField(app, Font.size12, X + 30, Y + 90, 160, 30);
-    new_friend_text.setBackgroundColor(new Color(0, 0, 0, 0));
-    new_friend_text.setBorderColor(new Color(0, 0, 0, 0));
-    new_friend_text.setTextColor(new Color(255, 255, 255, 255));
+    new_friend_text.setBackgroundColor(BlueSagaColors.NOTHING);
+    new_friend_text.setBorderColor(BlueSagaColors.NOTHING);
+    new_friend_text.setTextColor(BlueSagaColors.WHITE);
     new_friend_text.setFocus(false);
     new_friend_text.setMaxLength(15);
     new_friend_text.setAcceptingInput(false);
@@ -195,11 +195,11 @@ public class PlayersWindow extends Window {
               X + 20 + moveX,
               Y + 60 + moveY);
 
-          g.setColor(new Color(255, 255, 255, 100));
+          g.setColor(BlueSagaColors.WHITE_TRANS);
           g.fillRoundRect(X + 20 + moveX, Y + 80 + moveY, 200, 40, 10);
-          g.setColor(new Color(0, 0, 0, 150));
+          g.setColor(BlueSagaColors.BLACK_TRANS);
           g.fillRoundRect(X + 25 + moveX, Y + 85 + moveY, 190, 30, 8);
-          g.setColor(new Color(255, 255, 255, 255));
+          g.setColor(BlueSagaColors.WHITE);
 
           new_friend_text.setLocation(X + 30 + moveX, Y + 90 + moveY);
 
@@ -244,11 +244,11 @@ public class PlayersWindow extends Window {
               X + 20 + moveX,
               Y + 60 + moveY);
 
-          g.setColor(new Color(255, 255, 255, 100));
+          g.setColor(BlueSagaColors.WHITE_TRANS);
           g.fillRoundRect(X + 20 + moveX, Y + 80 + moveY, 200, 40, 10);
-          g.setColor(new Color(0, 0, 0, 150));
+          g.setColor(BlueSagaColors.BLACK_TRANS);
           g.fillRoundRect(X + 25 + moveX, Y + 85 + moveY, 190, 30, 8);
-          g.setColor(new Color(255, 255, 255, 255));
+          g.setColor(BlueSagaColors.WHITE);
 
           new_friend_text.setLocation(X + 30 + moveX, Y + 90 + moveY);
 

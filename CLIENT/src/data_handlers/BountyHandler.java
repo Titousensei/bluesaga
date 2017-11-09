@@ -4,6 +4,7 @@ import org.newdawn.slick.Color;
 
 import sound.Sfx;
 import game.BlueSaga;
+import graphics.BlueSagaColors;
 import gui.Gui;
 
 public class BountyHandler extends Handler {
@@ -40,7 +41,7 @@ public class BountyHandler extends Handler {
         String bountyInfo[] = bountyStatus.split(";");
         Sfx.play("notifications/gold");
         Gui.BountyWindow.close();
-        Gui.addMessage("#messages.bounty.placed_bounty# " + bountyInfo[0], new Color(50, 50, 50));
+        Gui.addMessage("#messages.bounty.placed_bounty# " + bountyInfo[0], BlueSagaColors.DARK);
         if (Gui.InventoryWindow.isOpen()) {
           BlueSaga.client.sendMessage("inventory", "info");
         }

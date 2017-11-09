@@ -1,9 +1,6 @@
 package gui;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Vector;
+import java.util.*;
 
 import game.BlueSaga;
 import game.ClientSettings;
@@ -24,28 +21,31 @@ import utils.RandomUtils;
 
 public class Chat {
 
+  public final static Color COL_DEFAULT_CHAT = new Color(255, 243, 96, 200);
+  public final static Color COL_EVENT = new Color(130, 200, 245, 255);
+
   private Image Chat_Bg;
   private Image Chat_Big_Bg;
   private Image Input_Bg;
 
   private static boolean BigChat = false;
 
-  private Vector<String> special_type = new Vector<String>();
+  private List<String> special_type = new ArrayList<>(10);
 
-  private ArrayList<String> rows_author;
-  private ArrayList<String> rows_text;
-  private ArrayList<String> rows_type;
+  private List<String> rows_author;
+  private List<String> rows_text;
+  private List<String> rows_type;
 
-  private Vector<String> chatChannels = new Vector<String>();
-  private HashMap<String, Color> chatChannelsColor = new HashMap<String, Color>();
-  private Vector<String> chatChannelsToDelete = new Vector<String>();
+  private List<String> chatChannels = new ArrayList<String>(10);
+  private Map<String, Color> chatChannelsColor = new HashMap<>();
+  private List<String> chatChannelsToDelete = new ArrayList<>(10);
 
-  private HashMap<String, Color> chatColors = new HashMap<String, Color>();
+  private Map<String, Color> chatColors = new HashMap<>();
 
-  private HashMap<String, Integer> rows_count;
+  private Map<String, Integer> rows_count;
   private TextField input_field;
 
-  private HashMap<String, Boolean> NewChatMessage = new HashMap<String, Boolean>();
+  private Map<String, Boolean> NewChatMessage = new HashMap<>();
   private int NewMessageBlinkItr = 0;
 
   private boolean Active;
@@ -59,8 +59,6 @@ public class Chat {
   private static int Y;
 
   private int Width = 407;
-
-  private int opacity = 200;
 
   private int MAX_ROW_CHARS;
 
@@ -95,9 +93,9 @@ public class Chat {
     special_type.add("error");
 
     input_field = new TextField(app, Font.size12, X + 15, Y + 165, 350, 30);
-    input_field.setBackgroundColor(new Color(0, 0, 0, 0));
-    input_field.setBorderColor(new Color(0, 0, 0, 0));
-    input_field.setTextColor(new Color(255, 255, 255, 255));
+    input_field.setBackgroundColor(BlueSagaColors.NOTHING);
+    input_field.setBorderColor(BlueSagaColors.NOTHING);
+    input_field.setTextColor(BlueSagaColors.WHITE);
     input_field.setFocus(false);
     input_field.setCursorVisible(true);
     input_field.setMaxLength(200);
@@ -156,7 +154,7 @@ public class Chat {
       int height = 150;
 
       // CHAT MAIN WINDOW
-      Color chatColor = new Color(255, 243, 96, opacity);
+      Color chatColor = COL_DEFAULT_CHAT;
 
       for (String channel : chatChannels) {
         if (ActiveChatChannel.equals(channel)) {
@@ -196,11 +194,11 @@ public class Chat {
 
       for (String channel : chatChannels) {
         if (ActiveChatChannel.equals(channel)) {
-          g.setColor(new Color(0, 0, 0, 255));
+          g.setColor(BlueSagaColors.BLACK);
           g.drawString(channel.toUpperCase(), labelX + 1, tabY + 1);
         }
 
-        Color channelColor = new Color(255, 255, 255);
+        Color channelColor = BlueSagaColors.WHITE;
         if (chatChannelsColor.get(channel) != null) {
           channelColor =
               new Color(
@@ -231,7 +229,7 @@ public class Chat {
 
         int labelWidth = Font.size10.getWidth(channel.toUpperCase());
 
-        g.setColor(new Color(255, 255, 255, 100));
+        g.setColor(BlueSagaColors.WHITE_TRANS);
         g.drawString("|", labelX + labelWidth + 5, tabY);
 
         labelX += labelWidth + 15;
@@ -239,7 +237,7 @@ public class Chat {
 
       // CHAT TEXT CONTENT
 
-      g.setColor(new Color(255, 255, 255, 255));
+      g.setColor(BlueSagaColors.WHITE);
 
       int textpos = 0;
 
@@ -270,7 +268,7 @@ public class Chat {
 
         if (show) {
           if (rows_type.get(i).equals("event") || rows_author.get(i).equals("event")) {
-            g.setColor(new Color(130, 200, 245, 255));
+            g.setColor(COL_EVENT);
           } else if (chatColors.containsKey(rows_type.get(i))) {
             g.setColor(chatColors.get(rows_type.get(i)));
           } else if (rows_author.get(i).equals("error")) {
@@ -308,9 +306,9 @@ public class Chat {
             g.setFont(Font.size12);
 
             if (rows_author.get(i).equals(BlueSaga.playerCharacter.getName())) {
-              g.setColor(new Color(255, 255, 255, 100));
+              g.setColor(BlueSagaColors.WHITE_TRANS);
             } else {
-              g.setColor(new Color(255, 255, 255, 255));
+              g.setColor(BlueSagaColors.WHITE);
             }
           }
 
@@ -323,8 +321,8 @@ public class Chat {
 
       if (Active) {
         input_field.setLocation(X + 15, drawY + 168);
-        g.setColor(new Color(255, 255, 255, 255));
-        input_field.setTextColor(new Color(255, 255, 255, 255));
+        g.setColor(BlueSagaColors.WHITE);
+        input_field.setTextColor(BlueSagaColors.WHITE);
         input_field.render(app, g);
       }
 
@@ -471,7 +469,19 @@ public class Chat {
 
   public void keyLogic(Input INPUT, Client client) {
 
-    if (INPUT.isKeyPressed(Input.KEY_ENTER) || INPUT.isKeyPressed(Input.KEY_NUMPADENTER)) {
+    if (INPUT.isKeyPressed(Input.KEY_SLASH) && !isActive()) {
+      setActive(true);
+      input_field.setAcceptingInput(true);
+      input_field.setText("/");
+      input_field.setCursorPos(1);
+    }
+    else if (INPUT.isKeyPressed(Input.KEY_AT) && !isActive()) {
+      setActive(true);
+      input_field.setAcceptingInput(true);
+      input_field.setText("@");
+      input_field.setCursorPos(1);
+    }
+    else if (INPUT.isKeyPressed(Input.KEY_ENTER) || INPUT.isKeyPressed(Input.KEY_NUMPADENTER)) {
       if (!isActive()) {
         setActive(true);
         input_field.setAcceptingInput(true);
@@ -643,7 +653,7 @@ public class Chat {
     chatChannelsColor.clear();
 
     chatChannels.add("local");
-    chatChannelsColor.put("local", new Color(255, 255, 255));
+    chatChannelsColor.put("local", BlueSagaColors.WHITE);
 
     chatChannels.add("announce");
     chatChannelsColor.put("announce", new Color(255, 243, 96));

@@ -23,7 +23,6 @@ public class MusicLoader extends Thread {
 
   @Override
   public void run() {
-    // TODO Auto-generated method stub
     try {
       if (!songs.containsKey(songName)) {
         for (Music m : songs.values()) {
@@ -53,7 +52,6 @@ public class MusicLoader extends Thread {
         }
       }
     } catch (SlickException e) {
-      // TODO Auto-generated catch block
       e.printStackTrace();
     }
   }

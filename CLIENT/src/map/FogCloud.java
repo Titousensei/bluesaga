@@ -5,7 +5,7 @@ import org.newdawn.slick.Color;
 import utils.RandomUtils;
 import graphics.ImageResource;
 
-public class FogCloud {
+class FogCloud {
 
   int Id;
   float X;
@@ -17,12 +17,14 @@ public class FogCloud {
   int blue;
   int cameraStartX;
   int cameraStartY;
+  Color color;
 
-  public FogCloud(int newId, int cameraX, int cameraY) {
+  public FogCloud(int newId, int cameraX, int cameraY, Color aColor) {
     Id = newId;
 
     cameraStartX = cameraX;
     cameraStartY = cameraY;
+    color = aColor;
 
     X = RandomUtils.getInt(-400, 1024);
     Y = RandomUtils.getInt(-200, 640);
@@ -31,7 +33,7 @@ public class FogCloud {
     gotoOpacity = RandomUtils.getInt(50, 150);
   }
 
-  public void draw(int cameraX, int cameraY, Color aColor) {
+  public void draw(int cameraX, int cameraY) {
     X -= (cameraStartX - cameraX) + Speed;
     Y -= (cameraStartY - cameraY);
     cameraStartX = cameraX;
@@ -54,10 +56,7 @@ public class FogCloud {
     }
 
     ImageResource.getSprite("effects/fog" + Id)
-        .draw(
-            Math.round(X),
-            Math.round(Y),
-            new Color(aColor.getRed(), aColor.getGreen(), aColor.getBlue(), opacity));
+        .draw(Math.round(X), Math.round(Y), color);
   }
 
   public void dissappear() {

@@ -10,6 +10,7 @@ import org.newdawn.slick.Input;
 
 import components.Item;
 import game.BlueSaga;
+import graphics.BlueSagaColors;
 import graphics.Font;
 import graphics.ImageResource;
 import gui.Gui;
@@ -128,7 +129,7 @@ public class InventoryWindow extends Window {
       if (isFullyOpened()) {
 
         g.setFont(Font.size12);
-        g.setColor(new Color(255, 255, 255, 255));
+        g.setColor(BlueSagaColors.WHITE);
         ImageResource.getSprite("gui/menu/inventory_label").draw(X + moveX, Y + 7 + moveY);
 
         boolean mouseOnItem = false;

@@ -108,7 +108,7 @@ public class BattleHandler extends Handler {
       String damageType = hitInfo[1];
       String criticalOrMiss = hitInfo[2];
 
-      Color dmgColor = new Color(255, 255, 255);
+      Color dmgColor = BlueSagaColors.WHITE;
 
       if (damageType.equals("Healing")) {
         // If healing, show amount in green
@@ -217,7 +217,7 @@ public class BattleHandler extends Handler {
       Gui.Chat_Window.addTextLine("event", "", "You've respawned at your last checkpoint");
 
       ScreenHandler.AREA_EFFECT.setAreaEffect(
-          0, false, new Color(255, 255, 255), false, new Color(255, 255, 255), "None", 6);
+          0, false, BlueSagaColors.WHITE, false, BlueSagaColors.WHITE, "None", 6);
 
       BlueSaga.client.sendMessage("screen", "true");
     } else if (serverData.startsWith("<respawn_other_map>")) {

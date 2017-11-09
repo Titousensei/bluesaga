@@ -1,9 +1,9 @@
 package network;
 
 /************************************
- * 									*
- *			CLIENT / CLIENT			*
- *									*
+ *                  *
+ *      CLIENT / CLIENT     *
+ *                  *
  ************************************/
 import game.BlueSaga;
 import game.ClientSettings;
@@ -63,12 +63,20 @@ public class Client {
     return "";
   }
 
-  public void sendMessage(String type, String msg) {
+  public void sendMessage(String type, String... msg) {
     keepAliveSec = 0;
     try {
       String outputPacketIdObfuscated = Obfuscator.obfuscate(outputPacketId);
 
-      byte[] byteMsg = (outputPacketIdObfuscated + "<" + type + ">" + msg).getBytes();
+      StringBuilder sb = new StringBuilder(1000);
+      sb.append(outputPacketIdObfuscated)
+        .append('<')
+        .append(type)
+        .append('>');
+      for (String m : msg) {
+        sb.append(m);
+      }
+      byte[] byteMsg = sb.toString().getBytes();
       out.writeObject(byteMsg);
       out.flush();
 
@@ -107,7 +115,7 @@ public class Client {
       requestSocket.close();
 
     } catch (IOException ioException) {
-      //	ioException.printStackTrace();
+      //  ioException.printStackTrace();
     }
   }
 
@@ -137,8 +145,11 @@ public class Client {
       keepAliveSec++;
       if (this.keepAliveSec >= 4 && !BlueSaga.reciever.lostConnection) {
         pingTimer = System.currentTimeMillis();
-        sendMessage("keepalive", "ping=" + pingLast + "; ping_avg=" + pingMeter
-            + "; " + telemetry() + "; FPS=" + BlueSaga.getFPS());
+        sendMessage("keepalive",
+            "ping=", String.valueOf(pingLast),
+            "; ping_avg=", String.valueOf(pingMeter),
+            "; ", telemetry(), "; FPS=", String.valueOf(BlueSaga.getFPS())
+        );
       }
     }
   }

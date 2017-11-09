@@ -6,6 +6,7 @@ import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Vector2f;
 
+import graphics.BlueSagaColors;
 import screens.Camera;
 
 public class Streak {
@@ -61,8 +62,8 @@ public class Streak {
         break;
       }
 
-      Color firstColor = new Color(255, 255, 255, 255);
-      Color secondColor = new Color(255, 255, 255, 255);
+      Color firstColor = BlueSagaColors.WHITE;
+      Color secondColor = BlueSagaColors.WHITE;
       CalculateLineColor(firstColor, secondColor, index);
       g.setLineWidth(myType.myWidth);
 

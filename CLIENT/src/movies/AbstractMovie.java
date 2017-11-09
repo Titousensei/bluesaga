@@ -72,11 +72,11 @@ public abstract class AbstractMovie {
   }
 
   public void draw(Graphics g) {
-    g.setColor(new Color(0, 0, 0));
+    g.setColor(BlueSagaColors.BLACK);
     g.fillRect(0, 0, ClientSettings.SCREEN_WIDTH, ClientSettings.SCREEN_HEIGHT);
 
     g.setFont(Font.size16);
-    g.setColor(new Color(255, 255, 255));
+    g.setColor(BlueSagaColors.WHITE);
     if (canSkip) {
       g.drawString(LanguageUtils.getString("movies.press_escape"), 790, 605);
     } else {

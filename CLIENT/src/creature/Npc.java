@@ -90,7 +90,7 @@ public class Npc extends Creature {
         int nameWidth = Font.size10.getWidth(Name);
         int nameX = centerX - nameWidth / 2;
 
-        g.setColor(BlueSagaColors.GRAY_TRANS);
+        g.setColor(BlueSagaColors.BLACK_TRANS);
 
         g.drawString(Name, nameX, cornerY - 25);
 

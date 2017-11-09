@@ -1,61 +1,76 @@
 package particlesystem.Emitter;
 
+import particlesystem.Particle.ParticleContainer;
 import particlesystem.Particle.ParticleType;
 import screens.Camera;
-import screens.ScreenHandler;
+import game.Database;
 
-import java.util.Vector;
+import java.util.*;
 
 import org.newdawn.slick.Graphics;
 
 public class EmitterManager {
 
-  private Vector<Emitter> myEmitters;
+  private List<Emitter> myEmitters;
 
-  public EmitterManager() {
-    myEmitters = new Vector<Emitter>();
+  private EmitterContainer myEmitterContainer;
+  private ParticleContainer myParticleContainer;
+
+  public EmitterManager(Database aGameDB) {
+
+    myEmitters = new ArrayList<>(10);
+    myEmitterContainer = new EmitterContainer(aGameDB);
+    myParticleContainer = new ParticleContainer(aGameDB);
   }
 
   public void Update(float aElapsedTime) {
 
-    for (Emitter emitter : myEmitters) {
-      emitter.Update(aElapsedTime);
+    for (int index = 0; index < myEmitters.size(); ++index) {
+      if (myEmitters.get(index) != null) {
+        myEmitters.get(index).Update(aElapsedTime);
+      }
     }
 
     // Remove emitters
-    for (int index = 0; index < myEmitters.size(); ++index) {
-      if (myEmitters.elementAt(index).ShouldBeRemoved()) {
-        myEmitters.remove(index);
+    Iterator<Emitter> it = myEmitters.iterator();
+    while(it.hasNext()) {
+      Emitter em = it.next();
+      if (em.ShouldBeRemoved()) {
+        it.remove();
       }
     }
   }
 
   public void Draw(Graphics g, Camera aCamera) {
-
-    for (Emitter emitter : myEmitters) {
-      emitter.Render(g, aCamera);
+    for (int index = 0; index < myEmitters.size(); ++index) {
+      if (myEmitters.get(index) != null) {
+        myEmitters.get(index).Render(g, aCamera);
+      }
     }
   }
 
   public Emitter SpawnEmitter(int aXPos, int aYPos, String aEmitterName) {
 
-    EmitterType emitterType = ScreenHandler.myEmitterContainer.GetEmitterByName(aEmitterName);
+    EmitterType emitterType = myEmitterContainer.GetEmitterByName(aEmitterName);
 
-    int particleID = emitterType.myParticleID;
+    if (emitterType != null) {
 
-    ParticleType particleType = ScreenHandler.myParticleContainer.GetParticleByID(particleID);
+      int particleID = emitterType.myParticleID;
 
-    Emitter newEmitter = new Emitter(aXPos, aYPos, emitterType, particleType);
-    myEmitters.add(newEmitter);
+      ParticleType particleType = myParticleContainer.GetParticleByID(particleID);
 
-    return newEmitter;
+      Emitter newEmitter = new Emitter(aXPos, aYPos, emitterType, particleType);
+      myEmitters.add(newEmitter);
+      return newEmitter;
+    }
+    return null;
   }
 
-  public Emitter SpawnEmitter(float aXPos, float aYPos, EmitterType aEmitterType) {
+  public Emitter SpawnEmitter(int aXPos, int aYPos, EmitterType aEmitterType) {
 
     int particleID = aEmitterType.myParticleID;
 
-    ParticleType particleType = ScreenHandler.myParticleContainer.GetParticleByID(particleID);
+    ParticleType particleType = myParticleContainer.GetParticleByID(particleID);
 
     Emitter newEmitter = new Emitter(aXPos, aYPos, aEmitterType, particleType);
     myEmitters.add(newEmitter);
@@ -63,7 +78,33 @@ public class EmitterManager {
     return newEmitter;
   }
 
+  public Emitter SpawnEmitter(
+      int aXPos, int aYPos, EmitterType aEmitterType, ParticleType aParticleType) {
+
+    Emitter newEmitter = new Emitter(aXPos, aYPos, aEmitterType, aParticleType);
+    myEmitters.add(newEmitter);
+
+    return newEmitter;
+  }
+
   public void RemoveAllEmitters() {
-    myEmitters.removeAllElements();
+    myEmitters.clear();
+  }
+
+  public EmitterContainer GetEmitterContainer() {
+    return myEmitterContainer;
+  }
+
+  public ParticleContainer GetParticleContainer() {
+    return myParticleContainer;
+  }
+
+  public static float randomFloat(float aMinValue, float aMaxValue, Random aRandom) {
+    int maxRand = 30000;
+    int rand = aRandom.nextInt(maxRand);
+    float randomFloat = (float) rand / (float) maxRand;
+    float dif = aMaxValue - aMinValue;
+    float result = aMinValue + (randomFloat * dif);
+    return result;
   }
 }

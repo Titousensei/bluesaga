@@ -1,9 +1,6 @@
 package sound;
 
-import java.util.HashMap;
-import java.util.Timer;
-import java.util.TimerTask;
-import java.util.Vector;
+import java.util.*;
 
 import javax.sound.midi.Instrument;
 import javax.sound.midi.MidiChannel;
@@ -19,8 +16,8 @@ public class MidiPlayer {
   private boolean StartedTimer;
 
   private HashMap<String, Integer> InstrumentsChannel = new HashMap<String, Integer>();
-  private Vector<Integer> playedChannels = new Vector<Integer>();
-  private Vector<Integer> playedNotes = new Vector<Integer>();
+  private List<Integer> playedChannels = new ArrayList<Integer>(100);
+  private List<Integer> playedNotes = new ArrayList<Integer>(1000);
 
   public MidiPlayer() {
 
@@ -133,17 +130,17 @@ public class MidiPlayer {
     channels[channelNr].noteOn(noteNr, velocity);
 
     if(StartedTimer){
-    	StopNoteTimer.cancel();
-    	StopNoteTimer = new Timer();
+      StopNoteTimer.cancel();
+      StopNoteTimer = new Timer();
     }
 
     StartedTimer = true;
     StopNoteTimer.schedule( new TimerTask(){
-       	public void run() {
-       		for(int i = 0; i < 10; i++){
-       			channels[i].allNotesOff();
-       		}
-       	}
+        public void run() {
+          for(int i = 0; i < 10; i++){
+            channels[i].allNotesOff();
+          }
+        }
          }, 3000);
 
 
@@ -151,7 +148,7 @@ public class MidiPlayer {
 
 
     if(channelNr > 10){
-    	channelNr = 0;
+      channelNr = 0;
     }
     */
 

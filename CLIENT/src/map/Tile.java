@@ -1,6 +1,6 @@
 package map;
 
-import java.util.Vector;
+import java.util.*;
 
 import game.BlueSaga;
 import game.ClientSettings;
@@ -49,7 +49,7 @@ public class Tile {
 
   // ABILITY EFFECT
   // STATUSEFFCT
-  private Vector<StatusEffect> StatusEffects;
+  private List<StatusEffect> StatusEffects;
 
   private int hitByAbilityItr = 0;
 
@@ -107,7 +107,7 @@ public class Tile {
       setTransparent(false);
     }
 
-    StatusEffects = new Vector<StatusEffect>();
+    StatusEffects = new ArrayList<StatusEffect>(30);
 
     walkToIcon = ImageResource.getSprite("gui/world/walkToIcon").getAnimation();
   }
@@ -213,7 +213,7 @@ public class Tile {
     }
   }
 
-  public void addStatusEffects(Vector<StatusEffect> newStatusEffects) {
+  public void addStatusEffects(List<StatusEffect> newStatusEffects) {
     for (StatusEffect s : newStatusEffects) {
       if (!StatusEffects.contains(s)) {
         StatusEffects.add(s);
@@ -222,7 +222,7 @@ public class Tile {
   }
 
   public void removeStatusEffect(int sId) {
-    Vector<StatusEffect> newStatusEffects = new Vector<StatusEffect>();
+    List<StatusEffect> newStatusEffects = new ArrayList<StatusEffect>(30);
     for (StatusEffect s : StatusEffects) {
       if (s.getId() == sId) {
         //REMOVE SE
@@ -236,8 +236,7 @@ public class Tile {
 
   /****************************************
    *                                      *
-   *         OCCUPANT           *
-   *                                      *
+   *         OCCUPANT                     *
    *                                      *
    ****************************************/
   public int getOccupantId() {
@@ -255,8 +254,7 @@ public class Tile {
 
   /****************************************
    *                                      *
-   *         SHOW DUST          *
-   *                                      *
+   *         SHOW DUST                    *
    *                                      *
    ****************************************/
   public void showDust(int x, int y) {
@@ -294,8 +292,7 @@ public class Tile {
 
   /****************************************
    *                                      *
-   *         GETTER / SETTER        *
-   *                                      *
+   *         GETTER / SETTER              *
    *                                      *
    ****************************************/
   public void hitByAbility() {

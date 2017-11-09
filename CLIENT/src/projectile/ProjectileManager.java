@@ -4,17 +4,13 @@ import game.BlueSaga;
 import game.ClientSettings;
 import screens.ScreenHandler;
 
-import java.util.Vector;
+import java.util.*;
 
 import sound.Sfx;
 
 public class ProjectileManager {
 
-  private Vector<Projectile> Projectiles = new Vector<Projectile>();
-
-  public ProjectileManager() {
-    // TODO Auto-generated constructor stub
-  }
+  private List<Projectile> Projectiles = new ArrayList<Projectile>(10);
 
   public void addProjectile(Projectile newProjectile) {
     Projectiles.add(newProjectile);

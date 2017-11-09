@@ -1,6 +1,6 @@
 package screens;
 
-import java.util.Vector;
+import java.util.*;
 
 import game.BlueSaga;
 import graphics.BlueSagaColors;
@@ -23,14 +23,14 @@ public class CharacterCreate {
 
   private static TextField new_name;
 
-  private static Vector<Creature> Creatures = new Vector<Creature>();
+  private static List<Creature> Creatures = new ArrayList<Creature>(10);
 
-  private static Vector<Button> FamilyButtons = new Vector<Button>();
-  private static Vector<Button> CreatureButtons = new Vector<Button>();
-  private static Vector<Button> ClassButtons = new Vector<Button>();
+  private static List<Button> FamilyButtons = new ArrayList<Button>(10);
+  private static List<Button> CreatureButtons = new ArrayList<Button>(10);
+  private static List<Button> ClassButtons = new ArrayList<Button>(10);
 
-  private Vector<String> weaponTypes = new Vector<String>();
-  private Vector<Integer> weaponIds = new Vector<Integer>();
+  private List<String> weaponTypes = new ArrayList<String>(10);
+  private List<Integer> weaponIds = new ArrayList<Integer>(10);
 
   private static int selectedFamilyIndex = 0;
   private static int selectedCreatureIndex = 100;
@@ -54,9 +54,9 @@ public class CharacterCreate {
     status = "";
 
     new_name = new TextField(app, Font.size12, startX + 185, startY + 110, 180, 30);
-    new_name.setBackgroundColor(new Color(0, 0, 0, 0));
-    new_name.setBorderColor(new Color(0, 0, 0, 0));
-    new_name.setTextColor(new Color(255, 255, 255, 255));
+    new_name.setBackgroundColor(BlueSagaColors.BLACK);
+    new_name.setBorderColor(BlueSagaColors.BLACK);
+    new_name.setTextColor(BlueSagaColors.WHITE);
     new_name.setMaxLength(15);
 
     checkingServer = false;
@@ -240,11 +240,11 @@ public class CharacterCreate {
 
     posY += 35;
 
-    g.setColor(new Color(255, 255, 255, 100));
+    g.setColor(BlueSagaColors.WHITE_TRANS);
     g.fillRoundRect(startX + 170, posY, 200, 40, 10);
-    g.setColor(new Color(0, 0, 0, 150));
+    g.setColor(BlueSagaColors.BLACK_TRANS);
     g.fillRoundRect(startX + 175, posY + 5, 190, 30, 8);
-    g.setColor(new Color(255, 255, 255, 255));
+    g.setColor(BlueSagaColors.WHITE);
     new_name.setLocation(
         startX + 265 - Font.size12bold.getWidth(new_name.getText()) / 2, posY + 12);
     new_name.render(app, g);
@@ -253,15 +253,15 @@ public class CharacterCreate {
     BlueSaga.GFX.getSprite("startscreen/family_label").draw(startX+185, posY);
 
     for(int i = 0; i < FamilyButtons.size(); i++){
-    	FamilyButtons.get(i).draw(g, mouseX, mouseY);
+      FamilyButtons.get(i).draw(g, mouseX, mouseY);
 
-    	if(FamilyButtons.get(i).isClicked(mouseX, mouseY) || FamilyButtons.get(i).isSelected()){
-    		g.setColor(BlueSagaColors.BLACK);
-    	}else{
-    		g.setColor(BlueSagaColors.YELLOW);
-    	}
+      if(FamilyButtons.get(i).isClicked(mouseX, mouseY) || FamilyButtons.get(i).isSelected()){
+        g.setColor(BlueSagaColors.BLACK);
+      }else{
+        g.setColor(BlueSagaColors.YELLOW);
+      }
 
-    	BlueSaga.GFX.getSprite("gui/menu/family_"+Families.get(i)+"_icon").draw(FamilyButtons.get(i).getX()+ 13, FamilyButtons.get(i).getY() + 12);
+      BlueSaga.GFX.getSprite("gui/menu/family_"+Families.get(i)+"_icon").draw(FamilyButtons.get(i).getX()+ 13, FamilyButtons.get(i).getY() + 12);
     }
     */
 

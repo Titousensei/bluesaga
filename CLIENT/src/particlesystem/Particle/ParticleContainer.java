@@ -4,22 +4,18 @@ import game.Database;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.HashMap;
+import java.util.*;
 
 import org.newdawn.slick.Color;
 import org.newdawn.slick.geom.Vector2f;
 
 public class ParticleContainer {
 
-  private HashMap<Integer, ParticleType> myParticleTypes;
+  private Map<Integer, ParticleType> myParticleTypes;
 
-  public ParticleContainer(Database aGameDB) {
-    CreateParticleFromDB(aGameDB);
-  }
-
-  private void CreateParticleFromDB(Database aGameDB) {
-
-    myParticleTypes = new HashMap<Integer, ParticleType>();
+  public ParticleContainer(Database aGameDB)
+  {
+    myParticleTypes = new HashMap<>();
 
     ResultSet result = aGameDB.askDB("select * from Particle");
 
@@ -28,7 +24,7 @@ public class ParticleContainer {
       while (result.next()) {
 
         ParticleType newParticleType = new ParticleType();
-        GetParticleTypeFromDB(newParticleType, result);
+        getParticleTypeFromDB(newParticleType, result);
         myParticleTypes.put(newParticleType.myID, newParticleType);
       }
       result.close();
@@ -43,9 +39,9 @@ public class ParticleContainer {
     return myParticleTypes.get(aParticleID);
   }
 
-  public void GetParticleTypeFromDB(ParticleType aParticleType, ResultSet aParticleResult)
-      throws SQLException {
-
+  private static void getParticleTypeFromDB(ParticleType aParticleType, ResultSet aParticleResult)
+  throws SQLException
+  {
     aParticleType.myID = aParticleResult.getInt("Id");
     aParticleType.myName = aParticleResult.getString("Name");
 

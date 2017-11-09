@@ -24,7 +24,7 @@ import org.newdawn.slick.Input;
 
 import components.TargetingSystem;
 import abilitysystem.Ability;
-import particlesystem.EmitterManager;
+import particlesystem.Emitter.EmitterManager;
 import particlesystem.Emitter.EmitterContainer;
 import particlesystem.Particle.ParticleContainer;
 import particlesystem.Streak.StreakContainer;
@@ -141,11 +141,11 @@ public class ScreenHandler {
     }
 
     if (getActiveScreen() == ScreenType.LOADING || getActiveScreen() == ScreenType.ERROR) {
-      g.setColor(new Color(0, 0, 0, 255));
+      g.setColor(BlueSagaColors.BLACK);
       g.fillRect(0, 0, ClientSettings.SCREEN_WIDTH, ClientSettings.SCREEN_HEIGHT);
       LoadingLogo.draw(322, 120);
       g.setFont(Font.size20);
-      g.setColor(new Color(255, 255, 255, 255));
+      g.setColor(BlueSagaColors.WHITE);
 
       g.drawString(LoadingStatus, 512 - Font.size20.getWidth(LoadingStatus) / 2, 350);
       g.drawString("v 0." + ClientSettings.VERSION_NR, 900, 600);
@@ -164,7 +164,7 @@ public class ScreenHandler {
 long t0 = System.currentTimeMillis();
       // Draw background
       if (BlueSaga.playerCharacter.getZ() < 0) {
-        g.setColor(new Color(0, 0, 0));
+        g.setColor(BlueSagaColors.BLACK);
         g.fillRect(0, 0, ClientSettings.SCREEN_WIDTH, ClientSettings.SCREEN_HEIGHT);
       } else if (BlueSaga.playerCharacter.getZ() >= 10) {
         // ImageResource.getSprite("effects/clouds").draw(0, 0);
@@ -301,7 +301,7 @@ t_area += t8 - t7;
 
       // Draws game over screen
       if (BlueSaga.playerCharacter.isDead()) {
-        g.setColor(new Color(255, 0, 0, 150));
+        g.setColor(BlueSagaColors.RED_TRANS);
         g.fillRect(0, 0, 1024, 640);
       }
 

@@ -57,11 +57,8 @@ public class Skill {
     SPnext = nextSP;
   }
 
-  public int getSPBarWidth(int Max) {
-    float fSP = SP;
-    float fMaxSP = SPnext;
-    float spBarWidth = (fSP / fMaxSP) * Max;
-    return Math.round(spBarWidth);
+  public int getSPBarWidth(int max) {
+    return Math.round(1.0f * SP * max / SPnext);
   }
 
   public int getId() {

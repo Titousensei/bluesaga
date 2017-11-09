@@ -170,7 +170,7 @@ public class ActionBar {
           int yi = db.getY();
           db.draw(g, -1, -1, 0, 0);
         }
-        g.setColor(new Color(0, 0, 0, 100));
+        g.setColor(BlueSagaColors.BLACK_TRANS100);
         g.fillRect(X, Y, 50 * ROW_BOXES, 50);
 
         for (int i = ROW_BOXES; i < TOTAL_BOXES; i++) {
@@ -179,7 +179,7 @@ public class ActionBar {
           int yi = db.getY();
           db.draw(g, MouseX, MouseY, 0, 0);
           if (SelectedAction == i) {
-            g.setColor(new Color(255, 255, 255, 100));
+            g.setColor(BlueSagaColors.WHITE_TRANS);
             g.fillRect(xi, yi, 50, 50);
           }
 
@@ -196,7 +196,7 @@ public class ActionBar {
           int yi = db.getY();
           db.draw(g, -1, -1, 0, 0);
         }
-        g.setColor(new Color(0, 0, 0, 100));
+        g.setColor(BlueSagaColors.BLACK_TRANS100);
         g.fillRect(X + 15, Y + 15, 50 * ROW_BOXES, 50);
 
         for (int i = 0; i < ROW_BOXES; i++) {
@@ -205,7 +205,7 @@ public class ActionBar {
           int yi = db.getY();
           db.draw(g, MouseX, MouseY, 0, 0);
           if (SelectedAction == i) {
-            g.setColor(new Color(255, 255, 255, 100));
+            g.setColor(BlueSagaColors.WHITE_TRANS);
             g.fillRect(xi, yi, 50, 50);
           }
 

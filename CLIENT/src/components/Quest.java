@@ -21,17 +21,17 @@ public class Quest {
 
   private int NpcId;
 
-  public Quest() {}
-
   public static String justifyLeft(int width, String st) {
-    StringBuffer buf = new StringBuffer(st);
+    StringBuilder buf = new StringBuilder(st);
     int lastspace = -1;
     int linestart = 0;
     int i = 0;
 
     while (i < buf.length()) {
-      if (buf.charAt(i) == ' ') lastspace = i;
-      if (buf.charAt(i) == '\n') {
+      if (buf.charAt(i) == ' ') {
+        lastspace = i;
+      }
+      else if (buf.charAt(i) == '\n') {
         lastspace = -1;
         linestart = i + 1;
       }

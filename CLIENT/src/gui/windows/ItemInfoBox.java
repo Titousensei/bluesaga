@@ -1,5 +1,6 @@
 package gui.windows;
 
+import graphics.BlueSagaColors;
 import graphics.Font;
 
 import java.util.Vector;
@@ -15,8 +16,8 @@ public class ItemInfoBox extends Window {
   public ItemInfoBox(int x, int y, int width, int height) {
     super("ItemInfoBoxW", x, y, width, height, false);
 
-    setBorderColor(new Color(130, 130, 130));
-    setBgColor(new Color(27, 27, 27));
+    setBorderColor(BlueSagaColors.GRAY130);
+    setBgColor(BlueSagaColors.GRAY27);
     // TODO Auto-generated constructor stub
   }
 

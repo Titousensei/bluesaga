@@ -5,13 +5,13 @@ import org.newdawn.slick.Graphics;
 import abilitysystem.Ability;
 import gui.Button;
 
-public class AbilityButton extends Button {
-
+public class AbilityButton
+extends Button
+{
   private Ability MyAbility;
 
   public AbilityButton(String label, int x, int y, int width, int height, Window parentWindow) {
     super(label, x, y, width, height, parentWindow);
-    // TODO Auto-generated constructor stub
   }
 
   @Override

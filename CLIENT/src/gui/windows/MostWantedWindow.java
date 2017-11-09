@@ -1,5 +1,6 @@
 package gui.windows;
 
+import graphics.BlueSagaColors;
 import graphics.Font;
 import graphics.ImageResource;
 
@@ -62,14 +63,14 @@ public class MostWantedWindow extends Window {
         mostwanted_label.draw(totalX + 90, totalY + 15);
 
         if (Bounties.isEmpty()) {
-          g.setColor(new Color(255, 255, 255, 255));
+          g.setColor(BlueSagaColors.WHITE);
           g.setFont(Font.size20);
           g.drawString(LanguageUtils.getString("ui.bounty.no_bounties"), totalX + 60, totalY + 70);
         } else {
           bounty_label.draw(totalX + 323, totalY + 55);
 
           g.setFont(Font.size16);
-          g.setColor(new Color(0, 0, 0, 255));
+          g.setColor(BlueSagaColors.BLACK);
 
           int i = 0;
 

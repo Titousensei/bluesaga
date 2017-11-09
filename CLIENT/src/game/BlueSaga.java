@@ -77,6 +77,7 @@ public class BlueSaga extends BasicGame {
   public static AppGameContainer app;
   private static Timer closeTimer;
 
+
   public BlueSaga() {
     super("Blue Saga v0." + ClientSettings.VERSION_NR);
   }
@@ -347,25 +348,10 @@ public class BlueSaga extends BasicGame {
     }
 
     keyLogic(container, elapsedTime);
-
-if (updateTimeItr % 600 == 0) {
-  System.out.println("*****************");
-  System.out.println("t_background = " + ScreenHandler.t_background);
-  System.out.println("t_tiles = " + ScreenHandler.t_tiles);
-  System.out.println("t_aoe = " + ScreenHandler.t_aoe);
-  System.out.println("t_particles = " + ScreenHandler.t_particles);
-  System.out.println("t_objects = " + ScreenHandler.t_objects);
-  System.out.println("t_fade = " + ScreenHandler.t_fade);
-  System.out.println("t_projectile = " + ScreenHandler.t_projectile);
-  System.out.println("t_area = " + ScreenHandler.t_area);
-  System.out.println("t_resting = " + ScreenHandler.t_resting);
-  System.out.println("t_debug = " + ScreenHandler.t_debug);
-}
   }
 
   @Override
   public void render(GameContainer container, Graphics g) throws SlickException {
-
     Font.loadGlyphs();
 
     ScreenHandler.draw(g, container);

@@ -1,7 +1,6 @@
 package graphics.screeneffects;
 
-import java.util.Iterator;
-import java.util.Vector;
+import java.util.*;
 
 import game.ClientSettings;
 import graphics.ImageResource;
@@ -29,8 +28,8 @@ public class StatusScreenEffect {
   private GradientFill bottomG;
   private Rectangle topR;
   private Rectangle bottomR;
-  private Vector<InkSpot> inkSpots;
-  private Vector<SnowSpot> snowSpots;
+  private List<InkSpot> inkSpots;
+  private List<SnowSpot> snowSpots;
   private float spiralAngle;
 
   public StatusScreenEffect(String effectName) {
@@ -40,14 +39,14 @@ public class StatusScreenEffect {
       duration = 60;
       setEffectColor(new Color(255, 0, 0));
     } else if (Name.equals("Ink")) {
-      inkSpots = new Vector<InkSpot>();
+      inkSpots = new ArrayList<>(10);
       int nrSpots = RandomUtils.getInt(3, 10);
       for (int i = 0; i < nrSpots; i++) {
         inkSpots.add(new InkSpot());
       }
       duration = 20 * 60;
     } else if (Name.equals("Snow")) {
-      snowSpots = new Vector<SnowSpot>();
+      snowSpots = new ArrayList<>(10);
       int nrSpots = RandomUtils.getInt(3, 10);
       for (int i = 0; i < nrSpots; i++) {
         snowSpots.add(new SnowSpot());
@@ -107,7 +106,7 @@ public class StatusScreenEffect {
 
   private float sineCurve(float time, float duration, float maxValue) {
     return (float) (1 - Math.cos((time / duration) * Math.PI * 2)) * maxValue / 2;
-    //		return (float) (0.5 - Math.cos((time/duration)*2*Math.PI)*0.5) * maxValue;
+    //    return (float) (0.5 - Math.cos((time/duration)*2*Math.PI)*0.5) * maxValue;
   }
 
   public void setEffectColor(Color newColor) {

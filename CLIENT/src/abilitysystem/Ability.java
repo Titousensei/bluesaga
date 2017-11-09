@@ -1,9 +1,10 @@
 package abilitysystem;
 
+import graphics.BlueSagaColors;
 import graphics.Font;
 import graphics.ImageResource;
 
-import java.util.Vector;
+import java.util.*;
 
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
@@ -40,7 +41,7 @@ public class Ability {
   private boolean Instant;
   private int Price;
   private boolean TargetSelf;
-  private Vector<StatusEffect> StatusEffects;
+  private List<StatusEffect> StatusEffects;
 
   // INFO FOR THE OWNER OF THE ABILITY
   private int AP;
@@ -59,7 +60,7 @@ public class Ability {
 
     CooldownLeft = 0;
 
-    StatusEffects = new Vector<StatusEffect>();
+    StatusEffects = new ArrayList<>(4);
 
     //abilityAnimation = BlueSaga.GFX.getSprite("abilities/ability"+AbilityId).getAnimation();
   }
@@ -72,7 +73,7 @@ public class Ability {
 
     classId = Integer.parseInt(info[2]);
 
-    bgColor = new Color(0, 0, 0);
+    bgColor = BlueSagaColors.BLACK;
 
     if (classId > 0) {
       String bgColorInfo[] = GameInfo.classDef.get(classId).bgColor.split(",");
@@ -124,7 +125,7 @@ public class Ability {
     }
 
     // draw cooldown
-    g.setColor(new Color(255, 255, 255, 150));
+    g.setColor(BlueSagaColors.WHITE_COOLDOWN);
     int cooldownHeight = getCooldownHeight(50);
     g.fillRect(x, y + 50 - cooldownHeight, 50, cooldownHeight);
 
@@ -137,7 +138,7 @@ public class Ability {
 
     if (getCooldownLeft() > 0) {
       g.setFont(Font.size8);
-      g.setColor(new Color(0, 0, 0));
+      g.setColor(BlueSagaColors.BLACK);
 
       int secondsLeft = (int) Math.ceil(getCooldownLeft() / 5.0f);
 
@@ -151,7 +152,7 @@ public class Ability {
 
   /*
    *
-   * 	AP and LEVEL UP
+   *  AP and LEVEL UP
    *
    */
 
@@ -180,14 +181,14 @@ public class Ability {
 
   /*
    *
-   * 	GETTER and SETTER
+   *  GETTER and SETTER
    *
    *
    */
 
   /*
   public Animation getAnimation() {
-  	return abilityAnimation;
+    return abilityAnimation;
   }
   */
 
@@ -288,7 +289,7 @@ public class Ability {
     AoE = aoE;
   }
 
-  public Vector<StatusEffect> getStatusEffects() {
+  public List<StatusEffect> getStatusEffects() {
     return StatusEffects;
   }
 

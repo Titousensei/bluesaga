@@ -25,8 +25,8 @@ public class CardBook extends Window {
   public CardBook(int x, int y) {
     super("Cardbook", x, y, sizeWidth * 50 + 20, sizeHeight * 50 + 50, true);
 
-    setBorderColor(new Color(142, 95, 18));
-    setBgColor(new Color(255, 212, 109));
+    setBorderColor(BlueSagaColors.BROWN);
+    setBgColor(BlueSagaColors.ORANGE2);
 
     Boxes = new DropBox[sizeHeight][sizeWidth];
 

@@ -1,5 +1,6 @@
 package gui.windows;
 
+import graphics.BlueSagaColors;
 import graphics.ImageResource;
 import gui.Gui;
 
@@ -90,8 +91,8 @@ public class Window {
     moveWithMouse = false;
     setMovable(true);
 
-    BORDER_COLOR = new Color(164, 42, 42, 255);
-    BG_COLOR = new Color(236, 86, 86, 255);
+    BORDER_COLOR = BlueSagaColors.BURGUNDY;
+    BG_COLOR = BlueSagaColors.WINE;
     closeButton = ImageResource.getSprite("gui/menu/close_button").getImage();
   }
 

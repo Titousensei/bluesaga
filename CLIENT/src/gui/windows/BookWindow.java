@@ -8,17 +8,16 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 
-public class BookWindow extends Window {
-
+public class BookWindow
+extends Window
+{
   private String Name;
   private String Text;
 
   public BookWindow(int x, int y, int width, int height, boolean ShowCloseButton) {
     super("BookW", x, y, width, height, ShowCloseButton);
-    setBorderColor(new Color(142, 95, 18));
-    setBgColor(new Color(255, 212, 109));
-
-    // TODO Auto-generated constructor stub
+    setBorderColor(BlueSagaColors.BROWN);
+    setBgColor(BlueSagaColors.ORANGE2);
   }
 
   public void load(String name, String text) {

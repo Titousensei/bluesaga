@@ -2,22 +2,24 @@ package gui;
 
 import graphics.BlueSagaColors;
 
-import java.util.Vector;
+import java.util.*;
 
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 
 public class ColorPicker {
+  public final static Color COL_PICKER = new Color(255, 255, 255, 200);
+
   private int X;
   private int Y;
 
   private int Width;
   private int Height;
 
-  private Vector<Color> Colors;
+  private List<Color> Colors;
 
   public ColorPicker(int x, int y) {
-    Colors = new Vector<Color>();
+    Colors = new ArrayList<>(100);
     X = x;
     Y = y;
     Width = 0;
@@ -33,7 +35,7 @@ public class ColorPicker {
     }
 
     Width = nrColors * 40 + 10;
-    Height = (int) Math.ceil((float) Colors.size() / (float) 8) * 50;
+    Height = (int) Math.ceil((float) Colors.size() / 8.0f) * 50;
   }
 
   public void draw(Graphics g, int mouseX, int mouseY) {
@@ -46,13 +48,13 @@ public class ColorPicker {
 
     int i = 0;
     for (Color c : Colors) {
-      int row = (int) Math.floor(((float) i / (float) 8));
+      int row = (int) Math.floor(((float) i / 8.0f));
 
       if (mouseX > X + 10 + i * 40
           && mouseX < X + 10 + i * 40 + 30
           && mouseY > Y + 10 + row * 50
           && mouseY < Y + 10 + row * 50 + 30) {
-        g.setColor(new Color(255, 255, 255, 200));
+        g.setColor(COL_PICKER);
         g.fillRoundRect(X + 8 + i * 40, Y + 8 + row * 50, 34, 34, 10);
       }
 
@@ -61,6 +63,4 @@ public class ColorPicker {
       i++;
     }
   }
-
-  public void selectColor() {}
 }

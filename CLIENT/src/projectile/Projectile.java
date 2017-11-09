@@ -5,6 +5,7 @@ import java.sql.SQLException;
 
 import game.BlueSaga;
 import game.ClientSettings;
+import graphics.BlueSagaColors;
 import graphics.ImageResource;
 
 import org.newdawn.slick.Animation;
@@ -188,7 +189,7 @@ public class Projectile {
     } else {
       if (getDelay() > 0 && getDelay() < 1000) {
         if (getDelay() % 200 < 100) {
-          graphics.draw(x, y, new Color(255, 255, 100, 200));
+          graphics.draw(x, y, BlueSagaColors.YELLOW_PROJECTILE);
         } else {
           graphics.draw(x, y);
         }

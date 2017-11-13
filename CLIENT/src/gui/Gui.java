@@ -123,6 +123,9 @@ public class Gui {
   public static String USE_SCROLL_TYPE = "None"; // Ability or ...
   public static String USE_SCROLL_LOCATION = "Inventory"; // Inventory or Actionbar
 
+  // timers
+  long t_ = 0L;
+
   public Gui() {
     Notifications = new ArrayList<>(100);
     Notifications.clear();
@@ -368,7 +371,7 @@ public class Gui {
 
           // CHECK IF MOUSE IS OVER CREATURE
           for (ScreenObject c : ScreenHandler.SCREEN_OBJECTS_DRAW) {
-            if (c.getType().equals("Creature")) {
+            if (c.isCreature()) {
               // CHECK THAT CREATURE IS NOT PLAYER
               if (!(c.getCreature().getX() == BlueSaga.playerCharacter.getX()
                   && c.getY() == BlueSaga.playerCharacter.getY())) {
@@ -791,7 +794,7 @@ public class Gui {
 
   /*
    *
-   * 	MENU
+   *  MENU
    *
    *
    */
@@ -1070,7 +1073,7 @@ public class Gui {
 
   /*
    *
-   * 	SORT WINDOWS
+   *  SORT WINDOWS
    *
    */
 
@@ -1089,7 +1092,7 @@ public class Gui {
 
   /*
    *
-   * 	BOUNTY VIEWER
+   *  BOUNTY VIEWER
    *
    *
    */
@@ -1191,7 +1194,7 @@ public class Gui {
 
   /*
    *
-   * 	ACTIONBAR
+   *  ACTIONBAR
    *
    *
    */

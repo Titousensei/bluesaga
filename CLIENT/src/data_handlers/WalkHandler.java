@@ -127,7 +127,7 @@ public class WalkHandler extends Handler {
             ScreenHandler.SCREEN_OBJECTS_WITH_ID.get(
                 gotoX + "," + gotoY + "," + BlueSaga.playerCharacter.getZ());
         if (GotoObject != null) {
-          if (GotoObject.getType().equals("Object")) {
+          if (GotoObject.isObject()) {
             if (GotoObject.getObject().getName().contains("moveable")) {
               // CHECK IF NEXT TILE IN LINE
               // WITH MOVEABLE IS PASSABLE
@@ -302,20 +302,20 @@ public class WalkHandler extends Handler {
           /*
           if(playerCharacter.getGoToTarget()){
 
-          	ScreenObject targetObject = SCREEN_OBJECTS_WITH_ID.get(playerCharacter.getAttackTargetType()+playerCharacter.getAttackTargetId());
+            ScreenObject targetObject = SCREEN_OBJECTS_WITH_ID.get(playerCharacter.getAttackTargetType()+playerCharacter.getAttackTargetId());
 
-          	if(targetObject != null){
-          		Creature target = targetObject.getCreature();
+            if(targetObject != null){
+              Creature target = targetObject.getCreature();
 
-          		int tileX = target.getX();
-          			int tileY = target.getY();
-          			int tileZ = playerCharacter.getZ();
+              int tileX = target.getX();
+                int tileY = target.getY();
+                int tileZ = playerCharacter.getZ();
 
-          			if(Math.sqrt(Math.pow(tileX - playerCharacter.getX(),2) + Math.pow(tileY - playerCharacter.getY(),2)) <= playerCharacter.getAttackRange()){
-          			continuePath = false;
-          			playerCharacter.setGoToTarget(false);
-          		}
-          	}
+                if(Math.sqrt(Math.pow(tileX - playerCharacter.getX(),2) + Math.pow(tileY - playerCharacter.getY(),2)) <= playerCharacter.getAttackRange()){
+                continuePath = false;
+                playerCharacter.setGoToTarget(false);
+              }
+            }
           }
 
            */
@@ -422,9 +422,9 @@ public class WalkHandler extends Handler {
 
       /*
       if(walkPath.size() > 0 && !playerCharacter.MyWalkHandler.isWalking() && !MapHandler.FADED_SCREEN){
-      	waitPath = true;
-      	client.sendMessage("canwalk", walkPath.get(0));
-      	walkPath.remove(0);
+        waitPath = true;
+        client.sendMessage("canwalk", walkPath.get(0));
+        walkPath.remove(0);
       }
        */
     }

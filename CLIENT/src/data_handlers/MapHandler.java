@@ -552,8 +552,8 @@ public class MapHandler extends Handler {
       int o1y = o1.getY();
       int o2y = o2.getY();
 
-      boolean o1c = "Creature".equals(o1.getType());
-      boolean o2c = "Creature".equals(o2.getType());
+      boolean o1c = o1.isCreature();
+      boolean o2c = o2.isCreature();
 
       if (o1c) {
         if (o1.getCreature().isDead()) {
@@ -624,7 +624,7 @@ public class MapHandler extends Handler {
           entry.getValue().getZ())) {
         newScreenObjectsId.put(entry.getKey(), entry.getValue());
         newScreenObjectsDraw.add(entry.getValue());
-        if (!entry.getValue().getType().equals("Object")) {
+        if (!entry.getValue().isObject()) {
           if (!entry.getValue().getCreature().isDead()
               && !entry.getValue().getCreature().isRemoved()) {
             if (!entry.getKey().equals("Player" + BlueSaga.playerCharacter.getDBId())) {

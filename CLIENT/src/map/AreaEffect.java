@@ -27,6 +27,7 @@ public class AreaEffect {
   private int guardLevel = 0;
 
   private boolean Tint = false;
+  private Color TintColorInit = new Color(255, 255, 255);
   private Color TintColor = new Color(255, 255, 255);
   private int TintAlpha = 0;
 
@@ -39,18 +40,28 @@ public class AreaEffect {
 
   public AreaEffect() {}
 
+  public Color updatedTintColor(float alpha) {
+    if (alpha > 1.0f) {
+      return TintColorInit;
+    } else if (alpha < 0.0f) {
+      return new Color(255, 255, 255);
+    }
+    int r = Math.round(255 * (1.0f - alpha) + TintColorInit.getRed() * alpha);
+    int g = Math.round(255 * (1.0f - alpha) + TintColorInit.getGreen() * alpha);
+    int b = Math.round(255 * (1.0f - alpha) + TintColorInit.getBlue() * alpha);
+    return new Color(r, g, b);
+  }
+
   public void draw(Graphics g) {
     if (Tint) {
       if (TintAlpha < 255) {
         TintAlpha++;
-        TintColor =
-            new Color(TintColor.getRed(), TintColor.getGreen(), TintColor.getBlue(), TintAlpha);
+        TintColor = updatedTintColor(TintAlpha / 255.0f);
       }
     } else {
       if (TintAlpha > 0) {
         TintAlpha--;
-        TintColor =
-            new Color(TintColor.getRed(), TintColor.getGreen(), TintColor.getBlue(), TintAlpha);
+        TintColor = updatedTintColor(TintAlpha / 255.0f);
       }
     }
 
@@ -309,11 +320,13 @@ public class AreaEffect {
   }
 
   public void setTintColor(Color tintColor) {
+    TintColorInit = tintColor;
     TintColor = tintColor;
     Tint = true;
   }
 
   public void setTintColorNow(Color tintColor) {
+    TintColorInit = tintColor;
     TintColor = tintColor;
     TintAlpha = 255;
     Tint = true;
@@ -337,10 +350,6 @@ public class AreaEffect {
 
   public void removeParticlesNow() {
     Particles.clear();
-  }
-
-  public int getTintAlpha() {
-    return TintAlpha;
   }
 
   public int getGuardLevel() {

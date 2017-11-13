@@ -11,7 +11,6 @@ import gui.Gui;
 import java.util.*;
 
 import map.AreaEffect;
-import map.NightEffect;
 import map.ScreenObject;
 import map.Tile;
 import map.TileObject;
@@ -55,7 +54,6 @@ public class ScreenHandler {
 
   // AREA EFFECT
   public static AreaEffect AREA_EFFECT;
-  public static NightEffect NIGHT_EFFECT;
 
   // SCREEN DATA
   public static HashMap<String, Tile> SCREEN_TILES = new HashMap<String, Tile>();
@@ -91,6 +89,18 @@ public class ScreenHandler {
     WORLD,
   }
 
+  // timers
+  public static long t_background = 0L;
+  public static long t_tiles = 0L;
+  public static long t_aoe = 0L;
+  public static long t_particles = 0L;
+  public static long t_objects = 0L;
+  public static long t_fade = 0L;
+  public static long t_projectile = 0L;
+  public static long t_area = 0L;
+  public static long t_resting = 0L;
+  public static long t_debug = 0L;
+
   public static void init(GameContainer app) {
     myCamera = new Camera(ClientSettings.SCREEN_WIDTH, ClientSettings.SCREEN_HEIGHT);
 
@@ -104,9 +114,6 @@ public class ScreenHandler {
     LoginScreen.init(app, 315, 300);
     CharacterSelection.init(app);
     CharacterCreate.init(app);
-
-    NIGHT_EFFECT = new NightEffect();
-    NIGHT_EFFECT.start();
   }
 
   public static void ready() {
@@ -154,18 +161,22 @@ public class ScreenHandler {
         cutScene.draw(g);
       }
     } else if (BlueSaga.playerCharacter != null) {
-
+long t0 = System.currentTimeMillis();
       // Draw background
       if (BlueSaga.playerCharacter.getZ() < 0) {
         g.setColor(new Color(0, 0, 0));
         g.fillRect(0, 0, ClientSettings.SCREEN_WIDTH, ClientSettings.SCREEN_HEIGHT);
       } else if (BlueSaga.playerCharacter.getZ() >= 10) {
-        ImageResource.getSprite("effects/clouds").draw(0, 0);
+        // ImageResource.getSprite("effects/clouds").draw(0, 0);
         ImageResource.getSprite("effects/clouds")
             .draw(0, 0, ScreenHandler.AREA_EFFECT.getTintColor());
+        //~ ImageResource.getSprite("effects/clouds")
+            //~ .draw(0, 0);
       } else {
         ImageResource.getSprite("effects/void").draw(0, 0);
       }
+long t1 = System.currentTimeMillis();
+t_background += t1 - t0;
 
       // Draw tiles
       Tile TILE;
@@ -189,6 +200,8 @@ public class ScreenHandler {
           }
         }
       }
+long t2 = System.currentTimeMillis();
+t_tiles += t2 - t1;
 
       // Draw AoE
       if (Gui.USE_ABILITY) {
@@ -231,9 +244,13 @@ public class ScreenHandler {
           }
         }
       }
+long t3 = System.currentTimeMillis();
+t_aoe += t3 - t2;
 
       // Draw particles
       myEmitterManager.Draw(g, myCamera);
+long t4 = System.currentTimeMillis();
+t_particles += t4 - t3;
 
       // Draw screen objects such as trees and creatures
       for (ScreenObject c : SCREEN_OBJECTS_DRAW) {
@@ -244,13 +261,15 @@ public class ScreenHandler {
           int renderPosX = c.getX() * ClientSettings.TILE_SIZE + cameraX - 25;
           int renderPosY = c.getY() * ClientSettings.TILE_SIZE + cameraY - 25;
 
-          if (c.getType().equals("Creature")) {
+          if (c.isCreature()) {
             renderPosX += c.getCreature().MyWalkHandler.getMoveX() + 25;
             renderPosY += c.getCreature().MyWalkHandler.getMoveY() + 15;
           }
           c.draw(g, renderPosX, renderPosY);
         }
       }
+long t5 = System.currentTimeMillis();
+t_objects += t5 - t4;
 
       // Fades screen
       if (FADE_SCREEN) {
@@ -267,12 +286,18 @@ public class ScreenHandler {
           g.fillRect(0, 0, ClientSettings.SCREEN_WIDTH, ClientSettings.SCREEN_HEIGHT);
         }
       }
+long t6 = System.currentTimeMillis();
+t_fade += t6 - t5;
 
       // Draw projectiles
       ProjectileManager.draw();
+long t7 = System.currentTimeMillis();
+t_projectile += t7 - t6;
 
       // Draw area effect
       AREA_EFFECT.draw(g);
+long t8 = System.currentTimeMillis();
+t_area += t8 - t7;
 
       // Draws game over screen
       if (BlueSaga.playerCharacter.isDead()) {
@@ -282,6 +307,8 @@ public class ScreenHandler {
 
       // Draws resting fade
       BlueSaga.playerCharacter.drawRestingFade();
+long t9 = System.currentTimeMillis();
+t_resting += t9 - t8;
 
       //GatheringHandler.draw(g,myCamera.getX(),myCamera.getY(),mouseX,mouseY);
 
@@ -306,6 +333,8 @@ public class ScreenHandler {
 
         g.drawString("Mouse: " + mousePos[0] + "," + mousePos[1], 500, 30);
       }
+long t10 = System.currentTimeMillis();
+t_debug += t10 - t9;
     }
   }
 

@@ -29,8 +29,6 @@ public class Tile {
   private boolean Transparent;
 
   private Sprite graphics;
-  private Sprite new_graphics;
-  private int new_graphics_alpha;
 
   private boolean DeadBody = false;
   private int DeadBodyNr = 1;
@@ -70,8 +68,6 @@ public class Tile {
     Y = y;
     Z = z;
     graphics = null;
-    new_graphics = null;
-    new_graphics_alpha = 0;
     Type = "None";
     Name = "None";
     MonsterLocked = false;
@@ -82,18 +78,8 @@ public class Tile {
     if (!Type.equals(type) || !Name.equals(name)) {
       Type = type;
       Name = name;
-
-      new_graphics = ImageResource.getSprite("textures/" + Type + "/" + Name);
+      graphics = ImageResource.getSprite("textures/" + Type + "/" + Name);
     }
-
-    /*
-    if(Z < 0){
-      new_graphics_alpha = 0;
-    }else{
-      new_graphics_alpha = 255;
-    }
-    */
-    new_graphics_alpha = 255;
 
     Soul = false;
 
@@ -148,29 +134,8 @@ public class Tile {
   public void draw(int x, int y, Graphics g) {
     if (!Type.equals("none")) {
 
-      //	Color tileColor =  new Color(BlueSaga.AREA_EFFECT.getTintColor().getRed(),BlueSaga.AREA_EFFECT.getTintColor().getGreen(),BlueSaga.AREA_EFFECT.getTintColor().getBlue(), 255 - new_graphics_alpha);
-
-      //			tileColor = BlueSaga.AREA_EFFECT.getTintColor();
-
       if (graphics != null) {
-        graphics.draw(x, y, new Color(255, 255, 255, 255 - new_graphics_alpha));
         graphics.draw(x, y, ScreenHandler.AREA_EFFECT.getTintColor());
-
-        //	graphics.draw(x,y, tileColor);
-      }
-
-      if (new_graphics != null) {
-
-        new_graphics.draw(x, y, new Color(255, 255, 255, new_graphics_alpha));
-        new_graphics.draw(x, y, ScreenHandler.AREA_EFFECT.getTintColor());
-        //new_graphics.draw(x,y, tileColor);
-        if (new_graphics_alpha >= 255) {
-          graphics = new_graphics;
-          new_graphics = null;
-          new_graphics_alpha = 0;
-        } else if (new_graphics_alpha < 255) {
-          new_graphics_alpha += 4;
-        }
       }
 
       if (DeadBody) {
@@ -226,11 +191,11 @@ public class Tile {
         ImageResource.getSprite("objects/special/soul").draw(x, y);
       }
     }
-    //		if(dustEmitter != null && !dustEmitter.ShouldBeRemoved()){
-    //			dustEmitter.SetPositionHard(x + 25, y + 40);
-    //		}else if(dustEmitter != null && dustEmitter.ShouldBeRemoved()){
-    //			dustEmitter = null;
-    //		}
+    //    if(dustEmitter != null && !dustEmitter.ShouldBeRemoved()){
+    //      dustEmitter.SetPositionHard(x + 25, y + 40);
+    //    }else if(dustEmitter != null && dustEmitter.ShouldBeRemoved()){
+    //      dustEmitter = null;
+    //    }
 
   }
 
@@ -238,7 +203,7 @@ public class Tile {
 
   /****************************************
    *                                      *
-   *         STATUSEFFECTS				*
+   *         STATUSEFFECTS        *
    *                                      *
    *                                      *
    ****************************************/
@@ -271,7 +236,7 @@ public class Tile {
 
   /****************************************
    *                                      *
-   *         OCCUPANT						*
+   *         OCCUPANT           *
    *                                      *
    *                                      *
    ****************************************/
@@ -290,7 +255,7 @@ public class Tile {
 
   /****************************************
    *                                      *
-   *         SHOW DUST					*
+   *         SHOW DUST          *
    *                                      *
    *                                      *
    ****************************************/
@@ -329,7 +294,7 @@ public class Tile {
 
   /****************************************
    *                                      *
-   *         GETTER / SETTER				*
+   *         GETTER / SETTER        *
    *                                      *
    *                                      *
    ****************************************/

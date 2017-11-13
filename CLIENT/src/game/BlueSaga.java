@@ -330,7 +330,7 @@ public class BlueSaga extends BasicGame {
       // update monster rotation
       for (ScreenObject c : ScreenHandler.SCREEN_OBJECTS_DRAW) {
         if (c != null) {
-          if (c.getType().equals("Creature")) {
+          if (c.isCreature()) {
             c.getCreature().updateRotation();
           }
         }
@@ -347,6 +347,20 @@ public class BlueSaga extends BasicGame {
     }
 
     keyLogic(container, elapsedTime);
+
+if (updateTimeItr % 600 == 0) {
+  System.out.println("*****************");
+  System.out.println("t_background = " + ScreenHandler.t_background);
+  System.out.println("t_tiles = " + ScreenHandler.t_tiles);
+  System.out.println("t_aoe = " + ScreenHandler.t_aoe);
+  System.out.println("t_particles = " + ScreenHandler.t_particles);
+  System.out.println("t_objects = " + ScreenHandler.t_objects);
+  System.out.println("t_fade = " + ScreenHandler.t_fade);
+  System.out.println("t_projectile = " + ScreenHandler.t_projectile);
+  System.out.println("t_area = " + ScreenHandler.t_area);
+  System.out.println("t_resting = " + ScreenHandler.t_resting);
+  System.out.println("t_debug = " + ScreenHandler.t_debug);
+}
   }
 
   @Override

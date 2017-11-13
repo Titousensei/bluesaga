@@ -1,8 +1,8 @@
 package creature;
 /************************************
- * 									*
- *		CLIENT / CREATURE			*
- *									*
+ *                  *
+ *    CLIENT / CREATURE     *
+ *                  *
  ************************************/
 import game.BlueSaga;
 import game.ClientSettings;
@@ -340,6 +340,9 @@ public class Creature {
     directionRing.getImage().setRotation(rotation);
   }
 
+  public void draw(Graphics g, int centerX, int centerY) {
+  }
+
   public void draw(Graphics g, int centerX, int centerY, Color tintColor) {
     // size correction for placement
 
@@ -504,12 +507,13 @@ public class Creature {
                 SizeHeight * 50,
                 new Color(255, 255, 255, 200 - Math.round(animationDeathY) * 3));
       } else {
-        Color cColor = ScreenHandler.AREA_EFFECT.getTintColor();
-
-        cColor = new Color(cColor.getRed(), cColor.getGreen(), cColor.getBlue(), cColor.getAlpha());
+        Color cColor = null;
 
         if (tintColor != null) {
           cColor = tintColor;
+        } else {
+          cColor = ScreenHandler.AREA_EFFECT.getTintColor();
+          //cColor = new Color(cColor.getRed(), cColor.getGreen(), cColor.getBlue(), cColor.getAlpha());
         }
 
         // Half transparent if using fade ability
@@ -639,7 +643,7 @@ public class Creature {
 
   /****************************************
    *                                      *
-   *             SKILLS		            *
+   *             SKILLS               *
    *                                      *
    *                                      *
    ****************************************/
@@ -666,7 +670,7 @@ public class Creature {
 
   /****************************************
    *                                      *
-   *             USE ITEMS	            *
+   *             USE ITEMS              *
    *                                      *
    *                                      *
    ****************************************/
@@ -676,7 +680,7 @@ public class Creature {
 
   /****************************************
    *                                      *
-   *         ABILITIES 					*
+   *         ABILITIES          *
    *                                      *
    *                                      *
    ****************************************/
@@ -863,7 +867,7 @@ public class Creature {
 
   /****************************************
    *                                      *
-   *             ATTACK/ANIMATION			*
+   *             ATTACK/ANIMATION     *
    *                                      *
    *                                      *
    ****************************************/
@@ -1049,7 +1053,7 @@ public class Creature {
 
   /****************************************
    *                                      *
-   *          APPEAR/DISSAPPEAR        	*
+   *          APPEAR/DISSAPPEAR         *
    *                                      *
    *                                      *
    ****************************************/

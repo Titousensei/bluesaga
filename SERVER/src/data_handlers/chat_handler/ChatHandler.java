@@ -23,17 +23,13 @@ public class ChatHandler extends Handler {
 
   public final static String[] HELP = new String[] {
       "--- Help ---------",
-      "> [Tab]: change channel",
-      "> @(playername): open private channel",
-      "> @admin: send message to admin (logs your position)",
-      "> #(channelname): create/join channel",
-      "> /channels: list channels with number of people",
       "> /rolldice: roll 1d6",
       "> /emo: list emoticon names",
       "> /emo (name): show emoticon above your character",
+      "> /channels: list channels with number of people",
       "> /quit: quit this channel",
+      "> @@admin: send private message to admin (logs your position)",
       "> /r: refresh the screen",
-      "> /help: display this help"
   };
 
   public final static Map<String, String> emoMap = new HashMap<>();
@@ -373,7 +369,7 @@ public class ChatHandler extends Handler {
 
           boolean playerOnline = false;
 
-          if ("admin".equals(receiverName)) {
+          if ("@admin".equals(receiverName)) {
             playerOnline = true;
             ServerMessage.println(false, "ADMIN <-- ",
                 m.client.playerCharacter,

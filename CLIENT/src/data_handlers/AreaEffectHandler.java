@@ -70,7 +70,6 @@ public class AreaEffectHandler extends Handler {
       BlueSaga.BG_MUSIC.changeSong("night", "night");
       ScreenHandler.AREA_EFFECT.setTintColor(new Color(185, 150, 255));
       ScreenHandler.AREA_EFFECT.setParticleType("firefly");
-
     } else if (serverData.equals("<night>stop")) {
       nightTime = false;
       ScreenHandler.AREA_EFFECT.removeTintColor();
@@ -80,9 +79,8 @@ public class AreaEffectHandler extends Handler {
       BlueSaga.BG_MUSIC.changeSong("night", "night");
       ScreenHandler.AREA_EFFECT.setTintColorNow(new Color(185, 150, 255));
       ScreenHandler.AREA_EFFECT.setParticleType("firefly");
-      //BlueSaga.BG_MUSIC.changeSong("night", "night");
     } else if (serverData.equals("<night>stopnow")) {
-      ScreenHandler.AREA_EFFECT.setTintColor(new Color(255, 255, 255));
+      ScreenHandler.AREA_EFFECT.removeTintColorNow();
       ScreenHandler.AREA_EFFECT.removeParticlesNow();
     }
   }

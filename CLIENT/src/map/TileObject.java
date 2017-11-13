@@ -34,9 +34,10 @@ public class TileObject {
   }
 
   public void draw(Graphics g, int x, int y) {
-    graphics.draw(x - (width - 1) * 25, y - ((height - 1) * 50));
     graphics.draw(
-        x - (width - 1) * 25, y - ((height - 1) * 50), ScreenHandler.AREA_EFFECT.getTintColor());
+        x - (width - 1) * 25,
+        y - ((height - 1) * 50),
+        ScreenHandler.AREA_EFFECT.getTintColor());
   }
 
   public Sprite getSprite() {

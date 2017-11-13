@@ -124,6 +124,14 @@ public class ConnectHandler extends Handler {
           }
         }
 
+        if (client.playerCharacter.getZ() >= 0) {
+          if (MapHandler.dayNightTime == 2) {
+            addOutGoingMessage(client, "night", "stopnow");
+          } else {
+            addOutGoingMessage(client, "night", "now");
+          }
+        }
+
         Server.WORLD_MAP.addPlayerToZ(client.playerCharacter, client.playerCharacter.getZ());
 
         Server.WORLD_MAP

@@ -31,7 +31,7 @@ public class TargetingSystem {
 
         for (ScreenObject c : ScreenHandler.SCREEN_OBJECTS_DRAW) {
 
-          if (c.getType().equals("Creature")) {
+          if (c.isCreature()) {
             if ((targetPlayer && c.getCreature().getCreatureType() == CreatureType.Player)
                 || (!targetPlayer
                     && c.getCreature().getCreatureType() == CreatureType.Monster

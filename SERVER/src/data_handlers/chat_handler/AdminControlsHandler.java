@@ -1014,6 +1014,17 @@ public class AdminControlsHandler extends Handler {
       System.exit(0);
       return true;
     }
+
+    if (chatLower.equals("/trace on")) {
+      ServerSettings.TRACE_MODE = true;
+      return true;
+    }
+
+    if (chatLower.equals("/trace off")) {
+      ServerSettings.TRACE_MODE = false;
+      return true;
+    }
+
     return false;
   }
 

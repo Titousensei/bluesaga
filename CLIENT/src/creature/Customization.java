@@ -3,6 +3,7 @@ package creature;
 import org.newdawn.slick.Image;
 
 import graphics.ImageResource;
+import screens.ScreenHandler;
 
 public class Customization {
 
@@ -139,7 +140,8 @@ public class Customization {
           x + getSkinFeatureX() * equipDir * scaleX - 25 * scaleX,
           y + getSkinFeatureY() * scaleY - 25 * scaleY,
           scaleX * 100,
-          scaleY * 100);
+          scaleY * 100,
+          ScreenHandler.AREA_EFFECT.getTintColor());
     }
     if (getMouthFeatureId() > 0) {
       Image mouthGfx =
@@ -152,7 +154,8 @@ public class Customization {
           x + getMouthFeatureX() * equipDir * scaleX - 25 * scaleX,
           y + getMouthFeatureY() * scaleY - 25 * scaleY,
           scaleX * 100,
-          scaleY * 100);
+          scaleY * 100,
+          ScreenHandler.AREA_EFFECT.getTintColor());
     }
     if (getAccessoriesId() > 0) {
       Image accessoriesGfx =
@@ -165,7 +168,8 @@ public class Customization {
           x + getAccessoriesX() * equipDir * scaleX - 25 * scaleX,
           y + getAccessoriesY() * scaleY - 25 * scaleY,
           scaleX * 100,
-          scaleY * 100);
+          scaleY * 100,
+          ScreenHandler.AREA_EFFECT.getTintColor());
     }
   }
 

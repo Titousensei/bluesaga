@@ -89,18 +89,6 @@ public class ScreenHandler {
     WORLD,
   }
 
-  // timers
-  public static long t_background = 0L;
-  public static long t_tiles = 0L;
-  public static long t_aoe = 0L;
-  public static long t_particles = 0L;
-  public static long t_objects = 0L;
-  public static long t_fade = 0L;
-  public static long t_projectile = 0L;
-  public static long t_area = 0L;
-  public static long t_resting = 0L;
-  public static long t_debug = 0L;
-
   public static void init(GameContainer app) {
     myCamera = new Camera(ClientSettings.SCREEN_WIDTH, ClientSettings.SCREEN_HEIGHT);
 
@@ -161,7 +149,6 @@ public class ScreenHandler {
         cutScene.draw(g);
       }
     } else if (BlueSaga.playerCharacter != null) {
-long t0 = System.currentTimeMillis();
       // Draw background
       if (BlueSaga.playerCharacter.getZ() < 0) {
         g.setColor(BlueSagaColors.BLACK);
@@ -175,8 +162,6 @@ long t0 = System.currentTimeMillis();
       } else {
         ImageResource.getSprite("effects/void").draw(0, 0);
       }
-long t1 = System.currentTimeMillis();
-t_background += t1 - t0;
 
       // Draw tiles
       Tile TILE;
@@ -200,8 +185,6 @@ t_background += t1 - t0;
           }
         }
       }
-long t2 = System.currentTimeMillis();
-t_tiles += t2 - t1;
 
       // Draw AoE
       if (Gui.USE_ABILITY) {
@@ -244,13 +227,9 @@ t_tiles += t2 - t1;
           }
         }
       }
-long t3 = System.currentTimeMillis();
-t_aoe += t3 - t2;
 
       // Draw particles
       myEmitterManager.Draw(g, myCamera);
-long t4 = System.currentTimeMillis();
-t_particles += t4 - t3;
 
       // Draw screen objects such as trees and creatures
       for (ScreenObject c : SCREEN_OBJECTS_DRAW) {
@@ -268,8 +247,6 @@ t_particles += t4 - t3;
           c.draw(g, renderPosX, renderPosY);
         }
       }
-long t5 = System.currentTimeMillis();
-t_objects += t5 - t4;
 
       // Fades screen
       if (FADE_SCREEN) {
@@ -286,18 +263,12 @@ t_objects += t5 - t4;
           g.fillRect(0, 0, ClientSettings.SCREEN_WIDTH, ClientSettings.SCREEN_HEIGHT);
         }
       }
-long t6 = System.currentTimeMillis();
-t_fade += t6 - t5;
 
       // Draw projectiles
       ProjectileManager.draw();
-long t7 = System.currentTimeMillis();
-t_projectile += t7 - t6;
 
       // Draw area effect
       AREA_EFFECT.draw(g);
-long t8 = System.currentTimeMillis();
-t_area += t8 - t7;
 
       // Draws game over screen
       if (BlueSaga.playerCharacter.isDead()) {
@@ -307,8 +278,6 @@ t_area += t8 - t7;
 
       // Draws resting fade
       BlueSaga.playerCharacter.drawRestingFade();
-long t9 = System.currentTimeMillis();
-t_resting += t9 - t8;
 
       //GatheringHandler.draw(g,myCamera.getX(),myCamera.getY(),mouseX,mouseY);
 
@@ -323,7 +292,7 @@ t_resting += t9 - t8;
                 + BlueSaga.playerCharacter.getY()
                 + ", "
                 + BlueSaga.playerCharacter.getZ(),
-            500,
+            300,
             10);
 
         String mousePos[] =
@@ -331,10 +300,8 @@ t_resting += t9 - t8;
                 .getClickedTile(mouseX, mouseY, myCamera.getX(), myCamera.getY())
                 .split(";");
 
-        g.drawString("Mouse: " + mousePos[0] + "," + mousePos[1], 500, 30);
+        g.drawString("Mouse: " + mousePos[0] + "," + mousePos[1], 300, 30);
       }
-long t10 = System.currentTimeMillis();
-t_debug += t10 - t9;
     }
   }
 

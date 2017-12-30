@@ -129,7 +129,7 @@ public class Tile {
         } else {
           g.setColor(EditColors.DOOR_BG);
         }
-        g.fillRect(x, y, 50, 50);
+        g.fillOval(x+5, y+5, 40, 40);
         g.setFont(Font.size12);
         g.setColor(EditColors.BLACK);
         g.drawString(doorId, x + 3, y + 3);
@@ -151,7 +151,7 @@ public class Tile {
         }
       } else if (destId != null) {
         g.setColor(EditColors.DEST_BG);
-        g.fillRect(x, y, 50, 50);
+        g.fillOval(x+5, y+5, 40, 40);
         g.setFont(Font.size12);
         String destStr = destId + ">";
         g.setColor(EditColors.BLACK);

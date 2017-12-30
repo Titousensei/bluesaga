@@ -111,7 +111,7 @@ public class Tile {
       setTransparent(false);
     }
 
-    if ("cliff".equals(Type)) {
+    if ("cliff".equals(Type) || "grasscliff".equals(Type)) {
       OnlyD = name.contains("Entranced") || name.contains("Exitu") || name.contains("Onlyd");
       OnlyU = name.contains("Entranceu") || name.contains("Exitd") || name.contains("Onlyu");
       OnlyL = name.contains("Entrancel") || name.contains("Exitr") || name.contains("Onlyl");

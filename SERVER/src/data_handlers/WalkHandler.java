@@ -212,7 +212,7 @@ public class WalkHandler extends Handler {
                       addOutGoingMessage(client, "message", "#messages.walking.need_key");
                     }
                   }
-                } else if (!doorInfo.getString(5).equals("None")) {
+                } else if (!doorInfo.getString(5).equals("None")) {  // CreatureIds
                   okWalk = false;
                   if (!gotoTile.isMonsterLocked()) {
                     okWalk = true;
@@ -376,8 +376,8 @@ public class WalkHandler extends Handler {
         try {
           if (doorData.next()) {
             if (doorData.getInt(1) == 0
-                && doorData.getInt(2) == 0
-                && doorData.getInt(3) == 0) {
+            && doorData.getInt(2) == 0
+            && doorData.getInt(3) == 0) {
               // IF DOOR HAS NO GOTO POSITION, THEN JUST LET PLAYER PASS THROUGH
               dirX = PlayerX - client.playerCharacter.getX();
               dirY = PlayerY - client.playerCharacter.getY();
@@ -403,7 +403,6 @@ public class WalkHandler extends Handler {
     TileData tileData = new TileData();
 
     if (doorId > 0) {
-
       // Remove player from old z index
       Server.WORLD_MAP.removePlayerFromZ(client.playerCharacter, client.playerCharacter.getZ());
 

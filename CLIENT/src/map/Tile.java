@@ -25,6 +25,10 @@ public class Tile {
   private String Type;
   private String Name;
   private boolean Passable;
+  private boolean OnlyD;
+  private boolean OnlyU;
+  private boolean OnlyL;
+  private boolean OnlyR;
 
   private boolean Transparent;
 
@@ -105,6 +109,18 @@ public class Tile {
       setTransparent(true);
     } else {
       setTransparent(false);
+    }
+
+    if ("cliff".equals(Type)) {
+      OnlyD = name.contains("Entranced") || name.contains("Exitu") || name.contains("Onlyd");
+      OnlyU = name.contains("Entranceu") || name.contains("Exitd") || name.contains("Onlyu");
+      OnlyL = name.contains("Entrancel") || name.contains("Exitr") || name.contains("Onlyl");
+      OnlyR = name.contains("Entrancer") || name.contains("Exitl") || name.contains("Onlyr");
+    } else {
+      OnlyD = name.contains("Entranceu") || name.contains("Exitu") || name.contains("Onlyd");
+      OnlyU = name.contains("Entranced") || name.contains("Exitd") || name.contains("Onlyu");
+      OnlyL = name.contains("Entrancer") || name.contains("Exitr") || name.contains("Onlyl");
+      OnlyR = name.contains("Entrancel") || name.contains("Exitl") || name.contains("Onlyr");
     }
 
     StatusEffects = new ArrayList<StatusEffect>(30);
@@ -317,6 +333,22 @@ public class Tile {
 
   public boolean getPassable() {
     return Passable;
+  }
+
+  public boolean isPassableFromDir(int dirX, int dirY) {
+    if (OnlyD) {
+      return (dirY < 0);
+    }
+    if (OnlyU) {
+      return (dirY > 0);
+    }
+    if (OnlyL) {
+      return (dirX > 0);
+    }
+    if (OnlyR) {
+      return (dirX < 0);
+    }
+    return true;
   }
 
   public void showWalkTo() {

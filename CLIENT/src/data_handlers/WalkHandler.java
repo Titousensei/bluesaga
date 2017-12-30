@@ -122,6 +122,10 @@ public class WalkHandler extends Handler {
           performWalk = false;
         }
 
+        if (!GotoTile.isPassableFromDir(dirX, dirY)) {
+          performWalk = false;
+        }
+
         // CHECK IF MOVEABLE
         ScreenObject GotoObject =
             ScreenHandler.SCREEN_OBJECTS_WITH_ID.get(

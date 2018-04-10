@@ -860,8 +860,8 @@ public class InventoryHandler extends Handler {
     ResultSet rs =
         Server.userDB.askDB(
             //      1   2       3   4
-            "select Id, ItemId, Nr, InventoryPos from character_item where ItemId = "
-                + usedItem.getRawId()
+            "select Id, ItemId, Nr, InventoryPos from character_item where abs(ItemId) = "
+                + usedItem.getId()
                 + " and InventoryPos = '"
                 + posX
                 + ","

@@ -151,7 +151,7 @@ public class ScreenHandler {
     } else if (BlueSaga.playerCharacter != null) {
       // Draw background
       if (BlueSaga.playerCharacter.getZ() < 0) {
-        g.setColor(BlueSagaColors.BLACK);
+        g.setColor(BlueSagaColors.BLACKER);
         g.fillRect(0, 0, ClientSettings.SCREEN_WIDTH, ClientSettings.SCREEN_HEIGHT);
       } else if (BlueSaga.playerCharacter.getZ() >= 10) {
         // ImageResource.getSprite("effects/clouds").draw(0, 0);

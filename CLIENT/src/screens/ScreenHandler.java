@@ -476,7 +476,7 @@ public class ScreenHandler {
           if (getActiveScreen() == ScreenType.WORLD) {
 
             // Target Monster
-            if (INPUT.isKeyPressed(Input.KEY_T)) {
+            if (INPUT.isKeyPressed(Input.KEY_T) || INPUT.isKeyPressed(Input.KEY_E)) {
               TargetingSystem.findClosestTarget(false);
             }
 

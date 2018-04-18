@@ -17,6 +17,7 @@ class FogCloud {
   int blue;
   int cameraStartX;
   int cameraStartY;
+  Color baseColor;
   Color color;
 
   public FogCloud(int newId, int cameraX, int cameraY, Color aColor) {
@@ -24,13 +25,22 @@ class FogCloud {
 
     cameraStartX = cameraX;
     cameraStartY = cameraY;
-    color = aColor;
+    baseColor = aColor;
 
     X = RandomUtils.getInt(-400, 1024);
     Y = RandomUtils.getInt(-200, 640);
     Speed = RandomUtils.getFloat(0.5f, 2.5f);
     opacity = 0;
-    gotoOpacity = RandomUtils.getInt(50, 150);
+    gotoOpacity = getRandomOpacity();
+  }
+
+  private final int getRandomOpacity() {
+    return RandomUtils.getInt(100, 200);
+  }
+
+  private final void setOpacity(int newOpacity) {
+    opacity = newOpacity;
+    color = new Color(baseColor.getRed(), baseColor.getGreen(), baseColor.getBlue(), opacity);
   }
 
   public void draw(int cameraX, int cameraY) {
@@ -40,9 +50,9 @@ class FogCloud {
     cameraStartY = cameraY;
 
     if (opacity < gotoOpacity) {
-      opacity++;
+      setOpacity(opacity + 1);
     } else if (opacity > gotoOpacity) {
-      opacity--;
+      setOpacity(opacity - 1);
     }
 
     if (X < -1024 || Y < -1000 || Y > 1000 || X > 2048) {
@@ -50,8 +60,8 @@ class FogCloud {
         X = RandomUtils.getInt(1024, 1824);
         Y = RandomUtils.getInt(-200, 640);
         Speed = RandomUtils.getFloat(0.5f, 2.5f);
-        opacity = RandomUtils.getInt(50, 150);
-        gotoOpacity = opacity;
+        gotoOpacity = getRandomOpacity();
+        setOpacity(gotoOpacity);
       }
     }
 
@@ -64,6 +74,6 @@ class FogCloud {
   }
 
   public void appear() {
-    gotoOpacity = RandomUtils.getInt(50, 150);
+    gotoOpacity = getRandomOpacity();
   }
 }

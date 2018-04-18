@@ -54,8 +54,8 @@ public class CharacterCreate {
     status = "";
 
     new_name = new TextField(app, Font.size12, startX + 185, startY + 110, 180, 30);
-    new_name.setBackgroundColor(BlueSagaColors.BLACK);
-    new_name.setBorderColor(BlueSagaColors.BLACK);
+    new_name.setBackgroundColor(BlueSagaColors.NOTHING);
+    new_name.setBorderColor(BlueSagaColors.NOTHING);
     new_name.setTextColor(BlueSagaColors.WHITE);
     new_name.setMaxLength(15);
 

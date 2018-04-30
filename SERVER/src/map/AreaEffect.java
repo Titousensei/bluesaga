@@ -13,8 +13,8 @@ public class AreaEffect {
   private String tintColor = null;
   private String fogColor = null;
 
-  private String song = "None";
-  private String ambient = "None";
+  private String song = "none";
+  private String ambient = "none";
 
   private int[] areaItems = null;
   private int areaCopper = 0;

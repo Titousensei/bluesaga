@@ -11,14 +11,14 @@ import org.newdawn.slick.Graphics;
 
 public class EmitterManager {
 
-  private List<Emitter> myEmitters;
+  private Vector<Emitter> myEmitters;
 
   private EmitterContainer myEmitterContainer;
   private ParticleContainer myParticleContainer;
 
   public EmitterManager(Database aGameDB) {
 
-    myEmitters = new ArrayList<>(10);
+    myEmitters = new Vector<>(10);
     myEmitterContainer = new EmitterContainer(aGameDB);
     myParticleContainer = new ParticleContainer(aGameDB);
   }

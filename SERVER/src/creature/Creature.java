@@ -454,8 +454,7 @@ public class Creature implements Mover {
     newStats.addValue("SPEED", getStatFraction("STRENGTH", 2.0f));
 
     // GO THROUGH STATUS EFFECTS AND CHANGES STATS ACCORDINGLY
-    for (Iterator<StatusEffect> iter = getStatusEffects().values().iterator(); iter.hasNext(); ) {
-      StatusEffect s = iter.next();
+    for (StatusEffect s : getStatusEffects().values()) {
       newStats.addStats(s.getStatsModif());
     }
 

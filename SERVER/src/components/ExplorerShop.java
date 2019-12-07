@@ -93,7 +93,12 @@ extends Shop
     StringBuilder sb = null;
     List<Item> list_items = new ArrayList(items.values());
     list_items.sort(ITEM_VALUE_DESCENDING);
+    int count = 6*6;
     for (Item it : list_items) {
+      if (count <= 0) {
+        break;
+      }
+      count --;
       if (sb == null) {
         sb = new StringBuilder(1000);
       } else {

@@ -23,8 +23,6 @@ public class MapHandler extends Handler {
   public static int dayNightTime = 2; // 2 = day, 1 = night
 
   public static int worldTimeItr = 0;
-  //~ public static int worldDayDuration = 60;
-  //~ public static int worldNightDuration = 60; // hours before it becomes night time
   public static int worldDayDuration = 5 * 3600;
   public static int worldNightDuration = 2 * 3600; // hours before it becomes night time
 

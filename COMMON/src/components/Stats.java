@@ -111,6 +111,9 @@ public class Stats {
   }
 
   public void addStats(Stats plusStats) {
+    if (plusStats == null) {
+      return;
+    }
     for (Map.Entry<String, Integer> entry : stats_.entrySet()) {
       String key = entry.getKey();
       Integer value = entry.getValue();

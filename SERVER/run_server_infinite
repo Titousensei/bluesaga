@@ -1,0 +1,11 @@
+#!/bin/bash
+
+JARS=JARS
+export CLASSPATH="server.jar:$JARS/bs_user.jar:$JARS/grandcentral.jar:$JARS/jogg-0.0.7.jar:$JARS/jorbis-0.0.15.jar:$JARS/json_simple.jar:$JARS/lwjgl.jar:$JARS/natives-linux.jar:$JARS/slick.jar:$JARS/sqlitejdbc-v056.jar"
+
+java -server -XX:StringTableSize=100003 -Djava.library.path=$JARS \
+     -Dfile.encoding=UTF-8 -verbose:gc -Xloggc:server.gc \
+     -Xms768M -Xmx768M \
+     game.BPserver $*
+
+exec $0 $*

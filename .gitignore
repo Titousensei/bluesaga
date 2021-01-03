@@ -3,6 +3,10 @@
 .metadata
 bin/**
 **/build/**
+**/bin/**
+**/configs/**
+**/scripts/**
+**/dist/**
 **/crashlogs/**
 tmp/**
 tmp/**/*

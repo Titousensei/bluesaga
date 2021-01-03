@@ -1,22 +1,23 @@
 #! /bin/bash
 
-if [[ ! -e $1 ]] 
+dest=configs/$1
+
+if [[ ! -e $dest ]] 
 then
-  echo "CREATING $1"
-  mkdir $1
-  mkdir $1/chatLogs
+  echo "CREATING $dest"
+  mkdir -p $dest/chatLogs
   echo "... copying text files"
-  cp config_default/*.cfg $1
-  cp config_default/game_text.json $1
+  cp config_default/*.cfg $dest
+  cp config_default/game_text.json $dest
 
   echo "... creating gameDB"
-  sqlite3 $1/gameDB.db  < config_default/gameDB.sql
+  sqlite3 $dest/gameDB.db  < config_default/gameDB.sql
   echo "... creating mapDB"
-  sqlite3 $1/mapDB.db   < config_default/mapDB.sql
+  sqlite3 $dest/mapDB.db   < config_default/mapDB.sql
   echo "... creating usersDB"
-  sqlite3 $1/usersDB.db < config_default/usersDB.sql
+  sqlite3 $dest/usersDB.db < config_default/usersDB.sql
   echo "DONE"
 else
-  echo "ERROR - Already exists: $1"
+  echo "ERROR - Already exists: $dest"
   exit 1
 fi

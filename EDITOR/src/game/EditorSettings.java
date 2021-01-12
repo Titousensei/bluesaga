@@ -9,4 +9,5 @@ public class EditorSettings {
 
   public static int startX = 5000;
   public static int startY = 9700;
+  public static int startZ = 0;
 }

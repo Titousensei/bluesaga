@@ -599,11 +599,11 @@ public class BP_EDITOR extends BasicGame {
       g.drawRect(20, 20, miniMap.getWidth(), miniMap.getHeight());
 
       resetHelp(g);
-      renderHelp(g, "F4: Edit Mode");
-      renderHelp(g, "F5: Small Random Dungeon");
-      renderHelp(g, "F6: Medium Random Dungeon");
-      renderHelp(g, "F7: Large Random Dungeon");
-      renderHelp(g, "F12: Quit");
+      renderHelp(g, "F4,4: Edit Mode");
+      renderHelp(g, "F5,5: Small Random Dungeon");
+      renderHelp(g, "F6,6: Medium Random Dungeon");
+      renderHelp(g, "F7,7: Large Random Dungeon");
+      renderHelp(g, "F12,^Q: Quit");
 
       int playerx = (PLAYER_X - miniMapX + MINI_MAP_SIZE) / 2 - 5 + 20;
       int playery = (PLAYER_Y - miniMapY + MINI_MAP_SIZE) / 2 - 3 + 20;
@@ -632,20 +632,22 @@ public class BP_EDITOR extends BasicGame {
       }
     } else {
       resetHelp(g);
-      renderHelp(g, "F12: Quit");
+      renderHelp(g, "F12,^Q: Quit");
       renderHelp(g, "B: Background Tiles menu");
+      renderHelp(g, "F1,1: Hide/View Passable");
+      renderHelp(g, "F2,2: Transparent Objects");
+      renderHelp(g, "F4,4: Mini Map");
+      renderHelp(g, "[/]: Brushsize -/+ " + BrushSize);
       renderHelp(g, "M: Monsters menu");
       renderHelp(g, "O: Objects menu");
-      renderHelp(g, "F1: Hide/View Passable");
-      renderHelp(g, "F2: Transparent Objects");
-      renderHelp(g, "F4: Mini Map");
-      renderHelp(g, "1/2: Brushsize -/+ " + BrushSize);
       renderHelp(g, "P: Toggle Passable");
-      renderHelp(g, "Q: Toggle AggroType");
+      renderHelp(g, "Y: Toggle AggroType");
       renderHelp(g, "R: Place Door");
-      renderHelp(g, "E: Place Effect");
-      renderHelp(g, "Del: Clear Area");
-      renderHelp(g, "Home: Go to center of map");
+      renderHelp(g, "T: Place Effect");
+      renderHelp(g, "Del,Backspace: Clear Area");
+      renderHelp(g, "Home,H: Go to start X,Y,Z");
+      renderHelp(g, "LClick,Space: apply, paste");
+      renderHelp(g, "Rclick/Return: copy, follow");
 
       String willEdges = (FixEdges
           && currentMode == Mode.BRUSH
@@ -656,7 +658,7 @@ public class BP_EDITOR extends BasicGame {
       renderHelp(g, "F: Fix edges = " + FixEdges + " (" + willEdges + ")");
       renderHelp(g, "N: Spawns = "
           + ((DAY_NIGHT_TIME==0) ? "night+day" : (DAY_NIGHT_TIME==1) ? "night" : "day"));
-      renderHelp(g, "PgUp/PgDown: Z +/-");
+      renderHelp(g, "PgUp/PgDown,E/Q: Z +/-");
 
       switch (currentMode) {
       case CLEAR:
@@ -820,13 +822,16 @@ public class BP_EDITOR extends BasicGame {
 
   /*
    *
-   * 	KEYBOARD & MOUSE
+   *   KEYBOARD & MOUSE
    *
    */
 
   private void keyLogic(GameContainer GC) {
     INPUT = GC.getInput();
-    if (INPUT.isKeyPressed(Input.KEY_F12)) {
+    boolean isQ = INPUT.isKeyPressed(Input.KEY_Q);
+    if (INPUT.isKeyPressed(Input.KEY_F12)
+    || (isQ && INPUT.isKeyDown(Input.KEY_LCONTROL))
+    ) {
       GC.exit();
     }
 
@@ -849,7 +854,7 @@ public class BP_EDITOR extends BasicGame {
       }
     }
 
-    if (INPUT.isKeyPressed(Input.KEY_ESCAPE)) {
+    if (INPUT.isKeyPressed(Input.KEY_ESCAPE) || INPUT.isKeyPressed(Input.KEY_Z)) {
       currentMode = Mode.BRUSH;
       MouseMonster = null;
       MouseObject = null;
@@ -857,23 +862,17 @@ public class BP_EDITOR extends BasicGame {
       loadScreen();
     }
 
-    if (INPUT.isKeyPressed(Input.KEY_HOME)) {
+    if (INPUT.isKeyPressed(Input.KEY_HOME) || INPUT.isKeyPressed(Input.KEY_H)) {
       System.out.println("KEY=Home z" + PLAYER_Z);
-      try (ResultSet rs = mapDB.askDB(
-          "SELECT (MAX(x) + MIN(x))/2, (MAX(y) + MIN(y))/2 FROM area_tile WHERE z=" + PLAYER_Z)
-      ) {
-        PLAYER_X = rs.getInt(1);
-        PLAYER_Y = rs.getInt(2);
-        if (currentMode == Mode.MINI_MAP) {
-          ORIGIN_X = PLAYER_X;
-          ORIGIN_Y = PLAYER_Y;
-          loadMiniMap();
-        }
-        loadScreen();
-        rs.getStatement().close();
-      } catch (SQLException e) {
-        e.printStackTrace();
+      PLAYER_X = EditorSettings.startX;
+      PLAYER_Y = EditorSettings.startY;
+      PLAYER_Z = EditorSettings.startZ;
+      if (currentMode == Mode.MINI_MAP) {
+        ORIGIN_X = PLAYER_X;
+        ORIGIN_Y = PLAYER_Y;
+        loadMiniMap();
       }
+      loadScreen();
     }
 
     if (SlowInputItr == 3) {
@@ -896,13 +895,13 @@ public class BP_EDITOR extends BasicGame {
 
     SlowInputItr++;
 
-    if (INPUT.isKeyPressed(Input.KEY_PRIOR)) {
+    if (INPUT.isKeyPressed(Input.KEY_PRIOR) || INPUT.isKeyPressed(Input.KEY_E)) {
       PLAYER_Z++;
       if (currentMode == Mode.MINI_MAP) {
         loadMiniMap();
       }
       loadScreen();
-    } else if (INPUT.isKeyPressed(Input.KEY_NEXT)) {
+    } else if (INPUT.isKeyPressed(Input.KEY_NEXT) || isQ) {
       PLAYER_Z--;
       if (currentMode == Mode.MINI_MAP) {
         loadMiniMap();
@@ -910,18 +909,18 @@ public class BP_EDITOR extends BasicGame {
       loadScreen();
     }
 
-    if (INPUT.isKeyPressed(Input.KEY_F1)) {
+    if (INPUT.isKeyPressed(Input.KEY_F1) || INPUT.isKeyPressed(Input.KEY_1)) {
       ++ SHOW_PASSABLE;
       if (SHOW_PASSABLE>2) {
         SHOW_PASSABLE = 0;
       }
     }
 
-    if (INPUT.isKeyPressed(Input.KEY_F2)) {
+    if (INPUT.isKeyPressed(Input.KEY_F2) || INPUT.isKeyPressed(Input.KEY_2)) {
       TileObject.transparent = !TileObject.transparent;
     }
 
-    if (INPUT.isKeyPressed(Input.KEY_F4)) {
+    if (INPUT.isKeyPressed(Input.KEY_F4) || INPUT.isKeyPressed(Input.KEY_4)) {
       if (currentMode != Mode.MINI_MAP) {
         ORIGIN_X = PLAYER_X;
         ORIGIN_Y = PLAYER_Y;
@@ -935,13 +934,13 @@ public class BP_EDITOR extends BasicGame {
     }
     if (PLAYER_Z<0 && currentMode == Mode.MINI_MAP) {
       int sz_min = 0;
-      if (INPUT.isKeyPressed(Input.KEY_F5)) {
+      if (INPUT.isKeyPressed(Input.KEY_F5) || INPUT.isKeyPressed(Input.KEY_5)) {
         sz_min = 256;
       }
-      else if (INPUT.isKeyPressed(Input.KEY_F6)) {
+      else if (INPUT.isKeyPressed(Input.KEY_F6) || INPUT.isKeyPressed(Input.KEY_6)) {
         sz_min = 512;
       }
-      else if (INPUT.isKeyPressed(Input.KEY_F7)) {
+      else if (INPUT.isKeyPressed(Input.KEY_F7) || INPUT.isKeyPressed(Input.KEY_7)) {
         sz_min = 768;
       }
       if (sz_min>0) {
@@ -961,10 +960,10 @@ public class BP_EDITOR extends BasicGame {
         }
       }
 
-      if (INPUT.isKeyPressed(Input.KEY_1) && BrushSize>1) {
+      if (INPUT.isKeyPressed(Input.KEY_LBRACKET) && BrushSize>1) {
         BrushSize--;
       }
-      if (INPUT.isKeyPressed(Input.KEY_2) && BrushSize<8) {
+      if (INPUT.isKeyPressed(Input.KEY_RBRACKET) && BrushSize<8) {
         BrushSize++;
       }
 
@@ -981,7 +980,7 @@ public class BP_EDITOR extends BasicGame {
         activeMenu = TEXTURE_MENU;
         activeMenu.clear();
       }
-      if (INPUT.isKeyPressed(Input.KEY_E)) {
+      if (INPUT.isKeyPressed(Input.KEY_T)) {
         activeMenu = AREA_EFFECT_MENU;
         activeMenu.clear();
       }
@@ -1014,7 +1013,7 @@ public class BP_EDITOR extends BasicGame {
         loadScreen();
       }
 
-      if (INPUT.isKeyPressed(Input.KEY_Q)) {
+      if (INPUT.isKeyPressed(Input.KEY_Y)) {
         activeMenu = null;
 
         if (currentMode == Mode.AGGRO) {
@@ -1029,7 +1028,7 @@ public class BP_EDITOR extends BasicGame {
       }
     }
 
-    if (INPUT.isKeyPressed(Input.KEY_DELETE)) {
+    if (INPUT.isKeyPressed(Input.KEY_DELETE) || INPUT.isKeyPressed(Input.KEY_BACK)) {
       if (currentMode==Mode.DELETE_MONSTER
       ||  currentMode==Mode.DELETE_OBJECT
       ||  currentMode==Mode.DELETE_TILE
@@ -1050,7 +1049,7 @@ public class BP_EDITOR extends BasicGame {
       }
     }
 
-    if (INPUT.isMousePressed(0)) {
+    if (INPUT.isMousePressed(Input.MOUSE_LEFT_BUTTON) || INPUT.isKeyPressed(Input.KEY_SPACE)) {
 
       int mouseX = INPUT.getAbsoluteMouseX();
       int mouseY = INPUT.getAbsoluteMouseY();
@@ -1514,7 +1513,11 @@ public class BP_EDITOR extends BasicGame {
       }
     }
 
-    if (INPUT.isMousePressed(1)) {
+    if (INPUT.isMousePressed(Input.MOUSE_RIGHT_BUTTON)
+    || INPUT.isKeyPressed(Input.KEY_ENTER)
+    || INPUT.isKeyPressed(Input.KEY_NUMPADENTER)
+    || INPUT.isKeyPressed(Input.KEY_RETURN)
+    ) {
       int mouseX = INPUT.getAbsoluteMouseX();
       int mouseY = INPUT.getAbsoluteMouseY();
 

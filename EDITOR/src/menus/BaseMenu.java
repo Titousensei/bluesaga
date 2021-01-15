@@ -18,7 +18,7 @@ public abstract class BaseMenu {
 
   // return keepOpen
   public boolean keyLogic(Input INPUT) {
-    return !INPUT.isKeyPressed(Input.KEY_ESCAPE);
+    return !(INPUT.isKeyPressed(Input.KEY_ESCAPE) || INPUT.isKeyPressed(Input.KEY_Z));
   }
 
   public void setReady(boolean val) { is_ready = val; }

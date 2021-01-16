@@ -103,7 +103,7 @@ AreaCopper: 8
 FogColor: 141,255,114
 Song: dungeon
 Ambient: dungeon
-AreaItems: 3,5
+AreaItem: 3,5
 AreaCopper: 14
 
 ### a22 / Bounty Hut
@@ -274,7 +274,7 @@ GuardLevel: 0
 ### a53 / The Goblin Archives
 Song: goblin
 Ambient: dungeon
-AreaItems: 3,5
+AreaItem: 3,5
 AreaCopper: 10
 GuardLevel: 0
 
@@ -298,7 +298,7 @@ AreaCopper: 8
 ### a57 / The North
 Song: snow
 Ambient: title
-AreaItems: 179
+AreaItem: 179
 AreaCopper: 8
 Particles: snow
 GuardLevel: 0
@@ -324,7 +324,7 @@ AreaCopper: 8
 ### a61 / Northern Passage
 FogColor: 45,255,135
 Song: icecave
-AreaItems: 179
+AreaItem: 179
 AreaCopper: 8
 GuardLevel: 0
 
@@ -352,7 +352,7 @@ Ambient: indoors
 ### a67 / The Frostvale
 Song: snow
 Ambient: title
-AreaItems: 179
+AreaItem: 179
 AreaCopper: 8
 Particles: snow
 
@@ -364,7 +364,7 @@ AreaCopper: 8
 ### a69 / The Cold Luna Cave
 FogColor: 45,255,135
 Song: icecave
-AreaItems: 179
+AreaItem: 179
 AreaCopper: 8
 GuardLevel: 0
 

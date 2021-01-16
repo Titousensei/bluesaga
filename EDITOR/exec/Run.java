@@ -13,6 +13,7 @@ public class Run
   throws Exception
   {
     String version = Runtime.class.getPackage().getImplementationVersion();
+    System.out.println("Java version detected: " + version);
 
     if (MIN_VERSION.compareTo(version) > 0) {
       JOptionPane.showMessageDialog(null,

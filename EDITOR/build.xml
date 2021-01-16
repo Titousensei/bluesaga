@@ -45,15 +45,4 @@
     </jar>
   </target>
 
-  <target name="makerun">
-    <javac srcdir="exec" destdir="exec" debug="on" includeantruntime='false' />
-    <jar destfile="run.jar" basedir="exec">
-      <include name="Run.class"/>
-      <manifest>
-        <attribute name="Main-Class" value="Run"/>
-      </manifest>
-    </jar>
-    <chmod file="run.jar" perm="ugo+rx"/>
-  </target>
-
 </project>

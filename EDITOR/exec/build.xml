@@ -1,0 +1,22 @@
+<project name="bluesaga" default="compile" basedir=".">
+    <description>
+        BlueSaga - Map Editor
+    </description>
+
+  <property name="compile.debug"              value="true"/>
+  <property name="compile.deprecation"        value="false"/>
+  <property name="compile.jdk-version.source" value="1.2"/>
+  <property name="compile.jdk-version.target" value="1.2"/>
+
+  <target name="compile">
+    <javac srcdir="." debug="on" includeantruntime='false' />
+    <jar destfile="run.jar">
+      <include name="Run.class"/>
+      <manifest>
+        <attribute name="Main-Class" value="Run"/>
+      </manifest>
+    </jar>
+    <chmod file="run.jar" perm="ugo+rx"/>
+  </target>
+
+</project>

@@ -960,11 +960,19 @@ public class BP_EDITOR extends BasicGame {
         }
       }
 
-      if (INPUT.isKeyPressed(Input.KEY_LBRACKET) && BrushSize>1) {
-        BrushSize--;
+      if (INPUT.isKeyPressed(Input.KEY_LBRACKET)
+      || INPUT.isKeyPressed(Input.KEY_MINUS)
+      || INPUT.isKeyPressed(Input.KEY_UNDERLINE)) {
+        if (BrushSize>1) {
+          BrushSize--;
+        }
       }
-      if (INPUT.isKeyPressed(Input.KEY_RBRACKET) && BrushSize<8) {
-        BrushSize++;
+      if (INPUT.isKeyPressed(Input.KEY_RBRACKET)
+      || INPUT.isKeyPressed(Input.KEY_EQUALS)
+      || INPUT.isKeyPressed(Input.KEY_ADD)) {
+        if (BrushSize<8) {
+          BrushSize++;
+        }
       }
 
       if (INPUT.isKeyPressed(Input.KEY_O)) {

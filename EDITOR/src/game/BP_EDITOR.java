@@ -645,7 +645,7 @@ public class BP_EDITOR extends BasicGame {
       renderHelp(g, "R: Place Door");
       renderHelp(g, "T: Place Effect");
       renderHelp(g, "Del,Backspace: Clear Area");
-      renderHelp(g, "Home,H: Go to start X,Y,Z");
+      renderHelp(g, "Home,H: Go to home X,Y,Z (ctrl to save)");
       renderHelp(g, "LClick,Space: apply, paste");
       renderHelp(g, "Rclick/Return: copy, follow");
 
@@ -831,6 +831,7 @@ public class BP_EDITOR extends BasicGame {
     boolean isQ = INPUT.isKeyPressed(Input.KEY_Q);
     if (INPUT.isKeyPressed(Input.KEY_F12)
     || (isQ && INPUT.isKeyDown(Input.KEY_LCONTROL))
+    || (isQ && INPUT.isKeyDown(Input.KEY_RCONTROL))
     ) {
       GC.exit();
     }
@@ -863,16 +864,23 @@ public class BP_EDITOR extends BasicGame {
     }
 
     if (INPUT.isKeyPressed(Input.KEY_HOME) || INPUT.isKeyPressed(Input.KEY_H)) {
-      System.out.println("KEY=Home z" + PLAYER_Z);
-      PLAYER_X = EditorSettings.startX;
-      PLAYER_Y = EditorSettings.startY;
-      PLAYER_Z = EditorSettings.startZ;
-      if (currentMode == Mode.MINI_MAP) {
-        ORIGIN_X = PLAYER_X;
-        ORIGIN_Y = PLAYER_Y;
-        loadMiniMap();
+      if (INPUT.isKeyDown(Input.KEY_LCONTROL) || INPUT.isKeyDown(Input.KEY_RCONTROL)) {
+        EditorSettings.startX = PLAYER_X;
+        EditorSettings.startY = PLAYER_Y;
+        EditorSettings.startZ = PLAYER_Z;
+        System.out.println("NEW Home: " + PLAYER_X + ", " + PLAYER_Y + ", " + PLAYER_Z);
+      } else {
+        PLAYER_X = EditorSettings.startX;
+        PLAYER_Y = EditorSettings.startY;
+        PLAYER_Z = EditorSettings.startZ;
+        System.out.println("GO Home: " + PLAYER_X + ", " + PLAYER_Y + ", " + PLAYER_Z);
+        if (currentMode == Mode.MINI_MAP) {
+          ORIGIN_X = PLAYER_X;
+          ORIGIN_Y = PLAYER_Y;
+          loadMiniMap();
+        }
+        loadScreen();
       }
-      loadScreen();
     }
 
     if (SlowInputItr == 3) {

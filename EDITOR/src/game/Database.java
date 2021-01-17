@@ -10,6 +10,10 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import components.Monster;
 
 import map.Container;
@@ -21,6 +25,8 @@ public class Database {
 
   private Connection conn;
   public final String name;
+
+  public final static SimpleDateFormat TIMESTAMP_FMT = new SimpleDateFormat("yyyy-dd-MM_HHmmss");
 
   public Database(String name) throws ClassNotFoundException {
     Class.forName("org.sqlite.JDBC");
@@ -37,7 +43,7 @@ public class Database {
   {
     try {
       Path source      = FileSystems.getDefault().getPath(EditorSettings.PATH, name + ".db");
-      Path destination = FileSystems.getDefault().getPath(EditorSettings.PATH, name + ".bak");
+      Path destination = FileSystems.getDefault().getPath(EditorSettings.PATH, name + "."+ TIMESTAMP_FMT.format(new Date()) + ".bak");
       Files.copy(source, destination, REPLACE_EXISTING);
       System.out.println("Map backup: " + destination);
     }

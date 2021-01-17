@@ -66,6 +66,7 @@ public class Database {
     updateDB("CREATE INDEX IF NOT EXISTS tile_door on area_tile (DoorId);");
     updateDB("DROP INDEX IF EXISTS tile_pos;");
     updateDB("CREATE UNIQUE INDEX IF NOT EXISTS tile_pos_uniq ON area_tile (z,x,y);");
+    updateDB("VACUUM;");
 
     boolean isEmpty = true;
     try (ResultSet rs = askDB("SELECT count(*) FROM area_effect")) {

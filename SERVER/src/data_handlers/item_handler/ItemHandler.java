@@ -6,6 +6,7 @@ import java.util.*;
 
 import org.newdawn.slick.Color;
 
+import utils.ItemMagic;
 import utils.ServerGameInfo;
 import utils.ServerMessage;
 import utils.RandomUtils;
@@ -165,27 +166,15 @@ public class ItemHandler extends Handler {
 
     if (infoItem != null) {
       if (infoItem.getMagicId() > 0) {
-        String magicName = "0";
-        String magicColor = "0";
-
-        ResultSet magicInfo =
-            Server.gameDB.askDB(
-                //      1     2
-                "select Name, Color from item_magic where Id = " + infoItem.getMagicId());
-        try {
-          if (magicInfo.next()) {
-            magicName = magicInfo.getString(1);
-            magicColor = magicInfo.getString(2);
-          }
-          magicInfo.close();
-        } catch (SQLException e) {
-          e.printStackTrace();
+        ItemMagic item = ItemMagic.getById(infoItem.getMagicId());
+        if (item != null) {
+          sb.append(item.color)
+            .append(';')
+            .append(item.toString())
+            .append('/');
+        } else {
+          sb.append("0;0/");
         }
-
-        sb.append(magicColor)
-          .append(';')
-          .append(magicName)
-          .append('/');
       }
 
       sb.append(infoItem.getColor())
@@ -593,13 +582,10 @@ public class ItemHandler extends Handler {
                 }
 
                 if (magicChance < 20) {
-
-                  int magicInfo =
-                      Server.gameDB.askInt(
-                          "select Id from item_magic where Id = " + TARGET.getSpecialType());
-
-                  if (magicInfo != 0) {
-                    droppedItem.setMagicId(magicInfo);
+                  int magicId = TARGET.getSpecialType();
+                  ItemMagic item = ItemMagic.getById(magicId);
+                  if (item != null) {
+                    droppedItem.setMagicId(magicId);
                   }
                 }
               }

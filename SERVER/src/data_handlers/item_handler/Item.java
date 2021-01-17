@@ -5,6 +5,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Vector;
 
+import utils.ItemMagic;
 import components.Stats;
 
 import data_handlers.ability_handler.StatusEffect;
@@ -429,9 +430,9 @@ public class Item {
 
   public void setMagicId(int magicId) {
     MagicId = magicId;
-    String extraBonus = Server.gameDB.askString("select ExtraBonus from item_magic where Id = " + magicId);
 
-    if (extraBonus != null) {
+    ItemMagic item = ItemMagic.getById(magicId);
+    if (item != null) {
       int levelModif = 1;
 
       if (getRequirement("ReqLevel") > 0) {
@@ -441,46 +442,16 @@ public class Item {
       float statBonus = levelModif * 0.25f;
       int statBonusInt = (int) Math.ceil(statBonus);
 
-      if (magicId == 1) {
-        if (getType().equals("Weapon")) {
-          StatusEffect seEffect = ServerGameInfo.newStatusEffect(1);
-          seEffect.setRepeatDamage(statBonusInt);
-          statusEffects.add(seEffect);
-        } else {
-          Stats.setValue("FIRE_DEF", Stats.getValue("FIRE_DEF") + statBonusInt);
+      if (getType().equals("Weapon") && item.statusEffectId > 0) {
+        StatusEffect seEffect = ServerGameInfo.newStatusEffect(item.statusEffectId);
+        seEffect.setRepeatDamage(statBonusInt);
+        statusEffects.add(seEffect);
+      } else {
+        for(String bonus : item.bonus) {
+          Stats.setValue(bonus, Stats.getValue(bonus) + statBonusInt);
         }
-        magicType = "FIRE";
-      } else if (magicId == 2) {
-        if (getType().equals("Weapon")) {
-          StatusEffect seEffect = ServerGameInfo.newStatusEffect(6);
-          seEffect.setRepeatDamage(Math.round(statBonusInt * 0.75f));
-          statusEffects.add(seEffect);
-        } else {
-          Stats.setValue("COLD_DEF", Stats.getValue("COLD_DEF") + statBonusInt);
-        }
-        magicType = "COLD";
-      } else if (magicId == 3) {
-        if (getType().equals("Weapon")) {
-          StatusEffect seEffect = ServerGameInfo.newStatusEffect(7);
-          seEffect.setRepeatDamage(statBonusInt);
-          statusEffects.add(seEffect);
-        } else {
-          Stats.setValue("SHOCK_DEF", Stats.getValue("SHOCK_DEF") + statBonusInt);
-        }
-        magicType = "SHOCK";
-      } else if (magicId == 4) {
-        Stats.setValue("STRENGTH", Stats.getValue("STRENGTH") + statBonusInt);
-      } else if (magicId == 5) {
-        if (getType().equals("Weapon")) {
-          statusEffects.add(ServerGameInfo.newStatusEffect(4));
-        } else {
-          Stats.setValue("CHEMS_DEF", Stats.getValue("CHEMS_DEF") + statBonusInt);
-        }
-        magicType = "CHEMS";
-      } else if (magicId == 6) {
-        Stats.setValue("SPEED", Stats.getValue("SPEED") + statBonusInt);
-        Stats.setValue("ATTACKSPEED", Stats.getValue("ATTACKSPEED") + statBonusInt);
       }
+      magicType = item.type;
     }
   }
 

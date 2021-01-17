@@ -14,8 +14,6 @@ import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import components.Monster;
-
 import map.Container;
 import map.Tile;
 
@@ -181,31 +179,6 @@ public class Database {
             + y
             + " and AreaId = "
             + AreaId);
-  }
-/*
-  public void addMonster(int AreaId, Monster newMonster, int x, int y) {
-    updateDB(
-        "insert into area_creature (AreaId,CreatureId,MobLevel, SpawnX,SpawnY,Special,AggroType, NpcName) values ("
-            + AreaId
-            + ","
-            + newMonster.getId()
-            + ",1,"
-            + x
-            + ","
-            + y
-            + ",'"
-            + newMonster.getSpecialType()
-            + "',2,'None')");
-  }
-*/
-  public void removeMonster(int AreaId, int x, int y) {
-    updateDB(
-        "delete from area_creature where AreaId = "
-            + AreaId
-            + " and SpawnX = "
-            + x
-            + " and SpawnY = "
-            + y);
   }
 
   public void createDoor(String tileId, String doorId, int tileX, int tileY, int tileZ) {

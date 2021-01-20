@@ -27,16 +27,29 @@ public class Run
     File runningJar = new File(Run.class.getProtectionDomain().getCodeSource().getLocation().toURI());
     File runningDir = runningJar.getParentFile();
 
+    String fullName = runningJar.getName();
+    System.out.println("Jar name: "+ fullName);
+    if (!fullName.startsWith("run-")) {
+      JOptionPane.showMessageDialog(null,
+          "Specify what to run by renaming this jar to either run-editor.jar or run-server.jar.",
+          "Info: Jar name not recognized",
+          JOptionPane.WARNING_MESSAGE);
+      System.exit(-1);
+    }
+    int cut = fullName.length() - 4;
+    String name = fullName.substring(0, cut).substring(4);
+    System.out.println("Exec name: "+ name);
+
     String[] cmd = new String[] {
         "java",
         "-Djava.library.path=JARS",
         "-jar",
-        "JARS/editor.jar",
+        "JARS/" + name + ".jar",
         URLDecoder.decode(runningDir.getPath(), "UTF-8")
     };
 
     String date = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
-    File log = new File("editor-" + date + ".log");
+    File log = new File(name + "-" + date + ".log");
     ProcessBuilder builder = new ProcessBuilder(cmd);
     builder.directory(runningDir.getParentFile());
     builder.redirectErrorStream(true);

@@ -28,13 +28,24 @@
 
   <target name="dist" depends="compile">
     <mkdir dir="dist"/>
-    <jar jarfile="dist/server.jar">
-      <fileset dir="build" includes="**/*.class"/>
+    <manifestclasspath property="manifest_cp" jarfile="server.jar">
+      <classpath>
+        <fileset dir="${include}">
+          <include name="**/*.jar"/>
+        </fileset>
+      </classpath>
+    </manifestclasspath>
+    <jar destfile="dist/server.jar" basedir="${build}">
+      <manifest>
+        <attribute name="Main-Class" value="game.BPserver"/>
+        <attribute name="Class-Path" value="${manifest_cp}"/>
+      </manifest>
     </jar>
   </target>
 
   <target name="clean">
     <delete dir="${build}"/>
+    <delete dir="dist"/>
   </target>
 
 </project>

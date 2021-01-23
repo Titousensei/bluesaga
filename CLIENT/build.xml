@@ -27,13 +27,24 @@
 
   <target name="dist" depends="compile">
     <mkdir dir="dist"/>
-    <jar jarfile="dist/gameData.jar">
-      <fileset dir="build" includes="**/*.class"/>
+    <jar destfile="dist/gameData.jar">
+      <fileset dir="${build}" includes="**/*.class"/>
       <fileset dir="assets"/>
       <fileset dir="bin"/>
       <manifest>
         <attribute name="Main-Class" value="game.BlueSaga"/>
         <attribute name="Class-Path" value=". gameData_lib/slick.jar gameData_lib/sqlitejdbc-v056.jar gameData_lib/lwjgl.jar gameData_lib/bs_user.jar gameData_lib/jorbis-0.0.15.jar gameData_lib/jogg-0.0.7.jar gameData_lib/grandcentral.jar"/>
+      </manifest>
+    </jar>
+  </target>
+
+  <target name="dist_test" depends="compile">
+    <mkdir dir="dist"/>
+    <jar destfile="dist/client.jar">
+      <fileset dir="${build}" includes="**/*.class"/>
+      <manifest>
+        <attribute name="Main-Class" value="game.BlueSaga"/>
+        <attribute name="Class-Path" value="../bin/ ../assets/ bs_user.jar grandcentral.jar jogg-0.0.7.jar jorbis-0.0.15.jar json_simple.jar lwjgl.jar natives-mac.jar natives-windows.jar  natives-linux.jar slick.jar sqlitejdbc-v056.jar"/>
       </manifest>
     </jar>
   </target>

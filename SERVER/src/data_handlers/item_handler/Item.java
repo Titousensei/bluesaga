@@ -46,6 +46,7 @@ public class Item {
   // SPECIAL ITEM STATS
   private Modifier modifier = Modifier.Regular;
   private int MagicId = 0;
+  private int contentId = 0; // itemId where readable content is defined
 
   private HashMap<String, Integer> Requirements = new HashMap<String, Integer>();
 
@@ -104,6 +105,7 @@ public class Item {
     setRange(copy.getRange());
 
     setContainerId(copy.getContainerId());
+    setContentId(copy.getContentId());
 
     setProjectileId(copy.getProjectileId());
 
@@ -221,6 +223,14 @@ public class Item {
 
   public void setId(int id) {
     Id = id;
+  }
+
+  public void setContentId(int id) {
+    contentId = id;
+  }
+
+  public int getContentId() {
+    return contentId;
   }
 
   public void setStoreBought(boolean yes) {

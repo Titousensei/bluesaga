@@ -90,6 +90,11 @@ extends Builder<Item>
     it.setClassId(parseInt(val));
   }
 
+  public void spriteId(String val) {
+    it.setContentId(it.getId());
+    it.setId(parseInt(val));
+  }
+
   public void material(String val) {
     // Material: Iron
     it.setMaterial(val);

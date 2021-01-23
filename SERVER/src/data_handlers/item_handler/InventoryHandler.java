@@ -816,6 +816,7 @@ public class InventoryHandler extends Handler {
         int totalItems = Integer.parseInt(itemPosInfo[2]);
 
         if (stacked.equals("newpos")) {
+          int modifierId = (newItem.getContentId() > 0) ? newItem.getContentId() : newItem.getModifierId();
           Server.userDB.updateDB(
               "insert into character_item (CharacterId, ItemId, Equipped, Nr, InventoryPos, ModifierId, MagicId) values("
                   + client.playerCharacter.getDBId()
@@ -826,7 +827,7 @@ public class InventoryHandler extends Handler {
                   + ",'"
                   + InventoryPos
                   + "',"
-                  + newItem.getModifierId()
+                  + modifierId
                   + ","
                   + newItem.getMagicId()
                   + ")");
@@ -859,8 +860,8 @@ public class InventoryHandler extends Handler {
     // CHECK IF ITEM EXIST IN INVENTORY
     ResultSet rs =
         Server.userDB.askDB(
-            //      1   2       3   4
-            "select Id, ItemId, Nr, InventoryPos from character_item where abs(ItemId) = "
+            //      1   2       3   4             5
+            "select Id, ItemId, Nr, InventoryPos, ModifierId from character_item where abs(ItemId) = "
                 + usedItem.getId()
                 + " and InventoryPos = '"
                 + posX
@@ -884,6 +885,8 @@ public class InventoryHandler extends Handler {
               usedItem.getUserItemId() + "," + usedItem.getSubType() + ",Inventory");
         } else if (usedItem.getType().equals("Readable")) {
           // READABLE ITEM
+          // Content is actually in item pointed by ModifierId
+          usedItem = ServerGameInfo.newItem(rs.getInt(5));
           addOutGoingMessage(
               client, "readable", usedItem.getName() + ";" + usedItem.getDescription());
         } else {

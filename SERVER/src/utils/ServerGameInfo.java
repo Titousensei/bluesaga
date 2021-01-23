@@ -91,6 +91,15 @@ public class ServerGameInfo {
     for (File f : new File(ServerSettings.PATH).listFiles((dir, name) -> name.startsWith("items_"))) {
       Builder.load(f.getPath(), ItemBuilder.class, itemDef);
     }
+    Map<Integer, Item> readables = new HashMap<>();
+    for (Map.Entry<Integer, Item> entry : itemDef.entrySet()) {
+      Item it = entry.getValue();
+      if ("Readable".equals(it.getType())) {
+        readables.put(it.getContentId(), it);
+      }
+    }
+    System.out.println("*** readables " +readables);
+    itemDef.putAll(readables);
 
     // LOAD CLASSES INFO
     classDef = new HashMap<Integer, BaseClass>();

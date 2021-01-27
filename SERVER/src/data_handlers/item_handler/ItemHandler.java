@@ -150,18 +150,16 @@ public class ItemHandler extends Handler {
 
           // CHECK IF PLAYER HAS ITEM
           infoItem = ServerGameInfo.newItem(userItemInfo.getInt(1));
-          if (infoType.equals("inv") && infoItem.getType().equals("Readable")) {
-              // To get actual readable content, use the ModifierId instead of ItemId
-              infoItem = ServerGameInfo.newItem(userItemInfo.getInt(2));
-          } else {
-            infoItem.setModifierId(userItemInfo.getInt(2));
-            infoItem.setMagicId(userItemInfo.getInt(3));
-          }
+          infoItem.setModifierId(userItemInfo.getInt(2));
+          infoItem.setMagicId(userItemInfo.getInt(3));
         }
         userItemInfo.close();
       } catch (SQLException e) {
         e.printStackTrace();
       }
+    }
+    if (infoItem.getContentId() > 0) {
+      infoItem = ServerGameInfo.newItem(infoItem.getContentId());
     }
 
     StringBuilder sb = new StringBuilder(1000);

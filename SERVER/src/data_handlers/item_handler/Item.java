@@ -398,8 +398,12 @@ public class Item {
   }
 
   public void setModifierId(int id) {
-    Modifier mod = Modifier.get(id);
-    setModifier(mod);
+    if ("Readable".equals(Type)) {
+      setContentId(id);
+    } else {
+      Modifier mod = Modifier.get(id);
+      setModifier(mod);
+    }
   }
 
   public void setModifier(Modifier mod) {

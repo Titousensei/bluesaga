@@ -876,6 +876,7 @@ public class InventoryHandler extends Handler {
         int userItemId = rs.getInt(1);
 
         usedItem.setUserItemId(userItemId);
+        usedItem.setModifierId(rs.getInt(5));
 
         if (usedItem.getType().equals("Scroll")) {
           // SCROLL
@@ -886,7 +887,7 @@ public class InventoryHandler extends Handler {
         } else if (usedItem.getType().equals("Readable")) {
           // READABLE ITEM
           // Content is actually in item pointed by ModifierId
-          usedItem = ServerGameInfo.newItem(rs.getInt(5));
+          usedItem = ServerGameInfo.newItem(usedItem.getContentId());
           addOutGoingMessage(
               client, "readable", usedItem.getName() + ";" + usedItem.getDescription());
         } else {
